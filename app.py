@@ -81,6 +81,25 @@ _auth_ok, _user = _vauth.handle_auth_flow(
     render_acesso_negado=_render_acesso_negado,
 )
 
+# Trava de segurança: se os secrets do Azure AD ainda não foram configurados,
+# handle_auth_flow retorna (False, None) sem mostrar tela de login. Sem isso,
+# o app abriria pra qualquer um que tivesse o link. Bloqueia até o admin
+# configurar o [auth] no Streamlit Cloud (Settings → Secrets).
+if not _auth_ok:
+    st.markdown(
+        """
+        <div style="text-align:center;padding:80px 20px;">
+          <h2 style="color:#dc2626;">🔧 Configuração incompleta</h2>
+          <p style="color:#64748b;font-size:14px;margin-top:16px;">
+            O CloudIA PCM está sendo configurado. Aguarde o admin terminar o setup
+            do Azure AD e tente novamente em alguns minutos.
+          </p>
+        </div>
+        """,
+        unsafe_allow_html=True,
+    )
+    st.stop()
+
 # ── Lê arquivos e injeta dados inline ──────────────────────────────────────
 BASE = Path(__file__).parent
 html = (BASE / "index.html").read_text(encoding="utf-8")
