@@ -78,21 +78,9 @@ Em aba anônima: https://pcm-fiberx.streamlit.app
 
 ## Como atualizar `dados.json`
 
-Toda vez que rodar `gerar_dados.py` em `CloudIA_V3/` localmente, o `dados.json` do `v3/` é atualizado. Pra refletir no app online:
-
-```bash
-# Copia o novo dados.json pro _deploy_streamlit
-cp ../CloudIA/v3/dados.json dados.json
-
-# Commit + push
-git add dados.json
-git commit -m "Update dados.json — semana W<N>"
-git push
-```
+Toda vez que rodar `gerar_dados.py` em `CloudIA_V3/` localmente, o `dados.json` do `v3/` é atualizado. Pra refletir no app online, use o script `sync_deploy_streamlit.bat` na pasta raiz do CloudIA — ele copia, commita e faz push em uma só ação.
 
 O Streamlit Cloud detecta o push e rebuilda em ~30s.
-
-(Ou usar o script `sync_deploy.bat` se existir — ver pasta raiz.)
 
 ## Limitações da versão online
 
