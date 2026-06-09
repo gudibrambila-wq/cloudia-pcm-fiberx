@@ -128,6 +128,7 @@
     <div class="flex items-center gap-3">
       <span id="header-semana" class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-full">W20</span>
       <span id="header-sync" class="text-xs text-slate-400">Sync: —</span>
+      <span id="header-sync-status" class="text-xs text-slate-400" title="Status do servidor de persistência">—</span>
       <button onclick="carregarDados()" class="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1.5">
         <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
         Sincronizar PSI
@@ -3013,13 +3014,20 @@ function renderDashboardKpis() {
   }
 
   // ===== KPI 5: Escopo (Marcas Ativas / Produto Selecionado) =====
+  // temSelecao foi setado lá em cima: getProdutosSelDash().size > 0
   const todasAtivas = DADOS.produtos.filter(p => getProdStatus(p.codigo) !== 'inativo');
-  if (produtoSelecionado && ativos[0]) {
-    // Produto selecionado: mostra info do produto (saldo + tipo)
+  if (temSelecao && ativos.length === 1) {
+    // 1 produto selecionado: mostra info dele (saldo + tipo)
     const p = ativos[0];
     document.getElementById('kpi-marcas-valor').textContent = (p.saldo_atual || 0).toLocaleString('pt-BR');
     document.getElementById('kpi-marcas-sub').textContent = `un · ${p.marca || ''} ${p.tipo ? '· '+p.tipo : ''}`;
     document.getElementById('kpi-marcas-lista').textContent = p.nome;
+  } else if (temSelecao && ativos.length > 1) {
+    // 2+ produtos selecionados: mostra contagem + soma saldo
+    const somaSaldo = ativos.reduce((s, p) => s + (p.saldo_atual || 0), 0);
+    document.getElementById('kpi-marcas-valor').textContent = somaSaldo.toLocaleString('pt-BR');
+    document.getElementById('kpi-marcas-sub').textContent = `un · ${ativos.length} produtos`;
+    document.getElementById('kpi-marcas-lista').textContent = ativos.map(p => p.nome.split(' ')[0]).slice(0, 4).join(' · ');
   } else if (marcaSelecionada) {
     const ativosMarca = todasAtivas.filter(p => p.marca === marcaSelecionada);
     document.getElementById('kpi-marcas-valor').textContent = ativosMarca.length;
@@ -3404,14 +3412,16 @@ function renderPSI() {
         });
       });
     }
-    // 3) Re-cascateia TODO o saldo com floor=0 (passado + presente + futuro)
-    //    Regra de consumo:
-    //      - Semanas PASSADAS (i < curIdx): se realizado > 0 usa realizado; senão forecast
-    //      - SEMANA_ATUAL: estoque inicial = saldoAtual (foto real do Sênior); consumo = realizado>0 ou forecast
-    //      - Semanas FUTURAS: consumo = forecast (ainda não tem realizado)
-    let estoque = Math.max(0, (targetDs.saldo[0] || 0) + (targetDs.forecast[0] || 0) - (targetDs.sellIn[0] || 0));
+    // 3) Re-cascateia saldo APENAS a partir da SEMANA_ATUAL.
+    //    Semanas PASSADAS (i < curIdx) preservam o saldo que veio do dados.json
+    //    — que já tem o histórico congelado (historico_saldo.json) aplicado.
+    //    Antes a gente cascateava do W1 com floor=0, o que zerava o histórico salvo
+    //    quando faltavam entradas antigas. Agora respeita o histórico.
+    //    SEMANA_ATUAL: reset usando saldoAtual (foto real do Sênior).
+    //    Semanas FUTURAS: cascade normal.
+    let estoque = (curIdx > 0 ? (targetDs.saldo[curIdx - 1] || 0) : 0);
     const realizadoArr = targetDs.realizado || [];
-    for (let i = 0; i < targetDs.saldo.length; i++) {
+    for (let i = curIdx; i < targetDs.saldo.length; i++) {
       const fc = targetDs.forecast[i] || 0;
       const si = targetDs.sellIn[i]   || 0;
       const rl = realizadoArr[i] || 0;
@@ -4804,13 +4814,7 @@ function atribuirCodigosFaltantes() {
 let _syncPedidosTimer = null;
 function _enviaPedidosAoServidor() {
   clearTimeout(_syncPedidosTimer);
-  _syncPedidosTimer = setTimeout(() => {
-    fetch('/api/save-pedidos', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(PEDIDOS),
-    }).catch(() => {/* servidor sem suporte: ok */});
-  }, 1000);
+  _syncPedidosTimer = setTimeout(() => _postSync('/api/save-pedidos', PEDIDOS), 1000);
 }
 
 function salvarPedidos() {
@@ -4864,6 +4868,17 @@ function kanbanCardHTML(p) {
   const origemCor = p.origem === 'Simulado' ? 'text-amber-600' : 'text-blue-600';
   const semNum = typeof p.semana === 'number' ? p.semana : _normalizarSemana(p.semana);
   const semLabel = `W${semNum}` + (p.mes ? ` · ${p.mes}` : '');
+  // Nacionais: mostra DATA (dd/mm) no lugar de W. Importados: continua W.
+  // Usa p.data se cadastrado; senão calcula data da semana via semanaToDataISO.
+  const _isNacional = (p.tipo || 'Nacional') === 'Nacional';
+  let semOuData = `W${semNum}`;
+  if (_isNacional) {
+    const iso = p.data || (semNum ? semanaToDataISO(semNum) : null);
+    if (iso) {
+      const [y, m, d] = iso.split('-');
+      if (d && m) semOuData = `${d}/${m}`;
+    }
+  }
   const nomeShort = nomeCurtoCard(p.nome);
   const marcaHtml = p.marca
     ? `<div class="flex justify-between"><span class="text-slate-400">Marca</span><span class="text-slate-700 font-medium">${p.marca}</span></div>`
@@ -4895,7 +4910,11 @@ function kanbanCardHTML(p) {
       <div class="flex items-start gap-2">
         <div class="flex-1 min-w-0">
           <p class="text-xs font-semibold text-slate-800 leading-tight truncate" title="${p.nome}">${nomeShort}</p>
-          <p class="text-xs text-slate-500 mt-0.5">${(p.qtd||0).toLocaleString('pt-BR')} un &nbsp;·&nbsp; W${semNum}${p.modal ? ` &nbsp;·&nbsp; ${p.modal}` : ''}</p>
+          <p class="text-xs text-slate-500 mt-0.5">${(p.qtd||0).toLocaleString('pt-BR')} un &nbsp;·&nbsp; ${semOuData}${p.modal ? ` &nbsp;·&nbsp; ${p.modal}` : ''}${(p.fase_desde && !['pendente','pago1','estoque'].includes(fase)) ? (() => {
+            const dias = _diasDesde(p.fase_desde);
+            const txt = dias < 1 ? 'hoje' : `${dias}d`;
+            return ` &nbsp;·&nbsp; <span class="text-slate-400" title="Tempo nesta fase (sem SLA definido)">${txt}</span>`;
+          })() : ''}</p>
           ${(fase === 'estoque' && p.arquivado_em) ? (() => {
             const restantes = Math.max(0, Math.ceil(DIAS_VISIVEL_ESTOQUE - _diasDesde(p.arquivado_em)));
             return `<p class="text-[10px] text-teal-600 mt-0.5">arquiva em ${restantes} dia${restantes !== 1 ? 's' : ''}</p>`;
@@ -5255,9 +5274,17 @@ function _arquivado(p) {
   return false;
 }
 
-// Helper que muda a fase e cuida dos timestamps de arquivamento por fase
+// Helper que muda a fase e cuida dos timestamps. Marca SEMPRE `fase_desde`
+// (timestamp universal de quando o card entrou na fase atual). Os timestamps
+// específicos por fase (arquivado_em, pendente_desde, pago_desde) seguem
+// existindo pra preservar lógicas legadas de SLA.
 function setFasePedido(p, novaFase) {
+  const faseAnterior = p.fase;
   p.fase = novaFase;
+  // Timestamp universal: muda quando troca de fase
+  if (faseAnterior !== novaFase || !p.fase_desde) {
+    p.fase_desde = new Date().toISOString();
+  }
   if (novaFase === 'estoque' && !p.arquivado_em) {
     p.arquivado_em = new Date().toISOString();
   } else if (novaFase !== 'estoque' && p.arquivado_em) {
@@ -6233,13 +6260,7 @@ function loadProdutoOverrides() {
 let _syncOverridesTimer = null;
 function _enviaOverridesAoServidor() {
   clearTimeout(_syncOverridesTimer);
-  _syncOverridesTimer = setTimeout(() => {
-    fetch('/api/save-overrides', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(PRODUTO_OVERRIDES),
-    }).catch(() => {/* servidor sem suporte: ok, fica só no localStorage */});
-  }, 800);
+  _syncOverridesTimer = setTimeout(() => _postSync('/api/save-overrides', PRODUTO_OVERRIDES), 800);
 }
 
 function saveProdutoOverridesLS() {
@@ -6350,8 +6371,59 @@ function loadProdutoStatus() {
   } catch { PRODUTO_STATUS = {}; }
 }
 
+// Sincroniza status (forecast/monitorar/inativo) com o servidor → produto_status.json
+// Helper: faz POST e SÓ marca verde se response.ok=true (não confia em 404/500).
+function _postSync(url, payload) {
+  return fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload),
+  })
+  .then(r => {
+    if (r.ok) { _atualizaIndicadorSync(true); return true; }
+    _atualizaIndicadorSync(false);
+    console.warn('Sync falhou:', url, 'status', r.status);
+    return false;
+  })
+  .catch(() => { _atualizaIndicadorSync(false); return false; });
+}
+
+let _syncStatusTimer = null;
+function _enviaStatusAoServidor() {
+  clearTimeout(_syncStatusTimer);
+  _syncStatusTimer = setTimeout(() => _postSync('/api/save-status', PRODUTO_STATUS), 600);
+}
+
 function saveProdutoStatus() {
   localStorage.setItem(PROD_STATUS_KEY, JSON.stringify(PRODUTO_STATUS));
+  _enviaStatusAoServidor();
+}
+
+// Indicador visual no header: mostra se o servidor de persistência tá ativo.
+// Se falhar (rodando http.server simples), avisa o usuário pra subir o server.py.
+let _ultimoSyncOk = null; // null = nunca tentou; true/false = último resultado
+function _atualizaIndicadorSync(ok) {
+  _ultimoSyncOk = ok;
+  const el = document.getElementById('header-sync-status');
+  if (!el) return;
+  if (ok) {
+    el.innerHTML = '<span style="color:#10b981;font-size:14px;">●</span> Servidor OK';
+    el.title = 'server.py rodando — alterações estão sendo salvas em arquivo automaticamente.';
+    el.style.color = '#10b981';
+  } else {
+    el.innerHTML = '<span style="color:#dc2626;font-size:14px;">●</span> Servidor offline';
+    el.title = 'server.py NÃO está rodando — alterações ficam SÓ no localStorage do navegador (sem backup em arquivo). Suba pelo subir_servidor.bat na pasta CloudIA.';
+    el.style.color = '#dc2626';
+  }
+}
+
+// Sync inicial: força backup completo de TUDO que está no localStorage pro
+// servidor, garantindo que o arquivo reflete o estado atual ao iniciar.
+// Roda 1 vez por carregamento do app (após DADOS estar disponível).
+function sincronizarTudoComServidor() {
+  _postSync('/api/save-pedidos',   PEDIDOS || []);
+  _postSync('/api/save-overrides', PRODUTO_OVERRIDES || {});
+  _postSync('/api/save-status',    PRODUTO_STATUS || {});
 }
 
 function getProdStatus(codigo) {
@@ -7228,6 +7300,12 @@ async function carregarDados() {
     const semEl = document.getElementById('header-semana');
     if (semEl) semEl.textContent = `W${SEMANA_ATUAL}`;
 
+    // Backup completo do localStorage pro servidor — garante que arquivos JSON
+    // (pedidos_kanban.json, produto_overrides.json, produto_status.json) refletem
+    // o estado atual a cada abertura do app. Se o servidor estiver offline,
+    // o indicador no header avisa em vermelho.
+    if (typeof sincronizarTudoComServidor === 'function') sincronizarTudoComServidor();
+
     // ── Reset dropdowns Financeiro para forçar re-populate ──
     const smf = document.getElementById('fin-filtro-marca');
     if (smf) smf.innerHTML = '<option value="">Todas as marcas</option>';
@@ -7333,6 +7411,16 @@ window.addEventListener('DOMContentLoaded', () => {
         //     (terão DIAS_VISIVEL_PAGAMENTO dias antes de estourar — alerta visual)
         if (p.fase === 'pago1' && !p.pago_desde) {
           p.pago_desde = new Date().toISOString();
+          migrou = true;
+        }
+        // 5d) fase_desde: timestamp universal pra TODAS as fases (mostrado como
+        //     "parado há X dias" nas fases sem SLA). Reaproveita timestamps
+        //     existentes quando possível pra não zerar tempo de pedidos antigos.
+        if (!p.fase_desde) {
+          if (p.fase === 'pendente'   && p.pendente_desde) p.fase_desde = p.pendente_desde;
+          else if (p.fase === 'pago1' && p.pago_desde)     p.fase_desde = p.pago_desde;
+          else if (p.fase === 'estoque' && p.arquivado_em) p.fase_desde = p.arquivado_em;
+          else p.fase_desde = new Date().toISOString();
           migrou = true;
         }
       });
