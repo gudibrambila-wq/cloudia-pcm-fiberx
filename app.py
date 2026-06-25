@@ -45,7 +45,9 @@ st.markdown(
 # ── Autenticação Azure AD (FiberX) ─────────────────────────────────────────
 from modules import velds_auth as _vauth
 
-_AUTH_DOMAIN_PERMITIDO = "fiberx.com.br"
+# Domínios permitidos (FiberX + Velds, mesmo tenant Azure AD)
+_AUTH_DOMINIOS_PERMITIDOS = ("fiberx.com.br", "velds.com.br")
+_AUTH_DOMINIOS_LABEL = " ou ".join("@" + d for d in _AUTH_DOMINIOS_PERMITIDOS)
 
 
 def _render_login(authorize_url: str = "") -> None:
@@ -54,7 +56,7 @@ def _render_login(authorize_url: str = "") -> None:
         <div style="text-align:center;padding:80px 20px;">
           <h1 style="color:#0078D4;margin-bottom:10px;">CloudIA PCM · FiberX</h1>
           <p style="color:#64748b;font-size:16px;margin-bottom:40px;">
-            Entre com sua conta <b>@{_AUTH_DOMAIN_PERMITIDO}</b>
+            Entre com sua conta <b>{_AUTH_DOMINIOS_LABEL}</b>
           </p>
           <a href="{authorize_url}" style="display:inline-block;padding:14px 32px;
              background:#0078D4;color:white;text-decoration:none;border-radius:6px;
@@ -69,14 +71,14 @@ def _render_login(authorize_url: str = "") -> None:
 
 
 def _render_acesso_negado(email: str) -> None:
-    st.error(f"❌ Acesso negado para `{email}`. Use uma conta @{_AUTH_DOMAIN_PERMITIDO}.")
+    st.error(f"❌ Acesso negado para `{email}`. Use uma conta {_AUTH_DOMINIOS_LABEL}.")
     if st.button("Sair e tentar com outra conta"):
         _vauth.logout()
     st.stop()
 
 
 _auth_ok, _user = _vauth.handle_auth_flow(
-    domain_required=_AUTH_DOMAIN_PERMITIDO,
+    domain_required=_AUTH_DOMINIOS_PERMITIDOS,
     render_login=_render_login,
     render_acesso_negado=_render_acesso_negado,
 )

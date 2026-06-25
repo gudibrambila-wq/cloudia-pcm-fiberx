@@ -192,9 +192,19 @@ def _read_pkce_cookie() -> str:
     return ""
 
 
+def _email_domain_ok(email: str, domain_required) -> bool:
+    """Aceita 1+ domínios. domain_required pode ser str ("velds.com.br"),
+    str com vírgulas ("a.com,b.com") ou lista/tupla. Email já vem lowercased."""
+    if isinstance(domain_required, str):
+        domains = [d.strip() for d in domain_required.split(",") if d.strip()]
+    else:
+        domains = [str(d).strip() for d in domain_required if str(d).strip()]
+    return any(email.endswith("@" + d.lower()) for d in domains)
+
+
 def handle_auth_flow(
     *,
-    domain_required: str,
+    domain_required,
     render_login: Callable,
     render_acesso_negado: Callable,
 ) -> tuple[bool, Optional[dict]]:
@@ -214,7 +224,7 @@ def handle_auth_flow(
         payload = _verify_vauth_token(vauth, cookie_secret)
         if payload:
             email = (payload.get("email") or "").lower().strip()
-            if not email.endswith("@" + domain_required):
+            if not _email_domain_ok(email, domain_required):
                 render_acesso_negado(email or "(sem email)")
                 st.stop()
             return True, {"email": email, "name": payload.get("name", "")}
@@ -223,7 +233,7 @@ def handle_auth_flow(
     user_info = st.session_state.get("_velds_user")
     if user_info:
         email = (user_info.get("email") or "").lower().strip()
-        if not email.endswith("@" + domain_required):
+        if not _email_domain_ok(email, domain_required):
             render_acesso_negado(email or "(sem email)")
             st.stop()
         return True, user_info
