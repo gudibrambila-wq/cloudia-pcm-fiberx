@@ -8856,7 +8856,21 @@ function _iniciarModoKiosk() {
 // de alguém mudar dado por engano. Esconde botões, desabilita inputs, ignora saves.
 function _iniciarModoView() {
   const p = new URLSearchParams(window.location.search);
-  if (p.get('view') !== '1') return;
+  // Lista de emails admin — só esses podem EDITAR. Qualquer outro email
+  // logado (mesmo que seja @fiberx.com.br ou @velds.com.br) entra direto em
+  // modo visualizacao.
+  const ADMIN_EMAILS = [
+    'comercial@fiberx.com.br',
+    'comercial@velds.com.br',
+    'douglas.brambila@fiberx.com.br',
+    'douglas.brambila@velds.com.br',
+  ];
+  let ativarView = p.get('view') === '1';
+  if (window.__USER_EMAIL__) {
+    const email = String(window.__USER_EMAIL__ || '').trim().toLowerCase();
+    if (email && !ADMIN_EMAILS.includes(email)) ativarView = true;
+  }
+  if (!ativarView) return;
 
   // Renomeia a aba pra identificar fácil (sobrescrevido se kiosk também ativo)
   document.title = '👁️ Visualização — CloudIA PCM';

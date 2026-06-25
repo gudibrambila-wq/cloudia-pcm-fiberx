@@ -116,7 +116,12 @@ pedidos   = _read_or(BASE / "pedidos_kanban.json",     "[]")
 overrides = _read_or(BASE / "produto_overrides.json",  "{}")
 status    = _read_or(BASE / "produto_status.json",     "{}")
 
-# Injeta TODOS os JSONs como variáveis globais ANTES do CloudIA inicializar.
+import json as _json
+# Email do usuario autenticado — usado pelo index.html pra decidir admin vs view-only.
+# Email vem ja em lowercase do handle_auth_flow.
+_user_email = (_user or {}).get("email", "") if _auth_ok else ""
+
+# Injeta TODOS os JSONs + email do usuario como variáveis globais ANTES do CloudIA inicializar.
 html_injected = html.replace(
     "</head>",
     f"""<script>
@@ -124,6 +129,7 @@ window.__DADOS_INLINE__ = {dados};
 window.__PEDIDOS_INLINE__ = {pedidos};
 window.__OVERRIDES_INLINE__ = {overrides};
 window.__STATUS_INLINE__ = {status};
+window.__USER_EMAIL__ = {_json.dumps(_user_email)};
 </script>
 </head>""",
     1,
