@@ -107,11 +107,25 @@ BASE = Path(__file__).parent
 html = (BASE / "index.html").read_text(encoding="utf-8")
 dados = (BASE / "dados.json").read_text(encoding="utf-8")
 
-# Injeta dados como variável global ANTES do fetch original ser disparado.
-# O index.html prefere window.__DADOS_INLINE__ quando existir (modo online).
+# Outros JSONs do CloudIA — Streamlit Cloud roda em iframe, sem fetch HTTP
+# disponível. Carrega tudo inline aqui pra o index.html ler de window.__*_INLINE__.
+def _read_or(p: Path, default: str) -> str:
+    return p.read_text(encoding="utf-8") if p.exists() else default
+
+pedidos   = _read_or(BASE / "pedidos_kanban.json",     "[]")
+overrides = _read_or(BASE / "produto_overrides.json",  "{}")
+status    = _read_or(BASE / "produto_status.json",     "{}")
+
+# Injeta TODOS os JSONs como variáveis globais ANTES do CloudIA inicializar.
 html_injected = html.replace(
     "</head>",
-    f"<script>window.__DADOS_INLINE__ = {dados};</script>\n</head>",
+    f"""<script>
+window.__DADOS_INLINE__ = {dados};
+window.__PEDIDOS_INLINE__ = {pedidos};
+window.__OVERRIDES_INLINE__ = {overrides};
+window.__STATUS_INLINE__ = {status};
+</script>
+</head>""",
     1,
 )
 

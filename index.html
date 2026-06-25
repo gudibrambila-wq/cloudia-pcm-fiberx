@@ -60,6 +60,10 @@
       Cobertura WOS
       <span id="nav-badge-cobertura" class="ml-auto bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shrink-0">7</span>
     </a>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/50" data-view="giro" onclick="navigate('giro',this);return false">
+      <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+      Giro de Estoque
+    </a>
     <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/50" data-view="produtos" onclick="navigate('produtos',this);return false">
       <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM4 7V5a2 2 0 012-2h12a2 2 0 012 2v2"/></svg>
       Produtos
@@ -74,7 +78,7 @@
     <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/50" data-view="chegadas" onclick="navigate('chegadas',this);return false">
       <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/></svg>
       Chegadas
-      <span class="ml-auto bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shrink-0">2</span>
+      <span class="ml-auto bg-amber-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold shrink-0 hidden">0</span>
     </a>
     <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/50" data-view="timeline" onclick="navigate('timeline',this);return false">
       <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 12h4l3-9 4 18 3-9h2"/></svg>
@@ -129,10 +133,19 @@
       <span id="header-semana" class="text-xs font-semibold text-blue-700 bg-blue-50 border border-blue-200 px-2.5 py-1 rounded-full">W20</span>
       <span id="header-sync" class="text-xs text-slate-400">Sync: —</span>
       <span id="header-sync-status" class="text-xs text-slate-400" title="Status do servidor de persistência">—</span>
-      <button onclick="carregarDados()" class="px-3 py-1.5 bg-blue-600 text-white text-xs font-medium rounded-lg hover:bg-blue-700 transition-colors flex items-center gap-1.5">
-        <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
-        Sincronizar PSI
-      </button>
+      <!-- Menu de 3 pontinhos (...) — esconde opções avançadas tipo Sincronizar PSI -->
+      <div class="relative">
+        <button id="header-menu-btn" onclick="event.stopPropagation();toggleHeaderMenu()"
+          class="px-2.5 py-1.5 text-slate-500 hover:text-slate-800 hover:bg-slate-100 rounded-lg transition-colors text-base leading-none"
+          title="Mais opções">⋯</button>
+        <div id="header-menu" class="hidden absolute right-0 top-full mt-1 bg-white shadow-lg rounded-lg border border-slate-200 py-1 z-50 min-w-[180px]">
+          <button onclick="carregarDados();fecharHeaderMenu()"
+            class="w-full text-left px-3 py-2 text-xs text-slate-700 hover:bg-blue-50 flex items-center gap-2 transition-colors">
+            <svg class="w-3.5 h-3.5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/></svg>
+            Sincronizar PSI
+          </button>
+        </div>
+      </div>
     </div>
   </header>
 
@@ -316,10 +329,20 @@
 
     <!-- ======= PSI ======= -->
     <div id="view-psi" class="view">
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mb-4 flex items-end gap-4 flex-wrap">
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mb-4 flex items-end gap-3 flex-wrap">
         <div>
+          <label class="text-xs text-slate-500 font-medium block mb-1">Marca</label>
+          <select id="psi-f-marca" class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[140px]" onchange="populatePSIDropdown(true)">
+            <option value="">Todas</option>
+          </select>
+        </div>
+        <div class="w-56 shrink-0">
+          <label class="text-xs text-slate-500 font-medium block mb-1">Buscar (código ou nome)</label>
+          <input id="psi-f-busca" type="text" placeholder="cód ou nome..." oninput="populatePSIDropdown(true)" class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+        </div>
+        <div class="flex-1 min-w-[320px]">
           <label class="text-xs text-slate-500 font-medium block mb-1">Produto</label>
-          <select id="psi-produto" class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 w-96" onchange="renderPSI()">
+          <select id="psi-produto" class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full" onchange="renderPSI()">
             <optgroup label="── Velds · Robôs (dados reais W10–W18) ──">
               <option value="genesis" selected>ROBÔ ASPIRADOR GENESIS — LivRobo</option>
               <option value="alimentador">ALIMENTADOR AUTOMÁTICO — Golden Vision</option>
@@ -364,6 +387,24 @@
         </div>
       </div>
 
+      <!-- Aviso quando o produto selecionado é do Catálogo (sem forecast cadastrado) -->
+      <div id="psi-sem-fcst" class="hidden bg-amber-50 border border-amber-200 rounded-xl p-5 mb-4">
+        <div class="flex items-start gap-3">
+          <div class="text-amber-600 text-2xl shrink-0">📋</div>
+          <div class="flex-1">
+            <h3 class="text-sm font-semibold text-amber-900 mb-1">Produto sem PSI cadastrado</h3>
+            <p class="text-xs text-amber-800 leading-relaxed mb-3" id="psi-sem-fcst-desc">
+              Este produto está no Catálogo do Sênior, mas ainda não tem forecast cadastrado.
+              Pra ver PSI completo (forecast semanal, WoS, cobertura), cadastre forecast pela aba <strong>Produtos</strong>.
+            </p>
+            <div id="psi-sem-fcst-stats" class="text-xs text-amber-900 grid grid-cols-3 gap-3 mb-3"></div>
+            <button onclick="navigate('produtos')" class="text-xs bg-amber-600 hover:bg-amber-700 text-white font-semibold px-3 py-1.5 rounded-md transition">
+              Ir para Produtos →
+            </button>
+          </div>
+        </div>
+      </div>
+
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 mb-4" id="psi-chart-card">
         <div class="flex items-center justify-between mb-4">
           <h3 class="text-sm font-semibold text-slate-800">Curva PSI — Saldo de Estoque + Chegadas</h3>
@@ -386,7 +427,7 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 overflow-x-auto">
+      <div id="psi-tabela-card" class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 overflow-x-auto">
         <h3 class="text-sm font-semibold text-slate-800 mb-4">Tabela PSI Mensal</h3>
         <table class="w-full text-xs border-collapse">
           <thead id="psi-thead"></thead>
@@ -515,12 +556,18 @@
     <!-- ======= CATÁLOGO ======= -->
     <div id="view-catalogo" class="view">
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mb-4">
-        <div class="flex items-center gap-3 mb-2">
+        <div class="flex items-center gap-3 mb-2 flex-wrap">
           <input id="cat-busca" type="text" placeholder="Buscar por código ou nome..." oninput="renderCatalogo()"
-            class="flex-1 text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            class="flex-1 min-w-[260px] text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <select id="cat-filtro-tipo" onchange="renderCatalogo()" class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="todos">Todos (PSI + Catálogo)</option>
+            <option value="psi">Só PSI (com forecast)</option>
+            <option value="naopsi">Só não-PSI (sem forecast)</option>
+            <option value="inativos">Só Inativos</option>
+          </select>
           <span id="cat-count" class="text-xs text-slate-500 whitespace-nowrap">—</span>
         </div>
-        <p class="text-[11px] text-slate-400">Produtos do Sênior sem forecast no PSI. Use o botão <strong class="text-slate-600">Novo Pedido</strong> em Planejamento pra criar processos de compra desses itens.</p>
+        <p class="text-[11px] text-slate-400">Todos os produtos do Sênior. Itens marcados com <span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold bg-blue-50 text-blue-700">PSI</span> têm forecast cadastrado — vá na aba <strong class="text-slate-600">Produtos</strong> pra editá-los. Use <strong class="text-slate-600">Novo Pedido</strong> em Planejamento pra criar processos de compra.</p>
       </div>
 
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
@@ -531,9 +578,9 @@
                 <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide w-32">Código</th>
                 <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide">Descrição</th>
                 <th class="px-4 py-3 text-left text-xs font-semibold text-slate-500 uppercase tracking-wide w-24">Marca</th>
+                <th class="px-4 py-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wide w-20">Tipo</th>
                 <th class="px-4 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wide w-28">Saldo</th>
-                <th class="px-4 py-3 text-right text-xs font-semibold text-slate-500 uppercase tracking-wide w-32">Preço médio</th>
-                <th class="px-4 py-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wide w-32">Ação</th>
+                <th class="px-4 py-3 text-center text-xs font-semibold text-slate-500 uppercase tracking-wide w-16">Ação</th>
               </tr>
             </thead>
             <tbody id="cat-tbody"></tbody>
@@ -627,7 +674,7 @@
 
     <!-- ======= LINHA DO TEMPO ======= -->
     <div id="view-timeline" class="view">
-      <div class="bg-slate-800/80 backdrop-blur rounded-xl border border-slate-700 p-3 mb-3 flex items-center gap-3 flex-wrap">
+      <div class="bg-slate-800/80 backdrop-blur rounded-xl border border-slate-700 p-2 mb-2 flex items-center gap-3 flex-wrap">
         <select id="tl-filtro-etapa" onchange="renderTimeline()"
           class="text-sm border border-slate-600 rounded-lg px-3 py-2 bg-slate-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">Todas as etapas</option>
@@ -659,9 +706,9 @@
       </div>
 
       <!-- Cena: paisagem (topo 20%) + chão com slots (80%) -->
-      <div id="tl-cena-wrap" class="relative rounded-xl border border-slate-700 overflow-hidden shadow-2xl bg-slate-900 flex flex-col" style="height: calc(100vh - 220px); min-height: 520px;">
-        <!-- ===== TOPO 20%: PAISAGEM (céu + svgs) ===== -->
-        <div style="flex:0 0 20%; min-height:80px; position:relative;">
+      <div id="tl-cena-wrap" class="relative rounded-xl border border-slate-700 overflow-hidden shadow-2xl bg-slate-900 flex flex-col" style="height: calc(100vh - 90px); min-height: 520px;">
+        <!-- ===== TOPO 15%: PAISAGEM (céu + svgs) — corta o topo da lua ===== -->
+        <div style="flex:0 0 15%; min-height:60px; position:relative;">
         <svg id="tl-cena" viewBox="0 0 1600 360" preserveAspectRatio="xMidYMax slice" class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <linearGradient id="tl-ceu" x1="0" y1="0" x2="0" y2="1">
@@ -842,13 +889,13 @@
             <line x1="672" y1="385" x2="672" y2="415" stroke="#1a2030" stroke-width="1"/>
             <!-- Pátio -->
             <rect x="525" y="415" width="230" height="25" fill="#3a4452" opacity="0.4"/>
-            <!-- Chaminé -->
-            <rect x="745" y="280" width="11" height="135" fill="#2a3848"/>
-            <rect x="743" y="278" width="15" height="3" fill="#3a4858"/>
-            <!-- Fumaça -->
-            <circle cx="751" cy="275" r="5" fill="#9aa5b3" opacity="0.5"><animate attributeName="cy" values="275;200;150" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0.3;0" dur="5s" repeatCount="indefinite"/><animate attributeName="r" values="5;10;15" dur="5s" repeatCount="indefinite"/></circle>
-            <circle cx="751" cy="275" r="5" fill="#9aa5b3" opacity="0"><animate attributeName="cy" values="275;200;150" dur="5s" begin="1.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0.3;0" dur="5s" begin="1.7s" repeatCount="indefinite"/><animate attributeName="r" values="5;10;15" dur="5s" begin="1.7s" repeatCount="indefinite"/></circle>
-            <circle cx="751" cy="275" r="5" fill="#9aa5b3" opacity="0"><animate attributeName="cy" values="275;200;150" dur="5s" begin="3.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0.3;0" dur="5s" begin="3.4s" repeatCount="indefinite"/><animate attributeName="r" values="5;10;15" dur="5s" begin="3.4s" repeatCount="indefinite"/></circle>
+            <!-- Chaminé (encurtada — topo dentro da paisagem cortada em 15%) -->
+            <rect x="745" y="335" width="11" height="80" fill="#2a3848"/>
+            <rect x="743" y="333" width="15" height="3" fill="#3a4858"/>
+            <!-- Fumaça (sai do topo da chaminé visível) -->
+            <circle cx="751" cy="325" r="5" fill="#9aa5b3" opacity="0.5"><animate attributeName="cy" values="325;275;230" dur="5s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0.3;0" dur="5s" repeatCount="indefinite"/><animate attributeName="r" values="5;10;15" dur="5s" repeatCount="indefinite"/></circle>
+            <circle cx="751" cy="325" r="5" fill="#9aa5b3" opacity="0"><animate attributeName="cy" values="325;275;230" dur="5s" begin="1.7s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0.3;0" dur="5s" begin="1.7s" repeatCount="indefinite"/><animate attributeName="r" values="5;10;15" dur="5s" begin="1.7s" repeatCount="indefinite"/></circle>
+            <circle cx="751" cy="325" r="5" fill="#9aa5b3" opacity="0"><animate attributeName="cy" values="325;275;230" dur="5s" begin="3.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="0.5;0.3;0" dur="5s" begin="3.4s" repeatCount="indefinite"/><animate attributeName="r" values="5;10;15" dur="5s" begin="3.4s" repeatCount="indefinite"/></circle>
           </g>
 
           <!-- ============================================================ -->
@@ -1006,38 +1053,45 @@
         </div><!-- fim TOPO paisagem -->
 
         <!-- ===== CHÃO 80%: 6 colunas com slots (HTML) ===== -->
+        <!-- Estrutura: HEADER (nome status) + CARDS + FOOTER (totalizadores un · valor) -->
         <div id="tl-chao" class="flex" style="flex:1 1 80%; min-height:0;">
           <!-- Coluna 1: PEDIDO + PAGAMENTO (grama) -->
           <div class="relative flex flex-col min-h-0" style="width:14%; background:linear-gradient(180deg,#2d4a32,#0f1d14);">
-            <div id="tl-col-office" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
-            <div class="shrink-0 text-center py-1.5 text-[11px] font-bold tracking-wide border-t border-white/10 bg-black/20">
+            <div class="shrink-0 text-center py-0.5 text-[11px] font-bold tracking-wide border-b border-white/10 bg-black/25">
               <span style="color:#60a5fa">PEDIDO</span> <span class="text-slate-400">/</span> <span style="color:#fbbf24">PAGAMENTO</span>
             </div>
+            <div id="tl-col-office" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
+            <div id="tl-tot-office" class="shrink-0 text-center py-1.5 text-[13px] font-medium tracking-tight text-slate-200 border-t border-white/10 bg-black/30">—</div>
           </div>
           <!-- Coluna 2: PRODUÇÃO (grama) -->
           <div class="relative flex flex-col min-h-0 border-l border-white/5" style="width:18%; background:linear-gradient(180deg,#2d4a32,#0f1d14);">
+            <div class="shrink-0 text-center py-0.5 text-[11px] font-bold tracking-wide text-slate-200 border-b border-white/10 bg-black/25">PRODUÇÃO</div>
             <div id="tl-col-producao" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
-            <div class="shrink-0 text-center py-1.5 text-[11px] font-bold tracking-wide text-slate-200 border-t border-white/10 bg-black/20">PRODUÇÃO</div>
+            <div id="tl-tot-producao" class="shrink-0 text-center py-1.5 text-[13px] font-medium tracking-tight text-slate-200 border-t border-white/10 bg-black/30">—</div>
           </div>
-          <!-- Coluna 3: AGUARD. PGTO 2 / EMBARQUE (grama) -->
+          <!-- Coluna 3: PAGAMENTO 2 / EMBARQUE (grama) -->
           <div class="relative flex flex-col min-h-0 border-l border-white/5" style="width:16%; background:linear-gradient(180deg,#2d4a32,#0f1d14);">
+            <div class="shrink-0 text-center py-0.5 text-[11px] font-bold tracking-wide border-b border-white/10 bg-black/25"><span style="color:#fbbf24">PAGAMENTO</span> <span class="text-slate-400">/</span> <span style="color:#fb923c">EMBARQUE</span></div>
             <div id="tl-col-embarque" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
-            <div class="shrink-0 text-center py-1.5 text-[11px] font-bold tracking-wide border-t border-white/10 bg-black/20"><span style="color:#fbbf24">PAGAMENTO</span> <span class="text-slate-400">/</span> <span style="color:#fb923c">EMBARQUE</span></div>
+            <div id="tl-tot-embarque" class="shrink-0 text-center py-1.5 text-[13px] font-medium tracking-tight text-slate-200 border-t border-white/10 bg-black/30">—</div>
           </div>
           <!-- Coluna 4: TRÂNSITO (água) -->
           <div class="relative flex flex-col min-h-0 border-l border-white/5" style="width:16%; background:linear-gradient(180deg,#1a2f48,#040c18);">
+            <div class="shrink-0 text-center py-0.5 text-[11px] font-bold tracking-wide text-slate-200 border-b border-white/10 bg-black/25">TRÂNSITO</div>
             <div id="tl-col-transito" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
-            <div class="shrink-0 text-center py-1.5 text-[11px] font-bold tracking-wide text-slate-200 border-t border-white/10 bg-black/20">TRÂNSITO</div>
+            <div id="tl-tot-transito" class="shrink-0 text-center py-1.5 text-[13px] font-medium tracking-tight text-slate-200 border-t border-white/10 bg-black/30">—</div>
           </div>
-          <!-- Coluna 5: PORTO (grama) -->
+          <!-- Coluna 5: NUMERÁRIO / PORTO (grama) -->
           <div class="relative flex flex-col min-h-0 border-l border-white/5" style="width:18%; background:linear-gradient(180deg,#2d4a32,#0f1d14);">
+            <div class="shrink-0 text-center py-0.5 text-[11px] font-bold tracking-wide border-b border-white/10 bg-black/25"><span style="color:#5eead4">NUMERÁRIO</span> <span class="text-slate-400">/</span> <span style="color:#14b8a6">PORTO</span></div>
             <div id="tl-col-porto" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
-            <div class="shrink-0 text-center py-1.5 text-[11px] font-bold tracking-wide text-slate-200 border-t border-white/10 bg-black/20">PORTO</div>
+            <div id="tl-tot-porto" class="shrink-0 text-center py-1.5 text-[13px] font-medium tracking-tight text-slate-200 border-t border-white/10 bg-black/30">—</div>
           </div>
-          <!-- Coluna 6: ESTOQUE (grama) -->
+          <!-- Coluna 6: RECEBIDO / ESTOQUE (grama) -->
           <div class="relative flex flex-col min-h-0 border-l border-white/5" style="width:18%; background:linear-gradient(180deg,#2d4a32,#0f1d14);">
+            <div class="shrink-0 text-center py-0.5 text-[11px] font-bold tracking-wide border-b border-white/10 bg-black/25"><span style="color:#a3e635">RECEBIDO</span> <span class="text-slate-400">/</span> <span style="color:#10b981">ESTOQUE</span></div>
             <div id="tl-col-estoque" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
-            <div class="shrink-0 text-center py-1.5 text-[11px] font-bold tracking-wide text-slate-200 border-t border-white/10 bg-black/20">ESTOQUE</div>
+            <div id="tl-tot-estoque" class="shrink-0 text-center py-1.5 text-[13px] font-medium tracking-tight text-slate-200 border-t border-white/10 bg-black/30">—</div>
           </div>
         </div>
 
@@ -1052,7 +1106,7 @@
 
     <!-- ======= LINHA DO TEMPO · NACIONAIS ======= -->
     <div id="view-timeline-nac" class="view">
-      <div class="bg-slate-800/80 backdrop-blur rounded-xl border border-slate-700 p-3 mb-3 flex items-center gap-3 flex-wrap">
+      <div class="bg-slate-800/80 backdrop-blur rounded-xl border border-slate-700 p-2 mb-2 flex items-center gap-3 flex-wrap">
         <select id="tln-filtro-etapa" onchange="renderTimelineNac()"
           class="text-sm border border-slate-600 rounded-lg px-3 py-2 bg-slate-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">Todas as etapas</option>
@@ -1088,9 +1142,9 @@
         </button>
       </div>
 
-      <div id="tl-nac-wrap" class="relative rounded-xl border border-slate-700 overflow-hidden shadow-2xl bg-slate-900 flex flex-col" style="height: calc(100vh - 220px); min-height: 520px;">
-        <!-- TOPO 20%: paisagem terrestre (sem mar) -->
-        <div style="flex:0 0 20%; min-height:80px; position:relative;">
+      <div id="tl-nac-wrap" class="relative rounded-xl border border-slate-700 overflow-hidden shadow-2xl bg-slate-900 flex flex-col" style="height: calc(100vh - 90px); min-height: 520px;">
+        <!-- TOPO 13%: paisagem terrestre — corta o topo do sol -->
+        <div style="flex:0 0 13%; min-height:50px; position:relative;">
         <svg viewBox="0 0 1600 360" preserveAspectRatio="xMidYMax slice" class="absolute inset-0 w-full h-full" xmlns="http://www.w3.org/2000/svg">
           <defs>
             <!-- Céu DIURNO -->
@@ -1204,27 +1258,32 @@
         </svg>
         </div>
 
-        <!-- CHÃO 80%: 5 colunas nacionais (Pedido+EstFornec / Pagamento+Backorder / Faturado / Trânsito / Recebido+Estoque) -->
+        <!-- CHÃO 80%: 5 colunas nacionais. Estrutura: HEADER (status) + CARDS + FOOTER (un · valor) -->
         <div id="tl-nac-chao" class="flex" style="flex:1 1 80%; min-height:0;">
           <div class="relative flex flex-col min-h-0" style="width:20%; background:linear-gradient(180deg,#7fbf63,#4f8a3e);">
+            <div class="shrink-0 text-center py-0.5 text-[11px] font-bold tracking-wide border-b border-black/10 bg-black/30"><span style="color:#60a5fa">PEDIDO</span> <span class="text-slate-500">/</span> <span style="color:#cbd5e1">AGUARD ESTOQUE FORNEC</span></div>
             <div id="tln-col-pedido" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
-            <div class="shrink-0 text-center py-1.5 text-[11px] font-bold tracking-wide border-t border-black/10 bg-black/25"><span style="color:#60a5fa">PEDIDO</span> <span class="text-slate-500">/</span> <span style="color:#cbd5e1">AGUARD ESTOQUE FORNEC</span></div>
+            <div id="tln-tot-pedido" class="shrink-0 text-center py-1.5 text-[13px] font-medium tracking-tight text-white border-t border-black/10 bg-black/35">—</div>
           </div>
           <div class="relative flex flex-col min-h-0 border-l border-black/5" style="width:20%; background:linear-gradient(180deg,#7fbf63,#4f8a3e);">
+            <div class="shrink-0 text-center py-0.5 text-[11px] font-bold tracking-wide border-b border-black/10 bg-black/30"><span style="color:#fbbf24">PAGAMENTO</span> <span class="text-slate-400">/</span> <span style="color:#fb7185">BACKORDER</span></div>
             <div id="tln-col-pagamento" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
-            <div class="shrink-0 text-center py-1.5 text-[11px] font-bold tracking-wide border-t border-black/10 bg-black/25"><span style="color:#fbbf24">PAGAMENTO</span> <span class="text-slate-400">/</span> <span style="color:#fb7185">BACKORDER</span></div>
+            <div id="tln-tot-pagamento" class="shrink-0 text-center py-1.5 text-[13px] font-medium tracking-tight text-white border-t border-black/10 bg-black/35">—</div>
           </div>
           <div class="relative flex flex-col min-h-0 border-l border-black/5" style="width:16%; background:linear-gradient(180deg,#7fbf63,#4f8a3e);">
+            <div class="shrink-0 text-center py-0.5 text-[11px] font-bold tracking-wide text-white border-b border-black/10 bg-black/30">FATURADO</div>
             <div id="tln-col-faturado" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
-            <div class="shrink-0 text-center py-1.5 text-[11px] font-bold tracking-wide text-white border-t border-black/10 bg-black/25">FATURADO</div>
+            <div id="tln-tot-faturado" class="shrink-0 text-center py-1.5 text-[13px] font-medium tracking-tight text-white border-t border-black/10 bg-black/35">—</div>
           </div>
           <div class="relative flex flex-col min-h-0 border-l border-black/5" style="width:22%; background:linear-gradient(180deg,#7fbf63,#4f8a3e);">
+            <div class="shrink-0 text-center py-0.5 text-[11px] font-bold tracking-wide text-white border-b border-black/10 bg-black/30">EM TRÂNSITO</div>
             <div id="tln-col-transito" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
-            <div class="shrink-0 text-center py-1.5 text-[11px] font-bold tracking-wide text-white border-t border-black/10 bg-black/25">EM TRÂNSITO</div>
+            <div id="tln-tot-transito" class="shrink-0 text-center py-1.5 text-[13px] font-medium tracking-tight text-white border-t border-black/10 bg-black/35">—</div>
           </div>
           <div class="relative flex flex-col min-h-0 border-l border-black/5" style="width:22%; background:linear-gradient(180deg,#7fbf63,#4f8a3e);">
+            <div class="shrink-0 text-center py-0.5 text-[11px] font-bold tracking-wide border-b border-black/10 bg-black/30"><span style="color:#6ee7b7">RECEBIDO</span> <span class="text-slate-500">/</span> <span style="color:#10b981">ESTOQUE</span></div>
             <div id="tln-col-estoque" class="flex-1 overflow-y-auto px-1.5 pt-2 pb-1 space-y-1.5 min-h-0"></div>
-            <div class="shrink-0 text-center py-1.5 text-[11px] font-bold tracking-wide border-t border-black/10 bg-black/25"><span style="color:#6ee7b7">RECEBIDO</span> <span class="text-slate-500">/</span> <span style="color:#10b981">ESTOQUE</span></div>
+            <div id="tln-tot-estoque" class="shrink-0 text-center py-1.5 text-[13px] font-medium tracking-tight text-white border-t border-black/10 bg-black/35">—</div>
           </div>
         </div>
 
@@ -1250,6 +1309,7 @@
             <option value="__mtd__">Mês atual (MTD)</option>
             <option value="__all__">Todos os meses</option>
           </select>
+          <span id="vendas-atualizado-em" class="text-slate-400 ml-2" title="Última atualização do arquivo VENDAS B2B"></span>
           <input id="vendas-filtro-busca" type="text" placeholder="Buscar cliente, produto, NF…" class="ml-auto border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 w-72" oninput="renderVendas()">
         </div>
         <div class="grid grid-cols-3 gap-4 mb-4">
@@ -1353,46 +1413,142 @@
 
     <!-- ======= ESTOQUE ======= -->
     <div id="view-estoque" class="view">
-      <div class="flex gap-2 mb-4">
-        <input type="text" placeholder="Buscar produto ou código…" class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 w-72">
-        <select class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option>Todos os depósitos</option>
-          <option>CD Porto Belo</option>
-          <option>CD RMA</option>
+      <div class="flex gap-2 items-center mb-3 text-xs flex-wrap">
+        <label class="text-slate-500 font-medium">Depósito:</label>
+        <select id="estoque-filtro-deposito" class="border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="renderEstoque()">
+          <option value="__all__">Todos (exclui RMA)</option>
+          <option value="__incrma__">Todos (inclui RMA)</option>
+          <option value="__rma__">Só RMA</option>
         </select>
-        <select class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
-          <option>Todos</option>
-          <option>Com estoque</option>
-          <option>Ruptura</option>
+        <label class="text-slate-500 font-medium ml-2">Marca:</label>
+        <select id="estoque-filtro-marca" class="border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500" onchange="renderEstoque()">
+          <option value="">Todas</option>
         </select>
+        <span id="estoque-atualizado-em" class="text-slate-400 ml-2" title="Última atualização do arquivo de estoque"></span>
+        <input id="estoque-filtro-busca" type="text" placeholder="Buscar código, produto, família…" oninput="renderEstoque()" class="ml-auto border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 w-72">
+      </div>
+      <div class="grid grid-cols-4 gap-4 mb-4">
+        <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+          <p class="text-xs text-slate-500 uppercase font-medium">SKUs Únicos</p>
+          <p id="estoque-kpi-skus" class="text-2xl font-bold text-slate-900 mt-1">—</p>
+          <p id="estoque-kpi-skus-sub" class="text-xs text-slate-400">no filtro</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+          <p class="text-xs text-slate-500 uppercase font-medium">Un. Físicas</p>
+          <p id="estoque-kpi-un" class="text-2xl font-bold text-slate-900 mt-1">—</p>
+          <p id="estoque-kpi-un-sub" class="text-xs text-slate-400">somatório</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+          <p class="text-xs text-slate-500 uppercase font-medium">Un. RMA</p>
+          <p id="estoque-kpi-rma" class="text-2xl font-bold text-amber-600 mt-1">—</p>
+          <p class="text-xs text-slate-400">retornos / devoluções</p>
+        </div>
+        <div class="bg-white rounded-xl p-4 border border-slate-200 shadow-sm">
+          <p class="text-xs text-slate-500 uppercase font-medium">Depósitos</p>
+          <p id="estoque-kpi-deps" class="text-2xl font-bold text-slate-900 mt-1">—</p>
+          <p class="text-xs text-slate-400">com saldo no filtro</p>
+        </div>
       </div>
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         <div class="px-4 py-3 border-b border-slate-200 flex items-center justify-between">
-          <h3 class="text-sm font-semibold text-slate-800">Posição Estoque Sênior</h3>
-          <span class="text-xs text-slate-400">Atualizado 05/05 09:34</span>
+          <h3 id="estoque-titulo" class="text-sm font-semibold text-slate-800">Posição Estoque Sênior</h3>
+          <span id="estoque-contador" class="text-xs text-slate-400">—</span>
         </div>
-        <table class="w-full text-xs">
-          <thead class="bg-slate-50">
-            <tr>
-              <th class="px-4 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Código</th>
-              <th class="px-4 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Produto</th>
-              <th class="px-4 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Depósito</th>
-              <th class="px-4 py-2.5 text-right text-xs font-semibold text-slate-400 uppercase">Total</th>
-              <th class="px-4 py-2.5 text-right text-xs font-semibold text-slate-400 uppercase">Reservado</th>
-              <th class="px-4 py-2.5 text-right text-xs font-semibold text-slate-400 uppercase">Disponível</th>
-              <th class="px-4 py-2.5 text-center text-xs font-semibold text-slate-400 uppercase">Situação</th>
-            </tr>
-          </thead>
-          <tbody class="divide-y divide-slate-100">
-            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-400 font-mono">402100020</td><td class="px-4 py-2.5 text-slate-800 font-medium">Inversor 40KW 3MPPT 380V SN40PT</td><td class="px-4 py-2.5 text-slate-500">CD Porto Belo</td><td class="px-4 py-2.5 text-right font-semibold text-slate-800">16</td><td class="px-4 py-2.5 text-right text-slate-400">0</td><td class="px-4 py-2.5 text-right font-semibold text-emerald-600">16</td><td class="px-4 py-2.5 text-center"><span class="sb sb-ok">OK</span></td></tr>
-            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-400 font-mono">402100008</td><td class="px-4 py-2.5 text-slate-800 font-medium">Ferramenta Desconexão Tronco NEP</td><td class="px-4 py-2.5 text-slate-500">CD Porto Belo</td><td class="px-4 py-2.5 text-right font-semibold text-slate-800">40</td><td class="px-4 py-2.5 text-right text-slate-400">0</td><td class="px-4 py-2.5 text-right font-semibold text-emerald-600">40</td><td class="px-4 py-2.5 text-center"><span class="sb sb-ok">OK</span></td></tr>
-            <tr class="hover:bg-slate-50 bg-red-50/30"><td class="px-4 py-2.5 text-slate-400 font-mono">401300013</td><td class="px-4 py-2.5 text-slate-800 font-medium">Roteador WiFi AX3000 TP-Link EX520</td><td class="px-4 py-2.5 text-slate-500">CD Porto Belo</td><td class="px-4 py-2.5 text-right font-semibold text-slate-800">0</td><td class="px-4 py-2.5 text-right text-slate-400">0</td><td class="px-4 py-2.5 text-right font-semibold text-red-600">0</td><td class="px-4 py-2.5 text-center"><span class="sb sb-ruptura">Ruptura</span></td></tr>
-            <tr class="hover:bg-slate-50 bg-red-50/30"><td class="px-4 py-2.5 text-slate-400 font-mono">400800005</td><td class="px-4 py-2.5 text-slate-800 font-medium">ONT WiFi 6 AX3000 Zyxel PX3321T1</td><td class="px-4 py-2.5 text-slate-500">CD Porto Belo</td><td class="px-4 py-2.5 text-right font-semibold text-slate-800">0</td><td class="px-4 py-2.5 text-right text-slate-400">0</td><td class="px-4 py-2.5 text-right font-semibold text-red-600">0</td><td class="px-4 py-2.5 text-center"><span class="sb sb-ruptura">Ruptura</span></td></tr>
-            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-400 font-mono">401900008</td><td class="px-4 py-2.5 text-slate-800 font-medium">SSD PLUS NVMe 500GB M.2 Sandisk</td><td class="px-4 py-2.5 text-slate-500">CD Porto Belo</td><td class="px-4 py-2.5 text-right font-semibold text-slate-800">0</td><td class="px-4 py-2.5 text-right text-slate-400">0</td><td class="px-4 py-2.5 text-right text-slate-400">0</td><td class="px-4 py-2.5 text-center"><span class="sb" style="background:#f1f5f9;color:#64748b">Sem Est.</span></td></tr>
-            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-400 font-mono">401300018</td><td class="px-4 py-2.5 text-slate-800 font-medium">Roteador WiFi 6 Dual Band AX3000 MR80X</td><td class="px-4 py-2.5 text-slate-500">CD Porto Belo</td><td class="px-4 py-2.5 text-right font-semibold text-slate-800">0</td><td class="px-4 py-2.5 text-right text-slate-400">0</td><td class="px-4 py-2.5 text-right text-slate-400">0</td><td class="px-4 py-2.5 text-center"><span class="sb" style="background:#f1f5f9;color:#64748b">Sem Est.</span></td></tr>
-            <tr class="hover:bg-slate-50"><td class="px-4 py-2.5 text-slate-400 font-mono">400300022</td><td class="px-4 py-2.5 text-slate-800 font-medium">Câmera IP Dome 2MP Full Color Velds</td><td class="px-4 py-2.5 text-slate-500">CD RMA</td><td class="px-4 py-2.5 text-right font-semibold text-slate-800">0</td><td class="px-4 py-2.5 text-right text-slate-400">0</td><td class="px-4 py-2.5 text-right text-slate-400">0</td><td class="px-4 py-2.5 text-center"><span class="sb" style="background:#f1f5f9;color:#64748b">Sem Est.</span></td></tr>
-          </tbody>
-        </table>
+        <div class="max-h-[60vh] overflow-y-auto">
+          <table class="w-full text-xs">
+            <thead class="bg-slate-50 sticky top-0">
+              <tr>
+                <th class="px-3 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Código</th>
+                <th class="px-3 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Produto</th>
+                <th class="px-3 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Família</th>
+                <th class="px-3 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Marca</th>
+                <th class="px-3 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Depósito</th>
+                <th class="px-3 py-2.5 text-right text-xs font-semibold text-slate-400 uppercase">Físico</th>
+                <th class="px-3 py-2.5 text-right text-xs font-semibold text-slate-400 uppercase">Reservado</th>
+                <th class="px-3 py-2.5 text-right text-xs font-semibold text-slate-400 uppercase">Disponível</th>
+              </tr>
+            </thead>
+            <tbody id="estoque-tbody" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======= GIRO DE ESTOQUE ======= -->
+    <div id="view-giro" class="view">
+      <!-- Filtros + KPIs topo -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-3 mb-4 flex items-end gap-3 flex-wrap">
+        <div>
+          <label class="text-xs text-slate-500 font-medium block mb-1">Marca</label>
+          <select id="giro-f-marca" onchange="renderGiro()" class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 min-w-[150px]">
+            <option value="">Todas</option>
+          </select>
+        </div>
+        <div>
+          <label class="text-xs text-slate-500 font-medium block mb-1">Status</label>
+          <select id="giro-f-status" onchange="renderGiro()" class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="">Todos</option>
+            <option value="ruptura">⚠ Em ruptura</option>
+            <option value="critico">🔴 Crítico — sem venda há &gt; 90 dias</option>
+            <option value="lento">🟡 Lento — última venda 60 a 90 dias</option>
+            <option value="saudavel">🟢 Saudável — vendeu nos últimos 60 dias</option>
+          </select>
+        </div>
+        <div class="flex-1 min-w-[200px]">
+          <label class="text-xs text-slate-500 font-medium block mb-1">Busca</label>
+          <input id="giro-f-busca" type="text" placeholder="código ou nome…" oninput="renderGiro()" class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white text-slate-800 focus:outline-none focus:ring-2 focus:ring-blue-500 w-full">
+        </div>
+      </div>
+      <!-- Legenda dos status (regra de classificação) -->
+      <div class="bg-slate-50 border border-slate-200 rounded-xl px-4 py-2.5 mb-4 flex items-center gap-5 text-xs flex-wrap" title="Cobertura 90d = saldo ÷ vendas dos últimos 90 dias. Multiplique a cobertura por 3 pra ter em meses.">
+        <span class="text-slate-500 font-semibold uppercase tracking-wide text-[10px]">Regra de classificação</span>
+        <span class="flex items-center gap-1.5">
+          <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-red-100 text-red-700">🔴 Crítico</span>
+          <span class="text-slate-500">sem venda há &gt; 90 dias</span>
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-amber-100 text-amber-700">🟡 Lento</span>
+          <span class="text-slate-500">última venda entre 60 e 90 dias</span>
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-emerald-100 text-emerald-700">🟢 Saudável</span>
+          <span class="text-slate-500">vendeu nos últimos 60 dias</span>
+        </span>
+        <span class="flex items-center gap-1.5">
+          <span class="px-2 py-0.5 rounded text-[11px] font-medium bg-red-100 text-red-700">⚠ Ruptura</span>
+          <span class="text-slate-500">saldo 0</span>
+        </span>
+      </div>
+      <!-- KPIs -->
+      <div id="giro-kpis" class="grid grid-cols-4 gap-3 mb-5"></div>
+      <!-- Tabela principal -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div class="px-4 py-3 border-b border-slate-200 flex items-center justify-between gap-4 flex-wrap">
+          <h3 class="text-sm font-semibold text-slate-800">Giro por SKU</h3>
+          <div class="text-xs text-slate-500 flex items-center gap-2" title="Quantas vezes o estoque atual viraria em 1 ano no ritmo das vendas dos últimos 90 dias.">
+            <span class="text-slate-400">Fórmula:</span>
+            <code class="bg-slate-100 text-slate-700 px-2 py-0.5 rounded font-mono">Giro = (Vendas 90d × 4) ÷ Saldo</code>
+          </div>
+          <span id="giro-contador" class="text-xs text-slate-400">—</span>
+        </div>
+        <div class="max-h-[70vh] overflow-y-auto">
+          <table class="w-full text-xs">
+            <thead class="bg-slate-50 sticky top-0">
+              <tr>
+                <th class="px-3 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Cód</th>
+                <th class="px-3 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Produto</th>
+                <th class="px-3 py-2.5 text-left text-xs font-semibold text-slate-400 uppercase">Marca</th>
+                <th class="px-3 py-2.5 text-right text-xs font-semibold text-slate-400 uppercase">Saldo</th>
+                <th class="px-3 py-2.5 text-right text-xs font-semibold text-slate-400 uppercase" title="Índice de Giro Anualizado = (Vendas 90d × 4) ÷ Saldo. Quantas vezes o estoque vira por ano no ritmo dos últimos 90 dias.">Giro</th>
+                <th class="px-3 py-2.5 text-right text-xs font-semibold text-slate-400 uppercase" title="Vendas dos últimos 90d">Vendas 90d</th>
+                <th class="px-3 py-2.5 text-right text-xs font-semibold text-slate-400 uppercase" title="Vendas dos últimos 30d">Vendas 30d</th>
+                <th class="px-3 py-2.5 text-right text-xs font-semibold text-slate-400 uppercase" title="Dias desde a última venda (base do status)">Última venda</th>
+                <th class="px-3 py-2.5 text-center text-xs font-semibold text-slate-400 uppercase">Status</th>
+              </tr>
+            </thead>
+            <tbody id="giro-tbody" class="divide-y divide-slate-100"></tbody>
+          </table>
+        </div>
       </div>
     </div>
 
@@ -1534,7 +1690,7 @@
             <span class="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
             Nacionais
           </h4>
-          <div id="kanban-board-nacional" class="grid grid-cols-8 gap-2">
+          <div id="kanban-board-nacional" class="grid grid-cols-8 gap-0.5">
 
             <div data-fase="pendente" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-3 py-2 border-b border-blue-100 flex items-center gap-2 bg-blue-50">
@@ -1542,7 +1698,7 @@
                 <span class="text-xs font-semibold text-blue-800 flex-1">Pedido</span>
                 <span id="kanban-count-nacional-pendente" class="text-xs bg-blue-200 text-blue-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-pendente" class="flex-1 p-2 space-y-2 min-h-24"></div>
+              <div id="kanban-cards-nacional-pendente" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
             </div>
 
             <div data-fase="estoque_fornecedor" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1551,7 +1707,7 @@
                 <span class="text-xs font-semibold text-cyan-800 flex-1 truncate" title="Aguardando estoque no fornecedor — backorder pré-pagamento">Aguard Estoque Forneced</span>
                 <span id="kanban-count-nacional-estoque_fornecedor" class="text-xs bg-cyan-200 text-cyan-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-estoque_fornecedor" class="flex-1 p-2 space-y-2 min-h-24"></div>
+              <div id="kanban-cards-nacional-estoque_fornecedor" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
             </div>
 
             <div data-fase="pago" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1560,7 +1716,7 @@
                 <span class="text-xs font-semibold text-amber-800 flex-1 truncate" title="Aguardando pagamento">Aguardando pagamento</span>
                 <span id="kanban-count-nacional-pago" class="text-xs bg-amber-200 text-amber-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-pago" class="flex-1 p-2 space-y-2 min-h-24"></div>
+              <div id="kanban-cards-nacional-pago" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
             </div>
 
             <div data-fase="backorder" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1569,7 +1725,7 @@
                 <span class="text-xs font-semibold text-rose-800 flex-1" title="Pedido pago mas em backorder no fornecedor">Backorder</span>
                 <span id="kanban-count-nacional-backorder" class="text-xs bg-rose-200 text-rose-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-backorder" class="flex-1 p-2 space-y-2 min-h-24"></div>
+              <div id="kanban-cards-nacional-backorder" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
             </div>
 
             <div data-fase="faturado" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1578,7 +1734,7 @@
                 <span class="text-xs font-semibold text-orange-800 flex-1">Faturado</span>
                 <span id="kanban-count-nacional-faturado" class="text-xs bg-orange-200 text-orange-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-faturado" class="flex-1 p-2 space-y-2 min-h-24"></div>
+              <div id="kanban-cards-nacional-faturado" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
             </div>
 
             <div data-fase="transito" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1587,7 +1743,7 @@
                 <span class="text-xs font-semibold text-violet-800 flex-1">Em Trânsito</span>
                 <span id="kanban-count-nacional-transito" class="text-xs bg-violet-200 text-violet-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-transito" class="flex-1 p-2 space-y-2 min-h-24"></div>
+              <div id="kanban-cards-nacional-transito" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
             </div>
 
             <div data-fase="recebido" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1596,7 +1752,7 @@
                 <span class="text-xs font-semibold text-emerald-800 flex-1">Recebido</span>
                 <span id="kanban-count-nacional-recebido" class="text-xs bg-emerald-200 text-emerald-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-recebido" class="flex-1 p-2 space-y-2 min-h-24"></div>
+              <div id="kanban-cards-nacional-recebido" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
             </div>
 
             <div data-fase="estoque" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1605,7 +1761,7 @@
                 <span class="text-xs font-semibold text-teal-800 flex-1">Estoque</span>
                 <span id="kanban-count-nacional-estoque" class="text-xs bg-teal-200 text-teal-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-estoque" class="flex-1 p-2 space-y-2 min-h-24"></div>
+              <div id="kanban-cards-nacional-estoque" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
             </div>
 
           </div>
@@ -1619,7 +1775,7 @@
           </h4>
           <div id="kanban-board-importado" class="flex gap-2 overflow-x-auto pb-2 snap-x">
 
-            <div data-fase="pendente" class="w-52 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+            <div data-fase="pendente" class="w-56 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-2 py-2 border-b border-blue-100 flex items-center gap-1.5 bg-blue-50">
                 <span class="w-1.5 h-1.5 rounded-full bg-blue-500 shrink-0"></span>
                 <span class="text-[11px] font-semibold text-blue-800 flex-1 truncate">Pedido</span>
@@ -1628,7 +1784,7 @@
               <div id="kanban-cards-importado-pendente" class="flex-1 p-1.5 space-y-1.5 min-h-24"></div>
             </div>
 
-            <div data-fase="pago1" class="w-52 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+            <div data-fase="pago1" class="w-56 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-2 py-2 border-b border-amber-100 flex items-center gap-1.5 bg-amber-50">
                 <span class="w-1.5 h-1.5 rounded-full bg-amber-500 shrink-0"></span>
                 <span class="text-[11px] font-semibold text-amber-800 flex-1 truncate" title="Aguardando pagamento — Sinal (1º)">Aguardando pagamento</span>
@@ -1637,7 +1793,7 @@
               <div id="kanban-cards-importado-pago1" class="flex-1 p-1.5 space-y-1.5 min-h-24"></div>
             </div>
 
-            <div data-fase="producao" class="w-52 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+            <div data-fase="producao" class="w-56 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-2 py-2 border-b border-indigo-100 flex items-center gap-1.5 bg-indigo-50">
                 <span class="w-1.5 h-1.5 rounded-full bg-indigo-500 shrink-0"></span>
                 <span class="text-[11px] font-semibold text-indigo-800 flex-1 truncate">Produção</span>
@@ -1646,7 +1802,7 @@
               <div id="kanban-cards-importado-producao" class="flex-1 p-1.5 space-y-1.5 min-h-24"></div>
             </div>
 
-            <div data-fase="inspecao" class="w-52 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+            <div data-fase="inspecao" class="w-56 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-2 py-2 border-b border-sky-100 flex items-center gap-1.5 bg-sky-50">
                 <span class="w-1.5 h-1.5 rounded-full bg-sky-500 shrink-0"></span>
                 <span class="text-[11px] font-semibold text-sky-800 flex-1 truncate" title="Inspeção de qualidade pós-produção">Inspeção</span>
@@ -1655,7 +1811,7 @@
               <div id="kanban-cards-importado-inspecao" class="flex-1 p-1.5 space-y-1.5 min-h-24"></div>
             </div>
 
-            <div data-fase="pago2" class="w-52 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+            <div data-fase="pago2" class="w-56 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-2 py-2 border-b border-yellow-100 flex items-center gap-1.5 bg-yellow-50">
                 <span class="w-1.5 h-1.5 rounded-full bg-yellow-500 shrink-0"></span>
                 <span class="text-[11px] font-semibold text-yellow-800 flex-1 truncate" title="Aguardando pagamento — Restante (2º)">Aguardando pagamento</span>
@@ -1664,7 +1820,7 @@
               <div id="kanban-cards-importado-pago2" class="flex-1 p-1.5 space-y-1.5 min-h-24"></div>
             </div>
 
-            <div data-fase="embarque" class="w-52 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+            <div data-fase="embarque" class="w-56 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-2 py-2 border-b border-orange-100 flex items-center gap-1.5 bg-orange-50">
                 <span class="w-1.5 h-1.5 rounded-full bg-orange-500 shrink-0"></span>
                 <span class="text-[11px] font-semibold text-orange-800 flex-1 truncate" title="Faturado e embarcado">Embarque</span>
@@ -1673,7 +1829,7 @@
               <div id="kanban-cards-importado-embarque" class="flex-1 p-1.5 space-y-1.5 min-h-24"></div>
             </div>
 
-            <div data-fase="transito" class="w-52 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+            <div data-fase="transito" class="w-56 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-2 py-2 border-b border-violet-100 flex items-center gap-1.5 bg-violet-50">
                 <span class="w-1.5 h-1.5 rounded-full bg-violet-500 shrink-0"></span>
                 <span class="text-[11px] font-semibold text-violet-800 flex-1 truncate" title="Em trânsito marítimo">Trânsito</span>
@@ -1682,7 +1838,7 @@
               <div id="kanban-cards-importado-transito" class="flex-1 p-1.5 space-y-1.5 min-h-24"></div>
             </div>
 
-            <div data-fase="numerario" class="w-52 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+            <div data-fase="numerario" class="w-56 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-2 py-2 border-b border-rose-100 flex items-center gap-1.5 bg-rose-50">
                 <span class="w-1.5 h-1.5 rounded-full bg-rose-500 shrink-0"></span>
                 <span class="text-[11px] font-semibold text-rose-800 flex-1 truncate" title="Pagamento numerário (II/IPI/etc) para liberação da carga">Numerário</span>
@@ -1691,7 +1847,7 @@
               <div id="kanban-cards-importado-numerario" class="flex-1 p-1.5 space-y-1.5 min-h-24"></div>
             </div>
 
-            <div data-fase="porto" class="w-52 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+            <div data-fase="porto" class="w-56 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-2 py-2 border-b border-cyan-100 flex items-center gap-1.5 bg-cyan-50">
                 <span class="w-1.5 h-1.5 rounded-full bg-cyan-500 shrink-0"></span>
                 <span class="text-[11px] font-semibold text-cyan-800 flex-1 truncate" title="Chegou no porto, aguardando desembaraço">Porto</span>
@@ -1700,7 +1856,7 @@
               <div id="kanban-cards-importado-porto" class="flex-1 p-1.5 space-y-1.5 min-h-24"></div>
             </div>
 
-            <div data-fase="recebido" class="w-52 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+            <div data-fase="recebido" class="w-56 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-2 py-2 border-b border-emerald-100 flex items-center gap-1.5 bg-emerald-50">
                 <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 shrink-0"></span>
                 <span class="text-[11px] font-semibold text-emerald-800 flex-1 truncate">Recebido</span>
@@ -1709,7 +1865,7 @@
               <div id="kanban-cards-importado-recebido" class="flex-1 p-1.5 space-y-1.5 min-h-24"></div>
             </div>
 
-            <div data-fase="estoque" class="w-52 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
+            <div data-fase="estoque" class="w-56 shrink-0 flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-2 py-2 border-b border-teal-100 flex items-center gap-1.5 bg-teal-50">
                 <span class="w-1.5 h-1.5 rounded-full bg-teal-500 shrink-0"></span>
                 <span class="text-[11px] font-semibold text-teal-800 flex-1 truncate">Estoque</span>
@@ -2041,22 +2197,73 @@ let PSI_PRODUCTS = {
 };
 
 // ===== COBERTURA WOS =====
-let COBERTURA_SKUS = [
-  // ── dados reais VELDS_PSI ROBOS_W18 ──
-  { nome:'Alimentador Automático',       marca:'Velds / Golden Vision', fonte:'real',  saldo:820,  fcSem:148, wos:5.5,  ruptura:'W24 · ~16/Jun', chegada:null,                         obs:'Sem OC prevista — risco de ruptura iminente' },
-  { nome:'Robô Aspirador Genesis',       marca:'Velds / LivRobo',       fonte:'real',  saldo:1753, fcSem:87,  wos:8.0,  ruptura:'W39 · ~23/Set', chegada:{qty:1000,label:'W20 · Mai'}, obs:'Chegada China em trânsito' },
-  { nome:'Robô Aspirador V50 HOWGA',     marca:'Velds / Howga',         fonte:'real',  saldo:0,    fcSem:null,wos:0,    ruptura:'Ruptura',       chegada:{qty:1050,label:'W18 · chegando'}, obs:'' },
-  { nome:'V50 PRO 110V HOWGA',           marca:'Velds / Howga',         fonte:'real',  saldo:0,    fcSem:null,wos:0,    ruptura:'Ruptura',       chegada:{qty:60,  label:'W18 · chegando'}, obs:'' },
-  { nome:'V50 PRO 220V HOWGA',           marca:'Velds / Howga',         fonte:'real',  saldo:0,    fcSem:null,wos:0,    ruptura:'Ruptura',       chegada:{qty:40,  label:'W18 · chegando'}, obs:'' },
-  // ── dados ESTOQUE SENIOR + ENTRADAS ──
-  { nome:'Roteador AX3000 TP-Link EX520',marca:'TP-Link',               fonte:'senior',saldo:0,    fcSem:160, wos:0,    ruptura:'Ruptura',       chegada:{qty:863, label:'07/Jun'},    obs:'Estoque negativo' },
-  { nome:'ONT WiFi 6 AX3000 Zyxel PX3321T1',marca:'Zyxel',             fonte:'senior',saldo:0,    fcSem:137, wos:0,    ruptura:'Ruptura',       chegada:{qty:1050,label:'30/Mai'},    obs:'Estoque negativo' },
-  { nome:'Inversor 40KW 3MPPT SN40PT',   marca:'—',                     fonte:'senior',saldo:16,   fcSem:2,   wos:8.0,  ruptura:'W26 · ~30/Jun', chegada:null,                         obs:'' },
-  { nome:'SSD NVMe 500GB Sandisk',        marca:'Sandisk',               fonte:'senior',saldo:0,    fcSem:null,wos:0,    ruptura:'Sem est.',      chegada:null,                         obs:'' },
-  { nome:'Roteador WiFi 6 Dual AX3000 MR80X',marca:'TP-Link',           fonte:'senior',saldo:0,    fcSem:null,wos:0,    ruptura:'Sem est.',      chegada:null,                         obs:'' },
-];
+// COBERTURA_SKUS agora é construído DINAMICAMENTE a partir de DADOS.produtos
+// (antes era mock hardcoded da V1). Populado por popularCoberturaReal() depois
+// que o dados.json é carregado e os overrides aplicados.
+let COBERTURA_SKUS = [];
+
+// Constrói a lista de SKUs pra Cobertura WOS a partir dos dados reais.
+// Cada SKU traz: nome, marca, saldo, fcSem, wos, ruptura, chegada, obs, status, codigo.
+// Produtos inativos ficam de fora. Status forecast/monitorar é preservado pra
+// o Dashboard mini filtrar só 'forecast'.
+function popularCoberturaReal() {
+  if (!DADOS || !Array.isArray(DADOS.produtos)) { COBERTURA_SKUS = []; return; }
+  const semAtual = (typeof SEMANA_ATUAL === 'number' ? SEMANA_ATUAL : (DADOS.semana_atual || 24));
+
+  COBERTURA_SKUS = DADOS.produtos
+    .map(p => {
+      const codigo = p.codigo;
+      const status = (typeof getProdStatus === 'function') ? getProdStatus(codigo) : 'forecast';
+      if (status === 'inativo') return null;
+
+      const saldo = +(p.saldo_atual || 0);
+      const fcSem = +(p.fc_sem || 0);
+      // WOS: saldo dividido pelo forecast semanal médio (3 primeiros meses).
+      // Pra cálculo mais preciso vá na aba PSI (cascade real semana a semana).
+      let wos = 0;
+      if (saldo > 0 && fcSem > 0) wos = +(saldo / fcSem).toFixed(1);
+
+      // Próxima chegada via Kanban (mesma fonte do PSI/Catálogo)
+      const kb = (typeof proxChegadaKanban === 'function') ? proxChegadaKanban(p.nome) : null;
+      const chegada = kb ? { qty: kb.qtd, label: 'W' + kb.semana + (kb.mes ? ' · ' + kb.mes : '') } : null;
+
+      // Ruptura textual: estima semana em que o estoque acaba
+      let ruptura;
+      if (saldo <= 0 && fcSem > 0)      ruptura = 'Ruptura';
+      else if (saldo <= 0 && fcSem <= 0) ruptura = 'Sem est.';
+      else if (saldo > 0 && fcSem <= 0)  ruptura = 'Sem fcst';
+      else {
+        const semsAteZerar = Math.floor(saldo / fcSem);
+        const wRuptura = semAtual + semsAteZerar;
+        ruptura = 'W' + wRuptura;
+      }
+
+      // Observação curta pros casos mais críticos
+      let obs = '';
+      if (saldo <= 0 && chegada) obs = 'Aguardando chegada ' + chegada.label;
+      else if (saldo <= 0 && !chegada && fcSem > 0) obs = 'Sem OC prevista — comprar urgente';
+
+      return {
+        nome: p.nome,
+        marca: p.marca || '—',
+        fonte: 'real',
+        saldo,
+        fcSem: fcSem || null,
+        wos,
+        ruptura,
+        chegada,
+        obs,
+        status,    // 'forecast' ou 'monitorar' (filtra no Dashboard mini)
+        codigo,
+      };
+    })
+    .filter(Boolean);
+}
 
 function wosStatus(sku) {
+  // Sem forecast semanal cadastrado: não tem como classificar criticidade.
+  // Com saldo > 0 = "ok" (estoque parado, sem demanda); sem saldo = "ok" (irrelevante).
+  if (!sku.fcSem || sku.fcSem <= 0) return 'ok';
   if (sku.wos >= 8)  return 'ok';
   if (sku.wos >= 4)  return 'alerta';
   if (sku.wos >= 2)  return 'risco';
@@ -2303,6 +2510,234 @@ function renderCobertura() {
     </div>`;
 }
 
+// ===================== ABA GIRO DE ESTOQUE =====================
+// Calcula vendas anualizadas em 3 janelas (YTD, 90d, 30d), divide pelo saldo
+// atual e classifica o produto. Saldo atual é usado como proxy do estoque
+// médio até o histórico de saldos crescer (~4 semanas).
+// Período YTD: realizado_split inclui todas as vendas de JAN-W24, anualizado
+// por (52 / semanas_decorridas).
+function _semanasDecorridasAno() {
+  // SEMANA_ATUAL é a semana corrente (W1=primeira do ano)
+  return Math.max(1, SEMANA_ATUAL);
+}
+function _calcGiroDoProduto(p) {
+  const saldo = p.saldo_atual || 0;
+  const rs = p.realizado_split || {};
+  let vendasYTD = 0, vendas90d = 0, vendas30d = 0;
+  // janelas em SEMANAS
+  const cortoCorrente = SEMANA_ATUAL;
+  const corte90d = SEMANA_ATUAL - 13;  // ~90 dias = 13 semanas
+  const corte30d = SEMANA_ATUAL - 4;   // ~30 dias = 4 semanas
+  Object.entries(rs).forEach(([k, qtd]) => {
+    const sem = parseInt(k.split('_')[0], 10);
+    if (!sem || sem > cortoCorrente) return;
+    vendasYTD += qtd;
+    if (sem > corte90d) vendas90d += qtd;
+    if (sem > corte30d) vendas30d += qtd;
+  });
+  // Anualiza vendas
+  const semsYTD = _semanasDecorridasAno();
+  const vendasAnualYTD = vendasYTD * (52 / Math.max(1, semsYTD));
+  const vendasAnual90d = vendas90d * 4;   // 90d = 13 semanas → anualizar é ×4 (52/13)
+  const vendasAnual30d = vendas30d * 13;  // 30d = 4 semanas → ×13 (52/4)
+  // ═══ ÍNDICE DE GIRO DE ESTOQUE ═══
+  // Fórmula oficial: Giro = (Vendas 90d × 4) ÷ Saldo
+  // Regras: saldo 0 → null (não dividir). Exibir com 2 casas decimais.
+  // Métrica PURA de rotatividade do estoque, independente de recência.
+  const giroYTD = saldo > 0 ? vendasAnualYTD / saldo : null;
+  const giro90d = saldo > 0 ? (vendas90d * 4) / saldo : null;
+  const giro30d = saldo > 0 ? vendasAnual30d / saldo : null;
+  const dsi     = giroYTD > 0 ? Math.round(365 / giroYTD) : null;
+  // Cobertura 90d: quantos "ciclos de 90 dias" o estoque atual dura no ritmo dos últimos 90d.
+  // Mantida pra exibição informativa, mas a classificação usa diasSemVenda.
+  const cobertura90d = (vendas90d > 0) ? saldo / vendas90d : Infinity;
+  // Última venda: identifica a semana mais recente com venda > 0 (passada ou atual).
+  let semUltimaVenda = -Infinity;
+  Object.entries(rs).forEach(([k, qtd]) => {
+    const sem = parseInt(k.split('_')[0], 10);
+    if (!sem || sem > cortoCorrente) return;
+    if ((qtd || 0) > 0 && sem > semUltimaVenda) semUltimaVenda = sem;
+  });
+  // Dias desde a última venda. Se nunca vendeu → Infinity (vira Crítico).
+  const diasSemVenda = isFinite(semUltimaVenda)
+    ? (cortoCorrente - semUltimaVenda) * 7
+    : Infinity;
+  // Classificação focada em PRODUTOS PARADOS — baseada em DIAS SEM VENDA RECENTE
+  let status = 'sem-dado';
+  if (saldo <= 0)              status = 'ruptura';
+  else if (diasSemVenda > 90)  status = 'critico';    // mais de 90 dias sem venda (ou nunca vendeu)
+  else if (diasSemVenda > 60)  status = 'lento';      // última venda entre 60 e 90 dias atrás
+  else                          status = 'saudavel';   // vendeu nos últimos 60 dias
+  return {
+    saldo, vendasYTD, vendas90d, vendas30d,
+    vendasAnualYTD: Math.round(vendasAnualYTD),
+    vendasAnual90d: Math.round(vendasAnual90d),
+    vendasAnual30d: Math.round(vendasAnual30d),
+    giroYTD, giro90d, giro30d, dsi, cobertura90d,
+    semUltimaVenda: isFinite(semUltimaVenda) ? semUltimaVenda : null,
+    diasSemVenda,
+    status,
+  };
+}
+// Classificação focada em PRODUTOS PARADOS (não risco de ruptura):
+// baseada em cobertura_90d = saldo / vendas_dos_últimos_90d
+//   > 4 ciclos (> 12 meses parado, ou sem venda 90d) = 🔴 Crítico
+//   1 a 4 ciclos (3 a 12 meses parado)               = 🟡 Lento
+//   ≤ 1 ciclo (gira em até 3 meses)                  = 🟢 Saudável
+//   saldo = 0                                         = ⚠ Ruptura
+const _STATUS_GIRO = {
+  ruptura:  { label: '⚠ Ruptura',           bg: 'bg-red-100 text-red-700' },
+  critico:  { label: '🔴 Crítico (parado)', bg: 'bg-red-100 text-red-700' },
+  lento:    { label: '🟡 Lento',            bg: 'bg-amber-100 text-amber-700' },
+  saudavel: { label: '🟢 Saudável',         bg: 'bg-emerald-100 text-emerald-700' },
+  'sem-dado':  { label: '— sem dado',       bg: 'bg-slate-100 text-slate-400' },
+};
+
+function popularFiltrosGiro() {
+  if (!DADOS?.produtos) return;
+  const selMarca = document.getElementById('giro-f-marca');
+  if (selMarca && selMarca.options.length <= 1) {
+    // União das marcas de PSI + Catálogo
+    const todasMarcas = new Set();
+    (DADOS.produtos || []).forEach(p => { if (p.marca) todasMarcas.add(p.marca); });
+    (DADOS.catalogo || []).forEach(p => { if (p.marca) todasMarcas.add(p.marca); });
+    [...todasMarcas].sort().forEach(m => {
+      const o = document.createElement('option'); o.value = m; o.textContent = m; selMarca.appendChild(o);
+    });
+  }
+}
+
+function renderGiro() {
+  if (!DADOS?.produtos) return;
+  popularFiltrosGiro();
+  const fMarca  = document.getElementById('giro-f-marca')?.value || '';
+  const fSt     = document.getElementById('giro-f-status')?.value || '';
+  const fBusca  = (document.getElementById('giro-f-busca')?.value || '').toLowerCase().trim();
+
+  // Monta universo unificado: PSI ativos + Catálogo não-PSI ativos.
+  // Filtro Origem foi removido — o universo SEMPRE é o conjunto completo, porque
+  // ambos os grupos (PSI e Catálogo) usam a mesma regra de classificação (dias
+  // desde a última venda), que não depende de forecast.
+  let universo = [];
+  DADOS.produtos.forEach(p => {
+    if (getProdStatus(p.codigo) === 'inativo') return;
+    universo.push({ ...p, _origem: 'PSI' });
+  });
+  (DADOS.catalogo || []).forEach(p => {
+    if (p.is_psi) return;  // já entrou pelo bloco PSI acima (evita duplicar)
+    if (getProdStatus(p.codigo) === 'inativo') return;
+    universo.push({ ...p, _origem: 'Catálogo' });
+  });
+
+  const linhas = universo
+    .map(p => ({ p, g: _calcGiroDoProduto(p) }))
+    .filter(({ p, g }) => {
+      if (fMarca && p.marca !== fMarca) return false;
+      if (fSt && g.status !== fSt) return false;
+      if (fBusca) {
+        const blob = `${p.codigo} ${p.nome}`.toLowerCase();
+        if (!blob.includes(fBusca)) return false;
+      }
+      return true;
+    });
+
+  // KPIs do escopo — focados em estoque parado
+  const nTotal    = linhas.length;
+  const nCritico  = linhas.filter(x => x.g.status === 'critico').length;
+  const nLento    = linhas.filter(x => x.g.status === 'lento').length;
+  const nSaudavel = linhas.filter(x => x.g.status === 'saudavel').length;
+  // Capital parado (em unidades) = saldos dos críticos
+  const unidadesParadas = linhas
+    .filter(x => x.g.status === 'critico')
+    .reduce((s, x) => s + (x.g.saldo || 0), 0);
+  document.getElementById('giro-kpis').innerHTML = `
+    <div class="bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm">
+      <p class="text-2xl font-bold text-slate-800">${nTotal}</p>
+      <p class="text-xs font-semibold text-slate-500 mt-1">SKUs no escopo</p>
+    </div>
+    <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-center">
+      <p class="text-2xl font-bold text-red-700">${nCritico}</p>
+      <p class="text-xs font-semibold text-red-700 mt-1">🔴 Críticos</p>
+      <p class="text-xs text-red-500 mt-0.5">sem venda &gt; 90d</p>
+    </div>
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center">
+      <p class="text-2xl font-bold text-amber-700">${nLento}</p>
+      <p class="text-xs font-semibold text-amber-700 mt-1">🟡 Lentos</p>
+      <p class="text-xs text-amber-500 mt-0.5">venda 60-90d</p>
+    </div>
+    <div class="bg-slate-100 border border-slate-200 rounded-xl p-4 text-center">
+      <p class="text-2xl font-bold text-slate-800">${unidadesParadas.toLocaleString('pt-BR')}</p>
+      <p class="text-xs font-semibold text-slate-600 mt-1">Un. paradas</p>
+      <p class="text-xs text-slate-500 mt-0.5">total dos críticos</p>
+    </div>`;
+
+  // Ordena: mais críticos primeiro (maior cobertura 90d = mais parado)
+  const ordemStatus = { critico: 0, lento: 1, ruptura: 2, saudavel: 3, 'sem-dado': 4 };
+  linhas.sort((a, b) => {
+    const sa = ordemStatus[a.g.status] ?? 9;
+    const sb = ordemStatus[b.g.status] ?? 9;
+    if (sa !== sb) return sa - sb;
+    // Dentro do mesmo status: mais dias sem venda primeiro (mais "parado")
+    const da = isFinite(a.g.diasSemVenda) ? a.g.diasSemVenda : 1e9;
+    const db = isFinite(b.g.diasSemVenda) ? b.g.diasSemVenda : 1e9;
+    return db - da;
+  });
+
+  const _fmtGiro = g => g == null ? '—' : g.toFixed(1) + '×';
+  const _fmtUn   = n => n == null || n === 0 ? '—' : n.toLocaleString('pt-BR');
+
+  document.getElementById('giro-contador').textContent =
+    `${nTotal.toLocaleString('pt-BR')} produto${nTotal !== 1 ? 's' : ''}`;
+
+  document.getElementById('giro-tbody').innerHTML = linhas.map(({ p, g }) => {
+    const st = _STATUS_GIRO[g.status] || _STATUS_GIRO['sem-dado'];
+    const corLinha = g.status === 'ruptura' ? 'bg-red-50/30' :
+                     g.status === 'critico' ? 'bg-red-50/20' : '';
+    const tagOrigem = p._origem === 'Catálogo'
+      ? '<span class="ml-1.5 text-[9px] bg-slate-100 text-slate-500 px-1.5 py-0.5 rounded uppercase tracking-wide">cat</span>'
+      : '';
+    // Última venda: mostra dias desde a última venda + W## da semana
+    let ultimaTxt;
+    let ultimaCor;
+    if (!isFinite(g.diasSemVenda)) {
+      ultimaTxt = 'nunca vendeu';
+      ultimaCor = 'text-red-600 font-semibold';
+    } else if (g.diasSemVenda > 90) {
+      ultimaTxt = `${g.diasSemVenda}d <span class="text-slate-400">(W${g.semUltimaVenda})</span>`;
+      ultimaCor = 'text-red-600 font-semibold';
+    } else if (g.diasSemVenda > 60) {
+      ultimaTxt = `${g.diasSemVenda}d <span class="text-slate-400">(W${g.semUltimaVenda})</span>`;
+      ultimaCor = 'text-amber-600 font-semibold';
+    } else {
+      ultimaTxt = `${g.diasSemVenda}d <span class="text-slate-400">(W${g.semUltimaVenda})</span>`;
+      ultimaCor = 'text-emerald-600';
+    }
+    // Índice de Giro Anualizado (90d) = (Vendas 90d × 4) ÷ Saldo
+    // Exibe com 2 casas decimais usando vírgula (padrão pt-BR). Saldo 0 → "—".
+    const giro = g.giro90d;
+    const giroTxt = (giro == null || !isFinite(giro))
+      ? '—'
+      : giro.toFixed(2).replace('.', ',') + '×';
+    const giroCor = (giro == null || !isFinite(giro)) ? 'text-slate-300'
+                  : giro >= 4   ? 'text-emerald-600 font-semibold'   // >= 4×/ano: gira bem
+                  : giro >= 1   ? 'text-amber-600'                   // 1-4: razoável
+                  : giro > 0    ? 'text-red-600'                     // < 1: parado
+                  : 'text-slate-400';
+    return `
+      <tr class="hover:bg-slate-50 ${corLinha}">
+        <td class="px-3 py-2.5 text-slate-400 font-mono whitespace-nowrap">${p.codigo}</td>
+        <td class="px-3 py-2.5 text-slate-800">${p.nome}${tagOrigem}</td>
+        <td class="px-3 py-2.5 text-slate-500">${p.marca || '—'}</td>
+        <td class="px-3 py-2.5 text-right font-medium ${g.saldo === 0 ? 'text-red-600' : 'text-slate-700'}">${_fmtUn(g.saldo)}</td>
+        <td class="px-3 py-2.5 text-right whitespace-nowrap ${giroCor}">${giroTxt}</td>
+        <td class="px-3 py-2.5 text-right text-slate-700">${_fmtUn(g.vendas90d)}</td>
+        <td class="px-3 py-2.5 text-right text-slate-500">${_fmtUn(g.vendas30d)}</td>
+        <td class="px-3 py-2.5 text-right whitespace-nowrap ${ultimaCor}">${ultimaTxt}</td>
+        <td class="px-3 py-2.5 text-center"><span class="px-2 py-0.5 rounded text-xs font-medium ${st.bg}">${st.label}</span></td>
+      </tr>`;
+  }).join('') || '<tr><td colspan="9" class="px-4 py-10 text-center text-slate-400 text-sm">Nenhum produto bate com os filtros.</td></tr>';
+}
+
 const PAGE_META = {
   dashboard:    ['Dashboard','Visão geral do PCM · Maio 2026'],
   psi:          ['PSI','Production · Sales · Inventory'],
@@ -2312,6 +2747,7 @@ const PAGE_META = {
   financeiro:   ['Financeiro','Receita, investimento e margem · horizonte 12 semanas'],
   planejamento: ['Planejamento','Planejamento de compras'],
   cobertura:    ['Cobertura WOS','Semanas de estoque por SKU · W18 atual'],
+  giro:         ['Giro de Estoque','Produtos parados em estoque · status baseado em dias desde a última venda'],
   produtos:     ['Produtos','Classificação · Forecast vs Monitorar estoque'],
   catalogo:     ['Catálogo','Produtos do Sênior sem forecast · disponíveis pra criar pedido'],
   timeline:     ['Linha do Tempo · Importados','Acompanhamento visual dos processos de compra importados'],
@@ -2374,6 +2810,7 @@ function navigate(view, el) {
   if (view === 'psi')          setTimeout(renderPSI, 50);
   if (view === 'chegadas')     setTimeout(renderChegadas, 50);
   if (view === 'cobertura')    setTimeout(renderCobertura, 50);
+  if (view === 'giro')         setTimeout(renderGiro, 50);
   if (view === 'planejamento') { setTimeout(renderPlanejamento, 50); setTimeout(renderKanban, 80); }
   if (view === 'financeiro')   setTimeout(renderFinanceiro, 50);
   if (view === 'produtos')     setTimeout(renderProdutos, 50);
@@ -2381,6 +2818,7 @@ function navigate(view, el) {
   if (view === 'timeline')     setTimeout(renderTimeline, 50);
   if (view === 'timeline-nac') setTimeout(renderTimelineNac, 50);
   if (view === 'vendas')       setTimeout(renderVendas, 50);
+  if (view === 'estoque')      setTimeout(renderEstoque, 50);
 }
 
 // ===== MODAL =====
@@ -2448,6 +2886,21 @@ function _popularFiltroMesVendas(linhas) {
 function renderVendas() {
   const linhas = (DADOS && Array.isArray(DADOS.vendas_b2b)) ? DADOS.vendas_b2b : [];
   _popularFiltroMesVendas(linhas);
+
+  // Indicador "Atualizado em" ao lado do Período
+  const atualizadoEl = document.getElementById('vendas-atualizado-em');
+  if (atualizadoEl) {
+    const iso = DADOS && DADOS.vendas_b2b_atualizado_em;
+    if (iso) {
+      // ISO: 2026-06-09T15:23:00 → 09/06/2026
+      const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (m) {
+        atualizadoEl.innerHTML = `<span style="color:#10b981;">●</span> Atualizado em ${m[3]}/${m[2]}/${m[1]}`;
+      }
+      const fonte = DADOS.vendas_b2b_fonte || '';
+      if (fonte) atualizadoEl.title = `Fonte: ${fonte}`;
+    }
+  }
 
   const tbody    = document.getElementById('vendas-tbody');
   const kFat     = document.getElementById('vendas-kpi-fat');
@@ -2544,6 +2997,161 @@ function renderVendas() {
   const aviso = (filtradas.length > MAX_ROWS)
     ? `<tr><td colspan="8" class="px-4 py-2 text-center text-xs text-slate-400 bg-slate-50">
         Mostrando ${MAX_ROWS} de ${filtradas.length.toLocaleString('pt-BR')} — refine o filtro pra ver mais.
+       </td></tr>`
+    : '';
+
+  tbody.innerHTML = rows + aviso;
+}
+
+// ===== ABA ESTOQUE =====
+// Renderiza linhas brutas do arquivo estoque_VELDS_FX_TELECOM_<data>.xlsx (lidas via dados.json).
+// Cada linha = (código × depósito). Aplica filtro depósito + marca + busca.
+function _popularFiltroEstoque(linhas) {
+  const selDep = document.getElementById('estoque-filtro-deposito');
+  const selMar = document.getElementById('estoque-filtro-marca');
+  if (selDep) {
+    // Depósitos únicos não-RMA (lista alfabética)
+    const deps = [...new Set(linhas.filter(l => !l.rma).map(l => l.deposito).filter(Boolean))].sort();
+    const atual = selDep.value || '__all__';
+    // Mantém os 3 fixos no topo
+    const fixos = ['__all__','__incrma__','__rma__'];
+    const dinamicas = deps.map(d => `<option value="${d}">${d}</option>`).join('');
+    selDep.innerHTML = `
+      <option value="__all__">Todos (exclui RMA)</option>
+      <option value="__incrma__">Todos (inclui RMA)</option>
+      <option value="__rma__">Só RMA</option>
+      <optgroup label="Depósitos">${dinamicas}</optgroup>`;
+    selDep.value = fixos.includes(atual) || deps.includes(atual) ? atual : '__all__';
+  }
+  if (selMar) {
+    const marcas = [...new Set(linhas.map(l => (l.marca || '').trim()).filter(Boolean))].sort();
+    const atual = selMar.value || '';
+    selMar.innerHTML = `<option value="">Todas</option>` +
+      marcas.map(m => `<option value="${m}">${m}</option>`).join('');
+    selMar.value = (atual && marcas.includes(atual)) ? atual : '';
+  }
+}
+
+function renderEstoque() {
+  const linhas = (DADOS && Array.isArray(DADOS.estoque)) ? DADOS.estoque : [];
+  _popularFiltroEstoque(linhas);
+
+  // Indicador "Atualizado em"
+  const atualizadoEl = document.getElementById('estoque-atualizado-em');
+  if (atualizadoEl) {
+    const iso = DADOS && DADOS.estoque_atualizado_em;
+    if (iso) {
+      const m = iso.match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if (m) atualizadoEl.innerHTML = `<span style="color:#10b981;">●</span> Atualizado em ${m[3]}/${m[2]}/${m[1]}`;
+      const fonte = DADOS.estoque_fonte || '';
+      if (fonte) atualizadoEl.title = `Fonte: ${fonte}`;
+    }
+  }
+
+  const tbody    = document.getElementById('estoque-tbody');
+  const kSkus    = document.getElementById('estoque-kpi-skus');
+  const kSkusSub = document.getElementById('estoque-kpi-skus-sub');
+  const kUn      = document.getElementById('estoque-kpi-un');
+  const kUnSub   = document.getElementById('estoque-kpi-un-sub');
+  const kRma     = document.getElementById('estoque-kpi-rma');
+  const kDeps    = document.getElementById('estoque-kpi-deps');
+  const titulo   = document.getElementById('estoque-titulo');
+  const contador = document.getElementById('estoque-contador');
+  if (!tbody) return;
+
+  if (!linhas.length) {
+    tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-10 text-center text-slate-400">
+      <div class="text-sm">Nenhuma linha de estoque carregada.</div>
+      <div class="text-xs mt-1">Salve <code class="bg-slate-100 px-1.5 py-0.5 rounded">estoque_VELDS_FX_TELECOM_&lt;data&gt;.xlsx</code> em <code class="bg-slate-100 px-1.5 py-0.5 rounded">Posição estoques/</code> e rode <code class="bg-slate-100 px-1.5 py-0.5 rounded">gerar_dados.py</code>.</div>
+    </td></tr>`;
+    [kSkus,kUn,kRma,kDeps].forEach(el => { if (el) el.textContent = '0'; });
+    if (contador) contador.textContent = '0 linhas';
+    return;
+  }
+
+  // Filtros
+  const selDep = document.getElementById('estoque-filtro-deposito');
+  const modoDep = selDep ? selDep.value : '__all__';
+  const selMar = document.getElementById('estoque-filtro-marca');
+  const marcaSel = selMar ? selMar.value : '';
+  const inp = document.getElementById('estoque-filtro-busca');
+  const busca = (inp ? inp.value : '').trim().toUpperCase();
+
+  const filtradas = linhas.filter(l => {
+    // Filtro depósito
+    if (modoDep === '__all__')       { if (l.rma) return false; }
+    else if (modoDep === '__rma__')  { if (!l.rma) return false; }
+    else if (modoDep === '__incrma__') { /* tudo */ }
+    else                              { if (l.deposito !== modoDep) return false; }
+    // Filtro marca
+    if (marcaSel && (l.marca || '').trim() !== marcaSel) return false;
+    // Filtro busca (código, produto, família)
+    if (busca) {
+      const blob = `${l.codigo}|${l.nome}|${l.familia}|${l.marca}|${l.deposito}`.toUpperCase();
+      if (!blob.includes(busca)) return false;
+    }
+    return true;
+  });
+
+  // KPIs (sobre o filtro)
+  const skusUnicos = new Set(filtradas.map(l => String(l.codigo))).size;
+  const totalUn    = filtradas.reduce((s, l) => s + (l.fisico || 0), 0);
+  const rmaUn      = filtradas.reduce((s, l) => s + (l.rma ? (l.fisico || 0) : 0), 0);
+  const depsAtivos = new Set(filtradas.map(l => l.deposito).filter(Boolean)).size;
+
+  if (kSkus) kSkus.textContent = skusUnicos.toLocaleString('pt-BR');
+  if (kSkusSub) kSkusSub.textContent = (modoDep === '__rma__') ? 'só RMA'
+                                       : (modoDep === '__incrma__') ? 'inclui RMA'
+                                       : (modoDep === '__all__') ? 'exclui RMA' : modoDep;
+  if (kUn)   kUn.textContent   = totalUn.toLocaleString('pt-BR');
+  if (kUnSub) kUnSub.textContent = (modoDep === '__rma__') ? 'em RMA' : 'físicas no filtro';
+  if (kRma)  kRma.textContent  = rmaUn.toLocaleString('pt-BR');
+  if (kDeps) kDeps.textContent = depsAtivos.toLocaleString('pt-BR');
+  if (titulo) {
+    const label = (modoDep === '__all__') ? 'Todos os depósitos (exclui RMA)'
+                : (modoDep === '__incrma__') ? 'Todos os depósitos (inclui RMA)'
+                : (modoDep === '__rma__') ? 'Apenas RMA'
+                : modoDep;
+    titulo.textContent = `Posição Estoque — ${label}`;
+  }
+  if (contador) contador.textContent = `${filtradas.length.toLocaleString('pt-BR')} linhas`;
+
+  // Tabela
+  if (!filtradas.length) {
+    tbody.innerHTML = `<tr><td colspan="8" class="px-4 py-8 text-center text-slate-400 text-sm">
+      Nenhuma linha bate com o filtro.
+    </td></tr>`;
+    return;
+  }
+
+  // Performance: limita a 500 linhas com aviso
+  const MAX_ROWS = 500;
+  const ordenadas = filtradas.slice().sort((a, b) => (b.fisico || 0) - (a.fisico || 0));
+  const rows = ordenadas.slice(0, MAX_ROWS).map(l => {
+    const isRma = !!l.rma;
+    const rowCls = isRma ? 'hover:bg-amber-50 bg-amber-50/30' : 'hover:bg-slate-50';
+    const depCls = isRma ? 'text-amber-700 font-medium' : 'text-slate-500';
+    const fis = l.fisico || 0;
+    const res = l.reservado || 0;
+    const dis = l.disponivel || 0;
+    const fisCls = fis === 0 ? 'text-slate-300' : 'text-slate-800';
+    const disCls = dis === 0 ? 'text-slate-300' : (dis < 5 ? 'text-amber-600 font-semibold' : 'text-emerald-600 font-semibold');
+    return `
+      <tr class="${rowCls}">
+        <td class="px-3 py-2 text-slate-400 font-mono whitespace-nowrap">${l.codigo ?? '—'}</td>
+        <td class="px-3 py-2 text-slate-700">${l.nome || ''}</td>
+        <td class="px-3 py-2 text-slate-500 whitespace-nowrap">${l.familia || ''}</td>
+        <td class="px-3 py-2 whitespace-nowrap">${_badgeMarca(l.marca)}</td>
+        <td class="px-3 py-2 ${depCls} whitespace-nowrap">${l.deposito || ''}</td>
+        <td class="px-3 py-2 text-right font-semibold ${fisCls} whitespace-nowrap">${fis.toLocaleString('pt-BR')}</td>
+        <td class="px-3 py-2 text-right text-slate-400 whitespace-nowrap">${res.toLocaleString('pt-BR')}</td>
+        <td class="px-3 py-2 text-right ${disCls} whitespace-nowrap">${dis.toLocaleString('pt-BR')}</td>
+      </tr>`;
+  }).join('');
+
+  const aviso = (filtradas.length > MAX_ROWS)
+    ? `<tr><td colspan="8" class="px-4 py-2 text-center text-xs text-slate-400 bg-slate-50">
+        Mostrando ${MAX_ROWS} de ${filtradas.length.toLocaleString('pt-BR')} linhas — refine o filtro pra ver mais.
        </td></tr>`
     : '';
 
@@ -3315,14 +3923,27 @@ function buildProjection(d, targetWeek) {
     const offset = w - d.lastWeek;
     const arr    = (d.futureArrivals || []).find(a => a.weekOffset === offset);
     const arrQty = arr ? arr.qty : 0;
-    curSaldo     = curSaldo - fc + arrQty;
+    // Forecast da semana projetada: se houver override mensal pra esse mês,
+    // usa total_mensal ÷ semanas_no_mês. Senão cai no avgWeeklyFc (média do PSI).
+    // weekToMes(w) resolve a semana pro mês CORRETO (WEEK_TO_MONTH só tem
+    // anchors da PRIMEIRA semana de cada mês, então acesso direto falha pra
+    // semanas do meio do mês).
+    let fcWeek = fc;
+    const mesW = weekToMes(w);
+    if (mesW && d.fcstMensal && d.fcstMensal[mesW] !== undefined) {
+      const range = getMonthWeekRangeSim(mesW);
+      if (range && range.count > 0) {
+        fcWeek = Math.round((parseInt(d.fcstMensal[mesW]) || 0) / range.count);
+      }
+    }
+    curSaldo = curSaldo - fcWeek + arrQty;
 
     labels.push(weekLabel(w));
-    saldo.push(Math.round(curSaldo));
-    forecast.push(fc);
+    saldo.push(Math.max(0, Math.round(curSaldo)));
+    forecast.push(fcWeek);
     sellIn.push(arrQty);
     realizado.push(0); // semanas projetadas: sem realizado ainda
-    wos.push(fc > 0 ? Math.max(0, +(curSaldo / fc).toFixed(1)) : 0);
+    wos.push(fcWeek > 0 ? Math.max(0, +(curSaldo / fcWeek).toFixed(1)) : 0);
   }
 
   return { labels, saldo, forecast, sellIn, realizado, wos, actualLen };
@@ -3357,8 +3978,91 @@ document.addEventListener('DOMContentLoaded', () => {
   aplicarEstadoGraficoPSI(localStorage.getItem(PSI_CHART_HIDDEN_KEY) === '1');
 });
 
+// Renderiza versão simplificada da aba PSI pra produtos do Catálogo (não-PSI).
+// Esconde gráfico/tabela e mostra: KPIs com saldo + vendas históricas + aviso "sem forecast".
+function _renderPSISemForecast(codigoStr) {
+  // Acha o produto no catálogo
+  const cat = (DADOS && DADOS.catalogo) || [];
+  const p = cat.find(c => String(c.codigo) === codigoStr);
+  if (!p) return;
+
+  // Esconde gráfico e tabela; mostra aviso
+  const aviso  = document.getElementById('psi-sem-fcst');
+  const chart  = document.getElementById('psi-chart-card');
+  const tabela = document.getElementById('psi-tabela-card');
+  if (aviso)  aviso.classList.remove('hidden');
+  if (chart)  chart.classList.add('hidden');
+  if (tabela) tabela.classList.add('hidden');
+
+  // Calcula stats básicos a partir do realizado_split (vendas B2B)
+  const rs = p.realizado_split || {};
+  let vendasYTD = 0, vendas30d = 0;
+  const corte30d = (typeof SEMANA_ATUAL === 'number' ? SEMANA_ATUAL : 24) - 4;
+  Object.entries(rs).forEach(([k, qtd]) => {
+    const sem = parseInt(k.split('_')[0], 10);
+    if (!sem) return;
+    vendasYTD += qtd;
+    if (sem > corte30d) vendas30d += qtd;
+  });
+  const saldo = p.saldo_atual || 0;
+
+  // Descrição amigável
+  const desc = document.getElementById('psi-sem-fcst-desc');
+  if (desc) {
+    desc.innerHTML =
+      `<strong>${p.nome || '?'}</strong> · <span class="font-mono">${p.codigo}</span> · ${p.marca || 'sem marca'}<br>
+       Este produto está no Catálogo do Sênior, mas ainda não tem forecast cadastrado.
+       Pra ver PSI completo (forecast semanal, WoS, cobertura), cadastre forecast pela aba <strong>Produtos</strong>.`;
+  }
+
+  // Stats em 3 cartões pequenos dentro do aviso
+  const stats = document.getElementById('psi-sem-fcst-stats');
+  if (stats) {
+    stats.innerHTML = `
+      <div class="bg-white border border-amber-200 rounded-lg p-2.5">
+        <div class="text-[10px] uppercase font-bold text-amber-700">Saldo atual</div>
+        <div class="text-lg font-bold text-slate-900 mt-0.5">${saldo.toLocaleString('pt-BR')} <span class="text-xs font-normal text-slate-500">un</span></div>
+      </div>
+      <div class="bg-white border border-amber-200 rounded-lg p-2.5">
+        <div class="text-[10px] uppercase font-bold text-amber-700">Vendas YTD</div>
+        <div class="text-lg font-bold text-slate-900 mt-0.5">${vendasYTD.toLocaleString('pt-BR')} <span class="text-xs font-normal text-slate-500">un</span></div>
+      </div>
+      <div class="bg-white border border-amber-200 rounded-lg p-2.5">
+        <div class="text-[10px] uppercase font-bold text-amber-700">Vendas 30d</div>
+        <div class="text-lg font-bold text-slate-900 mt-0.5">${vendas30d.toLocaleString('pt-BR')} <span class="text-xs font-normal text-slate-500">un</span></div>
+      </div>
+    `;
+  }
+
+  // Atualiza os KPIs do topo com saldo e zeros
+  const el = (id) => document.getElementById(id);
+  if (el('psi-k-est')) {
+    el('psi-k-est').textContent = saldo.toLocaleString('pt-BR');
+    el('psi-k-est').className = 'text-3xl font-extrabold mt-1 ' + (saldo > 0 ? 'text-emerald-700' : 'text-red-700');
+  }
+  if (el('psi-k-fc'))      el('psi-k-fc').textContent      = '—';
+  if (el('psi-k-fc-mes'))  el('psi-k-fc-mes').textContent  = 'Mês';
+  if (el('psi-k-wos'))     el('psi-k-wos').textContent     = '—';
+  if (el('psi-k-arr'))     el('psi-k-arr').textContent     = '—';
+  if (el('psi-k-arr-sub')) el('psi-k-arr-sub').textContent = 'sem forecast';
+}
+
 function renderPSI() {
   const key     = document.getElementById('psi-produto').value;
+
+  // Caso especial: produto do Catálogo (não-PSI) — renderiza versão simplificada
+  if (typeof key === 'string' && key.startsWith('cat-')) {
+    return _renderPSISemForecast(key.slice(4));
+  }
+
+  // Esconde aviso "sem forecast" e reexibe gráfico/tabela (caso voltando de produto Catálogo)
+  const aviso = document.getElementById('psi-sem-fcst');
+  const chart = document.getElementById('psi-chart-card');
+  const tabela = document.getElementById('psi-tabela-card');
+  if (aviso)  aviso.classList.add('hidden');
+  if (chart)  chart.classList.remove('hidden');
+  if (tabela) tabela.classList.remove('hidden');
+
   const d       = PSI_PRODUCTS[key];
   if (!d) return; // produto ainda não carregado
   const periodo = document.getElementById('psi-periodo')?.value || 'all';
@@ -4389,6 +5093,13 @@ function removerPedido(id) {
   // removido — se houver ids duplicados (legado), os demais ficam preservados.
   const idx = PEDIDOS.findIndex(p => p.id === id);
   if (idx < 0) return;
+  // Confirmação detalhada (mostra nome + qtd + semana do pedido) antes de apagar.
+  const p = PEDIDOS[idx];
+  const nome = (p.nome || '').trim();
+  const qtdFmt = (p.qtd || 0).toLocaleString('pt-BR');
+  const procStr = p.processo ? ' · Proc ' + p.processo : '';
+  const msg = `Excluir esse pedido?\n\n${nome}\n${qtdFmt} un · W${p.semana || '?'}${procStr}\n\nEssa ação não pode ser desfeita.`;
+  if (!confirm(msg)) return;
   PEDIDOS.splice(idx, 1);
   salvarPedidos();
   atualizarBadgePedidos();
@@ -4396,6 +5107,9 @@ function removerPedido(id) {
 }
 
 function limparPedidos() {
+  const n = PEDIDOS.length;
+  if (n === 0) return;
+  if (!confirm(`Apagar TODOS os ${n} pedidos do Kanban?\n\nEssa ação não pode ser desfeita.`)) return;
   PEDIDOS = [];
   salvarPedidos();
   atualizarBadgePedidos();
@@ -4643,6 +5357,22 @@ function restaurarOverridesProduto() {
   mostrarToast('↺ Valores do Excel restaurados');
 }
 
+// Menu "..." do cabeçalho (esconde opções avançadas tipo Sincronizar PSI)
+function toggleHeaderMenu() {
+  document.getElementById('header-menu')?.classList.toggle('hidden');
+}
+function fecharHeaderMenu() {
+  document.getElementById('header-menu')?.classList.add('hidden');
+}
+// Fecha o menu ao clicar fora dele
+document.addEventListener('click', e => {
+  const m = document.getElementById('header-menu');
+  const btn = document.getElementById('header-menu-btn');
+  if (m && !m.classList.contains('hidden') && !m.contains(e.target) && e.target !== btn) {
+    m.classList.add('hidden');
+  }
+});
+
 function mostrarToast(msg) {
   let toast = document.getElementById('toast-generic');
   if (!toast) {
@@ -4822,6 +5552,8 @@ function salvarPedidos() {
   PEDIDOS.forEach(p => { if (p && !p.codigo_pedido) p.codigo_pedido = gerarCodigoPedido(); });
   try { localStorage.setItem('cloudia_pedidos', JSON.stringify(PEDIDOS)); } catch(e) {}
   _enviaPedidosAoServidor();
+  // Badge da sidebar é leve, sempre atualiza
+  if (typeof _atualizaBadgeChegadas === 'function') _atualizaBadgeChegadas();
   // Re-renderiza views que dependem de PEDIDOS quando estão visíveis
   if (document.getElementById('view-psi')?.classList.contains('active')) {
     setTimeout(renderPSI, 30);
@@ -4857,11 +5589,37 @@ function nomeCurtoCard(nome) {
   if (!nome) return '';
   let s = String(nome).trim();
   s = s.replace(/^(ROB[ÔO])\s+ASPIRADOR\s+/i, '$1 ');    // tira só ASPIRADOR, mantém ROBO
-  s = s.replace(/INTELIGENTE\s+DE\s+P[OÓ]\s+LASER\s*-?\s*/i, '');  // V50
-  s = s.replace(/LASER\s+DUST\s+BIN\s*-?\s*/i, '');      // V50 PRO 110/220V
+  s = s.replace(/INTELIGENTE\s+VELDS\s*-?\s*/i, '');     // V50/V50 PRO (cadastros novos do Sênior)
+  s = s.replace(/^(ROB[ÔO])\s+VELDS\s+/i, '$1 ');        // "ROBÔ VELDS V50 PRO" → "ROBÔ V50 PRO"
+  s = s.replace(/INTELIGENTE\s+DE\s+P[OÓ]\s+LASER\s*-?\s*/i, '');  // V50 (antigo)
+  s = s.replace(/LASER\s+DUST\s+BIN\s*-?\s*/i, '');      // V50 PRO 110/220V (antigo)
+  s = s.replace(/^ACCESS\s+POINT\s+/i, '');              // tira "ACCESS POINT" do início
+  s = s.replace(/^ROTEADOR\s+WIFI\s+/i, '');             // tira "ROTEADOR WIFI" do início
+  s = s.replace(/^ROTEADOR\s+VPN\s+/i, '');              // tira "ROTEADOR VPN" do início
+  s = s.replace(/\bWIFI\s+6\b/gi, '');                   // remove "WIFI 6" em qualquer posição
+  s = s.replace(/\bLINHA\s+OMADA\b/gi, '');              // remove "LINHA OMADA"
+  s = s.replace(/\bROTEADOR\s+GIGABIT\b/gi, '');         // remove "ROTEADOR GIGABIT"
+  s = s.replace(/^\s*AX\d+\s+WALL\s+PLATE\s+/i, '');     // "AX3000 WALL PLATE EAP655 WALL" → "EAP655 WALL"
+  s = s.replace(/^(switch)\s+gigabit\s+/i, '$1 ');       // "SWITCH GIGABIT TPLINK TLSG1005P" → "SWITCH TPLINK TLSG1005P"
+  s = s.replace(/^(switch)\s+.+?\s+(tp\s*-?\s*link)\s+/i, '$1 $2 ');  // "SWITCH NAO GER. 16GE TPLINK TLSG..." → "SWITCH TPLINK TLSG..."
+  s = s.replace(/^(switch)\s+.+\s+-\s+/i, '$1 ');        // "Switch X Y - SG3428 Local" → "Switch SG3428 Local" (greedy: usa o último " - ")
+  s = s.replace(/^(omada)\s+.+\s+-\s+/i, '$1 - ');       // "Omada 48-Port ... - SG6654X" → "Omada - SG6654X" (idem)
   s = s.replace(/\s+VDS\s+/i, ' ');                      // remove " VDS " no meio
   s = s.replace(/\s+/g, ' ').trim();
   return s;
+}
+
+// Busca código Sênior do produto pelo nome (pedidos do Kanban não têm campo codigo).
+// Usa o lookup robusto _buildCodLookup() (criado pros exports): match exato
+// normalizado + match por SKU/modelo (ER605, EAP650, SM311LM, etc).
+// Cacheia o lookup pra performance — invalidar com _invalidaLookupCodCache() quando DADOS muda.
+let _LOOKUP_COD_CACHE = null;
+function _invalidaLookupCodCache() { _LOOKUP_COD_CACHE = null; }
+function codigoDoProdutoPorNome(nome) {
+  if (!nome || !DADOS) return null;
+  if (typeof _buildCodLookup !== 'function' || typeof acharCodigoProd !== 'function') return null;
+  if (!_LOOKUP_COD_CACHE) _LOOKUP_COD_CACHE = _buildCodLookup();
+  return acharCodigoProd(nome, _LOOKUP_COD_CACHE) || null;
 }
 
 function kanbanCardHTML(p) {
@@ -4909,12 +5667,14 @@ function kanbanCardHTML(p) {
     <div class="px-3 py-2.5 cursor-pointer select-none" onclick="toggleKanbanCard(this.parentElement)">
       <div class="flex items-start gap-2">
         <div class="flex-1 min-w-0">
-          <p class="text-xs font-semibold text-slate-800 leading-tight truncate" title="${p.nome}">${nomeShort}</p>
+          <p class="text-xs font-semibold text-slate-800 leading-tight truncate" title="${(() => { const c = codigoDoProdutoPorNome(p.nome); const baseTip = (c ? 'Cód: ' + c + ' · ' : '') + p.nome; if (p.valor_unitario && p.qtd) return baseTip + ' · Total ' + _fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL'); return baseTip; })()}">${nomeShort}</p>
           <p class="text-xs text-slate-500 mt-0.5">${(p.qtd||0).toLocaleString('pt-BR')} un &nbsp;·&nbsp; ${semOuData}${p.modal ? ` &nbsp;·&nbsp; ${p.modal}` : ''}${(p.fase_desde && !['pendente','pago1','estoque'].includes(fase)) ? (() => {
-            const dias = _diasDesde(p.fase_desde);
+            const dias = Math.floor(_diasDesde(p.fase_desde));
             const txt = dias < 1 ? 'hoje' : `${dias}d`;
             return ` &nbsp;·&nbsp; <span class="text-slate-400" title="Tempo nesta fase (sem SLA definido)">${txt}</span>`;
           })() : ''}</p>
+          ${(p.valor_unitario && p.qtd) ? `
+          <p class="text-[10px] text-emerald-700 mt-0.5 font-semibold">${_fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL')}</p>` : ''}
           ${(fase === 'estoque' && p.arquivado_em) ? (() => {
             const restantes = Math.max(0, Math.ceil(DIAS_VISIVEL_ESTOQUE - _diasDesde(p.arquivado_em)));
             return `<p class="text-[10px] text-teal-600 mt-0.5">arquiva em ${restantes} dia${restantes !== 1 ? 's' : ''}</p>`;
@@ -4941,13 +5701,27 @@ function kanbanCardHTML(p) {
             return `<p class="text-[10px] ${cor} mt-0.5">vence em ${restantes} dia${restantes !== 1 ? 's' : ''}</p>`;
           })() : ''}
         </div>
-        <div class="flex items-center shrink-0 mt-0.5">
+        <div class="flex items-center gap-1 shrink-0 mt-0.5">
+          <button onclick="event.stopPropagation();duplicarPedido(${p.id})"
+            class="text-slate-300 hover:text-blue-500 text-base leading-none transition-colors shrink-0" title="Duplicar pedido">⎘</button>
           <button onclick="event.stopPropagation();removerPedido(${p.id})"
             class="text-slate-300 hover:text-red-500 text-lg leading-none transition-colors shrink-0" title="Remover">×</button>
         </div>
       </div>
     </div>
     <div class="kanban-details hidden border-t border-slate-100 px-3 py-2 bg-slate-50 space-y-1.5 text-xs">
+      <div class="flex items-start gap-2 relative" onclick="event.stopPropagation()">
+        <span class="text-slate-400 shrink-0 w-20 pt-0.5">Produto</span>
+        <div class="flex-1 min-w-0 relative">
+          <input type="text" id="tp-busca-${p.id}" autocomplete="off"
+            placeholder="${(p.nome || '').replace(/"/g, '&quot;')}"
+            oninput="trocarProdutoFiltrar(${p.id})"
+            onfocus="trocarProdutoFiltrar(${p.id})"
+            onblur="setTimeout(()=>{const d=document.getElementById('tp-drop-${p.id}');if(d)d.classList.add('hidden');},200)"
+            class="w-full border border-slate-200 rounded px-2 py-0.5 text-xs text-slate-700 bg-white focus:outline-none focus:ring-1 focus:ring-blue-400 placeholder-slate-500">
+          <div id="tp-drop-${p.id}" class="hidden absolute z-20 left-0 right-0 top-full mt-1 max-h-56 overflow-y-auto bg-white border border-slate-200 rounded shadow-lg"></div>
+        </div>
+      </div>
       <div class="flex items-center gap-2" onclick="event.stopPropagation()">
         <span class="text-slate-400 shrink-0 w-20">Quantidade</span>
         <input type="number" min="1"
@@ -4978,14 +5752,111 @@ function kanbanCardHTML(p) {
         <span class="text-slate-400 shrink-0 w-20">Nº Processo</span>
         <input type="text"
           value="${p.processo||''}"
-          placeholder="ex: 2026/0123"
+          placeholder="ex: 015.2026 VSC"
           onblur="salvarProcesso(${p.id}, this.value)"
           onkeydown="if(event.key==='Enter'){this.blur()}"
           class="flex-1 min-w-0 border border-slate-200 rounded px-2 py-0.5 text-xs text-slate-700 bg-white focus:outline-none focus:ring-1 focus:ring-blue-400 placeholder-slate-300">
       </div>
+      <div class="flex items-center gap-1.5 pt-0.5" onclick="event.stopPropagation()">
+        <span class="text-slate-400 shrink-0 w-10">Valor</span>
+        <input type="number" step="0.01" min="0"
+          value="${p.valor_unitario || ''}"
+          placeholder="0,00"
+          onblur="salvarValorUnitario(${p.id}, this.value)"
+          onkeydown="if(event.key==='Enter'){this.blur()}"
+          class="flex-1 min-w-0 border border-slate-200 rounded px-1.5 py-0.5 text-xs text-slate-700 bg-white focus:outline-none focus:ring-1 focus:ring-blue-400 placeholder-slate-300">
+        <select onchange="salvarMoedaPedido(${p.id}, this.value)"
+          class="shrink-0 border border-slate-200 rounded px-1 py-0.5 text-[11px] text-slate-700 bg-white focus:outline-none focus:ring-1 focus:ring-blue-400">
+          <option value="BRL"${(p.moeda || 'BRL') === 'BRL' ? ' selected' : ''}>R$</option>
+          <option value="USD"${p.moeda === 'USD' ? ' selected' : ''}>US$</option>
+        </select>
+      </div>
+      ${(p.valor_unitario && p.qtd) ? `
+      <div class="flex items-center gap-2 pt-0.5 text-[11px]">
+        <span class="text-slate-400 shrink-0 w-20">Total</span>
+        <span class="text-slate-700 font-semibold">${_fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL')}</span>
+      </div>` : ''}
       <div class="pt-0.5 flex justify-between items-center gap-1">${voltarBtn}${avancarBtn}</div>
     </div>
   </div>`;
+}
+
+// Salvar valor unitário (chamado quando edita no card aberto)
+function salvarValorUnitario(id, valor) {
+  const p = PEDIDOS.find(x => x.id === id);
+  if (!p) return;
+  const num = parseFloat(valor) || 0;
+  p.valor_unitario = num > 0 ? num : null;
+  if (!p.valor_unitario) p.moeda = null;  // limpa moeda se zerou valor
+  else if (!p.moeda) p.moeda = 'BRL';     // garante moeda quando tem valor
+  salvarPedidos();
+  renderKanban();
+}
+
+// Salvar moeda do pedido
+function salvarMoedaPedido(id, valor) {
+  const p = PEDIDOS.find(x => x.id === id);
+  if (!p) return;
+  p.moeda = (valor === 'USD') ? 'USD' : 'BRL';
+  salvarPedidos();
+  renderKanban();
+}
+
+// Troca o produto vinculado a um pedido existente (preserva qtd, data, processo,
+// valor, fase). Filtra a lista de produtos buscáveis e exibe num dropdown.
+function trocarProdutoFiltrar(id) {
+  const inp = document.getElementById('tp-busca-' + id);
+  const drop = document.getElementById('tp-drop-' + id);
+  if (!inp || !drop) return;
+  const q = (inp.value || '').trim().toLowerCase();
+  const lista = _listaProdutosBuscaveis();
+  const filtrados = q
+    ? lista.filter(p =>
+        String(p.codigo).toLowerCase().includes(q) ||
+        (p.nome || '').toLowerCase().includes(q) ||
+        (p.marca || '').toLowerCase().includes(q))
+    : lista;
+  const codCount = {};
+  filtrados.forEach(p => { codCount[p.codigo] = (codCount[p.codigo] || 0) + 1; });
+  const top = filtrados.slice(0, 30);
+  if (top.length === 0) {
+    drop.innerHTML = '<div class="px-3 py-2 text-xs text-slate-400">Nenhum produto encontrado</div>';
+  } else {
+    drop.innerHTML = top.map(p => {
+      const tag = p.origem === 'psi'
+        ? `<span class="ml-2 text-[9px] bg-blue-100 text-blue-700 px-1.5 rounded">PSI</span>`
+        : `<span class="ml-2 text-[9px] bg-slate-100 text-slate-500 px-1.5 rounded">catálogo</span>`;
+      const tagFilial = (codCount[p.codigo] > 1 && p.filial)
+        ? `<span class="ml-1 text-[9px] bg-amber-100 text-amber-700 px-1.5 rounded">${p.filial}</span>` : '';
+      const nome = (p.nome || '').replace(/'/g, "\\'");
+      return `<div onmousedown="trocarProdutoSelecionar(${id},'${p.codigo}','${nome.replace(/"/g, '&quot;')}','${(p.marca||'').replace(/'/g, "\\'")}','${p.tipo}')"
+        class="px-3 py-2 cursor-pointer hover:bg-blue-50 text-xs border-b border-slate-100 last:border-b-0">
+        <div class="flex items-center justify-between gap-2">
+          <span class="text-slate-700 truncate">${p.nome}</span>${tag}${tagFilial}
+        </div>
+        <div class="text-[10px] text-slate-400 mt-0.5">${p.codigo}${p.marca ? ' · ' + p.marca : ''}${(codCount[p.codigo] > 1 && p.filial) ? ' · ' + p.filial : ''}</div>
+      </div>`;
+    }).join('');
+    if (filtrados.length > top.length) {
+      drop.innerHTML += `<div class="px-3 py-1.5 text-[10px] text-slate-400 text-center bg-slate-50">Mostrando 30 de ${filtrados.length} · refine a busca</div>`;
+    }
+  }
+  drop.classList.remove('hidden');
+}
+
+// Commit da troca: atualiza codigo/nome/marca/tipo do pedido e re-renderiza.
+function trocarProdutoSelecionar(id, codigo, nome, marca, tipo) {
+  const p = PEDIDOS.find(x => x.id === id);
+  if (!p) return;
+  const codNum = parseInt(codigo, 10);
+  p.codigo = isNaN(codNum) ? codigo : codNum;
+  p.nome   = nome || '';
+  p.marca  = marca || '';
+  p.tipo   = (tipo === 'Importado') ? 'Importado' : 'Nacional';
+  // Se virou Nacional, limpa modal (só faz sentido em Importado)
+  if (p.tipo === 'Nacional') p.modal = null;
+  salvarPedidos();
+  renderKanban();
 }
 
 function avancarPedido(id) {
@@ -5027,8 +5898,13 @@ function _listaProdutosBuscaveis() {
   }
   if (DADOS && DADOS.catalogo) {
     DADOS.catalogo.forEach(p => {
+      // Pula PSI — já entrou pelo bloco DADOS.produtos acima (com tipo correto).
+      if (p.is_psi) return;
       lista.push({
-        codigo: p.codigo, nome: p.nome, marca: p.marca || '', filial: p.filial || '',
+        // Usa empresa_principal (FX/TELECOM) como filial — desambigua códigos
+        // duplicados entre empresas (ex: 401300035 = DECO S7 LOCAL na FX + ER7206 na TELECOM).
+        codigo: p.codigo, nome: p.nome, marca: p.marca || '',
+        filial: p.empresa_principal || p.filial || '',
         tipo: 'Nacional', origem: 'catalogo',
       });
     });
@@ -5107,9 +5983,14 @@ function abrirModalNovoPedido() {
   document.getElementById('np-proc').value = '';
   document.getElementById('np-modal').value = '';
   document.getElementById('np-info').classList.add('hidden');
+  // Reset campos novos: valor unitário + moeda + total
+  const npVal = document.getElementById('np-valor-unit'); if (npVal) npVal.value = '';
+  const npMoeda = document.getElementById('np-moeda');     if (npMoeda) npMoeda.value = 'BRL';
+  const npTotal = document.getElementById('np-valor-total'); if (npTotal) npTotal.classList.add('hidden');
   document.getElementById('np-tipo').value = 'Importado';
   npTipoChange();
   npDataChange();
+  if (typeof npPopularProcessos === 'function') npPopularProcessos();
   document.getElementById('modal-novo-pedido').classList.remove('hidden');
   setTimeout(() => document.getElementById('np-produto-busca').focus(), 50);
 }
@@ -5118,6 +5999,43 @@ function abrirModalNovoPedido() {
 function abrirModalNovoPedidoComProduto(codigo, nome) {
   abrirModalNovoPedido();
   npSelecionarProduto(codigo, nome, '', 'Nacional');
+  setTimeout(() => document.getElementById('np-qty').focus(), 80);
+}
+
+// Duplica um pedido existente: abre o modal Novo Pedido com TODOS os campos
+// pré-preenchidos com base no original. Usuário ajusta o que quiser e confirma.
+function duplicarPedido(id) {
+  const original = PEDIDOS.find(p => p.id === id);
+  if (!original) return;
+  abrirModalNovoPedido();
+  // Produto
+  document.getElementById('np-produto-busca').value  = original.nome || '';
+  document.getElementById('np-produto-codigo').value = original.codigo || '';
+  document.getElementById('np-produto-nome').value   = original.nome || '';
+  document.getElementById('np-produto-marca').value  = original.marca || '';
+  document.getElementById('np-produto-tipo').value   = original.tipo || 'Nacional';
+  document.getElementById('np-tipo').value           = original.tipo || 'Nacional';
+  // Quantidade
+  document.getElementById('np-qty').value = original.qtd || '';
+  // Data + semana
+  const semOrig  = original.semana || (SEMANA_ATUAL + 4);
+  const dataOrig = original.data || semanaToDataISO(semOrig);
+  const npData = document.getElementById('np-data');
+  if (npData._flatpickr) npData._flatpickr.setDate(dataOrig, false);
+  else npData.value = dataOrig;
+  document.getElementById('np-sem').value = semOrig;
+  // Processo + modal
+  document.getElementById('np-proc').value = original.processo || '';
+  document.getElementById('np-modal').value = original.modal || '';
+  // Valor unitário + moeda
+  const npVal = document.getElementById('np-valor-unit');
+  if (npVal && original.valor_unitario) npVal.value = original.valor_unitario;
+  const npMoeda = document.getElementById('np-moeda');
+  if (npMoeda && original.moeda) npMoeda.value = original.moeda;
+  // Aplica visibilidade condicional (Modal só pra Importado) e info da semana
+  npTipoChange();
+  npDataChange();
+  // Foca na quantidade — campo mais provável de querer ajustar ao duplicar
   setTimeout(() => document.getElementById('np-qty').focus(), 80);
 }
 
@@ -5162,6 +6080,66 @@ function fecharModalNovoPedido() {
   document.getElementById('modal-novo-pedido').classList.add('hidden');
 }
 
+// Formata um valor numérico como moeda (BRL ou USD)
+function _fmtMoeda(valor, moeda) {
+  if (valor == null || isNaN(valor)) return '—';
+  if (moeda === 'USD') {
+    return 'US$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+  }
+  return 'R$ ' + valor.toLocaleString('pt-BR', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+// Normaliza nº processo: trim + uppercase + colapsa espaços
+// Evita duplicações tipo "015.2026 vsc" vs "015.2026 VSC"
+function _normalizarProcesso(s) {
+  if (!s) return '';
+  return String(s).trim().toUpperCase().replace(/\s+/g, ' ');
+}
+
+// Formata processo importado no padrão NNN.NNNN VSC
+// Aceita variações como "0152026 VSC", "015.2026vsc", "015 2026", "0152026" e padroniza.
+// Se NÃO conseguir extrair 7 dígitos, retorna a string normalizada (uppercase + trim).
+function _formatarProcessoImp(s) {
+  if (!s) return '';
+  const norm = _normalizarProcesso(s);
+  // Extrai só os dígitos
+  const digitos = (norm.match(/\d+/g) || []).join('');
+  if (digitos.length !== 7) return norm; // não é o padrão — deixa como veio (sem quebrar)
+  // Procura sufixo (VSC ou qualquer outro)
+  const sufixoMatch = norm.match(/[A-Z]{2,}$/);
+  const sufixo = sufixoMatch ? sufixoMatch[0] : 'VSC';
+  return `${digitos.slice(0,3)}.${digitos.slice(3)} ${sufixo}`;
+}
+
+// Aplica o formato apropriado baseado no tipo do pedido (Importado vs Nacional)
+function _formatarProcesso(s, tipo) {
+  if (!s) return '';
+  return (tipo === 'Importado') ? _formatarProcessoImp(s) : _normalizarProcesso(s);
+}
+
+// Atualiza o "Total" exibido ao vivo no modal Novo Pedido
+function npAtualizarValorTotal() {
+  const qty = parseInt(document.getElementById('np-qty')?.value) || 0;
+  const unit = parseFloat(document.getElementById('np-valor-unit')?.value) || 0;
+  const moeda = document.getElementById('np-moeda')?.value || 'BRL';
+  const wrap = document.getElementById('np-valor-total');
+  const txt = document.getElementById('np-valor-total-txt');
+  if (unit > 0 && qty > 0) {
+    txt.textContent = _fmtMoeda(unit * qty, moeda) + ` (${qty.toLocaleString('pt-BR')} un × ${_fmtMoeda(unit, moeda)})`;
+    wrap.classList.remove('hidden');
+  } else {
+    wrap.classList.add('hidden');
+  }
+}
+
+// Popula a datalist do nº processo com processos já usados (autocomplete)
+function npPopularProcessos() {
+  const dl = document.getElementById('np-proc-sugestoes');
+  if (!dl || !window.PEDIDOS) return;
+  const procs = [...new Set(PEDIDOS.map(p => p.processo).filter(Boolean))].sort();
+  dl.innerHTML = procs.map(p => `<option value="${p}">`).join('');
+}
+
 function confirmarModalNovoPedido() {
   const codigo = document.getElementById('np-produto-codigo').value;
   const nome   = document.getElementById('np-produto-nome').value;
@@ -5171,8 +6149,10 @@ function confirmarModalNovoPedido() {
   const dataISO = document.getElementById('np-data').value;
   const sem     = dataISO ? dataISOToSemana(dataISO) : parseInt(document.getElementById('np-sem').value) || 0;
   const tipo    = document.getElementById('np-tipo').value;
-  const proc    = document.getElementById('np-proc').value.trim();
+  const proc    = _formatarProcesso(document.getElementById('np-proc').value, tipo);
   const modal   = document.getElementById('np-modal').value;
+  const valorUnit = parseFloat(document.getElementById('np-valor-unit')?.value) || 0;
+  const moeda     = document.getElementById('np-moeda')?.value || 'BRL';
   if (!qty || !sem) { alert('Preencha quantidade e data de chegada.'); return; }
   PEDIDOS.push({
     nome,
@@ -5185,6 +6165,8 @@ function confirmarModalNovoPedido() {
     origem:   'Avulso',
     processo: proc || undefined,
     modal:    (tipo === 'Importado' && modal) ? modal : null,
+    valor_unitario: valorUnit > 0 ? valorUnit : null,
+    moeda:    valorUnit > 0 ? moeda : null,
     id:       Date.now(),
     fase:     'pendente',
     pendente_desde: new Date().toISOString(),
@@ -5202,8 +6184,9 @@ function toggleKanbanCard(card) {
 function salvarProcesso(id, valor) {
   const p = PEDIDOS.find(x => x.id === id);
   if (!p) return;
-  p.processo = valor.trim();
+  p.processo = _formatarProcesso(valor, p.tipo) || undefined;
   salvarPedidos();
+  renderKanban(); // re-renderiza pra mostrar o formato padronizado
 }
 
 function salvarQtdPedido(id, valor) {
@@ -5426,6 +6409,24 @@ function _linhaChegada(p) {
     <td class="px-4 py-3 text-slate-500 text-xs truncate">${p.processo || '—'}</td>
     <td class="px-4 py-3 text-center"><span class="sb ${badge.bg} ${badge.text}">${badge.label}</span></td>
   </tr>`;
+}
+
+// Atualiza só o badge "Chegadas" da sidebar (sem renderizar tabelas).
+// Chamada no boot e sempre que PEDIDOS muda (salvarPedidos, setFasePedido, etc).
+function _atualizaBadgeChegadas() {
+  const badgeNav = document.querySelector('[data-view="chegadas"] .bg-amber-500');
+  if (!badgeNav) return;
+  if (!Array.isArray(window.PEDIDOS) || !window.CHEGADAS_FASES_IMPORTADO || !window.CHEGADAS_FASES_NACIONAL) {
+    badgeNav.classList.add('hidden');
+    return;
+  }
+  const ativos = PEDIDOS.filter(p => !_arquivado(p));
+  const total = ativos.filter(p => {
+    const fase = p.fase || 'pendente';
+    return (p.tipo === 'Importado' ? CHEGADAS_FASES_IMPORTADO : CHEGADAS_FASES_NACIONAL).includes(fase);
+  }).length;
+  badgeNav.textContent = total;
+  badgeNav.classList.toggle('hidden', total === 0);
 }
 
 function renderChegadas() {
@@ -6313,8 +7314,16 @@ function propagarFcstMensalParaPSI(p, fcstOverride) {
       else idxFuturos.push(i);
     });
     if (idxFuturos.length === 0) return;
+    // Conta TODAS as semanas futuras do mês (não só as que estão em semanas[]).
+    // Pra meses que estão parcialmente em semanas[] (ex: JAN/27 tem só W53 em
+    // semanas e W54-W57 são projetadas pelo buildProjection), divisor é o
+    // total de semanas futuras do mês inteiro — assim cada semana fica com a
+    // mesma fatia, e o buildProjection (que usa total ÷ range.count) bate.
+    const pastInMonth = r.start <= SEMANA_ATUAL ? (Math.min(SEMANA_ATUAL, r.end) - r.start + 1) : 0;
+    const futureInMonth = r.count - pastInMonth;
+    if (futureInMonth <= 0) return;
     const restante = Math.max(0, total - fcFixo);
-    const perWeek  = Math.round(restante / idxFuturos.length);
+    const perWeek  = Math.round(restante / futureInMonth);
     idxFuturos.forEach(i => { forecast[i] = perWeek; });
   });
 
@@ -6381,6 +7390,13 @@ function _postSync(url, payload) {
   })
   .then(r => {
     if (r.ok) { _atualizaIndicadorSync(true); return true; }
+    // HTTP 409: o servidor rejeitou o payload (ex: anti-wipeout pra POST vazio).
+    // Isso significa "servidor vivo, só recusou esta requisição" — mantém indicador verde.
+    if (r.status === 409) {
+      _atualizaIndicadorSync(true);
+      console.info('Sync rejeitado pelo servidor (esperado pra payload vazio):', url);
+      return false;
+    }
     _atualizaIndicadorSync(false);
     console.warn('Sync falhou:', url, 'status', r.status);
     return false;
@@ -6451,29 +7467,104 @@ function toggleProdStatus(codigo) {
   renderProdutos();
 }
 
-function populatePSIDropdown() {
+// Popula o dropdown da aba PSI com universo PSI + Catálogo (não-PSI).
+// Filtros: Marca e Busca (cód/nome). Quando viaPreservaSelecionado=true, mantém a
+// seleção atual se ela ainda estiver no resultado filtrado.
+// values: índice numérico (produtos PSI) ou "cat-<codigo>" (catálogo sem forecast).
+function populatePSIDropdown(preservaSelecionado = false) {
   if (!DADOS) return;
   const selPSI = document.getElementById('psi-produto');
   if (!selPSI) return;
-  const prods = DADOS.produtos;
+
+  const prodsPSI  = DADOS.produtos || [];
+  const catNaoPSI = (DADOS.catalogo || []).filter(c => !c.is_psi);
+
+  // Popula filtro Marca (uma vez, ou quando mudou universo)
+  const selMarca = document.getElementById('psi-f-marca');
+  if (selMarca && selMarca.options.length <= 1) {
+    const marcas = new Set();
+    prodsPSI.forEach(p => { if (p.marca) marcas.add(p.marca); });
+    catNaoPSI.forEach(c => { if (c.marca) marcas.add(c.marca); });
+    [...marcas].sort((a, b) => a.localeCompare(b, 'pt-BR')).forEach(m => {
+      const o = document.createElement('option'); o.value = m; o.textContent = m; selMarca.appendChild(o);
+    });
+  }
+
+  const fMarca = (selMarca?.value || '').trim();
+  const fBusca = (document.getElementById('psi-f-busca')?.value || '').trim().toLowerCase();
   const selecionado = selPSI.value;
+
+  // Universo unificado [{ value, nome, marca, codigo, origem }]
+  const universo = [];
+  prodsPSI.forEach((p, i) => {
+    if (!PSI_PRODUCTS[String(i)]) return;                // sem dataset PSI
+    if (getProdStatus(p.codigo) === 'inativo') return;   // inativado pelo usuário
+    universo.push({
+      value: String(i),
+      nome: p.nome || '',
+      marca: p.marca || '',
+      codigo: p.codigo,
+      origem: 'psi',
+    });
+  });
+  catNaoPSI.forEach(c => {
+    if (c.codigo == null) return;
+    if (getProdStatus(c.codigo) === 'inativo') return;   // respeita inativação feita na aba Catálogo
+    universo.push({
+      value: 'cat-' + c.codigo,
+      nome: c.nome || '',
+      marca: c.marca || '',
+      codigo: c.codigo,
+      origem: 'cat',
+    });
+  });
+
+  // Aplica filtros
+  const filtrados = universo.filter(p => {
+    if (fMarca && p.marca !== fMarca) return false;
+    if (fBusca) {
+      const blob = (String(p.codigo) + '|' + p.nome + '|' + p.marca).toLowerCase();
+      if (!blob.includes(fBusca)) return false;
+    }
+    return true;
+  });
+
+  // Agrupa por marca; dentro de cada marca: PSI primeiro (ordem alfabética) depois Catálogo (alfabético)
   selPSI.innerHTML = '';
-  const marcas = [...new Set(prods.map(p => p.marca))].sort();
+  const marcas = [...new Set(filtrados.map(p => p.marca))].sort((a, b) => a.localeCompare(b, 'pt-BR'));
   marcas.forEach(marca => {
+    const itens = filtrados.filter(p => p.marca === marca);
+    const psiItens = itens.filter(p => p.origem === 'psi').sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+    const catItens = itens.filter(p => p.origem === 'cat').sort((a, b) => a.nome.localeCompare(b.nome, 'pt-BR'));
+    if (psiItens.length === 0 && catItens.length === 0) return;
     const group = document.createElement('optgroup');
-    group.label = '── ' + marca + ' ──';
-    prods.forEach((p, i) => {
-      if (p.marca !== marca) return;
-      if (!PSI_PRODUCTS[String(i)]) return;
-      if (getProdStatus(p.codigo) === 'inativo') return;
+    group.label = '── ' + (marca || '(sem marca)') + ' ──';
+    psiItens.forEach(p => {
       const opt = document.createElement('option');
-      opt.value = String(i);
+      opt.value = p.value;
       opt.textContent = p.nome;
       group.appendChild(opt);
     });
-    if (group.children.length > 0) selPSI.appendChild(group);
+    catItens.forEach(p => {
+      const opt = document.createElement('option');
+      opt.value = p.value;
+      opt.textContent = '○ ' + p.nome + '  (sem fcst)';
+      opt.style.color = '#94a3b8';
+      group.appendChild(opt);
+    });
+    selPSI.appendChild(group);
   });
-  // Se o produto selecionado foi inativado, volta para o primeiro disponível e re-renderiza PSI
+
+  // Mostra contador discreto se algum filtro estiver ativo
+  if ((fMarca || fBusca) && selPSI.options.length === 0) {
+    const opt = document.createElement('option');
+    opt.value = '';
+    opt.textContent = '— Nenhum produto bate com o filtro —';
+    opt.disabled = true;
+    selPSI.appendChild(opt);
+  }
+
+  // Se o produto selecionado foi inativado/filtrado, volta para o primeiro disponível
   const ainda = [...selPSI.options].some(o => o.value === selecionado);
   if (selecionado && !ainda) {
     if (selPSI.options.length > 0) selPSI.selectedIndex = 0;
@@ -6486,6 +7577,7 @@ function populatePSIDropdown() {
 function reconstruirPlanProducts() {
   if (!DADOS) return;
   populatePSIDropdown();
+  popularCoberturaReal(); // status mudou → repopula Cobertura (inativos saem/voltam)
   const ativos = DADOS.produtos.filter(p => getProdStatus(p.codigo) === 'forecast');
   PLAN_PRODUCTS = ativos.map(p => ({
     nome:        p.nome,
@@ -6568,61 +7660,85 @@ function popularProdFiltros() {
   });
 }
 
-// ===== CATÁLOGO — produtos do ESTOQUE SENIOR sem forecast no PSI =====
+// ===== CATÁLOGO — TODOS os produtos do Sênior (PSI + não-PSI) =====
+// Renderiza direto do DADOS.catalogo (já carregado em memória) — independente de Excel.
+// Cada item traz is_psi=true se está cadastrado na aba Produtos/PSI.
 function renderCatalogo() {
   if (!DADOS || !DADOS.catalogo) {
     document.getElementById('cat-tbody').innerHTML =
-      '<tr><td colspan="6" class="px-4 py-8 text-center text-slate-400 text-sm">Sincronize o PSI para carregar o catálogo</td></tr>';
+      '<tr><td colspan="6" class="px-4 py-8 text-center text-slate-400 text-sm">Catálogo vazio. Sincronize o PSI pra popular.</td></tr>';
     document.getElementById('cat-count').textContent = '—';
     return;
   }
   const busca = (document.getElementById('cat-busca')?.value || '').trim().toLowerCase();
-  const tudo = DADOS.catalogo;
-  const filtrados = busca
-    ? tudo.filter(p =>
-        String(p.codigo).toLowerCase().includes(busca) ||
-        (p.nome || '').toLowerCase().includes(busca) ||
-        (p.marca || '').toLowerCase().includes(busca))
-    : tudo;
+  const tipo  = document.getElementById('cat-filtro-tipo')?.value || 'todos';
+  const tudo  = DADOS.catalogo;
+
+  const filtrados = tudo.filter(p => {
+    const isInativo = (typeof getProdStatus === 'function') && getProdStatus(p.codigo) === 'inativo';
+    if (tipo === 'psi'      && !p.is_psi) return false;
+    if (tipo === 'naopsi'   &&  p.is_psi) return false;
+    if (tipo === 'inativos' && !isInativo) return false;
+    // Esconde inativos quando o filtro NÃO é 'inativos' (limpa a visão padrão)
+    if (tipo !== 'inativos' && isInativo) return false;
+    if (!busca) return true;
+    return String(p.codigo).toLowerCase().includes(busca) ||
+           (p.nome  || '').toLowerCase().includes(busca) ||
+           (p.marca || '').toLowerCase().includes(busca);
+  });
 
   const tbody = document.getElementById('cat-tbody');
-  // Conta códigos duplicados pra mostrar tag de filial só quando necessário
-  const codCount = {};
-  filtrados.forEach(p => { codCount[p.codigo] = (codCount[p.codigo] || 0) + 1; });
   if (filtrados.length === 0) {
     tbody.innerHTML = '<tr><td colspan="6" class="px-4 py-8 text-center text-slate-400 text-sm">Nenhum produto encontrado</td></tr>';
   } else {
     tbody.innerHTML = filtrados.map(p => {
+      const isInativo = (typeof getProdStatus === 'function') && getProdStatus(p.codigo) === 'inativo';
       const corSaldo = (p.saldo_atual || 0) > 0 ? 'text-emerald-600 font-semibold' : 'text-slate-400';
-      const precoTxt = p.preco_medio ? p.preco_medio.toLocaleString('pt-BR', {style:'currency', currency:'BRL'}) : '—';
-      const codStr = String(p.codigo).replace(/'/g, "&#39;");
-      const nomeStr = (p.nome || '').replace(/'/g, "&#39;").replace(/"/g, '&quot;');
-      const tagFilial = (codCount[p.codigo] > 1 && p.filial)
-        ? `<span class="ml-2 text-[10px] bg-amber-100 text-amber-700 px-1.5 py-0.5 rounded">${p.filial}</span>` : '';
       const marcaTxt = p.marca
         ? `<span class="text-xs text-slate-600">${p.marca}</span>`
         : `<span class="text-xs text-slate-300 italic">—</span>`;
+      const tagTipo = isInativo
+        ? `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold bg-slate-200 text-slate-500" title="Inativo — escondido das abas PSI e Giro">INATIVO</span>`
+        : p.is_psi
+          ? `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-semibold bg-blue-50 text-blue-700" title="Produto PSI — tem forecast. Editar pela aba Produtos.">PSI</span>`
+          : `<span class="inline-block px-1.5 py-0.5 rounded text-[10px] font-medium bg-slate-100 text-slate-500" title="Sem forecast — use Novo Pedido pra criar processo de compra.">—</span>`;
+      const rowBg = isInativo ? 'bg-slate-50 opacity-60' : (p.is_psi ? 'bg-blue-50/30' : '');
+      // Botão: inativar (✕) ou restaurar (↩)
+      const codEsc = JSON.stringify(p.codigo);
+      const acaoHtml = isInativo
+        ? `<button onclick="toggleCatStatus(${codEsc}, 'forecast')" title="Restaurar" class="text-slate-300 hover:text-emerald-600 transition-colors text-base leading-none">↩</button>`
+        : `<button onclick="toggleCatStatus(${codEsc}, 'inativo')" title="Inativar produto (some das abas PSI e Giro)" class="text-slate-300 hover:text-red-400 transition-colors text-base leading-none">✕</button>`;
       return `
-        <tr class="border-b border-slate-100 hover:bg-slate-50">
+        <tr class="border-b border-slate-100 hover:bg-slate-50 ${rowBg}">
           <td class="px-4 py-3 text-slate-500 text-xs font-mono">${p.codigo}</td>
-          <td class="px-4 py-3 text-slate-700 text-sm">${p.nome}${tagFilial}</td>
+          <td class="px-4 py-3 text-slate-700 text-sm">${p.nome}</td>
           <td class="px-4 py-3">${marcaTxt}</td>
+          <td class="px-4 py-3 text-center">${tagTipo}</td>
           <td class="px-4 py-3 text-right text-sm ${corSaldo}">${(p.saldo_atual||0).toLocaleString('pt-BR')}</td>
-          <td class="px-4 py-3 text-right text-slate-500 text-xs">${precoTxt}</td>
-          <td class="px-4 py-3 text-center">
-            <button onclick="abrirModalNovoPedidoComProduto('${codStr}','${nomeStr}')"
-              class="text-xs px-2 py-1 border border-blue-200 text-blue-600 rounded hover:bg-blue-50 transition-colors">
-              + Pedido
-            </button>
-          </td>
+          <td class="px-4 py-3 text-center">${acaoHtml}</td>
         </tr>`;
     }).join('');
   }
+  const psi = tudo.filter(p => p.is_psi).length;
+  const inativos = (typeof getProdStatus === 'function')
+    ? tudo.filter(p => getProdStatus(p.codigo) === 'inativo').length : 0;
   document.getElementById('cat-count').textContent =
-    `${filtrados.length.toLocaleString('pt-BR')} de ${tudo.length.toLocaleString('pt-BR')} produtos`;
+    `${filtrados.length.toLocaleString('pt-BR')} de ${tudo.length.toLocaleString('pt-BR')} produtos (${psi} PSI · ${tudo.length - psi} não-PSI · ${inativos} inativos)`;
   // Atualiza badge no nav
   const navCount = document.getElementById('nav-catalogo-count');
   if (navCount) navCount.textContent = tudo.length.toLocaleString('pt-BR');
+}
+
+// Inativa/restaura um produto pela aba Catálogo. Atualiza status + repopula PSI/Giro/Cobertura.
+function toggleCatStatus(codigo, novoStatus) {
+  if (typeof setProdStatus !== 'function') return;
+  setProdStatus(codigo, novoStatus);
+  if (typeof reconstruirPlanProducts === 'function') reconstruirPlanProducts();
+  if (typeof popularCoberturaReal === 'function') popularCoberturaReal();
+  renderCatalogo();
+  // Re-renderiza Giro/Cobertura se estiverem visíveis
+  if (document.getElementById('view-giro')?.classList.contains('active') && typeof renderGiro === 'function') renderGiro();
+  if (document.getElementById('view-cobertura')?.classList.contains('active') && typeof renderCobertura === 'function') renderCobertura();
 }
 
 // ===== LINHA DO TEMPO — acompanhamento visual dos processos de compra importados =====
@@ -6641,25 +7757,25 @@ const TIMELINE_ETAPAS = [
 // COLUNAS VISUAIS da timeline: Pedido+Pagamento dividem a 1ª coluna (office).
 // Larguras em % do viewBox — devem bater com as zonas desenhadas no SVG.
 const TL_COLUNAS = [
-  { id: 'office',   etapas: ['pedido', 'pagamento'],      xStart: 0,   xEnd: 14  },
-  { id: 'producao', etapas: ['producao'],                 xStart: 14,  xEnd: 32  },
-  { id: 'embarque', etapas: ['pagamento2', 'embarque'],   xStart: 32,  xEnd: 48  },
-  { id: 'transito', etapas: ['transito'],                 xStart: 48,  xEnd: 64  },
-  { id: 'porto',    etapas: ['porto'],                    xStart: 64,  xEnd: 82  },
-  { id: 'estoque',  etapas: ['estoque'],                  xStart: 82,  xEnd: 100 },
+  { id: 'office',   etapas: ['pedido', 'pagamento'],         xStart: 0,   xEnd: 14  },
+  { id: 'producao', etapas: ['producao'],                    xStart: 14,  xEnd: 32  },  // inspecao agrupado em 'producao' via FASE_MAP
+  { id: 'embarque', etapas: ['pagamento2', 'embarque'],      xStart: 32,  xEnd: 48  },
+  { id: 'transito', etapas: ['transito'],                    xStart: 48,  xEnd: 64  },
+  { id: 'porto',    etapas: ['numerario', 'porto'],          xStart: 64,  xEnd: 82  },  // numerario agora aparece JUNTO com porto
+  { id: 'estoque',  etapas: ['recebido', 'estoque'],         xStart: 82,  xEnd: 100 },  // recebido tem cor própria pra distinguir
 ];
 // Mapeia fase interna do Kanban -> id da etapa pública
 const TIMELINE_FASE_MAP = {
   pendente:  'pedido',
   pago1:     'pagamento',
   producao:  'producao',
-  inspecao:  'producao',
-  pago2:     'pagamento2',   // Aguardando pagamento 2 → cor própria na coluna embarque
+  inspecao:  'producao',     // INSPEÇÃO agrupada com PRODUÇÃO
+  pago2:     'pagamento2',
   embarque:  'embarque',
   transito:  'transito',
-  numerario: 'transito',
+  numerario: 'numerario',    // NUMERÁRIO agora tem etapa própria (cor distinta), na coluna PORTO
   porto:     'porto',
-  recebido:  'estoque',
+  recebido:  'recebido',     // RECEBIDO ganha cor própria, na coluna ESTOQUE
   estoque:   'estoque',
 };
 function _etapaTimeline(fase) { return TIMELINE_FASE_MAP[fase] || 'pedido'; }
@@ -6727,7 +7843,9 @@ const TL_COR_CARD = {
   pagamento2: { bg: 'bg-amber-500/85',   border: 'border-amber-300/60',   text: 'text-white' },
   embarque:   { bg: 'bg-orange-500/85',  border: 'border-orange-300/60',  text: 'text-white' },
   transito:   { bg: 'bg-cyan-500/85',    border: 'border-cyan-300/60',    text: 'text-white' },
+  numerario:  { bg: 'bg-teal-400/85',    border: 'border-teal-200/60',    text: 'text-white' },  // mais claro que porto
   porto:      { bg: 'bg-teal-500/85',    border: 'border-teal-300/60',    text: 'text-white' },
+  recebido:   { bg: 'bg-lime-500/85',    border: 'border-lime-300/60',    text: 'text-white' },   // entre porto (teal) e estoque (emerald)
   estoque:    { bg: 'bg-emerald-500/85', border: 'border-emerald-300/60', text: 'text-white' },
 };
 
@@ -6781,6 +7899,7 @@ function renderTimeline() {
         nomeTL = (p.nome || '')
           .replace(/\bASPIRADOR\b/gi, '')
           .replace(/\bINTELIGENTE\b/gi, '')
+          .replace(/\bVELDS\b/gi, '')
           .replace(/\bLASER\b/gi, '')
           .replace(/\bDUST BIN\b/gi, '')
           .replace(/\bDE\s+PO\b/gi, '')
@@ -6793,7 +7912,12 @@ function renderTimeline() {
       // Aviso de pagamento atrasado (>7 dias em pago1 — Aguardando pagamento 1) — triângulo ⚠ ao lado do processo
       const _atrasoPgto = p.fase === 'pago1' && p.pago_desde && _diasDesde(p.pago_desde) > DIAS_VISIVEL_PAGAMENTO;
       const _icAtraso = _atrasoPgto ? ` <span style="color:#fde047" title="Pagamento atrasado há mais de 7 dias">⚠</span>` : '';
-      const tooltip = `${p.nome}\n${p.marca ? p.marca + ' · ' : ''}${(p.qtd || 0).toLocaleString('pt-BR')} un\nChegada: ${dataFmt} · W${p.semana}${p.mes ? ' · ' + p.mes : ''}${p.processo ? '\nProc: ' + p.processo : ''}${_atrasoPgto ? '\n⚠ Pagamento atrasado há mais de 7 dias' : ''}`;
+      // Valor total: aparece no canto inferior direito (alinhado abaixo da tag de unidades)
+      const _valorBadge = (p.valor_unitario && p.qtd)
+        ? `<span class="shrink-0 text-[9.5px] font-semibold opacity-95 whitespace-nowrap">${_fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL')}</span>`
+        : '';
+      const _valorTip = (p.valor_unitario && p.qtd) ? `\nTotal: ${_fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL')}` : '';
+      const tooltip = `${p.nome}\n${p.marca ? p.marca + ' · ' : ''}${(p.qtd || 0).toLocaleString('pt-BR')} un\nChegada: ${dataFmt} · W${p.semana}${p.mes ? ' · ' + p.mes : ''}${p.processo ? '\nProc: ' + p.processo : ''}${_valorTip}${_atrasoPgto ? '\n⚠ Pagamento atrasado há mais de 7 dias' : ''}`;
       return `
         <div class="${cor.bg} ${cor.border} ${cor.text} border rounded-md shadow-md px-2 py-1.5 leading-snug" title="${tooltip.replace(/"/g, '&quot;')}">
           <div class="flex items-start justify-between gap-1.5">
@@ -6801,9 +7925,38 @@ function renderTimeline() {
             <span class="shrink-0 text-[9px] font-bold bg-white/25 rounded px-1.5 py-0.5 whitespace-nowrap">${(p.qtd || 0).toLocaleString('pt-BR')} un</span>
           </div>
           <div class="text-[9.5px] opacity-90 mt-1"><span class="opacity-70">Prev. de Chegada:</span> ${dataFmt} · W${p.semana}</div>
-          <div class="text-[9.5px] opacity-75">${p.processo ? 'Proc ' + p.processo : 's/ processo'}${_icAtraso}</div>
+          <div class="flex items-end justify-between gap-1.5">
+            <div class="text-[9.5px] opacity-75">${p.processo ? 'Proc ' + p.processo : 's/ processo'}${_icAtraso}</div>
+            ${_valorBadge}
+          </div>
         </div>`;
     }).join('');
+  });
+
+  // ===== TOTALIZADORES no rodapé de cada coluna =====
+  // Soma unidades + valor (BRL e USD separados) pra cada coluna agregando suas etapas.
+  TL_COLUNAS.forEach(col => {
+    const destino = document.getElementById('tl-tot-' + col.id);
+    if (!destino) return;
+    let unidades = 0, valorBRL = 0, valorUSD = 0;
+    col.etapas.forEach(eid => {
+      (porEtapa[eid] || []).forEach(p => {
+        unidades += (p.qtd || 0);
+        if (p.valor_unitario && p.qtd) {
+          const total = p.valor_unitario * p.qtd;
+          if ((p.moeda || 'BRL') === 'USD') valorUSD += total;
+          else valorBRL += total;
+        }
+      });
+    });
+    if (unidades === 0) {
+      destino.innerHTML = '—';
+      return;
+    }
+    const partes = [`${unidades.toLocaleString('pt-BR')} un`];
+    if (valorBRL > 0) partes.push(_fmtMoeda(valorBRL, 'BRL'));
+    if (valorUSD > 0) partes.push(_fmtMoeda(valorUSD, 'USD'));
+    destino.innerHTML = partes.join(' · ');
   });
 }
 
@@ -6851,6 +8004,8 @@ function renderTimelineNac() {
       const nomeTL = (p.nome || '')
         .replace(/^Switch\s+Smart\s+Gigabit\b.*\b(SG\d+[A-Z]*)\b.*$/i, 'SWITCH $1')
         .replace(/^Switch\s+Gerenci\S*vel\s+Gigabit.*?(\d+)\s+portas?.*?(SG\d+[A-Z]*).*$/i, 'SWITCH TP LINK $1P - $2')
+        .replace(/^Switch\s+(?:de\s+Mesa|Easy)\b.*?\b(TL[-\s]?[A-Z0-9]+)\b.*$/i, 'SWITCH - $1')
+        .replace(/^Switch\b.*?\bde\s+\d+\s+Portas?\b.*?\bPOE\+?.*?\b(SG\d+[A-Z]*)\b.*$/i, 'SWITCH POE+ $1')
         .replace(/^SWITCH\s+N.O\s+GER\.?.*?\b(TL[A-Z0-9]+)\b.*$/i, 'SWITCH TP LINK - $1')
         .replace(/^Omada\s+(\d+)-Port\b.*?\b(SG\d+[A-Z]*)\b.*$/i, 'SWITCH $1P - $2')
         .replace(/^.*?\b(EAP\d{3,}[A-Z]*)\b(\s*OUTDOOR\b)?.*$/i, 'TP LINK - $1$2')
@@ -6858,8 +8013,16 @@ function renderTimelineNac() {
         .replace(/\bWI[-\s]?FI\b/gi, '')
         .replace(/\bACCESS\s+POINT\b/gi, '')
         .replace(/\b(VPN\s+)?LINHA\s+OMADA\b/gi, '')
+        .replace(/\bAX3000\b/gi, '')
+        .replace(/\bGIGABIT\b/gi, '')
+        .replace(/\bSMART\b/gi, '')
+        .replace(/\s+-\s+(?=\S)/g, ' ')
         .replace(/\s{2,}/g, ' ').trim();
-      const tooltip = `${p.nome}\n${p.marca ? p.marca + ' · ' : ''}${(p.qtd || 0).toLocaleString('pt-BR')} un\nChegada: ${dataFmt} · W${p.semana}${p.mes ? ' · ' + p.mes : ''}${p.processo ? '\nProc: ' + p.processo : ''}`;
+      const _valorBadge = (p.valor_unitario && p.qtd)
+        ? `<span class="shrink-0 text-[9.5px] font-semibold opacity-95 whitespace-nowrap">${_fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL')}</span>`
+        : '';
+      const _valorTip = (p.valor_unitario && p.qtd) ? `\nTotal: ${_fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL')}` : '';
+      const tooltip = `${p.nome}\n${p.marca ? p.marca + ' · ' : ''}${(p.qtd || 0).toLocaleString('pt-BR')} un\nChegada: ${dataFmt} · W${p.semana}${p.mes ? ' · ' + p.mes : ''}${p.processo ? '\nProc: ' + p.processo : ''}${_valorTip}`;
       return `
         <div class="${cor.bg} ${cor.border} ${cor.text} border rounded-md shadow-md px-2 py-1.5 leading-snug" title="${tooltip.replace(/"/g, '&quot;')}">
           <div class="flex items-start justify-between gap-1.5">
@@ -6867,9 +8030,34 @@ function renderTimelineNac() {
             <span class="shrink-0 text-[9px] font-bold bg-white/25 rounded px-1.5 py-0.5 whitespace-nowrap">${(p.qtd || 0).toLocaleString('pt-BR')} un</span>
           </div>
           <div class="text-[9.5px] opacity-90 mt-1"><span class="opacity-70">Prev. de Chegada:</span> ${dataFmt} · W${p.semana}</div>
-          <div class="text-[9.5px] opacity-75">${p.processo ? 'Proc ' + p.processo : 's/ processo'}</div>
+          <div class="flex items-end justify-between gap-1.5">
+            <div class="text-[9.5px] opacity-75">${p.processo ? 'Proc ' + p.processo : 's/ processo'}</div>
+            ${_valorBadge}
+          </div>
         </div>`;
     }).join('');
+  });
+
+  // Totalizadores no rodapé das colunas Nacional (un · valor)
+  TL_COLUNAS_NAC.forEach(col => {
+    const destino = document.getElementById('tln-tot-' + col.id);
+    if (!destino) return;
+    let unidades = 0, valorBRL = 0, valorUSD = 0;
+    col.etapas.forEach(eid => {
+      (porEtapa[eid] || []).forEach(p => {
+        unidades += (p.qtd || 0);
+        if (p.valor_unitario && p.qtd) {
+          const total = p.valor_unitario * p.qtd;
+          if ((p.moeda || 'BRL') === 'USD') valorUSD += total;
+          else valorBRL += total;
+        }
+      });
+    });
+    if (unidades === 0) { destino.innerHTML = '—'; return; }
+    const partes = [`${unidades.toLocaleString('pt-BR')} un`];
+    if (valorBRL > 0) partes.push(_fmtMoeda(valorBRL, 'BRL'));
+    if (valorUSD > 0) partes.push(_fmtMoeda(valorUSD, 'USD'));
+    destino.innerHTML = partes.join(' · ');
   });
 }
 
@@ -7235,11 +8423,18 @@ async function carregarDados() {
       console.log(`[MIGRAÇÃO] ${limpou} overrides fantasma de fcst_mensal limpos do localStorage`);
     }
 
+    // IMPORTANTE: SEMANA_ATUAL precisa ser atualizado ANTES de aplicarOverridesEmDados,
+    // porque essa função chama propagarFcstMensalParaPSI que cascateia o saldo a partir
+    // de SEMANA_ATUAL. Se o valor inicial (20) estiver ativo, vai reescrever todas as
+    // semanas passadas com cascade-de-forecast usando saldo_atual novo — quebra o histórico.
+    SEMANA_ATUAL = DADOS.semana_atual || SEMANA_ATUAL;
+
     aplicarOverridesEmDados();
+    _invalidaLookupCodCache?.();  // invalida cache nome→código (DADOS mudou)
 
     const prods = DADOS.produtos;
-    SEMANA_ATUAL = DADOS.semana_atual || SEMANA_ATUAL;
     loadProdutoStatus(); // garante que PRODUTO_STATUS está atualizado
+    popularCoberturaReal(); // Cobertura WOS (substitui mock hardcoded por DADOS.produtos)
 
     // ── Rebuild PLAN_PRODUCTS (apenas Forecast) ──
     PLAN_PRODUCTS = prods.filter(p => getProdStatus(p.codigo) === 'forecast').map(p => ({
@@ -7366,8 +8561,43 @@ async function carregarDados() {
   }
 }
 
+// ===== BOOT: sincronia inicial server → localStorage =====
+// Quando o navegador abre PELA PRIMEIRA VEZ (localStorage vazio), busca os JSONs
+// persistidos no servidor. Isso garante que outros usuários (ex: chefe abrindo o
+// link de apresentação) vejam o Kanban/overrides/status atuais do Douglas, e não
+// uma versão vazia.
+async function _carregarPersistenciaInicial() {
+  // Os JSONs estão na RAIZ do servidor (CloudIA/), e o HTML pode estar em /v3/.
+  // Usa caminho absoluto pra apontar pra raiz independente de onde o HTML carregou.
+  // Se a URL tem ?fresh=1, ignora o localStorage cacheado e sobrescreve com a versão
+  // do servidor (útil pra compartilhar link já atualizado com alguém que tem cache antigo).
+  const forceFresh = new URLSearchParams(window.location.search).get('fresh') === '1';
+  const arquivos = [
+    { key: 'cloudia_pedidos',              url: '/pedidos_kanban.json',    inline: window.__PEDIDOS_INLINE__ },
+    { key: 'cloudia_produto_overrides_v1', url: '/produto_overrides.json', inline: window.__OVERRIDES_INLINE__ },
+    { key: PROD_STATUS_KEY,                url: '/produto_status.json',    inline: window.__STATUS_INLINE__ },
+  ];
+  for (const a of arquivos) {
+    if (!forceFresh && localStorage.getItem(a.key)) continue; // já existe → não sobrescreve
+    // Streamlit Cloud / outros wrappers: dados injetados inline (sem servidor de fetch)
+    if (a.inline !== undefined && a.inline !== null) {
+      localStorage.setItem(a.key, JSON.stringify(a.inline));
+      continue;
+    }
+    try {
+      const resp = await fetch(a.url + '?t=' + Date.now());
+      if (!resp.ok) continue;
+      const data = await resp.json();
+      localStorage.setItem(a.key, JSON.stringify(data));
+    } catch (e) { /* sem servidor — ignora */ }
+  }
+}
+
 // ===== INIT =====
-window.addEventListener('DOMContentLoaded', () => {
+window.addEventListener('DOMContentLoaded', async () => {
+  // Antes de qualquer leitura, popula localStorage com a versão do servidor (se vazio)
+  await _carregarPersistenciaInicial();
+
   try {
     const saved = localStorage.getItem('cloudia_pedidos');
     if (saved) {
@@ -7471,10 +8701,318 @@ window.addEventListener('DOMContentLoaded', () => {
   initScrollDrag();
   renderCobertura();
   atualizarBadgePedidos();
+  _atualizaBadgeChegadas();  // Badge Chegadas (sidebar) — reflete o nº real de pedidos ativos
   renderKanban();
   initFlatpickrCustom();
-  carregarDados();
+  await carregarDados();
+  _iniciarModoView();   // ?view=1 — bloqueia edições (depois do load pra os overrides pegarem)
+  _iniciarModoKiosk();  // ?kiosk=1 — TV (compatível com ?view=1)
 });
+
+// ===== MODO TV/KIOSK =====
+// Ativado via URL: ?kiosk=1
+// Esconde sidebar+header, alterna automaticamente entre Linha do Tempo Importado e
+// Nacional, e recarrega a página periodicamente pra puxar atualizações.
+// Parâmetros opcionais: ?rotate=NN (segundos entre trocas, default 30)
+//                       ?refresh=NN (minutos entre recargas, default 10)
+function _iniciarModoKiosk() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('kiosk') !== '1') return;
+
+  // Renomeia a aba do navegador pra identificar fácil entre várias abas abertas
+  document.title = 'TV — CloudIA PCM';
+
+  const rotateSec  = Math.max(5,  parseInt(p.get('rotate'))  || 45);
+  const refreshMin = Math.max(1,  parseInt(p.get('refresh')) || 10);
+
+  // Marca body — usado em CSS pra esconder/mostrar coisas condicionalmente
+  document.body.classList.add('modo-kiosk');
+
+  // [REVERTIDO 24/06] Barra de filtros volta a ser visível pra manter o botão
+  // "Tela cheia" acessível na TV. Quem incomoda visualmente é só Tela cheia mesmo;
+  // o resto fica como informação.
+
+  // CSS do kiosk: na timeline ativa, sidebar+header somem PRA TELA CHEIA mas
+  // aparecem ao passar o mouse na borda esquerda (slide-in). Tarja MODO VIEW
+  // também some nas timelines (fica feio no fundo verde do prado).
+  const styleK = document.createElement('style');
+  styleK.textContent = `
+    /* Quando timeline ativa em modo kiosk: sidebar foge pra esquerda */
+    body.modo-kiosk:has(#view-timeline.active) #sidebar,
+    body.modo-kiosk:has(#view-timeline-nac.active) #sidebar {
+      position: fixed !important;
+      left: -240px;
+      top: 0;
+      height: 100vh;
+      transition: left 0.25s ease;
+      z-index: 1000;
+    }
+    /* Hover na sidebar (ou no trigger esquerdo) → slide-in */
+    body.modo-kiosk:has(#view-timeline.active) #sidebar:hover,
+    body.modo-kiosk:has(#view-timeline-nac.active) #sidebar:hover,
+    body.modo-kiosk:has(#view-timeline.active) #kiosk-edge-trigger:hover ~ #sidebar,
+    body.modo-kiosk:has(#view-timeline-nac.active) #kiosk-edge-trigger:hover ~ #sidebar {
+      left: 0;
+    }
+    /* Header escondido nas timelines */
+    body.modo-kiosk:has(#view-timeline.active) > div > header,
+    body.modo-kiosk:has(#view-timeline-nac.active) > div > header {
+      display: none !important;
+    }
+    /* Timelines: 100vh menos a barra de filtros (~64px) que volta a aparecer */
+    body.modo-kiosk:has(#view-timeline.active) #tl-cena-wrap,
+    body.modo-kiosk:has(#view-timeline-nac.active) #tl-nac-wrap {
+      height: calc(100vh - 64px) !important;
+    }
+    /* Tarja MODO VIEW escondida em timeline + kiosk (fica feio no fundo verde) */
+    body.modo-view.modo-kiosk:has(#view-timeline.active)::before,
+    body.modo-view.modo-kiosk:has(#view-timeline-nac.active)::before {
+      display: none !important;
+    }
+    body.modo-view.modo-kiosk:has(#view-timeline.active) header,
+    body.modo-view.modo-kiosk:has(#view-timeline-nac.active) header,
+    body.modo-view.modo-kiosk:has(#view-timeline.active) #sidebar,
+    body.modo-view.modo-kiosk:has(#view-timeline-nac.active) #sidebar {
+      margin-top: 0 !important;
+    }
+    /* Trigger fininho na borda esquerda (so visivel quando hover) */
+    #kiosk-edge-trigger {
+      position: fixed; left: 0; top: 0; width: 12px; height: 100vh;
+      z-index: 999; background: transparent; cursor: pointer;
+    }
+    body.modo-kiosk:has(#view-timeline.active) #kiosk-edge-trigger,
+    body.modo-kiosk:has(#view-timeline-nac.active) #kiosk-edge-trigger {
+      display: block;
+    }
+    #kiosk-edge-trigger { display: none; }
+  `;
+  document.head.appendChild(styleK);
+
+  // Trigger fininho à esquerda — aparece quando timeline ativa, abre sidebar no hover
+  const edgeTrigger = document.createElement('div');
+  edgeTrigger.id = 'kiosk-edge-trigger';
+  document.body.insertBefore(edgeTrigger, document.getElementById('sidebar'));
+
+  // Alterna timeline ↔ timeline-nac periodicamente
+  let mostrandoImp = true;
+  navigate('timeline');
+  setInterval(() => {
+    mostrandoImp = !mostrandoImp;
+    navigate(mostrandoImp ? 'timeline' : 'timeline-nac');
+  }, rotateSec * 1000);
+
+  // Refresh DE DADOS a cada N min — SEM recarregar a página (preserva fullscreen).
+  // Atualiza pedidos/overrides/status do servidor e re-renderiza views ativas.
+  // OBS: mudanças no HTML/dados.json (ex: novo deploy) só pegam com F5 manual.
+  async function _kioskRefreshDados() {
+    try {
+      const t = Date.now();
+      const [pedRes, ovRes, stRes] = await Promise.all([
+        fetch('/pedidos_kanban.json?t=' + t),
+        fetch('/produto_overrides.json?t=' + t),
+        fetch('/produto_status.json?t=' + t),
+      ]);
+      if (pedRes.ok) {
+        const newP = await pedRes.json();
+        if (Array.isArray(newP)) {
+          window.PEDIDOS = newP;
+          try { localStorage.setItem('cloudia_pedidos', JSON.stringify(newP)); } catch(_) {}
+        }
+      }
+      if (ovRes.ok) {
+        const newO = await ovRes.json();
+        if (newO && typeof newO === 'object') {
+          window.PRODUTO_OVERRIDES = newO;
+          try { localStorage.setItem('cloudia_produto_overrides_v1', JSON.stringify(newO)); } catch(_) {}
+          if (typeof aplicarOverridesEmDados === 'function') aplicarOverridesEmDados();
+          if (typeof buildPSIProducts === 'function' && window.DADOS && window.DADOS.produtos) {
+            window.PSI_PRODUCTS = buildPSIProducts(window.DADOS.produtos);
+          }
+        }
+      }
+      if (stRes.ok) {
+        const newS = await stRes.json();
+        if (newS && typeof newS === 'object') {
+          window.PRODUTO_STATUS = newS;
+          const key = window.PROD_STATUS_KEY || 'pcm_produto_status_v1';
+          try { localStorage.setItem(key, JSON.stringify(newS)); } catch(_) {}
+        }
+      }
+      // Re-renderiza a view atual (a kiosk fica alternando entre as timelines)
+      if (typeof renderTimeline === 'function') renderTimeline();
+      if (typeof renderTimelineNac === 'function') renderTimelineNac();
+      if (typeof renderKanban === 'function') renderKanban();
+      console.log('[KIOSK] dados atualizados sem reload em', new Date().toLocaleTimeString());
+    } catch (e) {
+      console.warn('[KIOSK] refresh falhou (vai tentar de novo no proximo ciclo):', e);
+    }
+  }
+  setInterval(_kioskRefreshDados, refreshMin * 60 * 1000);
+}
+
+// ===== MODO VISUALIZAÇÃO (read-only) =====
+// Ativado via URL: ?view=1
+// Bloqueia TODA edição — usado pra compartilhar com chefe/clientes/auditoria sem risco
+// de alguém mudar dado por engano. Esconde botões, desabilita inputs, ignora saves.
+function _iniciarModoView() {
+  const p = new URLSearchParams(window.location.search);
+  if (p.get('view') !== '1') return;
+
+  // Renomeia a aba pra identificar fácil (sobrescrevido se kiosk também ativo)
+  document.title = '👁️ Visualização — CloudIA PCM';
+
+  // 1) Marca body pra CSS pegar
+  document.body.classList.add('modo-view');
+
+  // 2) Injeta CSS que esconde/desabilita controles de edição
+  const style = document.createElement('style');
+  style.textContent = `
+    /* Esconde botões de edição/criação/remoção em qualquer view */
+    body.modo-view button[onclick*="abrirModalNovoPedido"],
+    body.modo-view button[onclick*="abrirModalEditarProduto"],
+    body.modo-view button[onclick*="removerPedido"],
+    body.modo-view button[onclick*="avancarPedido"],
+    body.modo-view button[onclick*="voltarPedido"],
+    body.modo-view button[onclick*="adicionarPedidoRow"],
+    body.modo-view button[onclick*="trocarProduto"],
+    body.modo-view button[onclick*="removerPedidoRow"],
+    body.modo-view button[onclick*="limparPedidos"],
+    body.modo-view button[onclick*="setProdStatus"],
+    body.modo-view button[onclick*="abrirModalFcst"],
+    body.modo-view button[onclick*="abrirModalCompra"],
+    body.modo-view button[onclick*="toggleCatStatus"],
+    body.modo-view button[onclick*="salvarEditarProduto"],
+    body.modo-view button[onclick*="duplicarPedido"],
+    body.modo-view button[onclick*="carregarDados"] {
+      display: none !important;
+    }
+    /* Esconde indicador "Servidor OK/offline" — só faz sentido no V3 local com Python server */
+    body.modo-view #header-sync-status,
+    body.modo-view #header-menu-btn,
+    body.modo-view #header-menu {
+      display: none !important;
+    }
+    /* Bloqueia inputs/selects dentro de cards expandidos do Kanban */
+    body.modo-view .kanban-details input,
+    body.modo-view .kanban-details select,
+    body.modo-view .kanban-details textarea {
+      pointer-events: none !important;
+      background-color: #f1f5f9 !important;
+      color: #64748b !important;
+      cursor: not-allowed !important;
+    }
+    /* Esconde modais inteiros — não devem nem abrir em view mode */
+    body.modo-view #modal-novo-pedido,
+    body.modo-view #modal-editar-produto,
+    body.modo-view #modal-fcst-mensal,
+    body.modo-view #modal-chegada {
+      display: none !important;
+    }
+    /* Esconde botão de drag (✕) e troca de fase nos cards */
+    body.modo-view .kanban-card button[title="Remover"],
+    body.modo-view .kanban-card button[title*="Mover para"],
+    body.modo-view .kanban-card button[title*="Voltar para"] {
+      display: none !important;
+    }
+    /* Status badges não devem ser clicáveis (são as bolinhas forecast/monitorar) */
+    body.modo-view [onclick*="prodStatus"],
+    body.modo-view [onclick*="cycleProdStatus"] {
+      pointer-events: none !important;
+      cursor: default !important;
+    }
+    /* Badge visual fixo no topo */
+    body.modo-view::before {
+      content: "👁️ MODO VISUALIZAÇÃO — somente leitura";
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: linear-gradient(90deg, #1e40af, #3b82f6);
+      color: white;
+      font-size: 11px;
+      font-weight: 600;
+      text-align: center;
+      padding: 4px 8px;
+      z-index: 9999;
+      letter-spacing: 0.5px;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.15);
+    }
+    body.modo-view header { margin-top: 22px; }
+    body.modo-view #sidebar { margin-top: 22px; }
+  `;
+  document.head.appendChild(style);
+
+  // 3) Override de todas as funções de save — viram no-op silencioso
+  const noop = () => {};
+  const fnsSave = [
+    'salvarPedidos','salvarValorUnitario','salvarMoedaPedido','salvarProcesso',
+    'salvarQtdPedido','salvarSemanaPedido','salvarModalPedido','salvarDataPedido',
+    'salvarEditarProduto','removerPedido','removerPedidoRow','adicionarPedidoRow',
+    'abrirModalNovoPedido','abrirModalNovoPedidoComProduto','abrirModalEditarProduto',
+    'abrirModalFcstMensal','trocarProdutoFiltrar','trocarProdutoSelecionar',
+    'avancarPedido','voltarPedido','limparPedidos','setProdStatus','cycleProdStatus',
+    'saveProdutoOverridesLS','saveProdutoStatusLS','_postSync',
+    'toggleCatStatus','setFasePedido','npSelecionarProduto','duplicarPedido',
+  ];
+  fnsSave.forEach(fn => {
+    if (typeof window[fn] === 'function') window[fn] = noop;
+  });
+
+  // 4) Bloqueia drag-and-drop:
+  //    a) HTML5 drag genérico
+  document.addEventListener('dragstart', e => e.preventDefault(), true);
+  //    b) SortableJS do Kanban — desabilita todas as instâncias já criadas
+  //    Espera um tick pra initKanban() ter rodado, depois desabilita.
+  setTimeout(() => {
+    document.querySelectorAll('[id^="kanban-cards-"]').forEach(el => {
+      if (el._sortable && typeof el._sortable.option === 'function') {
+        el._sortable.option('disabled', true);
+      }
+    });
+  }, 300);
+  //    c) Re-aplica disable após cada renderKanban (que recria os Sortable)
+  if (typeof window.renderKanban === 'function') {
+    const origRenderKanban = window.renderKanban;
+    window.renderKanban = function(...args) {
+      const r = origRenderKanban.apply(this, args);
+      setTimeout(() => {
+        document.querySelectorAll('[id^="kanban-cards-"]').forEach(el => {
+          if (el._sortable && typeof el._sortable.option === 'function') {
+            el._sortable.option('disabled', true);
+          }
+        });
+      }, 50);
+      return r;
+    };
+  }
+
+  // 5) DESTRAVAR (escondido) — 2 caminhos pra editar mesmo num link view:
+  //    a) Atalho de teclado: Ctrl+Shift+L
+  //    b) 5 cliques num quadradinho invisível no canto superior direito
+  const destrava = () => {
+    if (!confirm('Sair do modo Visualização? (a página vai recarregar em modo edição)')) return;
+    const u = new URL(window.location.href);
+    u.searchParams.delete('view');
+    // Remove fresh tambem — assim F5 preserva localStorage (edições TV não somem)
+    u.searchParams.delete('fresh');
+    window.location.href = u.toString();
+  };
+  document.addEventListener('keydown', e => {
+    if (e.ctrlKey && e.shiftKey && (e.key === 'L' || e.key === 'l')) {
+      e.preventDefault(); destrava();
+    }
+  });
+  const trigger = document.createElement('div');
+  trigger.style.cssText = 'position:fixed;top:0;right:0;width:40px;height:40px;z-index:10000;cursor:default;background:transparent;';
+  let cliques = 0, timer = null;
+  trigger.addEventListener('click', () => {
+    cliques++;
+    clearTimeout(timer);
+    timer = setTimeout(() => { cliques = 0; }, 1500);
+    if (cliques >= 5) { cliques = 0; destrava(); }
+  });
+  document.body.appendChild(trigger);
+
+  console.log('[MODO VIEW] Ativado — Ctrl+Shift+L ou 5 cliques no canto sup. direito pra destravar.');
+}
 
 // ===== FLATPICKR — datepicker custom com coluna de semana baseada na BASE_DATE_JS =====
 // Substitui o <input type="date"> nativo. Mostra W22, W23... ao lado das datas,
@@ -7605,7 +9143,7 @@ function initFlatpickrCustom() {
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="text-xs text-slate-500 font-medium block mb-1">Quantidade</label>
-          <input id="np-qty" type="number" min="1" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input id="np-qty" type="number" min="1" oninput="npAtualizarValorTotal()" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
         <div>
           <label class="text-xs text-slate-500 font-medium block mb-1">Data de chegada</label>
@@ -7633,8 +9171,25 @@ function initFlatpickrCustom() {
         </div>
         <div>
           <label class="text-xs text-slate-500 font-medium block mb-1">Nº Processo (opcional)</label>
-          <input id="np-proc" type="text" placeholder="ex: 2026/0123" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input id="np-proc" type="text" placeholder="ex: 015.2026 VSC" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" list="np-proc-sugestoes">
+          <datalist id="np-proc-sugestoes"></datalist>
         </div>
+      </div>
+      <div class="grid grid-cols-3 gap-3">
+        <div class="col-span-2">
+          <label class="text-xs text-slate-500 font-medium block mb-1">Valor unitário (opcional)</label>
+          <input id="np-valor-unit" type="number" step="0.01" min="0" placeholder="0,00" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="npAtualizarValorTotal()">
+        </div>
+        <div>
+          <label class="text-xs text-slate-500 font-medium block mb-1">Moeda</label>
+          <select id="np-moeda" onchange="npAtualizarValorTotal()" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+            <option value="BRL">R$ (BRL)</option>
+            <option value="USD">US$ (USD)</option>
+          </select>
+        </div>
+      </div>
+      <div id="np-valor-total" class="text-xs text-slate-500 bg-slate-50 rounded-lg px-3 py-2 hidden">
+        Total: <strong id="np-valor-total-txt" class="text-slate-700">—</strong>
       </div>
       <div id="np-info" class="text-xs text-slate-400 bg-slate-50 rounded-lg px-3 py-2 hidden"></div>
     </div>
