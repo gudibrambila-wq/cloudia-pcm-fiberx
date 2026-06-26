@@ -129,7 +129,34 @@ for _k in ("kiosk", "view", "rotate", "refresh", "fresh"):
     if _k in st.query_params:
         _url_params[_k] = st.query_params[_k]
 
-# Injeta TODOS os JSONs + email + URL params como variáveis globais.
+# ── GitHub autosync (só pra admins) ────────────────────────────────────────
+# Quando o usuário é admin, injeta um PAT do GitHub no JS pra que edições
+# (pedidos, overrides, status) sejam commitadas direto via GitHub API.
+# Não-admin: token fica null → JS não tenta commitar → fica em view-only.
+# Secret esperado no Streamlit Cloud (Settings → Secrets):
+#   [github]
+#   token = "ghp_..."
+#   repo  = "gudibrambila-wq/cloudia-pcm-fiberx"
+#   branch = "main"   # opcional, default main
+_ADMIN_EMAILS = {
+    "comercial@fiberx.com.br",
+    "comercial@velds.com.br",
+    "douglas.brambila@fiberx.com.br",
+    "douglas.brambila@velds.com.br",
+}
+_gh_token  = ""
+_gh_repo   = ""
+_gh_branch = "main"
+if _user_email in _ADMIN_EMAILS:
+    try:
+        _gh = st.secrets.get("github", {})
+        _gh_token  = _gh.get("token", "") or ""
+        _gh_repo   = _gh.get("repo",  "") or ""
+        _gh_branch = _gh.get("branch", "main") or "main"
+    except Exception:
+        pass  # sem secret = sem autosync, mas o app ainda abre normal
+
+# Injeta TODOS os JSONs + email + URL params + (se admin) credenciais de sync.
 html_injected = html.replace(
     "</head>",
     f"""<script>
@@ -139,6 +166,9 @@ window.__OVERRIDES_INLINE__ = {overrides};
 window.__STATUS_INLINE__ = {status};
 window.__USER_EMAIL__ = {_json.dumps(_user_email)};
 window.__URL_PARAMS__ = {_json.dumps(_url_params)};
+window.__GITHUB_TOKEN__ = {_json.dumps(_gh_token)};
+window.__GITHUB_REPO__ = {_json.dumps(_gh_repo)};
+window.__GITHUB_BRANCH__ = {_json.dumps(_gh_branch)};
 </script>
 </head>""",
     1,

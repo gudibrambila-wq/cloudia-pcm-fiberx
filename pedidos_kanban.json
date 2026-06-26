@@ -190,15 +190,16 @@
     "marca": "Velds",
     "tipo": "Importado",
     "qtd": 980,
-    "semana": 26,
-    "mes": "JUN/26",
+    "semana": 27,
+    "mes": "JUL/26",
     "origem": "Avulso",
     "processo": "238.2024 TSC",
     "id": 1779307106900,
-    "fase": "numerario",
+    "fase": "porto",
     "modal": "LCL",
     "codigo_pedido": "PED-0063",
-    "fase_desde": "2026-06-10T19:04:11.696Z"
+    "fase_desde": "2026-06-26T13:18:00.808Z",
+    "data": "2026-07-03"
   },
   {
     "id": 42475840188798,
@@ -393,7 +394,7 @@
     "semana": 31,
     "mes": "AGO/26",
     "origem": "VELDS_PSI W20",
-    "processo": "7.2026 VSC",
+    "processo": "007.2026 VSC",
     "fase": "transito",
     "_unique_key": "velds_w20_ALIMENTADOR AUTOMÁTICO_24_2000",
     "codigo_pedido": "PED-0075",
@@ -645,7 +646,7 @@
     "fase_desde": "2026-06-08T13:53:36.031Z"
   },
   {
-    "nome": "SWITCH GERENCIÃVEL INDUSTRIAL 10 PORTAS - IES210GPP",
+    "nome": "SWITCH GERENCIÃVEL INDUSTRIAL 10 PORTAS - IES210GPP",
     "marca": "TP-Link",
     "tipo": "Nacional",
     "qtd": 4,

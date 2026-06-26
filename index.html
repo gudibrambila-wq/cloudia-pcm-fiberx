@@ -7460,9 +7460,95 @@ function loadProdutoStatus() {
   } catch { PRODUTO_STATUS = {}; }
 }
 
-// Sincroniza status (forecast/monitorar/inativo) com o servidor → produto_status.json
-// Helper: faz POST e SÓ marca verde se response.ok=true (não confia em 404/500).
+// ── GitHub autosync (Streamlit Cloud / admin) ────────────────────────────
+// Quando window.__GITHUB_TOKEN__ está setado (injetado pelo app.py pra admins
+// logados no Streamlit), as edições são commitadas direto no repo via API
+// REST do GitHub. Sem fallback "silencioso" — se falhar, indicador fica
+// vermelho. Mantém SHA em cache pra evitar GET extra por commit.
+const _ghShaCache = Object.create(null); // file → último sha conhecido
+
+async function _commitToGitHub(file, payload) {
+  const tok    = window.__GITHUB_TOKEN__;
+  const repo   = window.__GITHUB_REPO__;
+  const branch = window.__GITHUB_BRANCH__ || 'main';
+  if (!tok || !repo) return false;
+
+  // GitHub API exige conteúdo em base64 (UTF-8 safe).
+  const json    = JSON.stringify(payload, null, 2);
+  const content = btoa(unescape(encodeURIComponent(json)));
+  const apiBase = `https://api.github.com/repos/${repo}/contents/${file}`;
+  const headers = {
+    'Authorization': `token ${tok}`,
+    'Accept':        'application/vnd.github+json',
+    'Content-Type':  'application/json',
+  };
+
+  for (let tentativa = 0; tentativa < 2; tentativa++) {
+    let sha = _ghShaCache[file];
+    if (!sha) {
+      try {
+        const r = await fetch(`${apiBase}?ref=${encodeURIComponent(branch)}`, { headers });
+        if (r.ok) { const j = await r.json(); sha = j.sha; _ghShaCache[file] = sha; }
+        else if (r.status !== 404) { console.warn('GH GET fail', file, r.status); return false; }
+      } catch (e) { console.warn('GH GET error', file, e); return false; }
+    }
+
+    const usuario = (window.__USER_EMAIL__ || '').split('@')[0] || 'streamlit';
+    const body = {
+      message: `autosync: ${file} (${usuario})`,
+      content,
+      branch,
+    };
+    if (sha) body.sha = sha;
+
+    try {
+      const r = await fetch(apiBase, { method: 'PUT', headers, body: JSON.stringify(body) });
+      if (r.ok) {
+        const j = await r.json();
+        _ghShaCache[file] = j.content?.sha;
+        return true;
+      }
+      // 409/422 ≈ SHA stale (alguém commitou no meio): limpa cache e tenta uma vez mais.
+      if ((r.status === 409 || r.status === 422) && tentativa === 0) {
+        delete _ghShaCache[file];
+        continue;
+      }
+      // Logar texto do erro ajuda diagnosticar PAT expirado / sem permissão.
+      try { console.warn('GH PUT fail', file, r.status, await r.text()); } catch {}
+      return false;
+    } catch (e) { console.warn('GH PUT error', file, e); return false; }
+  }
+  return false;
+}
+
+// Mapeia URL legado do server.py local → arquivo no repo.
+const _GH_FILE_MAP = {
+  '/api/save-pedidos':   'pedidos_kanban.json',
+  '/api/save-overrides': 'produto_overrides.json',
+  '/api/save-status':    'produto_status.json',
+};
+
+// Sincroniza status (forecast/monitorar/inativo) com o backend.
+// 1) Modo Streamlit admin (window.__GITHUB_TOKEN__): commit no GitHub via API.
+// 2) Modo local (server.py): POST pro endpoint /api/save-*.
+// 3) Modo view-only (Streamlit sem token): retorna false silenciosamente,
+//    edição fica só no localStorage do navegador.
 function _postSync(url, payload) {
+  // (1) GitHub autosync
+  if (window.__GITHUB_TOKEN__ && window.__GITHUB_REPO__) {
+    const file = _GH_FILE_MAP[url];
+    if (!file) return Promise.resolve(false);
+    return _commitToGitHub(file, payload).then(ok => {
+      _atualizaIndicadorSync(ok ? 'github' : 'github_fail');
+      return ok;
+    });
+  }
+  // (3) View-only no Streamlit: marca indicador "view-only" e não tenta fetch.
+  if (window.__USER_EMAIL__) {
+    _atualizaIndicadorSync('viewonly');
+    return Promise.resolve(false);
+  }
+  // (2) Local — server.py
   return fetch(url, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -7495,28 +7581,43 @@ function saveProdutoStatus() {
   _enviaStatusAoServidor();
 }
 
-// Indicador visual no header: mostra se o servidor de persistência tá ativo.
-// Se falhar (rodando http.server simples), avisa o usuário pra subir o server.py.
-let _ultimoSyncOk = null; // null = nunca tentou; true/false = último resultado
-function _atualizaIndicadorSync(ok) {
-  _ultimoSyncOk = ok;
+// Indicador visual no header: estado do canal de persistência.
+//   true       → server.py local OK (verde)
+//   false      → server.py local offline / falha (vermelho)
+//   'github'   → commit no GitHub OK (verde, "GitHub sync")
+//   'github_fail' → commit no GitHub falhou (vermelho, "GitHub fail — revisar PAT")
+//   'viewonly' → Streamlit sem token (cinza, "view-only")
+let _ultimoSyncOk = null;
+function _atualizaIndicadorSync(estado) {
+  _ultimoSyncOk = estado;
   const el = document.getElementById('header-sync-status');
   if (!el) return;
-  if (ok) {
-    el.innerHTML = '<span style="color:#10b981;font-size:14px;">●</span> Servidor OK';
-    el.title = 'server.py rodando — alterações estão sendo salvas em arquivo automaticamente.';
-    el.style.color = '#10b981';
-  } else {
-    el.innerHTML = '<span style="color:#dc2626;font-size:14px;">●</span> Servidor offline';
-    el.title = 'server.py NÃO está rodando — alterações ficam SÓ no localStorage do navegador (sem backup em arquivo). Suba pelo subir_servidor.bat na pasta CloudIA.';
-    el.style.color = '#dc2626';
-  }
+  const ESTADOS = {
+    true: { cor: '#10b981', txt: 'Servidor OK',
+      tip: 'server.py rodando — alterações estão sendo salvas em arquivo automaticamente.' },
+    false: { cor: '#dc2626', txt: 'Servidor offline',
+      tip: 'server.py NÃO está rodando — alterações ficam SÓ no localStorage. Suba pelo subir_servidor.bat na pasta CloudIA.' },
+    github: { cor: '#10b981', txt: 'GitHub sync',
+      tip: 'Edições estão sendo commitadas direto no repo cloudia-pcm-fiberx via API. Outros usuários verão após dar F5.' },
+    github_fail: { cor: '#dc2626', txt: 'GitHub falha',
+      tip: 'Falha ao commitar no GitHub. Causas comuns: PAT expirado (renovar em github.com/settings/tokens), sem permissão, ou conflito de SHA. Ver DevTools→Console.' },
+    viewonly: { cor: '#9ca3af', txt: 'View-only',
+      tip: 'Sua conta não tem permissão de edição. Mudanças ficam só no seu navegador e somem em F5.' },
+  };
+  const s = ESTADOS[estado] || ESTADOS[false];
+  el.innerHTML = `<span style="color:${s.cor};font-size:14px;">●</span> ${s.txt}`;
+  el.title = s.tip;
+  el.style.color = s.cor;
 }
 
 // Sync inicial: força backup completo de TUDO que está no localStorage pro
 // servidor, garantindo que o arquivo reflete o estado atual ao iniciar.
 // Roda 1 vez por carregamento do app (após DADOS estar disponível).
+//
+// NÃO roda em modo GitHub (Streamlit admin) — lá o source of truth já É o
+// GitHub e fazer "sync inicial" só geraria 3 commits redundantes a cada boot.
 function sincronizarTudoComServidor() {
+  if (window.__GITHUB_TOKEN__ && window.__GITHUB_REPO__) return;
   _postSync('/api/save-pedidos',   PEDIDOS || []);
   _postSync('/api/save-overrides', PRODUTO_OVERRIDES || {});
   _postSync('/api/save-status',    PRODUTO_STATUS || {});
@@ -8583,6 +8684,15 @@ async function carregarDados() {
     // o indicador no header avisa em vermelho.
     if (typeof sincronizarTudoComServidor === 'function') sincronizarTudoComServidor();
 
+    // Indicador inicial no header — antes mesmo do usuário editar algo, mostra
+    // qual canal de persistência está ativo (server.py local, GitHub sync ou
+    // view-only no Streamlit).
+    if (window.__GITHUB_TOKEN__ && window.__GITHUB_REPO__) {
+      _atualizaIndicadorSync('github');
+    } else if (window.__USER_EMAIL__) {
+      _atualizaIndicadorSync('viewonly');
+    }
+
     // ── Reset dropdowns Financeiro para forçar re-populate ──
     const smf = document.getElementById('fin-filtro-marca');
     if (smf) smf.innerHTML = '<option value="">Todas as marcas</option>';
@@ -8653,7 +8763,12 @@ async function _carregarPersistenciaInicial() {
   // Usa caminho absoluto pra apontar pra raiz independente de onde o HTML carregou.
   // Se a URL tem ?fresh=1, ignora o localStorage cacheado e sobrescreve com a versão
   // do servidor (útil pra compartilhar link já atualizado com alguém que tem cache antigo).
-  const forceFresh = new URLSearchParams(window.location.search).get('fresh') === '1';
+  //
+  // No Streamlit Cloud (window.__USER_EMAIL__ setado), o source of truth é o GitHub.
+  // Forçar override do localStorage SEMPRE — senão, PC2 com localStorage velho
+  // não veria edições commitadas no GitHub a partir do PC1.
+  const inStreamlit = !!window.__USER_EMAIL__;
+  const forceFresh = inStreamlit || new URLSearchParams(window.location.search).get('fresh') === '1';
   const arquivos = [
     { key: 'cloudia_pedidos',              url: '/pedidos_kanban.json',    inline: window.__PEDIDOS_INLINE__ },
     { key: 'cloudia_produto_overrides_v1', url: '/produto_overrides.json', inline: window.__OVERRIDES_INLINE__ },
