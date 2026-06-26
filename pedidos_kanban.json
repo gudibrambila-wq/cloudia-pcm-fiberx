@@ -1185,5 +1185,23 @@
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0125",
     "fase_desde": "2026-06-24T18:20:06.472Z"
+  },
+  {
+    "nome": "Robô Aspirador Velds V30",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 2650,
+    "semana": 41,
+    "mes": "OUT/26",
+    "data": "2026-10-06",
+    "origem": "Avulso",
+    "processo": "016.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1782495899645,
+    "fase": "pendente",
+    "pendente_desde": "2026-06-26T17:44:59.645Z",
+    "codigo_pedido": "PED-0126"
   }
 ]
