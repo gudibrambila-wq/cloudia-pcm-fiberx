@@ -15,7 +15,8 @@
     "data": "2026-06-22",
     "codigo_pedido": "PED-0052",
     "fase_desde": "2026-06-24T14:21:01.075Z",
-    "arquivado_em": "2026-06-24T14:21:01.075Z"
+    "arquivado_em": "2026-06-24T14:21:01.075Z",
+    "codigo": 4007011
   },
   {
     "id": 258778903581562,
@@ -32,7 +33,8 @@
     "modal": "FCL",
     "codigo_pedido": "PED-0053",
     "fase_desde": "2026-06-09T13:50:16.895Z",
-    "data": "2026-07-15"
+    "data": "2026-07-15",
+    "codigo": 4007011
   },
   {
     "id": 266140750448105,
@@ -49,7 +51,8 @@
     "modal": "FCL",
     "codigo_pedido": "PED-0054",
     "fase_desde": "2026-06-25T17:51:29.203Z",
-    "data": "2026-08-06"
+    "data": "2026-08-06",
+    "codigo": 4007011
   },
   {
     "id": 1552238832438,
@@ -67,7 +70,8 @@
     "data": "2026-06-22",
     "codigo_pedido": "PED-0055",
     "fase_desde": "2026-06-24T14:20:59.371Z",
-    "arquivado_em": "2026-06-24T14:20:59.371Z"
+    "arquivado_em": "2026-06-24T14:20:59.371Z",
+    "codigo": 4007010
   },
   {
     "id": 128392774534347,
@@ -84,7 +88,8 @@
     "modal": "FCL",
     "codigo_pedido": "PED-0056",
     "fase_desde": "2026-06-09T13:50:16.895Z",
-    "data": "2026-07-15"
+    "data": "2026-07-15",
+    "codigo": 4007010
   },
   {
     "id": 191615227612552,
@@ -101,7 +106,8 @@
     "modal": "FCL",
     "codigo_pedido": "PED-0057",
     "fase_desde": "2026-06-25T17:51:27.787Z",
-    "data": "2026-08-06"
+    "data": "2026-08-06",
+    "codigo": 4007010
   },
   {
     "id": 264460338366470,
@@ -117,7 +123,8 @@
     "_unique_key": "velds_w20_ROBO ASPIRADOR GENESIS_13_1000",
     "arquivado_em": "2026-05-21T01:09:32.158Z",
     "codigo_pedido": "PED-0058",
-    "fase_desde": "2026-05-21T01:09:32.158Z"
+    "fase_desde": "2026-05-21T01:09:32.158Z",
+    "codigo": 400700001
   },
   {
     "id": 6496397710367,
@@ -134,7 +141,8 @@
     "modal": "FCL",
     "codigo_pedido": "PED-0059",
     "fase_desde": "2026-06-15T16:43:15.441Z",
-    "data": "2026-07-08"
+    "data": "2026-07-08",
+    "codigo": 400700001
   },
   {
     "id": 104827302770868,
@@ -151,7 +159,8 @@
     "modal": "FCL",
     "data": "2026-09-11",
     "codigo_pedido": "PED-0060",
-    "fase_desde": "2026-06-09T13:50:16.895Z"
+    "fase_desde": "2026-06-09T13:50:16.895Z",
+    "codigo": 400700001
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 220V",
@@ -167,7 +176,8 @@
     "modal": "FCL",
     "data": "2026-09-21",
     "codigo_pedido": "PED-0061",
-    "fase_desde": "2026-06-09T13:50:16.895Z"
+    "fase_desde": "2026-06-09T13:50:16.895Z",
+    "codigo": 4007010
   },
   {
     "nome": "ONU FASTT10 BRIDGE F10G10NW  GN114Z",
@@ -183,7 +193,8 @@
     "modal": "LCL",
     "arquivado_em": "2026-05-27T17:57:00.238Z",
     "codigo_pedido": "PED-0062",
-    "fase_desde": "2026-05-27T17:57:00.238Z"
+    "fase_desde": "2026-05-27T17:57:00.238Z",
+    "codigo": 401800003
   },
   {
     "nome": "SENSOR INTELIGENTE DE FUMACA E GAS  VDS SFGW",
@@ -199,7 +210,8 @@
     "modal": "LCL",
     "codigo_pedido": "PED-0063",
     "fase_desde": "2026-06-26T13:18:00.808Z",
-    "data": "2026-07-03"
+    "data": "2026-07-03",
+    "codigo": 400300006
   },
   {
     "id": 42475840188798,
@@ -215,7 +227,8 @@
     "_unique_key": "velds_w20_ALIMENTADOR AUTOMÁTICO_12_2000",
     "arquivado_em": "2026-05-21T18:02:00.654Z",
     "codigo_pedido": "PED-0064",
-    "fase_desde": "2026-05-21T18:02:00.654Z"
+    "fase_desde": "2026-05-21T18:02:00.654Z",
+    "codigo": 400600001
   },
   {
     "nome": "ROBO ASPIRADOR INTELIGENTE DE PO LASER -  V50",
@@ -231,7 +244,8 @@
     "processo": "012.2026 VSC",
     "data": "2026-11-22",
     "codigo_pedido": "PED-0065",
-    "fase_desde": "2026-06-15T16:39:25.581Z"
+    "fase_desde": "2026-06-15T16:39:25.581Z",
+    "codigo": 4007009
   },
   {
     "id": 270880278736188,
@@ -248,7 +262,8 @@
     "modal": "FCL",
     "codigo_pedido": "PED-0066",
     "fase_desde": "2026-06-24T14:20:57.831Z",
-    "arquivado_em": "2026-06-24T14:20:57.831Z"
+    "arquivado_em": "2026-06-24T14:20:57.831Z",
+    "codigo": 4007009
   },
   {
     "id": 19839488627017,
@@ -265,7 +280,8 @@
     "modal": "FCL",
     "codigo_pedido": "PED-0067",
     "fase_desde": "2026-06-09T13:50:16.895Z",
-    "data": "2026-07-15"
+    "data": "2026-07-15",
+    "codigo": 4007009
   },
   {
     "id": 191560432685838,
@@ -282,7 +298,8 @@
     "modal": "FCL",
     "codigo_pedido": "PED-0068",
     "fase_desde": "2026-06-25T17:51:26.516Z",
-    "data": "2026-08-06"
+    "data": "2026-08-06",
+    "codigo": 4007009
   },
   {
     "id": 242035838580445,
@@ -299,7 +316,8 @@
     "modal": "FCL",
     "codigo_pedido": "PED-0069",
     "fase_desde": "2026-06-25T17:51:49.403Z",
-    "data": "2026-08-17"
+    "data": "2026-08-17",
+    "codigo": 4007009
   },
   {
     "nome": "ALIMENTADOR PET  VDS APBW",
@@ -317,7 +335,8 @@
     "codigo_pedido": "PED-0070",
     "fase_desde": "2026-06-15T16:39:23.684Z",
     "valor_unitario": null,
-    "moeda": null
+    "moeda": null,
+    "codigo": 400600001
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 110V",
@@ -333,7 +352,8 @@
     "fase": "producao",
     "processo": "013.2026 VSC",
     "codigo_pedido": "PED-0071",
-    "fase_desde": "2026-06-15T16:39:22.173Z"
+    "fase_desde": "2026-06-15T16:39:22.173Z",
+    "codigo": 4007011
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 220V",
@@ -349,7 +369,8 @@
     "fase": "producao",
     "processo": "014.2026 VSC",
     "codigo_pedido": "PED-0072",
-    "fase_desde": "2026-06-15T16:39:20.717Z"
+    "fase_desde": "2026-06-15T16:39:20.717Z",
+    "codigo": 4007010
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 110V",
@@ -365,7 +386,8 @@
     "id": 1779451312131,
     "fase": "producao",
     "codigo_pedido": "PED-0073",
-    "fase_desde": "2026-06-09T13:50:16.895Z"
+    "fase_desde": "2026-06-09T13:50:16.895Z",
+    "codigo": 4007011
   },
   {
     "nome": "FONTE ONT ZYXEL WI-FI 6 AX3000 PX3321-T1",
@@ -383,7 +405,8 @@
     "codigo_pedido": "PED-0074",
     "fase_desde": "2026-06-16T16:41:57.755Z",
     "valor_unitario": 28,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 400800011
   },
   {
     "id": 246826789156491,
@@ -400,7 +423,8 @@
     "codigo_pedido": "PED-0075",
     "fase_desde": "2026-06-25T17:50:15.347Z",
     "modal": "FCL",
-    "data": "2026-07-28"
+    "data": "2026-07-28",
+    "codigo": 400600001
   },
   {
     "nome": "ROTEADOR WIFI AX1500 TP-Link  EX141",
@@ -418,7 +442,8 @@
     "codigo_pedido": "PED-0076",
     "fase_desde": "2026-06-19T13:02:49.003Z",
     "valor_unitario": 127.03,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401300001
   },
   {
     "nome": "ROTEADOR WIFI AX3000 TP-Link  EX521",
@@ -436,7 +461,8 @@
     "codigo_pedido": "PED-0078",
     "fase_desde": "2026-06-19T13:06:52.479Z",
     "valor_unitario": 156.69,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401300007
   },
   {
     "nome": "ROBO ASPIRADOR INTELIGENTE DE PO LASER -  V50",
@@ -452,7 +478,8 @@
     "id": 1779803888316,
     "fase": "producao",
     "codigo_pedido": "PED-0079",
-    "fase_desde": "2026-06-09T13:50:16.895Z"
+    "fase_desde": "2026-06-09T13:50:16.895Z",
+    "codigo": 4007009
   },
   {
     "nome": "ONT WIFI 6 AX3000 ZYXEL PX3321T1",
@@ -469,7 +496,8 @@
     "fase": "estoque",
     "codigo_pedido": "PED-0080",
     "fase_desde": "2026-06-10T18:36:25.901Z",
-    "arquivado_em": "2026-06-10T18:36:25.901Z"
+    "arquivado_em": "2026-06-10T18:36:25.901Z",
+    "codigo": 400800005
   },
   {
     "nome": "ROTEADOR WIFI AX3000 TP-Link  EX520 LOCAL",
@@ -486,7 +514,8 @@
     "fase": "estoque",
     "arquivado_em": "2026-05-28T12:15:42.669Z",
     "codigo_pedido": "PED-0081",
-    "fase_desde": "2026-05-28T12:15:42.669Z"
+    "fase_desde": "2026-05-28T12:15:42.669Z",
+    "codigo": 401300013
   },
   {
     "nome": "ACCESS POINT LINHA OMADA AX3000 TPLINK  EAP650",
@@ -503,7 +532,8 @@
     "fase": "estoque",
     "arquivado_em": "2026-05-29T11:59:56.880Z",
     "codigo_pedido": "PED-0082",
-    "fase_desde": "2026-05-29T11:59:56.880Z"
+    "fase_desde": "2026-05-29T11:59:56.880Z",
+    "codigo": 401700004
   },
   {
     "nome": "ACCESS POINT LINHA OMADA AX1800 TP-Link  EAP610",
@@ -521,7 +551,8 @@
     "codigo_pedido": "PED-0083",
     "fase_desde": "2026-06-09T13:50:16.895Z",
     "valor_unitario": 367.06,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401700002
   },
   {
     "nome": "Switch Smart Gigabit de 8 portas com 4 portas PoE+ - SG2008P",
@@ -539,7 +570,8 @@
     "codigo_pedido": "PED-0084",
     "fase_desde": "2026-06-09T13:50:16.895Z",
     "valor_unitario": 401.34,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401200067
   },
   {
     "nome": "Omada 48-Port Gigabit Stackable L3 Managed Switch with 6 10G Slots - SG6654X",
@@ -558,7 +590,8 @@
     "fase_desde": "2026-06-22T12:44:33.554Z",
     "valor_unitario": 5737.02,
     "moeda": "BRL",
-    "arquivado_em": "2026-06-22T12:44:33.554Z"
+    "arquivado_em": "2026-06-22T12:44:33.554Z",
+    "codigo": 401200066
   },
   {
     "nome": "ACCESS POINT LINHA OMADA AX1800 TPLINK  EAP620HD",
@@ -575,7 +608,8 @@
     "fase": "estoque",
     "arquivado_em": "2026-05-29T11:59:55.440Z",
     "codigo_pedido": "PED-0087",
-    "fase_desde": "2026-05-29T11:59:55.440Z"
+    "fase_desde": "2026-05-29T11:59:55.440Z",
+    "codigo": 401700003
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA GIGABIT TPLINK  ER7206",
@@ -592,7 +626,8 @@
     "fase": "estoque",
     "arquivado_em": "2026-05-29T11:59:54.080Z",
     "codigo_pedido": "PED-0088",
-    "fase_desde": "2026-05-29T11:59:54.080Z"
+    "fase_desde": "2026-05-29T11:59:54.080Z",
+    "codigo": 401300019
   },
   {
     "nome": "ACCESS POINT LINHA OMADA AX3000 TPLINK  EAP650",
@@ -609,7 +644,8 @@
     "fase": "estoque",
     "codigo_pedido": "PED-0089",
     "arquivado_em": "2026-06-08T13:53:47.023Z",
-    "fase_desde": "2026-06-08T13:53:47.023Z"
+    "fase_desde": "2026-06-08T13:53:47.023Z",
+    "codigo": 401700004
   },
   {
     "nome": "ACCESS POINT TPLINK  EAP653",
@@ -626,7 +662,8 @@
     "fase": "estoque",
     "codigo_pedido": "PED-0090",
     "arquivado_em": "2026-06-08T13:53:44.467Z",
-    "fase_desde": "2026-06-08T13:53:44.467Z"
+    "fase_desde": "2026-06-08T13:53:44.467Z",
+    "codigo": 401700019
   },
   {
     "nome": "ACCESS POINT INTERNO EXTERNO WIFI6 AX3000  EAP650 OUTDOOR",
@@ -643,7 +680,8 @@
     "fase": "estoque",
     "codigo_pedido": "PED-0091",
     "arquivado_em": "2026-06-08T13:53:36.031Z",
-    "fase_desde": "2026-06-08T13:53:36.031Z"
+    "fase_desde": "2026-06-08T13:53:36.031Z",
+    "codigo": 401700013
   },
   {
     "nome": "SWITCH GERENCIÃVEL INDUSTRIAL 10 PORTAS - IES210GPP",
@@ -660,7 +698,8 @@
     "fase": "estoque",
     "arquivado_em": "2026-05-28T12:15:37.633Z",
     "codigo_pedido": "PED-0092",
-    "fase_desde": "2026-05-28T12:15:37.633Z"
+    "fase_desde": "2026-05-28T12:15:37.633Z",
+    "codigo": 401200060
   },
   {
     "nome": "Switch GerenciÃ¡vel Gigabit L2+ de 24 portas  - SG3428 Local",
@@ -678,7 +717,8 @@
     "codigo_pedido": "PED-0093",
     "fase_desde": "2026-06-19T14:42:44.798Z",
     "valor_unitario": 874.35,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401200069
   },
   {
     "nome": "SWITCH GIGABIT TPLINK  TLSG1005P",
@@ -696,7 +736,8 @@
     "codigo_pedido": "PED-0094",
     "fase_desde": "2026-06-26T17:48:44.966Z",
     "valor_unitario": 215.61,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401200045
   },
   {
     "nome": "SWITCH NAO GER. LINHA OMADA 24GE TPLINK  TLSG1024D LOCAL",
@@ -714,7 +755,8 @@
     "codigo_pedido": "PED-0095",
     "fase_desde": "2026-06-19T14:40:08.502Z",
     "valor_unitario": 405.76,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401200031
   },
   {
     "nome": "SWITCH NAO GER. LINHA OMADA 16GE TPLINK  TLSG1016D LOCAL",
@@ -732,7 +774,8 @@
     "codigo_pedido": "PED-0096",
     "fase_desde": "2026-06-19T14:40:37.686Z",
     "valor_unitario": 317.49,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401200030
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA TPLINK ER605 LOCAL",
@@ -750,7 +793,8 @@
     "codigo_pedido": "PED-0097",
     "fase_desde": "2026-06-09T13:50:16.895Z",
     "valor_unitario": 297.1,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401300036
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA TPLINK ER605 LOCAL",
@@ -767,7 +811,8 @@
     "fase": "estoque",
     "arquivado_em": "2026-05-29T12:18:41.673Z",
     "codigo_pedido": "PED-0098",
-    "fase_desde": "2026-05-29T12:18:41.673Z"
+    "fase_desde": "2026-05-29T12:18:41.673Z",
+    "codigo": 401300036
   },
   {
     "nome": "CAIXA CTO 1X16 A FTTH  MONTADA SCAPC FIBRATECH",
@@ -785,7 +830,8 @@
     "fase_desde": "2026-06-09T13:50:16.895Z",
     "processo": "023.2026 NTSC",
     "valor_unitario": 70.99,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401500019
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 220V",
@@ -801,7 +847,8 @@
     "id": 1780332075262,
     "fase": "embarque",
     "codigo_pedido": "PED-0100",
-    "fase_desde": "2026-06-25T17:51:46.867Z"
+    "fase_desde": "2026-06-25T17:51:46.867Z",
+    "codigo": 4007010
   },
   {
     "nome": "ROBÔ ASPIRADOR INTELIGENTE VELDS - V50 PRO (110V)",
@@ -840,7 +887,8 @@
     "codigo_pedido": "PED-0105",
     "fase_desde": "2026-06-24T13:14:20.889Z",
     "valor_unitario": 425.81,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401700010
   },
   {
     "nome": "ACCESS POINT LINHA OMADA AX3000 TPLINK  EAP650",
@@ -858,7 +906,8 @@
     "codigo_pedido": "PED-0106",
     "fase_desde": "2026-06-18T20:40:07.968Z",
     "valor_unitario": 437.17,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401700004
   },
   {
     "nome": "Switch Omada with 24-Port PoE+ - ES228GMP",
@@ -895,7 +944,8 @@
     "codigo_pedido": "PED-0108",
     "fase_desde": "2026-06-18T20:40:06.143Z",
     "valor_unitario": 470.73,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401700004
   },
   {
     "nome": "Switch Gerenciável Gigabit L2 de 24 Portas - SG3428X",
@@ -913,7 +963,8 @@
     "codigo_pedido": "PED-0109",
     "fase_desde": "2026-06-24T13:14:33.838Z",
     "valor_unitario": 975.35,
-    "moeda": "BRL"
+    "moeda": "BRL",
+    "codigo": 401200072
   },
   {
     "nome": "ACCESS POINT LINHA OMADA AX1800 TP-Link  EAP610",
@@ -932,7 +983,8 @@
     "fase_desde": "2026-06-19T19:42:47.237Z",
     "valor_unitario": 367.06,
     "moeda": "BRL",
-    "arquivado_em": "2026-06-19T19:42:47.237Z"
+    "arquivado_em": "2026-06-19T19:42:47.237Z",
+    "codigo": 401700002
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA TPLINK  ER605",
@@ -950,7 +1002,8 @@
     "id": 1781724055867,
     "fase": "faturado",
     "codigo_pedido": "PED-0112",
-    "fase_desde": "2026-06-19T14:38:13.026Z"
+    "fase_desde": "2026-06-19T14:38:13.026Z",
+    "codigo": 401300011
   },
   {
     "nome": "ROTEADOR WIFI 6 AX3000 ZYXEL  EX3320T0",
@@ -968,7 +1021,8 @@
     "id": 1781806206123,
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0113",
-    "fase_desde": "2026-06-18T18:10:17.710Z"
+    "fase_desde": "2026-06-18T18:10:17.710Z",
+    "codigo": 401300006
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA TPLINK ER605 LOCAL",
@@ -986,7 +1040,8 @@
     "id": 1781870794753,
     "fase": "faturado",
     "codigo_pedido": "PED-0114",
-    "fase_desde": "2026-06-26T17:49:25.101Z"
+    "fase_desde": "2026-06-26T17:49:25.101Z",
+    "codigo": 401300036
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA GIGABIT TPLINK  ER7206",
@@ -1004,7 +1059,8 @@
     "id": 1781871457945,
     "fase": "faturado",
     "codigo_pedido": "PED-0115",
-    "fase_desde": "2026-06-26T17:49:39.342Z"
+    "fase_desde": "2026-06-26T17:49:39.342Z",
+    "codigo": 401300019
   },
   {
     "nome": "Switch de Mesa de 10 Portas Gigabit   - TL-SG1210P",
@@ -1022,7 +1078,8 @@
     "id": 1781871564601,
     "fase": "faturado",
     "codigo_pedido": "PED-0116",
-    "fase_desde": "2026-06-26T17:49:51.165Z"
+    "fase_desde": "2026-06-26T17:49:51.165Z",
+    "codigo": 401200073
   },
   {
     "nome": "SWITCH NAO GER. LINHA OMADA 16GE TPLINK  TLSG1016D LOCAL",
@@ -1040,7 +1097,8 @@
     "id": 1781871646757,
     "fase": "faturado",
     "codigo_pedido": "PED-0117",
-    "fase_desde": "2026-06-26T17:50:09.370Z"
+    "fase_desde": "2026-06-26T17:50:09.370Z",
+    "codigo": 401200030
   },
   {
     "nome": "SWITCH SMART DE 28 PORTAS GIGABIT COM 24 PORTAS POE+ JETSTREAM  SG2428P",
@@ -1058,7 +1116,8 @@
     "id": 1781871933261,
     "fase": "faturado",
     "codigo_pedido": "PED-0118",
-    "fase_desde": "2026-06-26T17:50:49.245Z"
+    "fase_desde": "2026-06-26T17:50:49.245Z",
+    "codigo": 401200047
   },
   {
     "nome": "Switch Gerenciável Gigabit L2+ de 24 portas  - SG3428 Local",
@@ -1076,7 +1135,8 @@
     "id": 1781872072617,
     "fase": "faturado",
     "codigo_pedido": "PED-0119",
-    "fase_desde": "2026-06-26T17:50:52.881Z"
+    "fase_desde": "2026-06-26T17:50:52.881Z",
+    "codigo": 401200069
   },
   {
     "nome": "SWITCH NAO GER. LINHA OMADA 24GE TPLINK  TLSG1024D LOCAL",
@@ -1094,7 +1154,8 @@
     "id": 1781872120312,
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0120",
-    "fase_desde": "2026-06-24T18:20:09.716Z"
+    "fase_desde": "2026-06-24T18:20:09.716Z",
+    "codigo": 401200031
   },
   {
     "nome": "Switch Easy Smart Gigabit de 8 Portas - TL-SG108E",
@@ -1112,7 +1173,8 @@
     "id": 1781872147937,
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0121",
-    "fase_desde": "2026-06-24T18:20:08.124Z"
+    "fase_desde": "2026-06-24T18:20:08.124Z",
+    "codigo": 401200074
   },
   {
     "nome": "Switch Gerenciável Gigabit L2+ de 8 portas - SG3210",
@@ -1130,7 +1192,8 @@
     "id": 1781872243193,
     "fase": "faturado",
     "codigo_pedido": "PED-0122",
-    "fase_desde": "2026-06-26T17:50:56.849Z"
+    "fase_desde": "2026-06-26T17:50:56.849Z",
+    "codigo": 401200075
   },
   {
     "nome": "ONT WIFI 6 AX3000 ZYXEL PX3321T1",
@@ -1148,7 +1211,8 @@
     "id": 1781876316398,
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0123",
-    "fase_desde": "2026-06-22T12:59:41.194Z"
+    "fase_desde": "2026-06-22T12:59:41.194Z",
+    "codigo": 400800005
   },
   {
     "nome": "Access Point Wi-Fi 6  AX1800 de Parede e Mesa - EAP610GP-Desktop",
@@ -1166,7 +1230,8 @@
     "id": 1781879474082,
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0124",
-    "fase_desde": "2026-06-19T14:31:31.966Z"
+    "fase_desde": "2026-06-19T14:31:31.966Z",
+    "codigo": 401700021
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA TPLINK ER605 LOCAL",
@@ -1184,7 +1249,8 @@
     "id": 1782324286828,
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0125",
-    "fase_desde": "2026-06-24T18:20:06.472Z"
+    "fase_desde": "2026-06-24T18:20:06.472Z",
+    "codigo": 401300036
   },
   {
     "nome": "Robô Aspirador Velds V30",
