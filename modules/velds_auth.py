@@ -299,10 +299,16 @@ def handle_auth_flow(
         st.session_state["_velds_user"] = user_data
         if cookie_secret:
             token = _sign_vauth_token(user_data, cookie_secret)
-            # meta refresh com timeout 0 = redirect imediato pra URL com vauth
             redirect_url = f"/?{_VAUTH_PARAM}={urllib.parse.quote(token)}"
+            # Usa window.location.replace() em vez de meta refresh — replace
+            # SUBSTITUI a entrada do histórico (em vez de adicionar nova). Isso
+            # significa que F5 a partir daqui recarrega a URL com vauth (não a
+            # anterior com ?code= que daria invalid_grant no Azure no F5).
+            # Fallback pra meta refresh caso JS esteja desabilitado.
+            redirect_url_js = json.dumps(redirect_url)
             st.markdown(
-                f'<meta http-equiv="refresh" content="0; url={redirect_url}">'
+                f'<script>window.location.replace({redirect_url_js});</script>'
+                f'<noscript><meta http-equiv="refresh" content="0; url={redirect_url}"></noscript>'
                 f'<div style="padding:40px;text-align:center;color:var(--text-md);">'
                 f'<div style="font-size:1.2rem;margin-bottom:12px;">✓ Login OK, {name}</div>'
                 f'<div>Carregando o CloudIA PCM...</div>'
