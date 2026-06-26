@@ -299,34 +299,19 @@ def handle_auth_flow(
         st.session_state["_velds_user"] = user_data
         if cookie_secret:
             token = _sign_vauth_token(user_data, cookie_secret)
-            redirect_url = f"/?{_VAUTH_PARAM}={urllib.parse.quote(token)}"
-            # Redireciona com window.top.location.replace() — replace SUBSTITUI
-            # a entrada no historico (vs meta refresh que ADICIONA), entao F5
-            # nao volta pra URL com ?code= (que daria invalid_grant).
-            # IMPORTANTE: st.markdown REMOVE tags <script>. Por isso usamos
-            # st.components.v1.html que executa JS normalmente (em iframe, mas
-            # window.top alcanca a pagina principal).
-            redirect_url_js = json.dumps(redirect_url)
-            import streamlit.components.v1 as _components
-            _components.html(
-                f'''<script>
-                    var u = {redirect_url_js};
-                    var target = window.top || window.parent || window;
-                    try {{ target.location.replace(u); }}
-                    catch (e) {{ window.location.replace(u); }}
-                </script>''',
-                height=0,
-            )
-            # Tela de loading + meta refresh com 2s como fallback (se JS bloqueado)
-            st.markdown(
-                f'<meta http-equiv="refresh" content="2; url={redirect_url}">'
-                f'<div style="padding:40px;text-align:center;color:var(--text-md);">'
-                f'<div style="font-size:1.2rem;margin-bottom:12px;">✓ Login OK, {name}</div>'
-                f'<div>Carregando o CloudIA PCM...</div>'
-                f'</div>',
-                unsafe_allow_html=True,
-            )
-            st.stop()
+            # Server-side: limpa code/state da URL via st.query_params (que usa
+            # history.replaceState internamente — F5 nao volta pra ?code=) e
+            # injeta vauth. Depois st.rerun() re-executa o script com URL nova.
+            # Mais robusto que JS redirect porque nao depende de window.top
+            # alcancar a pagina pai (que falha em iframe sandbox do Streamlit).
+            try:
+                for k in ("code", "state", "session_state"):
+                    if k in st.query_params:
+                        del st.query_params[k]
+                st.query_params[_VAUTH_PARAM] = token
+            except Exception:
+                pass
+            st.rerun()
         # Fallback se não tem cookie_secret (não deveria acontecer)
         for k in ("code", "state", "session_state"):
             if k in qp:
