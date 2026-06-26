@@ -692,9 +692,9 @@
     "processo": "024.2026 VERDANT",
     "modal": null,
     "id": 1779817641614,
-    "fase": "estoque_fornecedor",
+    "fase": "faturado",
     "codigo_pedido": "PED-0094",
-    "fase_desde": "2026-06-09T13:50:16.895Z",
+    "fase_desde": "2026-06-26T17:48:44.966Z",
     "valor_unitario": 215.61,
     "moeda": "BRL"
   },
