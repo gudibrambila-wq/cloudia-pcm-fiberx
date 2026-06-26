@@ -1128,9 +1128,9 @@
     "valor_unitario": 418.97,
     "moeda": "BRL",
     "id": 1781872243193,
-    "fase": "pago",
+    "fase": "faturado",
     "codigo_pedido": "PED-0122",
-    "fase_desde": "2026-06-24T18:16:38.568Z"
+    "fase_desde": "2026-06-26T17:50:56.849Z"
   },
   {
     "nome": "ONT WIFI 6 AX3000 ZYXEL PX3321T1",
