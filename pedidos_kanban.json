@@ -818,7 +818,11 @@
     "fase": "pago1",
     "codigo_pedido": "PED-0104",
     "fase_desde": "2026-06-22T12:40:45.650Z",
-    "pago_desde": "2026-06-22T12:40:45.650Z"
+    "pago_desde": "2026-06-22T12:40:45.650Z",
+    "cancelado": true,
+    "motivo_cancelamento": "Aline mandou no email ( Tochetto mandou cancelar )",
+    "cancelado_em": "2026-06-26T17:37:19.238Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "nome": "ACCESS POINT WIFI 6 AX3000 WALL PLATE  EAP655 WALL",
