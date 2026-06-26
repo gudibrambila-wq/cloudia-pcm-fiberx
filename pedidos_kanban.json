@@ -1038,9 +1038,9 @@
     "valor_unitario": 318.1,
     "moeda": "BRL",
     "id": 1781871646757,
-    "fase": "pago",
+    "fase": "faturado",
     "codigo_pedido": "PED-0117",
-    "fase_desde": "2026-06-24T18:13:13.060Z"
+    "fase_desde": "2026-06-26T17:50:09.370Z"
   },
   {
     "nome": "SWITCH SMART DE 28 PORTAS GIGABIT COM 24 PORTAS POE+ JETSTREAM  SG2428P",
