@@ -1074,9 +1074,9 @@
     "valor_unitario": 876.72,
     "moeda": "BRL",
     "id": 1781872072617,
-    "fase": "pago",
+    "fase": "faturado",
     "codigo_pedido": "PED-0119",
-    "fase_desde": "2026-06-24T18:16:18.308Z"
+    "fase_desde": "2026-06-26T17:50:52.881Z"
   },
   {
     "nome": "SWITCH NAO GER. LINHA OMADA 24GE TPLINK  TLSG1024D LOCAL",
