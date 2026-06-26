@@ -121,7 +121,15 @@ import json as _json
 # Email vem ja em lowercase do handle_auth_flow.
 _user_email = (_user or {}).get("email", "") if _auth_ok else ""
 
-# Injeta TODOS os JSONs + email do usuario como variáveis globais ANTES do CloudIA inicializar.
+# URL params (kiosk, view, rotate, refresh) precisam ser injetados como variavel
+# JS porque o iframe do st.components.v1.html eh cross-origin: dentro dele,
+# window.location.search vem VAZIO (nao acessa params da pagina pai).
+_url_params = {}
+for _k in ("kiosk", "view", "rotate", "refresh", "fresh"):
+    if _k in st.query_params:
+        _url_params[_k] = st.query_params[_k]
+
+# Injeta TODOS os JSONs + email + URL params como variáveis globais.
 html_injected = html.replace(
     "</head>",
     f"""<script>
@@ -130,6 +138,7 @@ window.__PEDIDOS_INLINE__ = {pedidos};
 window.__OVERRIDES_INLINE__ = {overrides};
 window.__STATUS_INLINE__ = {status};
 window.__USER_EMAIL__ = {_json.dumps(_user_email)};
+window.__URL_PARAMS__ = {_json.dumps(_url_params)};
 </script>
 </head>""",
     1,

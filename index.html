@@ -8798,14 +8798,15 @@ window.addEventListener('DOMContentLoaded', async () => {
 // Parâmetros opcionais: ?rotate=NN (segundos entre trocas, default 30)
 //                       ?refresh=NN (minutos entre recargas, default 10)
 function _iniciarModoKiosk() {
-  const p = new URLSearchParams(window.location.search);
-  if (p.get('kiosk') !== '1') return;
+  // Usa _getUrlParam pq dentro do iframe Streamlit window.location.search é vazio;
+  // params vêm via window.__URL_PARAMS__ injetado pelo Python.
+  if (_getUrlParam('kiosk') !== '1') return;
 
   // Renomeia a aba do navegador pra identificar fácil entre várias abas abertas
   document.title = 'TV — CloudIA PCM';
 
-  const rotateSec  = Math.max(5,  parseInt(p.get('rotate'))  || 45);
-  const refreshMin = Math.max(1,  parseInt(p.get('refresh')) || 10);
+  const rotateSec  = Math.max(5,  parseInt(_getUrlParam('rotate'))  || 45);
+  const refreshMin = Math.max(1,  parseInt(_getUrlParam('refresh')) || 10);
 
   // Marca body — usado em CSS pra esconder/mostrar coisas condicionalmente
   document.body.classList.add('modo-kiosk');
@@ -8936,8 +8937,19 @@ function _iniciarModoKiosk() {
 // Ativado via URL: ?view=1
 // Bloqueia TODA edição — usado pra compartilhar com chefe/clientes/auditoria sem risco
 // de alguém mudar dado por engano. Esconde botões, desabilita inputs, ignora saves.
-function _iniciarModoView() {
+// Helper: lê param da URL ou do window.__URL_PARAMS__ (injetado pelo Streamlit,
+// porque dentro do iframe st.components.v1.html o window.location.search é vazio).
+function _getUrlParam(nome) {
   const p = new URLSearchParams(window.location.search);
+  const fromUrl = p.get(nome);
+  if (fromUrl !== null && fromUrl !== '') return fromUrl;
+  if (window.__URL_PARAMS__ && window.__URL_PARAMS__[nome] != null) {
+    return String(window.__URL_PARAMS__[nome]);
+  }
+  return null;
+}
+
+function _iniciarModoView() {
   // Lista de emails admin — só esses podem EDITAR. Qualquer outro email
   // logado (mesmo que seja @fiberx.com.br ou @velds.com.br) entra direto em
   // modo visualizacao.
@@ -8947,7 +8959,7 @@ function _iniciarModoView() {
     'douglas.brambila@fiberx.com.br',
     'douglas.brambila@velds.com.br',
   ];
-  let ativarView = p.get('view') === '1';
+  let ativarView = _getUrlParam('view') === '1';
   if (window.__USER_EMAIL__) {
     const email = String(window.__USER_EMAIL__ || '').trim().toLowerCase();
     if (email && !ADMIN_EMAILS.includes(email)) ativarView = true;
