@@ -1681,6 +1681,10 @@
               <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
               Novo Pedido
             </button>
+            <button onclick="abrirModalCancelados()" id="btn-cancelados" class="px-3 py-2 border border-slate-200 text-slate-500 text-xs font-medium rounded-lg hover:bg-slate-50 hover:text-slate-700 transition-colors flex items-center gap-1.5" title="Ver pedidos cancelados">
+              <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+              Cancelados <span id="btn-cancelados-badge" class="hidden ml-1 bg-slate-200 text-slate-700 font-bold px-1.5 rounded-full text-[10px]">0</span>
+            </button>
             <button onclick="limparPedidos()" class="text-xs text-slate-400 hover:text-red-500 underline">Limpar tudo</button>
           </div>
         </div>
@@ -3875,6 +3879,7 @@ function kanbanSellInForProduct(nome) {
   if (!nome || typeof PEDIDOS === 'undefined' || !PEDIDOS.length) return map;
   PEDIDOS.forEach(p => {
     if (p.nome !== nome) return;
+    if (p.cancelado) return;  // pedido cancelado não conta como chegada
     const fase = p.fase || 'pendente';
     // Estoque entra apenas se for chegada HISTÓRICA (semana < SEMANA_ATUAL) — pra aparecer no Sell In do PSI.
     // Pra semanas futuras estoque não conta (já está no saldo_atual).
@@ -5089,21 +5094,94 @@ function mostrarFeedbackEfetivacao(qtdPedidos) {
 }
 
 function removerPedido(id) {
-  // Usa findIndex + splice (em vez de filter) pra garantir que SÓ UM pedido seja
-  // removido — se houver ids duplicados (legado), os demais ficam preservados.
+  // SOFT DELETE: marca como cancelado em vez de apagar. O pedido sai das telas
+  // ativas mas continua em PEDIDOS, acessível em "Ver Cancelados" (botão no
+  // header do Planejamento). Pede motivo do cancelamento pra ficar registrado.
   const idx = PEDIDOS.findIndex(p => p.id === id);
   if (idx < 0) return;
-  // Confirmação detalhada (mostra nome + qtd + semana do pedido) antes de apagar.
   const p = PEDIDOS[idx];
   const nome = (p.nome || '').trim();
   const qtdFmt = (p.qtd || 0).toLocaleString('pt-BR');
   const procStr = p.processo ? ' · Proc ' + p.processo : '';
-  const msg = `Excluir esse pedido?\n\n${nome}\n${qtdFmt} un · W${p.semana || '?'}${procStr}\n\nEssa ação não pode ser desfeita.`;
+  const msg = `Cancelar esse pedido?\n\n${nome}\n${qtdFmt} un · W${p.semana || '?'}${procStr}\n\nO pedido fica salvo em "Pedidos Cancelados" — sem perder o histórico.`;
   if (!confirm(msg)) return;
-  PEDIDOS.splice(idx, 1);
+  const motivo = prompt('Qual o motivo do cancelamento?\n(Ex: cliente desistiu, troca de fornecedor, duplicidade, etc)', '');
+  if (motivo === null) return;  // usuário clicou Cancelar no prompt
+  p.cancelado = true;
+  p.motivo_cancelamento = (motivo || '').trim() || '(sem motivo informado)';
+  p.cancelado_em = new Date().toISOString();
+  if (window.__USER_EMAIL__) p.cancelado_por = window.__USER_EMAIL__;
   salvarPedidos();
   atualizarBadgePedidos();
   renderPedidosPendentes();
+  mostrarToast(`✓ Pedido cancelado — visível em "Ver Cancelados"`);
+}
+
+// Atualiza o badge do botão "Cancelados" no header do Planejamento.
+function atualizarBadgeCancelados() {
+  const badge = document.getElementById('btn-cancelados-badge');
+  if (!badge) return;
+  const n = (PEDIDOS || []).filter(p => p.cancelado).length;
+  if (n > 0) {
+    badge.textContent = n;
+    badge.classList.remove('hidden');
+  } else {
+    badge.classList.add('hidden');
+  }
+}
+
+function abrirModalCancelados() {
+  renderPedidosCancelados();
+  document.getElementById('modal-cancelados')?.classList.remove('hidden');
+}
+function fecharModalCancelados() {
+  document.getElementById('modal-cancelados')?.classList.add('hidden');
+}
+
+function renderPedidosCancelados() {
+  const lista = document.getElementById('cancelados-lista');
+  if (!lista) return;
+  const cancelados = (PEDIDOS || []).filter(p => p.cancelado)
+    .sort((a, b) => (b.cancelado_em || '').localeCompare(a.cancelado_em || ''));  // mais recentes primeiro
+  if (cancelados.length === 0) {
+    lista.innerHTML = '<div class="text-center text-slate-400 py-12 text-sm">Nenhum pedido cancelado ainda.</div>';
+    return;
+  }
+  lista.innerHTML = cancelados.map(p => {
+    const dataCancel = p.cancelado_em ? new Date(p.cancelado_em).toLocaleString('pt-BR', { dateStyle: 'short', timeStyle: 'short' }) : '—';
+    const proc = p.processo ? ` · Proc ${p.processo}` : '';
+    const por = p.cancelado_por ? `<div class="text-[10px] text-slate-400 mt-0.5">por ${p.cancelado_por}</div>` : '';
+    return `
+      <div class="border border-slate-200 rounded-lg p-3 hover:bg-slate-50 transition-colors">
+        <div class="flex items-start gap-3">
+          <div class="flex-1 min-w-0">
+            <p class="text-sm font-semibold text-slate-800 truncate">${p.nome || '(sem nome)'}</p>
+            <p class="text-xs text-slate-500 mt-0.5">${(p.qtd || 0).toLocaleString('pt-BR')} un · W${p.semana || '?'}${proc} · <span class="inline-block px-1.5 py-0.5 rounded text-[10px] bg-slate-100 text-slate-600">${p.fase || 'pendente'}</span></p>
+            <p class="text-xs text-rose-700 mt-1.5"><span class="font-semibold">Motivo:</span> ${p.motivo_cancelamento || '—'}</p>
+            <div class="text-[10px] text-slate-400 mt-1">cancelado em ${dataCancel}</div>
+            ${por}
+          </div>
+          <button onclick="restaurarPedidoCancelado(${p.id})" title="Restaurar — volta pra fase original" class="shrink-0 px-2.5 py-1 text-xs bg-emerald-50 text-emerald-700 border border-emerald-200 rounded hover:bg-emerald-100 transition-colors font-medium">↩ Restaurar</button>
+        </div>
+      </div>`;
+  }).join('');
+}
+
+// Restaura um pedido cancelado de volta pra fase ativa (reativa).
+function restaurarPedidoCancelado(id) {
+  const p = PEDIDOS.find(x => x.id === id);
+  if (!p) return;
+  const nome = (p.nome || '').trim();
+  if (!confirm(`Restaurar este pedido?\n\n${nome}\n${(p.qtd||0).toLocaleString('pt-BR')} un · W${p.semana || '?'}\n\nMotivo do cancelamento: ${p.motivo_cancelamento || '—'}`)) return;
+  delete p.cancelado;
+  delete p.motivo_cancelamento;
+  delete p.cancelado_em;
+  delete p.cancelado_por;
+  salvarPedidos();
+  atualizarBadgePedidos();
+  renderPedidosPendentes();
+  renderPedidosCancelados();  // atualiza o modal se estiver aberto
+  mostrarToast(`✓ Pedido restaurado pra ${p.fase || 'pendente'}`);
 }
 
 function limparPedidos() {
@@ -5567,12 +5645,13 @@ function salvarPedidos() {
 }
 
 function atualizarBadgePedidos() {
+  if (typeof atualizarBadgeCancelados === 'function') atualizarBadgeCancelados();
   const badge = document.getElementById('nav-pedidos-badge');
   if (!badge) return;
   // Filtra arquivados pra bater EXATO com o Kanban (renderKanban) e a aba Chegadas.
   // Pedidos em fase 'estoque' há +7 dias somem das telas mas continuam em PEDIDOS
   // pra histórico/PED-NNNN; o badge deve refletir só o que aparece nas listas.
-  const visiveis = (PEDIDOS || []).filter(p => !_arquivado(p)).length;
+  const visiveis = (PEDIDOS || []).filter(p => !_arquivado(p) && !p.cancelado).length;
   if (visiveis > 0) {
     badge.textContent = visiveis;
     badge.classList.remove('hidden');
@@ -6486,7 +6565,8 @@ function renderKanban() {
       const itens = PEDIDOS.filter(p =>
         getTipoBoard(p) === boardKey &&
         (p.fase || 'pendente') === fase &&
-        !_arquivado(p)
+        !_arquivado(p) &&
+        !p.cancelado
       );
       container.innerHTML = itens.map(kanbanCardHTML).join('');
       if (countEl) countEl.textContent = itens.length;
@@ -7859,6 +7939,7 @@ function renderTimeline() {
   const pedidos = (PEDIDOS || [])
     .filter(p => (p.tipo || 'Nacional') === 'Importado')
     .filter(p => !_arquivado(p))
+    .filter(p => !p.cancelado)
     .map(p => ({ ...p, _etapa: _etapaTimeline(p.fase || 'pendente') }))
     .filter(p => !filtroEtapa || p._etapa === filtroEtapa)
     .sort((a, b) => (a.semana || 0) - (b.semana || 0));
@@ -7971,6 +8052,7 @@ function renderTimelineNac() {
   const pedidos = (PEDIDOS || [])
     .filter(p => (p.tipo || 'Nacional') === 'Nacional')
     .filter(p => !_arquivado(p))
+    .filter(p => !p.cancelado)
     .map(p => ({ ...p, _etapa: _etapaTimelineNac(p.fase || 'pendente') }))
     .filter(p => !filtroEtapa || p._etapa === filtroEtapa)
     .sort((a, b) => (a.semana || 0) - (b.semana || 0));
@@ -8897,7 +8979,9 @@ function _iniciarModoView() {
     body.modo-view button[onclick*="toggleCatStatus"],
     body.modo-view button[onclick*="salvarEditarProduto"],
     body.modo-view button[onclick*="duplicarPedido"],
-    body.modo-view button[onclick*="carregarDados"] {
+    body.modo-view button[onclick*="carregarDados"],
+    body.modo-view button[onclick*="abrirModalCancelados"],
+    body.modo-view button[onclick*="restaurarPedidoCancelado"] {
       display: none !important;
     }
     /* Esconde indicador "Servidor OK/offline" — só faz sentido no V3 local com Python server */
@@ -8965,6 +9049,7 @@ function _iniciarModoView() {
     'avancarPedido','voltarPedido','limparPedidos','setProdStatus','cycleProdStatus',
     'saveProdutoOverridesLS','saveProdutoStatusLS','_postSync',
     'toggleCatStatus','setFasePedido','npSelecionarProduto','duplicarPedido',
+    'restaurarPedidoCancelado','abrirModalCancelados',
   ];
   fnsSave.forEach(fn => {
     if (typeof window[fn] === 'function') window[fn] = noop;
@@ -9131,6 +9216,22 @@ function initFlatpickrCustom() {
       <button onclick="restaurarOverridesProduto()" class="px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-500 hover:bg-slate-50 transition-colors" title="Apaga overrides — volta a usar valores do Excel">↺ Restaurar Excel</button>
       <button onclick="fecharModalEditarProduto()" class="ml-auto px-3 py-2 border border-slate-200 rounded-lg text-xs text-slate-600 hover:bg-slate-50 transition-colors">Cancelar</button>
       <button onclick="salvarEditarProduto()" class="px-4 py-2 bg-blue-600 text-white rounded-lg text-xs font-semibold hover:bg-blue-700 transition-colors">Salvar</button>
+    </div>
+  </div>
+</div>
+
+<!-- ===== MODAL PEDIDOS CANCELADOS — lista de cards cancelados, com motivo + opção de restaurar ===== -->
+<div id="modal-cancelados" class="hidden fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm" onclick="if(event.target===this)fecharModalCancelados()">
+  <div class="bg-white rounded-xl shadow-xl w-[760px] max-h-[85vh] overflow-hidden flex flex-col">
+    <div class="flex items-center justify-between p-5 border-b border-slate-200">
+      <div>
+        <h3 class="font-semibold text-slate-800 text-base">Pedidos Cancelados</h3>
+        <p class="text-xs text-slate-500 mt-0.5">Cards removidos do Kanban mas preservados aqui — clica em "Restaurar" pra voltar pra fase original.</p>
+      </div>
+      <button onclick="fecharModalCancelados()" class="text-slate-400 hover:text-slate-700 text-2xl leading-none">×</button>
+    </div>
+    <div id="cancelados-lista" class="flex-1 overflow-y-auto p-5 space-y-2">
+      <!-- preenchido por renderPedidosCancelados() -->
     </div>
   </div>
 </div>
