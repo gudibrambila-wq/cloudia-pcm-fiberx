@@ -300,15 +300,26 @@ def handle_auth_flow(
         if cookie_secret:
             token = _sign_vauth_token(user_data, cookie_secret)
             redirect_url = f"/?{_VAUTH_PARAM}={urllib.parse.quote(token)}"
-            # Usa window.location.replace() em vez de meta refresh — replace
-            # SUBSTITUI a entrada do histórico (em vez de adicionar nova). Isso
-            # significa que F5 a partir daqui recarrega a URL com vauth (não a
-            # anterior com ?code= que daria invalid_grant no Azure no F5).
-            # Fallback pra meta refresh caso JS esteja desabilitado.
+            # Redireciona com window.top.location.replace() — replace SUBSTITUI
+            # a entrada no historico (vs meta refresh que ADICIONA), entao F5
+            # nao volta pra URL com ?code= (que daria invalid_grant).
+            # IMPORTANTE: st.markdown REMOVE tags <script>. Por isso usamos
+            # st.components.v1.html que executa JS normalmente (em iframe, mas
+            # window.top alcanca a pagina principal).
             redirect_url_js = json.dumps(redirect_url)
+            import streamlit.components.v1 as _components
+            _components.html(
+                f'''<script>
+                    var u = {redirect_url_js};
+                    var target = window.top || window.parent || window;
+                    try {{ target.location.replace(u); }}
+                    catch (e) {{ window.location.replace(u); }}
+                </script>''',
+                height=0,
+            )
+            # Tela de loading + meta refresh com 2s como fallback (se JS bloqueado)
             st.markdown(
-                f'<script>window.location.replace({redirect_url_js});</script>'
-                f'<noscript><meta http-equiv="refresh" content="0; url={redirect_url}"></noscript>'
+                f'<meta http-equiv="refresh" content="2; url={redirect_url}">'
                 f'<div style="padding:40px;text-align:center;color:var(--text-md);">'
                 f'<div style="font-size:1.2rem;margin-bottom:12px;">✓ Login OK, {name}</div>'
                 f'<div>Carregando o CloudIA PCM...</div>'
