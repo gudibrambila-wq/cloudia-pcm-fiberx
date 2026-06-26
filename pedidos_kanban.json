@@ -984,9 +984,9 @@
     "valor_unitario": 275.08,
     "moeda": "BRL",
     "id": 1781870794753,
-    "fase": "pago",
+    "fase": "faturado",
     "codigo_pedido": "PED-0114",
-    "fase_desde": "2026-06-24T18:05:16.026Z"
+    "fase_desde": "2026-06-26T17:49:25.101Z"
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA GIGABIT TPLINK  ER7206",
