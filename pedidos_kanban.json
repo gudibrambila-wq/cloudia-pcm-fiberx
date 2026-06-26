@@ -1020,9 +1020,9 @@
     "valor_unitario": 318.97,
     "moeda": "BRL",
     "id": 1781871564601,
-    "fase": "pago",
+    "fase": "faturado",
     "codigo_pedido": "PED-0116",
-    "fase_desde": "2026-06-24T18:11:37.042Z"
+    "fase_desde": "2026-06-26T17:49:51.165Z"
   },
   {
     "nome": "SWITCH NAO GER. LINHA OMADA 16GE TPLINK  TLSG1016D LOCAL",
