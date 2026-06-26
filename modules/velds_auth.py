@@ -244,7 +244,18 @@ def handle_auth_flow(
         # code_verifier vem no parâmetro state (round-trip do OAuth) -
         # NÃO depende de cookie nem session_state (que não sobreviveram
         # ao redirect no Streamlit Cloud)
-        code_verifier = qp.get("state", "")
+        # State format: "preserved_params|verifier" (separador |) — preserved_params
+        # carrega URL params (kiosk, view, etc) atraves do round-trip Azure AD.
+        state_raw = qp.get("state", "")
+        preserved_params: dict = {}
+        if state_raw and "|" in state_raw:
+            preserved_str, code_verifier = state_raw.split("|", 1)
+            try:
+                preserved_params = dict(urllib.parse.parse_qsl(preserved_str))
+            except Exception:
+                preserved_params = {}
+        else:
+            code_verifier = state_raw
         if not code_verifier:
             # Fallback pra session_state/cookie (caso o state venha vazio)
             code_verifier = (
@@ -309,6 +320,10 @@ def handle_auth_flow(
                     if k in st.query_params:
                         del st.query_params[k]
                 st.query_params[_VAUTH_PARAM] = token
+                # Re-aplica params preservados do state OAuth (kiosk, view, etc)
+                # Assim o redirect pos-login mantem ?kiosk=1&view=1 etc.
+                for k, v in preserved_params.items():
+                    st.query_params[k] = v
             except Exception:
                 pass
             st.rerun()
@@ -323,7 +338,16 @@ def handle_auth_flow(
     # /authorize?state=verifier → callback ?state=verifier
     # Sobrevive ao redirect sem precisar de cookie/session.
     verifier, challenge = _gen_pkce_pair()
-    authorize_url = _build_authorize_url(cfg, challenge, state=verifier)
+    # Preserva params custom (kiosk, view, rotate, refresh) atraves do OAuth.
+    # Formato do state: "preserved_params|verifier"
+    _preserve_keys = ("kiosk", "view", "rotate", "refresh")
+    _preserved = {k: qp[k] for k in _preserve_keys if k in qp}
+    if _preserved:
+        _extra = urllib.parse.urlencode(_preserved)
+        _state_to_send = _extra + "|" + verifier
+    else:
+        _state_to_send = verifier
+    authorize_url = _build_authorize_url(cfg, challenge, state=_state_to_send)
     try:
         render_login(authorize_url=authorize_url)
     except TypeError:
