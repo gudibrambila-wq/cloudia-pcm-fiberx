@@ -263,8 +263,22 @@ def handle_auth_flow(
         with st.spinner("Validando login Microsoft..."):
             token_resp = _exchange_code_for_token(cfg, code, code_verifier)
         if "error" in token_resp:
+            err = token_resp.get("error", "")
+            # invalid_grant = code expirado/já usado (acontece em F5 após login,
+            # quando a URL ainda tem ?code= do redirect anterior). Não é bug —
+            # só redireciona pra raiz limpa pra mostrar tela de login.
+            if err == "invalid_grant":
+                st.markdown(
+                    '<meta http-equiv="refresh" content="0; url=/">'
+                    '<div style="padding:40px;text-align:center;color:#64748b;">'
+                    '<div>Sessão expirou — redirecionando pro login...</div>'
+                    '</div>',
+                    unsafe_allow_html=True,
+                )
+                st.stop()
+            # Outros erros do Azure: mostra erro detalhado pro user reportar.
             st.error(
-                f"❌ Erro do Azure: `{token_resp.get('error')}`\n\n"
+                f"❌ Erro do Azure: `{err}`\n\n"
                 f"`{token_resp.get('error_description', '')}`"
             )
             # Limpa URL pra não ficar em loop
