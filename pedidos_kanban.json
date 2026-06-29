@@ -732,9 +732,9 @@
     "processo": "024.2026 VERDANT",
     "modal": null,
     "id": 1779817641614,
-    "fase": "faturado",
+    "fase": "transito",
     "codigo_pedido": "PED-0094",
-    "fase_desde": "2026-06-26T17:48:44.966Z",
+    "fase_desde": "2026-06-29T13:29:20.457Z",
     "valor_unitario": 215.61,
     "moeda": "BRL",
     "codigo": 401200045
