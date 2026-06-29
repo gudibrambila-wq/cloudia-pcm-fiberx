@@ -1038,9 +1038,9 @@
     "valor_unitario": 275.08,
     "moeda": "BRL",
     "id": 1781870794753,
-    "fase": "faturado",
+    "fase": "transito",
     "codigo_pedido": "PED-0114",
-    "fase_desde": "2026-06-26T17:49:25.101Z",
+    "fase_desde": "2026-06-29T13:29:48.713Z",
     "codigo": 401300036
   },
   {
