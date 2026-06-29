@@ -1076,9 +1076,9 @@
     "valor_unitario": 318.97,
     "moeda": "BRL",
     "id": 1781871564601,
-    "fase": "faturado",
+    "fase": "transito",
     "codigo_pedido": "PED-0116",
-    "fase_desde": "2026-06-26T17:49:51.165Z",
+    "fase_desde": "2026-06-29T13:30:14.017Z",
     "codigo": 401200073
   },
   {
