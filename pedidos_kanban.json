@@ -1333,5 +1333,24 @@
     "fase": "faturado",
     "codigo_pedido": "PED-0129",
     "fase_desde": "2026-06-29T13:33:40.952Z"
+  },
+  {
+    "codigo": 401700019,
+    "nome": "ACCESS POINT TPLINK  EAP653",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 80,
+    "semana": 31,
+    "mes": "AGO/26",
+    "data": "2026-07-29",
+    "origem": "Avulso",
+    "processo": "035.2026 SÃO MARCOS",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1782741842161,
+    "fase": "pendente",
+    "pendente_desde": "2026-06-29T14:04:02.161Z",
+    "codigo_pedido": "PED-0130"
   }
 ]
