@@ -1282,7 +1282,7 @@
     "mes": "OUT/26",
     "data": "2026-10-06",
     "origem": "Avulso",
-    "modal": null,
+    "modal": "FCL",
     "valor_unitario": null,
     "moeda": null,
     "id": 1782736176120,
