@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-06-29T09:52:20",
+  "gerado_em": "2026-06-29T11:30:09",
   "semana_atual": 23,
   "semana_estoque": 23,
   "week_to_month": {
@@ -23089,33 +23089,6 @@
       "preco_medio": 0.0
     },
     {
-      "codigo": 403900001,
-      "nome": "AMOSTRA - AIRFRYER (NCM: 8516.60.00)",
-      "marca": "Velds",
-      "referencia": "VARIADOS",
-      "empresa_principal": "FX",
-      "saldo_atual": 0,
-      "preco_medio": 0.0
-    },
-    {
-      "codigo": 403900002,
-      "nome": "AMOSTRA - POTE DE VIDRO AIRFRYER (NCM: 7013.49.00)",
-      "marca": "Velds",
-      "referencia": "VARIADOS",
-      "empresa_principal": "FX",
-      "saldo_atual": 0,
-      "preco_medio": 0.0
-    },
-    {
-      "codigo": 400700011,
-      "nome": "AMOSTRA - ROBO ASPIRADOR - 85086000",
-      "marca": "Velds",
-      "referencia": "",
-      "empresa_principal": "VELDS",
-      "saldo_atual": 9,
-      "preco_medio": 0.0
-    },
-    {
       "codigo": 401000012,
       "nome": "AR651 2XGE",
       "marca": "Huawei",
@@ -23863,6 +23836,15 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 401700026,
+      "nome": "INJETOR POE+ 2GE 30W LINHA OMADA TPLINK  POE160S",
+      "marca": "TP-Link",
+      "referencia": "POE160S",
+      "empresa_principal": "TELECOM",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401700016,
       "nome": "INJETOR POE+ 2GE 30W LINHA OMADA TPLINK  POE160S",
       "marca": "TP-Link",
@@ -23985,6 +23967,42 @@
       "marca": "Velds",
       "referencia": "VDS MCBW- PG",
       "empresa_principal": "FX",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 400700028,
+      "nome": "Liquidificador Portátil Velds - Active Move (AZUL)",
+      "marca": "Velds",
+      "referencia": "",
+      "empresa_principal": "VELDS",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 400700027,
+      "nome": "Liquidificador Portátil Velds - Active Move (BRANCO)",
+      "marca": "Velds",
+      "referencia": "",
+      "empresa_principal": "VELDS",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 400700026,
+      "nome": "Liquidificador Portátil Velds - Active Move (CINZA)",
+      "marca": "Velds",
+      "referencia": "",
+      "empresa_principal": "VELDS",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 400700029,
+      "nome": "Liquidificador Portátil Velds - Active Move (ROSA)",
+      "marca": "Velds",
+      "referencia": "",
+      "empresa_principal": "VELDS",
       "saldo_atual": 0,
       "preco_medio": 0.0
     },
@@ -24700,15 +24718,6 @@
       "preco_medio": 0.0
     },
     {
-      "codigo": 403200025,
-      "nome": "Painel de Telecomunicação",
-      "marca": "Huawei",
-      "referencia": "",
-      "empresa_principal": "TELECOM",
-      "saldo_atual": 0,
-      "preco_medio": 0.0
-    },
-    {
       "codigo": 403200030,
       "nome": "PATCH CORD LC/PC LC/PC MULTI-MODE 10M A1B 2MM",
       "marca": "Huawei",
@@ -25003,6 +25012,15 @@
       "referencia": "",
       "empresa_principal": "TELECOM",
       "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 400700011,
+      "nome": "PPRODUTO ACABADO HOME CARE",
+      "marca": "-",
+      "referencia": "V50",
+      "empresa_principal": "FX",
+      "saldo_atual": 9,
       "preco_medio": 0.0
     },
     {
