@@ -1314,5 +1314,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-06-29T13:02:32.050Z",
     "codigo_pedido": "PED-0128"
+  },
+  {
+    "codigo": 401200031,
+    "nome": "SWITCH NAO GER. LINHA OMADA 24GE TPLINK  TLSG1024D LOCAL",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 3,
+    "semana": 28,
+    "mes": "JUL/26",
+    "data": "2026-07-06",
+    "origem": "Avulso",
+    "processo": "024.2026 VERDANT",
+    "modal": null,
+    "valor_unitario": 405.76,
+    "moeda": "BRL",
+    "id": 1782740014737,
+    "fase": "pendente",
+    "pendente_desde": "2026-06-29T13:33:34.737Z",
+    "codigo_pedido": "PED-0129"
   }
 ]
