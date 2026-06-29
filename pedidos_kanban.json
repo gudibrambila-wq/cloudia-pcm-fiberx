@@ -960,12 +960,13 @@
     "processo": "031.2026 SINCES",
     "modal": null,
     "id": 1781550006478,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0109",
-    "fase_desde": "2026-06-29T13:28:09.429Z",
+    "fase_desde": "2026-06-29T14:48:46.721Z",
     "valor_unitario": 975.35,
     "moeda": "BRL",
-    "codigo": 401200072
+    "codigo": 401200072,
+    "arquivado_em": "2026-06-29T14:48:46.721Z"
   },
   {
     "nome": "ACCESS POINT LINHA OMADA AX1800 TP-Link  EAP610",
