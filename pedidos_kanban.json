@@ -1277,7 +1277,7 @@
     "nome": "ROBO ASPIRADOR V30",
     "marca": "Velds",
     "tipo": "Importado",
-    "qtd": 20,
+    "qtd": 2650,
     "semana": 27,
     "mes": "JUL/26",
     "data": "2026-06-29",
@@ -1288,6 +1288,7 @@
     "id": 1782736176120,
     "fase": "pendente",
     "pendente_desde": "2026-06-29T12:29:36.120Z",
-    "codigo_pedido": "PED-0127"
+    "codigo_pedido": "PED-0127",
+    "fase_desde": "2026-06-29T12:29:36.120Z"
   }
 ]
