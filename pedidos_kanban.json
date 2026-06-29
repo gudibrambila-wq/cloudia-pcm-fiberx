@@ -1270,7 +1270,11 @@
     "pendente_desde": "2026-06-26T17:44:59.645Z",
     "codigo_pedido": "PED-0126",
     "codigo": 400700025,
-    "fase_desde": "2026-06-26T17:44:59.645Z"
+    "fase_desde": "2026-06-26T17:44:59.645Z",
+    "cancelado": true,
+    "motivo_cancelamento": "Colocado outro pedido porque esse estava dando erro na aba PSI",
+    "cancelado_em": "2026-06-29T12:50:04.880Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "codigo": 400700025,
