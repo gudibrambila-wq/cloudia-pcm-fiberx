@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-06-26T17:48:28",
+  "gerado_em": "2026-06-29T09:52:20",
   "semana_atual": 23,
   "semana_estoque": 23,
   "week_to_month": {
@@ -20911,7 +20911,7 @@
         "quantidade": 2650,
         "status": "PEDIDO",
         "mes": "OUT/26",
-        "codigo_pedido": "PED-0126",
+        "codigo_pedido": "PED-0127",
         "fase": "pendente"
       },
       "entradas": [
@@ -20920,7 +20920,7 @@
           "quantidade": 2650,
           "status": "PEDIDO",
           "mes": "OUT/26",
-          "codigo_pedido": "PED-0126",
+          "codigo_pedido": "PED-0127",
           "fase": "pendente"
         }
       ],
