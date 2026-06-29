@@ -1330,8 +1330,8 @@
     "valor_unitario": 405.76,
     "moeda": "BRL",
     "id": 1782740014737,
-    "fase": "pendente",
-    "pendente_desde": "2026-06-29T13:33:34.737Z",
-    "codigo_pedido": "PED-0129"
+    "fase": "faturado",
+    "codigo_pedido": "PED-0129",
+    "fase_desde": "2026-06-29T13:33:40.952Z"
   }
 ]
