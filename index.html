@@ -68,7 +68,10 @@
       <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7H4a2 2 0 00-2 2v10a2 2 0 002 2h16a2 2 0 002-2V9a2 2 0 00-2-2zM4 7V5a2 2 0 012-2h12a2 2 0 012 2v2"/></svg>
       Produtos
     </a>
-    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/50" data-view="catalogo" onclick="navigate('catalogo',this);return false">
+    <!-- Aba Catálogo escondida (unificada com Produtos em 30/06/2026).
+         A view-catalogo continua no DOM pra rollback rápido se necessário —
+         só removi do menu lateral. Pra reativar: removo display:none aqui. -->
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/50" data-view="catalogo" onclick="navigate('catalogo',this);return false" style="display:none;">
       <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
       Catálogo
       <span id="nav-catalogo-count" class="ml-auto text-[10px] bg-white/10 text-white/60 font-medium px-1.5 rounded-full">0</span>
@@ -509,10 +512,12 @@
         <div>
           <label class="text-xs text-slate-500 font-medium block mb-1">Status</label>
           <select id="prod-f-status" onchange="renderProdutos()" class="text-sm border border-slate-200 rounded-lg px-3 py-2 bg-white focus:outline-none focus:ring-2 focus:ring-blue-500">
-            <option value="">Ativos (forecast + monitorar)</option>
+            <option value="">Ativos (Curva A)</option>
             <option value="forecast">Forecast</option>
             <option value="monitorar">Monitorar</option>
             <option value="inativo">Inativos</option>
+            <option value="catalogo">📦 Catálogo (sem forecast)</option>
+            <option value="todos">Todos</option>
           </select>
         </div>
         <div class="flex-1 min-w-48">
@@ -8357,11 +8362,37 @@ function renderProdutos() {
   if (!DADOS) return;
   popularProdFiltros();
 
-  const prods   = DADOS.produtos;
   const fMarca  = document.getElementById('prod-f-marca')?.value  || '';
   const fFam    = document.getElementById('prod-f-familia')?.value || '';
   const fStatus = document.getElementById('prod-f-status')?.value  || '';
   const fBusca  = (document.getElementById('prod-f-busca')?.value  || '').toLowerCase();
+
+  // Lista unificada: produtos PSI (Curva A) + catálogo (sem forecast).
+  // Cada item ganha `_categoria` pra distinguir na UI:
+  //   - 'curva-a'         : produto PSI normal (forecast cadastrado)
+  //   - 'curva-a-virtual' : produto do catálogo promovido via override.fcst_mensal
+  //   - 'catalogo'        : produto SÓ no catálogo, sem forecast
+  const psiProds = DADOS.produtos || [];
+  const psiCods  = new Set(psiProds.map(p => p.codigo));
+  const todosProdutos = [];
+  psiProds.forEach(p => {
+    todosProdutos.push({ ...p, _categoria: p._origem === 'catalogo_promovido' ? 'curva-a-virtual' : 'curva-a' });
+  });
+  (DADOS.catalogo || []).forEach(c => {
+    if (psiCods.has(c.codigo)) return; // já é Curva A, não duplica
+    todosProdutos.push({
+      codigo:        c.codigo,
+      nome:          c.nome,
+      marca:         c.marca || '',
+      familia:       c.familia || '',
+      tipo:          c.tipo || (c.empresa_principal === 'VELDS' ? 'Importado' : 'Nacional'),
+      pv: 0, pc: 0, pv_mensal: {}, pc_mensal: {},
+      saldo_atual:   c.saldo_atual || 0,
+      fc_sem:        0,
+      fcst_mensal:   {},
+      _categoria:    'catalogo',
+    });
+  });
 
   // Mês corrente (baseado em SEMANA_ATUAL via WEEK_TO_MONTH) — usado pra puxar
   // pv_mensal[mes] e pc_mensal[mes] nas colunas PV/PC. Se um produto não tiver
@@ -8372,27 +8403,43 @@ function renderProdutos() {
   if (thPV && mesProdAtual) thPV.innerHTML = `PV <span class="text-slate-400 normal-case font-medium">(${mesProdAtual})</span>`;
   if (thPC && mesProdAtual) thPC.innerHTML = `PC <span class="text-slate-400 normal-case font-medium">(${mesProdAtual})</span>`;
 
-  _prodFiltrados = prods.filter(p => {
+  _prodFiltrados = todosProdutos.filter(p => {
     if (fMarca  && p.marca !== fMarca)         return false;
     if (fFam    && p.familia !== fFam)         return false;
     const st = getProdStatus(p.codigo);
-    // sem filtro de status: mostra apenas ativos (exclui inativos)
-    if (!fStatus && st === 'inativo')          return false;
-    if (fStatus  && st !== fStatus)            return false;
-    if (fBusca  && !p.nome.toLowerCase().includes(fBusca)) return false;
+    // Lógica do filtro de status:
+    //   ''         → ativos Curva A (exclui inativos e catálogo)
+    //   'catalogo' → só itens do catálogo (sem forecast)
+    //   'todos'    → tudo (inclusive inativos e catálogo)
+    //   outros     → forecast / monitorar / inativo (só Curva A)
+    if (fStatus === 'catalogo') {
+      if (p._categoria !== 'catalogo') return false;
+    } else if (fStatus === 'todos') {
+      // sem filtro adicional
+    } else if (fStatus === 'inativo') {
+      if (st !== 'inativo') return false;
+    } else if (fStatus === 'forecast' || fStatus === 'monitorar') {
+      if (p._categoria === 'catalogo' || st !== fStatus) return false;
+    } else {
+      // default: ativos Curva A
+      if (st === 'inativo') return false;
+      if (p._categoria === 'catalogo') return false;
+    }
+    if (fBusca) {
+      const bate = (p.nome || '').toLowerCase().includes(fBusca)
+                || String(p.codigo || '').toLowerCase().includes(fBusca)
+                || (p.marca || '').toLowerCase().includes(fBusca);
+      if (!bate) return false;
+    }
     return true;
   });
 
   // KPIs
-  const total    = prods.length;
-  const nFc      = prods.filter(p => getProdStatus(p.codigo) === 'forecast').length;
-  const nMon     = prods.filter(p => getProdStatus(p.codigo) === 'monitorar').length;
-  const nInativo = prods.filter(p => getProdStatus(p.codigo) === 'inativo').length;
+  const nFc      = psiProds.filter(p => getProdStatus(p.codigo) === 'forecast').length;
+  const nMon     = psiProds.filter(p => getProdStatus(p.codigo) === 'monitorar').length;
+  const nInativo = psiProds.filter(p => getProdStatus(p.codigo) === 'inativo').length;
+  const nCatalogo = todosProdutos.filter(p => p._categoria === 'catalogo' && getProdStatus(p.codigo) !== 'inativo').length;
   document.getElementById('prod-kpis').innerHTML = `
-    <div class="bg-white border border-slate-200 rounded-xl p-4 text-center shadow-sm cursor-pointer hover:bg-slate-50 transition-colors" onclick="filtrarProdutosPorStatus('')">
-      <p class="text-2xl font-bold text-slate-800">${total}</p>
-      <p class="text-xs font-semibold text-slate-500 mt-1">Total no Sistema</p>
-    </div>
     <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center cursor-pointer hover:bg-blue-100 transition-colors" onclick="filtrarProdutosPorStatus('forecast')">
       <p class="text-2xl font-bold text-blue-700">${nFc}</p>
       <p class="text-xs font-semibold text-blue-600 mt-1">Forecast Ativo</p>
@@ -8400,6 +8447,10 @@ function renderProdutos() {
     <div class="bg-slate-50 border border-slate-200 rounded-xl p-4 text-center cursor-pointer hover:bg-slate-100 transition-colors" onclick="filtrarProdutosPorStatus('monitorar')">
       <p class="text-2xl font-bold text-slate-600">${nMon}</p>
       <p class="text-xs font-semibold text-slate-500 mt-1">Monitorar Estoque</p>
+    </div>
+    <div class="bg-amber-50 border border-amber-200 rounded-xl p-4 text-center cursor-pointer hover:bg-amber-100 transition-colors" onclick="filtrarProdutosPorStatus('catalogo')">
+      <p class="text-2xl font-bold text-amber-700">${nCatalogo.toLocaleString('pt-BR')}</p>
+      <p class="text-xs font-semibold text-amber-600 mt-1">📦 Catálogo (sem forecast)</p>
     </div>
     <div class="bg-red-50 border border-red-200 rounded-xl p-4 text-center cursor-pointer hover:bg-red-100 transition-colors" onclick="filtrarProdutosPorStatus('inativo')">
       <p class="text-2xl font-bold text-red-400">${nInativo}</p>
@@ -8411,27 +8462,46 @@ function renderProdutos() {
   if (!tbody) return;
 
   tbody.innerHTML = _prodFiltrados.map(p => {
+    const isCatalogo = p._categoria === 'catalogo';
+    const isVirtual  = p._categoria === 'curva-a-virtual';
     const st  = getProdStatus(p.codigo);
     const wos = p.fc_sem > 0 ? (p.saldo_atual / p.fc_sem).toFixed(1) : '—';
     const wosColor = p.fc_sem > 0
       ? (parseFloat(wos) >= 8 ? 'text-emerald-600' : parseFloat(wos) >= 4 ? 'text-amber-600' : parseFloat(wos) > 0 ? 'text-orange-600' : 'text-red-600')
       : 'text-slate-400';
-    const rowBg = st === 'inativo' ? 'bg-red-50/40 opacity-50' : st === 'monitorar' ? 'opacity-70' : '';
+    const rowBg = st === 'inativo' ? 'bg-red-50/40 opacity-50'
+                : isCatalogo       ? 'bg-amber-50/30'
+                : isVirtual        ? 'bg-blue-50/20'
+                : st === 'monitorar' ? 'opacity-70' : '';
     const nomeStyle = st === 'inativo' ? 'line-through text-slate-400' : 'font-medium text-slate-800';
     const overridden = hasProdutoOverride(p.codigo);
-    const overrideBadge = overridden
+    const virtualBadge = isVirtual
+      ? `<span title="Produto promovido do catálogo via override.fcst_mensal" class="text-blue-500 text-[10px] ml-1">⚡</span>` : '';
+    const overrideBadge = overridden && !isVirtual
       ? `<span title="Esse produto tem campos editados manualmente — sobrevivem ao Sincronizar" class="text-blue-500 text-[10px] ml-1">✎</span>`
       : '';
+    // Coluna Status: pra catálogo mostra tag "Catálogo" + botão Promover.
+    const colunaStatus = isCatalogo
+      ? `<div class="flex items-center gap-1 justify-center">
+          <span class="px-2 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">📦 Catálogo</span>
+        </div>`
+      : prodStatusBadge(st, p.codigo);
+    // Coluna Ações: lápis (editar) pra Curva A, ✚ (promover) pra catálogo
+    const colunaAcao = isCatalogo
+      ? `<button onclick="abrirModalEditarProduto('${p.codigo}')" title="Promover pra Curva A (forecast mensal)" class="text-amber-500 hover:text-amber-700 transition-colors text-base font-bold">✚</button>`
+      : `<button onclick="abrirModalEditarProduto('${p.codigo}')" title="Editar marca, tipo, preços e forecast" class="text-slate-300 hover:text-blue-600 transition-colors">
+          <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
+        </button>`;
     return `
       <tr class="border-b border-slate-100 hover:bg-slate-50 ${rowBg}">
         <td class="px-4 py-3">
           <input type="checkbox" data-prod-cb="${p.codigo}" class="rounded">
         </td>
         <td class="px-4 py-3">
-          <p class="${nomeStyle} text-xs leading-tight">${p.nome}${overrideBadge}</p>
+          <p class="${nomeStyle} text-xs leading-tight">${p.nome}${virtualBadge}${overrideBadge}</p>
           <p class="text-slate-400 text-xs mt-0.5">${p.codigo || '—'}</p>
         </td>
-        <td class="px-4 py-3 text-slate-600 text-xs">${p.marca}</td>
+        <td class="px-4 py-3 text-slate-600 text-xs">${p.marca || '—'}</td>
         <td class="px-4 py-3 text-slate-500 text-xs">${p.familia || '—'}</td>
         <td class="px-4 py-3 text-xs">
           <span class="px-2 py-0.5 rounded-full text-xs font-medium ${p.tipo === 'Importado' ? 'bg-purple-50 text-purple-700' : 'bg-green-50 text-green-700'}">${p.tipo || 'Nacional'}</span>
@@ -8444,20 +8514,16 @@ function renderProdutos() {
           const v = mesProdAtual ? ((p.pc_mensal || {})[mesProdAtual] || 0) : 0;
           return v > 0 ? 'R$ ' + v.toLocaleString('pt-BR', {maximumFractionDigits:2}) : '—';
         })()}</td>
-        <td class="px-4 py-3 text-right font-medium text-slate-700 text-xs">${p.saldo_atual.toLocaleString('pt-BR')}</td>
+        <td class="px-4 py-3 text-right font-medium text-slate-700 text-xs">${(p.saldo_atual || 0).toLocaleString('pt-BR')}</td>
         <td class="px-4 py-3 text-right text-slate-600 text-xs">${p.fc_sem > 0 ? p.fc_sem + '/sem' : '—'}</td>
         <td class="px-4 py-3 text-right font-semibold text-xs ${wosColor}">${wos}</td>
-        <td class="px-4 py-3 text-center">${prodStatusBadge(st, p.codigo)}</td>
-        <td class="px-4 py-3 text-center">
-          <button onclick="abrirModalEditarProduto('${p.codigo}')" title="Editar marca, tipo, preços e forecast" class="text-slate-300 hover:text-blue-600 transition-colors">
-            <svg class="w-4 h-4 inline" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"/></svg>
-          </button>
-        </td>
+        <td class="px-4 py-3 text-center">${colunaStatus}</td>
+        <td class="px-4 py-3 text-center">${colunaAcao}</td>
       </tr>`;
   }).join('');
 
   document.getElementById('prod-footer').textContent =
-    `${_prodFiltrados.length} de ${total} produtos · clique no badge para alterar o status`;
+    `${_prodFiltrados.length} de ${todosProdutos.length} produtos`;
 
   // Sync check-all state
   const allCb = document.getElementById('prod-check-all');
