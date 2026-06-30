@@ -16,7 +16,7 @@
     "codigo_pedido": "PED-0052",
     "fase_desde": "2026-06-24T14:21:01.075Z",
     "arquivado_em": "2026-06-24T14:21:01.075Z",
-    "codigo": 4007011
+    "codigo": 400700013
   },
   {
     "id": 258778903581562,
@@ -27,14 +27,14 @@
     "semana": 29,
     "mes": "JUL/26",
     "origem": "VELDS_PSI W20",
-    "processo": "01.2026 + 4.2026 VSC",
+    "processo": "01+ 4.2026VSC",
     "fase": "transito",
     "_unique_key": "velds_w20_ROBO ASPIRADOR V50 PRO 110 V_22_320",
     "modal": "FCL",
     "codigo_pedido": "PED-0053",
     "fase_desde": "2026-06-09T13:50:16.895Z",
     "data": "2026-07-15",
-    "codigo": 4007011
+    "codigo": 400700013
   },
   {
     "id": 266140750448105,
@@ -45,14 +45,14 @@
     "semana": 32,
     "mes": "AGO/26",
     "origem": "VELDS_PSI W20",
-    "processo": "004.2026 VSC",
+    "processo": "004.2026A VSC",
     "fase": "transito",
     "_unique_key": "velds_w20_ROBO ASPIRADOR V50 PRO 110 V_23_600",
     "modal": "FCL",
     "codigo_pedido": "PED-0054",
     "fase_desde": "2026-06-25T17:51:29.203Z",
     "data": "2026-08-06",
-    "codigo": 4007011
+    "codigo": 400700013
   },
   {
     "id": 1552238832438,
@@ -71,7 +71,7 @@
     "codigo_pedido": "PED-0055",
     "fase_desde": "2026-06-24T14:20:59.371Z",
     "arquivado_em": "2026-06-24T14:20:59.371Z",
-    "codigo": 4007010
+    "codigo": 400700014
   },
   {
     "id": 128392774534347,
@@ -89,7 +89,7 @@
     "codigo_pedido": "PED-0056",
     "fase_desde": "2026-06-09T13:50:16.895Z",
     "data": "2026-07-15",
-    "codigo": 4007010
+    "codigo": 400700014
   },
   {
     "id": 191615227612552,
@@ -107,7 +107,7 @@
     "codigo_pedido": "PED-0057",
     "fase_desde": "2026-06-25T17:51:27.787Z",
     "data": "2026-08-06",
-    "codigo": 4007010
+    "codigo": 400700014
   },
   {
     "id": 264460338366470,
@@ -177,7 +177,7 @@
     "data": "2026-09-21",
     "codigo_pedido": "PED-0061",
     "fase_desde": "2026-06-09T13:50:16.895Z",
-    "codigo": 4007010
+    "codigo": 400700014
   },
   {
     "nome": "ONU FASTT10 BRIDGE F10G10NW  GN114Z",
@@ -245,7 +245,7 @@
     "data": "2026-11-22",
     "codigo_pedido": "PED-0065",
     "fase_desde": "2026-06-15T16:39:25.581Z",
-    "codigo": 4007009
+    "codigo": 400700012
   },
   {
     "id": 270880278736188,
@@ -263,7 +263,7 @@
     "codigo_pedido": "PED-0066",
     "fase_desde": "2026-06-24T14:20:57.831Z",
     "arquivado_em": "2026-06-24T14:20:57.831Z",
-    "codigo": 4007009
+    "codigo": 400700012
   },
   {
     "id": 19839488627017,
@@ -281,7 +281,7 @@
     "codigo_pedido": "PED-0067",
     "fase_desde": "2026-06-09T13:50:16.895Z",
     "data": "2026-07-15",
-    "codigo": 4007009
+    "codigo": 400700012
   },
   {
     "id": 191560432685838,
@@ -299,7 +299,7 @@
     "codigo_pedido": "PED-0068",
     "fase_desde": "2026-06-25T17:51:26.516Z",
     "data": "2026-08-06",
-    "codigo": 4007009
+    "codigo": 400700012
   },
   {
     "id": 242035838580445,
@@ -317,7 +317,7 @@
     "codigo_pedido": "PED-0069",
     "fase_desde": "2026-06-25T17:51:49.403Z",
     "data": "2026-08-17",
-    "codigo": 4007009
+    "codigo": 400700012
   },
   {
     "nome": "ALIMENTADOR PET  VDS APBW",
@@ -353,7 +353,7 @@
     "processo": "013.2026 VSC",
     "codigo_pedido": "PED-0071",
     "fase_desde": "2026-06-15T16:39:22.173Z",
-    "codigo": 4007011
+    "codigo": 400700013
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 220V",
@@ -370,7 +370,7 @@
     "processo": "014.2026 VSC",
     "codigo_pedido": "PED-0072",
     "fase_desde": "2026-06-15T16:39:20.717Z",
-    "codigo": 4007010
+    "codigo": 400700014
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 110V",
@@ -387,7 +387,7 @@
     "fase": "producao",
     "codigo_pedido": "PED-0073",
     "fase_desde": "2026-06-09T13:50:16.895Z",
-    "codigo": 4007011
+    "codigo": 400700013
   },
   {
     "nome": "FONTE ONT ZYXEL WI-FI 6 AX3000 PX3321-T1",
@@ -479,7 +479,7 @@
     "fase": "producao",
     "codigo_pedido": "PED-0079",
     "fase_desde": "2026-06-09T13:50:16.895Z",
-    "codigo": 4007009
+    "codigo": 400700012
   },
   {
     "nome": "ONT WIFI 6 AX3000 ZYXEL PX3321T1",
@@ -732,9 +732,9 @@
     "processo": "024.2026 VERDANT",
     "modal": null,
     "id": 1779817641614,
-    "fase": "transito",
+    "fase": "faturado",
     "codigo_pedido": "PED-0094",
-    "fase_desde": "2026-06-29T13:29:20.457Z",
+    "fase_desde": "2026-06-26T17:48:44.966Z",
     "valor_unitario": 215.61,
     "moeda": "BRL",
     "codigo": 401200045
@@ -743,17 +743,17 @@
     "nome": "SWITCH NAO GER. LINHA OMADA 24GE TPLINK  TLSG1024D LOCAL",
     "marca": "TP-Link",
     "tipo": "Nacional",
-    "qtd": 47,
+    "qtd": 50,
     "semana": 28,
     "mes": "JUL/26",
     "data": "2026-07-06",
     "origem": "Avulso",
-    "processo": "024.2026 VERDANT",
+    "processo": "024.2026 Verdant",
     "modal": null,
     "id": 1779817895130,
-    "fase": "backorder",
+    "fase": "faturado",
     "codigo_pedido": "PED-0095",
-    "fase_desde": "2026-06-29T13:33:08.385Z",
+    "fase_desde": "2026-06-19T14:40:08.502Z",
     "valor_unitario": 405.76,
     "moeda": "BRL",
     "codigo": 401200031
@@ -848,7 +848,7 @@
     "fase": "embarque",
     "codigo_pedido": "PED-0100",
     "fase_desde": "2026-06-25T17:51:46.867Z",
-    "codigo": 4007010
+    "codigo": 400700014
   },
   {
     "nome": "ROBÔ ASPIRADOR INTELIGENTE VELDS - V50 PRO (110V)",
@@ -883,13 +883,12 @@
     "processo": "030.2026 RIBEIRÃO",
     "modal": null,
     "id": 1781542547909,
-    "fase": "estoque",
+    "fase": "transito",
     "codigo_pedido": "PED-0105",
-    "fase_desde": "2026-06-29T14:27:55.249Z",
+    "fase_desde": "2026-06-24T13:14:20.889Z",
     "valor_unitario": 425.81,
     "moeda": "BRL",
-    "codigo": 401700010,
-    "arquivado_em": "2026-06-29T14:27:55.249Z"
+    "codigo": 401700010
   },
   {
     "nome": "ACCESS POINT LINHA OMADA AX3000 TPLINK  EAP650",
@@ -922,13 +921,12 @@
     "processo": "032.2026 LIGGA",
     "modal": null,
     "id": 1781549887066,
-    "fase": "estoque",
+    "fase": "transito",
     "codigo_pedido": "PED-0107",
-    "fase_desde": "2026-06-29T14:48:48.329Z",
+    "fase_desde": "2026-06-24T13:14:43.396Z",
     "valor_unitario": 1688.46,
     "moeda": "BRL",
-    "codigo": 401200071,
-    "arquivado_em": "2026-06-29T14:48:48.329Z"
+    "codigo": 401200071
   },
   {
     "nome": "ACCESS POINT LINHA OMADA AX3000 TPLINK  EAP650",
@@ -961,13 +959,12 @@
     "processo": "031.2026 SINCES",
     "modal": null,
     "id": 1781550006478,
-    "fase": "estoque",
+    "fase": "transito",
     "codigo_pedido": "PED-0109",
-    "fase_desde": "2026-06-29T14:48:46.721Z",
+    "fase_desde": "2026-06-24T13:14:33.838Z",
     "valor_unitario": 975.35,
     "moeda": "BRL",
-    "codigo": 401200072,
-    "arquivado_em": "2026-06-29T14:48:46.721Z"
+    "codigo": 401200072
   },
   {
     "nome": "ACCESS POINT LINHA OMADA AX1800 TP-Link  EAP610",
@@ -1041,9 +1038,9 @@
     "valor_unitario": 275.08,
     "moeda": "BRL",
     "id": 1781870794753,
-    "fase": "transito",
+    "fase": "faturado",
     "codigo_pedido": "PED-0114",
-    "fase_desde": "2026-06-29T13:29:48.713Z",
+    "fase_desde": "2026-06-26T17:49:25.101Z",
     "codigo": 401300036
   },
   {
@@ -1060,9 +1057,9 @@
     "valor_unitario": 429.31,
     "moeda": "BRL",
     "id": 1781871457945,
-    "fase": "transito",
+    "fase": "faturado",
     "codigo_pedido": "PED-0115",
-    "fase_desde": "2026-06-29T13:30:00.921Z",
+    "fase_desde": "2026-06-26T17:49:39.342Z",
     "codigo": 401300019
   },
   {
@@ -1079,9 +1076,9 @@
     "valor_unitario": 318.97,
     "moeda": "BRL",
     "id": 1781871564601,
-    "fase": "transito",
+    "fase": "faturado",
     "codigo_pedido": "PED-0116",
-    "fase_desde": "2026-06-29T13:30:14.017Z",
+    "fase_desde": "2026-06-26T17:49:51.165Z",
     "codigo": 401200073
   },
   {
@@ -1098,9 +1095,9 @@
     "valor_unitario": 318.1,
     "moeda": "BRL",
     "id": 1781871646757,
-    "fase": "transito",
+    "fase": "faturado",
     "codigo_pedido": "PED-0117",
-    "fase_desde": "2026-06-29T13:30:42.557Z",
+    "fase_desde": "2026-06-26T17:50:09.370Z",
     "codigo": 401200030
   },
   {
@@ -1117,9 +1114,9 @@
     "valor_unitario": 1400,
     "moeda": "BRL",
     "id": 1781871933261,
-    "fase": "transito",
+    "fase": "faturado",
     "codigo_pedido": "PED-0118",
-    "fase_desde": "2026-06-29T13:30:57.577Z",
+    "fase_desde": "2026-06-26T17:50:49.245Z",
     "codigo": 401200047
   },
   {
@@ -1136,9 +1133,9 @@
     "valor_unitario": 876.72,
     "moeda": "BRL",
     "id": 1781872072617,
-    "fase": "transito",
+    "fase": "faturado",
     "codigo_pedido": "PED-0119",
-    "fase_desde": "2026-06-29T13:31:16.913Z",
+    "fase_desde": "2026-06-26T17:50:52.881Z",
     "codigo": 401200069
   },
   {
@@ -1193,9 +1190,9 @@
     "valor_unitario": 418.97,
     "moeda": "BRL",
     "id": 1781872243193,
-    "fase": "transito",
+    "fase": "faturado",
     "codigo_pedido": "PED-0122",
-    "fase_desde": "2026-06-29T13:31:25.564Z",
+    "fase_desde": "2026-06-26T17:50:56.849Z",
     "codigo": 401200075
   },
   {
@@ -1298,179 +1295,5 @@
     "codigo_pedido": "PED-0127",
     "fase_desde": "2026-06-29T12:29:36.120Z",
     "processo": "016.2026 VSC"
-  },
-  {
-    "codigo": 401200069,
-    "nome": "Switch Gerenciável Gigabit L2+ de 24 portas  - SG3428 Local",
-    "marca": "OMADA - TP-LINK",
-    "tipo": "Nacional",
-    "qtd": 5,
-    "semana": 31,
-    "mes": "AGO/26",
-    "data": "2026-07-29",
-    "origem": "Avulso",
-    "processo": "034.2026 NTSC",
-    "modal": null,
-    "valor_unitario": 772,
-    "moeda": "BRL",
-    "id": 1782738152050,
-    "fase": "pendente",
-    "pendente_desde": "2026-06-29T13:02:32.050Z",
-    "codigo_pedido": "PED-0128",
-    "fase_desde": "2026-06-29T13:02:32.050Z"
-  },
-  {
-    "codigo": 401200031,
-    "nome": "SWITCH NAO GER. LINHA OMADA 24GE TPLINK  TLSG1024D LOCAL",
-    "marca": "TP-Link",
-    "tipo": "Nacional",
-    "qtd": 3,
-    "semana": 28,
-    "mes": "JUL/26",
-    "data": "2026-07-06",
-    "origem": "Avulso",
-    "processo": "024.2026 VERDANT",
-    "modal": null,
-    "valor_unitario": 405.76,
-    "moeda": "BRL",
-    "id": 1782740014737,
-    "fase": "faturado",
-    "codigo_pedido": "PED-0129",
-    "fase_desde": "2026-06-29T13:33:40.952Z"
-  },
-  {
-    "codigo": 401700019,
-    "nome": "ACCESS POINT TPLINK  EAP653",
-    "marca": "TP-Link",
-    "tipo": "Nacional",
-    "qtd": 80,
-    "semana": 31,
-    "mes": "AGO/26",
-    "data": "2026-07-29",
-    "origem": "Avulso",
-    "processo": "035.2026 SÃO MARCOS",
-    "modal": null,
-    "valor_unitario": null,
-    "moeda": null,
-    "id": 1782741842161,
-    "fase": "pendente",
-    "pendente_desde": "2026-06-29T14:04:02.161Z",
-    "codigo_pedido": "PED-0130",
-    "fase_desde": "2026-06-29T14:04:02.161Z"
-  },
-  {
-    "codigo": 401200030,
-    "nome": "SWITCH NAO GER. LINHA OMADA 16GE TPLINK  TLSG1016D LOCAL",
-    "marca": "TP-Link",
-    "tipo": "Nacional",
-    "qtd": 4,
-    "semana": 31,
-    "mes": "AGO/26",
-    "data": "2026-07-29",
-    "origem": "Avulso",
-    "processo": "035.2026 SÃO MARCOS",
-    "modal": null,
-    "valor_unitario": null,
-    "moeda": null,
-    "id": 1782741896057,
-    "fase": "pendente",
-    "pendente_desde": "2026-06-29T14:04:56.057Z",
-    "codigo_pedido": "PED-0131",
-    "fase_desde": "2026-06-29T14:04:56.057Z"
-  },
-  {
-    "codigo": 401700026,
-    "nome": "INJETOR POE+ 2GE 30W LINHA OMADA TPLINK  POE160S",
-    "marca": "TP-Link",
-    "tipo": "Nacional",
-    "qtd": 65,
-    "semana": 28,
-    "mes": "JUL/26",
-    "data": "2026-07-06",
-    "origem": "Avulso",
-    "processo": "035.2026 SÃO MARCOS",
-    "modal": null,
-    "valor_unitario": null,
-    "moeda": null,
-    "id": 1782743728037,
-    "fase": "pendente",
-    "pendente_desde": "2026-06-29T14:35:28.037Z",
-    "codigo_pedido": "PED-0132"
-  },
-  {
-    "codigo": 400700026,
-    "nome": "Liquidificador Portátil Velds - Active Move (CINZA)",
-    "marca": "Velds",
-    "tipo": "Importado",
-    "qtd": 1000,
-    "semana": 44,
-    "mes": "NOV/26",
-    "data": "2026-10-30",
-    "origem": "Avulso",
-    "processo": "017.2026 VSC",
-    "modal": "FCL",
-    "valor_unitario": null,
-    "moeda": null,
-    "id": 1782821293084,
-    "fase": "pendente",
-    "pendente_desde": "2026-06-30T12:08:13.084Z",
-    "codigo_pedido": "PED-0133"
-  },
-  {
-    "codigo": 400700027,
-    "nome": "Liquidificador Portátil Velds - Active Move (BRANCO)",
-    "marca": "Velds",
-    "tipo": "Importado",
-    "qtd": 500,
-    "semana": 44,
-    "mes": "NOV/26",
-    "data": "2026-10-30",
-    "origem": "Avulso",
-    "processo": "017.2026 VSC",
-    "modal": "FCL",
-    "valor_unitario": null,
-    "moeda": null,
-    "id": 1782821320610,
-    "fase": "pendente",
-    "pendente_desde": "2026-06-30T12:08:40.610Z",
-    "codigo_pedido": "PED-0134"
-  },
-  {
-    "codigo": 400700028,
-    "nome": "Liquidificador Portátil Velds - Active Move (AZUL)",
-    "marca": "Velds",
-    "tipo": "Importado",
-    "qtd": 1000,
-    "semana": 44,
-    "mes": "NOV/26",
-    "data": "2026-10-30",
-    "origem": "Avulso",
-    "processo": "017.2026 VSC",
-    "modal": "FCL",
-    "valor_unitario": null,
-    "moeda": null,
-    "id": 1782821348691,
-    "fase": "pendente",
-    "pendente_desde": "2026-06-30T12:09:08.691Z",
-    "codigo_pedido": "PED-0135"
-  },
-  {
-    "codigo": 400700029,
-    "nome": "Liquidificador Portátil Velds - Active Move (ROSA)",
-    "marca": "Velds",
-    "tipo": "Importado",
-    "qtd": 1000,
-    "semana": 44,
-    "mes": "NOV/26",
-    "data": "2026-10-30",
-    "origem": "Avulso",
-    "processo": "017.2026 VSC",
-    "modal": "FCL",
-    "valor_unitario": null,
-    "moeda": null,
-    "id": 1782821371510,
-    "fase": "pendente",
-    "pendente_desde": "2026-06-30T12:09:31.510Z",
-    "codigo_pedido": "PED-0136"
   }
 ]
