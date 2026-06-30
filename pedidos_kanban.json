@@ -1415,5 +1415,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-06-30T12:08:13.084Z",
     "codigo_pedido": "PED-0133"
+  },
+  {
+    "codigo": 400700027,
+    "nome": "Liquidificador Portátil Velds - Active Move (BRANCO)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 500,
+    "semana": 44,
+    "mes": "NOV/26",
+    "data": "2026-10-30",
+    "origem": "Avulso",
+    "processo": "017.2026 VSC",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1782821320610,
+    "fase": "pendente",
+    "pendente_desde": "2026-06-30T12:08:40.610Z",
+    "codigo_pedido": "PED-0134"
   }
 ]
