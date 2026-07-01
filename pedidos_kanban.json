@@ -845,9 +845,9 @@
     "processo": "003.2026 VSC",
     "modal": "FCL",
     "id": 1780332075262,
-    "fase": "embarque",
+    "fase": "transito",
     "codigo_pedido": "PED-0100",
-    "fase_desde": "2026-06-25T17:51:46.867Z",
+    "fase_desde": "2026-07-01T14:41:47.111Z",
     "codigo": 400700014
   },
   {
