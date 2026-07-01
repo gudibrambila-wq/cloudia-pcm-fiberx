@@ -713,12 +713,13 @@
     "processo": "024.2026 Verdant",
     "modal": null,
     "id": 1779817464474,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0093",
-    "fase_desde": "2026-06-19T14:42:44.798Z",
+    "fase_desde": "2026-07-01T20:27:31.201Z",
     "valor_unitario": 874.35,
     "moeda": "BRL",
-    "codigo": 401200069
+    "codigo": 401200069,
+    "arquivado_em": "2026-07-01T20:27:31.201Z"
   },
   {
     "nome": "SWITCH GIGABIT TPLINK  TLSG1005P",
