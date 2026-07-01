@@ -1,0 +1,49 @@
+name: Regenera dados.json
+
+# Executa quando pedidos_kanban / produto_overrides / produto_status mudam
+# (via autosync do V3 ou push manual). Roda regen_dados.py, atualiza dados.json
+# e commita. Streamlit rebuilda sozinho depois. Total: ~2 min do save até UI.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'pedidos_kanban.json'
+      - 'produto_overrides.json'
+      - 'produto_status.json'
+  workflow_dispatch:  # permite rodar manual pelo painel Actions
+
+# Evita 2 runs simultâneos (se autosync mandar 2 commits juntos)
+concurrency:
+  group: regen-dados
+  cancel-in-progress: false
+
+jobs:
+  regen:
+    # Não roda se o commit foi feito pelo próprio bot (evita loop infinito)
+    if: github.actor != 'github-actions[bot]' && !contains(github.event.head_commit.message, '[skip-regen]')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Rodar regen_dados.py
+        run: python regen_dados.py
+
+      - name: Commit e push se dados.json mudou
+        run: |
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          if git diff --quiet dados.json; then
+            echo "Nenhuma mudança em dados.json — nada a commitar"
+          else
+            git add dados.json
+            git commit -m "regen: dados.json atualizado (kanban/overrides/status)
+
+[skip-regen]"
+            git push
+          fi
