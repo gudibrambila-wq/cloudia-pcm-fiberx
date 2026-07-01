@@ -1331,10 +1331,10 @@
     "valor_unitario": null,
     "moeda": null,
     "id": 1782906623391,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-01T11:50:23.391Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0138",
-    "fase_desde": "2026-07-01T11:50:23.391Z"
+    "fase_desde": "2026-07-01T14:43:59.062Z",
+    "pago_desde": "2026-07-01T14:43:59.062Z"
   },
   {
     "codigo": 400700028,
