@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-01T11:41:44",
+  "gerado_em": "2026-07-01T13:49:53",
   "semana_atual": 23,
   "semana_estoque": 23,
   "week_to_month": {
@@ -15911,7 +15911,7 @@
       "pc": 780.0,
       "saldo_atual": 16,
       "fc_sem": 116,
-      "in_transit": 1486,
+      "in_transit": 3660,
       "prox_chegada": {
         "semana": 26,
         "quantidade": 1035,
@@ -15948,10 +15948,10 @@
         {
           "semana": 34,
           "quantidade": 2174,
-          "status": "PEDIDO",
+          "status": "EM_TRANSITO",
           "mes": "AGO/26",
           "codigo_pedido": "PED-0069",
-          "fase": "embarque"
+          "fase": "transito"
         },
         {
           "semana": 45,
@@ -16313,7 +16313,7 @@
       "fc_sem": 253,
       "in_transit": 2500,
       "prox_chegada": {
-        "semana": 28,
+        "semana": 30,
         "quantidade": 2500,
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
@@ -16322,7 +16322,7 @@
       },
       "entradas": [
         {
-          "semana": 28,
+          "semana": 30,
           "quantidade": 2500,
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
@@ -16534,9 +16534,9 @@
           0,
           0,
           0,
+          0,
+          0,
           2500,
-          0,
-          0,
           0,
           0,
           0,
@@ -16644,8 +16644,8 @@
           1201,
           1041,
           881,
-          3221,
-          3061,
+          721,
+          561,
           2901,
           2741,
           2471,
@@ -17067,7 +17067,7 @@
       "pc": 1020.0,
       "saldo_atual": 7,
       "fc_sem": 19,
-      "in_transit": 583,
+      "in_transit": 683,
       "prox_chegada": {
         "semana": 26,
         "quantidade": 30,
@@ -17104,10 +17104,10 @@
         {
           "semana": 34,
           "quantidade": 100,
-          "status": "PEDIDO",
+          "status": "EM_TRANSITO",
           "mes": "AGO/26",
           "codigo_pedido": "PED-0100",
-          "fase": "embarque"
+          "fase": "transito"
         },
         {
           "semana": 39,
@@ -22625,7 +22625,7 @@
       "pc": 780.0,
       "saldo_atual": 16,
       "fc_sem": 69,
-      "in_transit": 1486,
+      "in_transit": 3660,
       "prox_chegada": {
         "semana": 26,
         "quantidade": 1035,
@@ -22662,10 +22662,10 @@
         {
           "semana": 34,
           "quantidade": 2174,
-          "status": "PEDIDO",
+          "status": "EM_TRANSITO",
           "mes": "AGO/26",
           "codigo_pedido": "PED-0069",
-          "fase": "embarque"
+          "fase": "transito"
         },
         {
           "semana": 45,
@@ -23350,7 +23350,7 @@
       "pc": 1020.0,
       "saldo_atual": 7,
       "fc_sem": 17,
-      "in_transit": 583,
+      "in_transit": 683,
       "prox_chegada": {
         "semana": 26,
         "quantidade": 30,
@@ -23387,10 +23387,10 @@
         {
           "semana": 34,
           "quantidade": 100,
-          "status": "PEDIDO",
+          "status": "EM_TRANSITO",
           "mes": "AGO/26",
           "codigo_pedido": "PED-0100",
-          "fase": "embarque"
+          "fase": "transito"
         },
         {
           "semana": 39,
