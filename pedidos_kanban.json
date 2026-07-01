@@ -713,12 +713,13 @@
     "processo": "024.2026 Verdant",
     "modal": null,
     "id": 1779817464474,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0093",
-    "fase_desde": "2026-06-19T14:42:44.798Z",
+    "fase_desde": "2026-07-01T20:27:31.201Z",
     "valor_unitario": 874.35,
     "moeda": "BRL",
-    "codigo": 401200069
+    "codigo": 401200069,
+    "arquivado_em": "2026-07-01T20:27:31.201Z"
   },
   {
     "nome": "SWITCH GIGABIT TPLINK  TLSG1005P",
@@ -732,18 +733,19 @@
     "processo": "024.2026 VERDANT",
     "modal": null,
     "id": 1779817641614,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0094",
-    "fase_desde": "2026-06-26T17:48:44.966Z",
+    "fase_desde": "2026-07-01T20:27:01.397Z",
     "valor_unitario": 215.61,
     "moeda": "BRL",
-    "codigo": 401200045
+    "codigo": 401200045,
+    "arquivado_em": "2026-07-01T20:27:01.397Z"
   },
   {
     "nome": "SWITCH NAO GER. LINHA OMADA 24GE TPLINK  TLSG1024D LOCAL",
     "marca": "TP-Link",
     "tipo": "Nacional",
-    "qtd": 50,
+    "qtd": 47,
     "semana": 28,
     "mes": "JUL/26",
     "data": "2026-07-06",
@@ -751,9 +753,9 @@
     "processo": "024.2026 Verdant",
     "modal": null,
     "id": 1779817895130,
-    "fase": "faturado",
+    "fase": "backorder",
     "codigo_pedido": "PED-0095",
-    "fase_desde": "2026-06-19T14:40:08.502Z",
+    "fase_desde": "2026-07-01T20:36:10.365Z",
     "valor_unitario": 405.76,
     "moeda": "BRL",
     "codigo": 401200031
@@ -770,12 +772,13 @@
     "processo": "024.2026 Verdant",
     "modal": null,
     "id": 1779817944573,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0096",
-    "fase_desde": "2026-06-19T14:40:37.686Z",
+    "fase_desde": "2026-07-01T20:27:57.249Z",
     "valor_unitario": 317.49,
     "moeda": "BRL",
-    "codigo": 401200030
+    "codigo": 401200030,
+    "arquivado_em": "2026-07-01T20:27:57.249Z"
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA TPLINK ER605 LOCAL",
@@ -1000,10 +1003,11 @@
     "valor_unitario": 297.1,
     "moeda": "BRL",
     "id": 1781724055867,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0112",
-    "fase_desde": "2026-06-19T14:38:13.026Z",
-    "codigo": 401300011
+    "fase_desde": "2026-07-01T20:30:40.193Z",
+    "codigo": 401300011,
+    "arquivado_em": "2026-07-01T20:30:40.193Z"
   },
   {
     "nome": "ROTEADOR WIFI 6 AX3000 ZYXEL  EX3320T0",
@@ -1038,10 +1042,11 @@
     "valor_unitario": 275.08,
     "moeda": "BRL",
     "id": 1781870794753,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0114",
-    "fase_desde": "2026-06-26T17:49:25.101Z",
-    "codigo": 401300036
+    "fase_desde": "2026-07-01T20:21:30.921Z",
+    "codigo": 401300036,
+    "arquivado_em": "2026-07-01T20:21:30.921Z"
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA GIGABIT TPLINK  ER7206",
@@ -1057,10 +1062,11 @@
     "valor_unitario": 429.31,
     "moeda": "BRL",
     "id": 1781871457945,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0115",
-    "fase_desde": "2026-06-26T17:49:39.342Z",
-    "codigo": 401300019
+    "fase_desde": "2026-07-01T20:21:52.477Z",
+    "codigo": 401300019,
+    "arquivado_em": "2026-07-01T20:21:52.477Z"
   },
   {
     "nome": "Switch de Mesa de 10 Portas Gigabit   - TL-SG1210P",
@@ -1076,10 +1082,11 @@
     "valor_unitario": 318.97,
     "moeda": "BRL",
     "id": 1781871564601,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0116",
-    "fase_desde": "2026-06-26T17:49:51.165Z",
-    "codigo": 401200073
+    "fase_desde": "2026-07-01T20:22:04.953Z",
+    "codigo": 401200073,
+    "arquivado_em": "2026-07-01T20:22:04.953Z"
   },
   {
     "nome": "SWITCH NAO GER. LINHA OMADA 16GE TPLINK  TLSG1016D LOCAL",
@@ -1095,10 +1102,11 @@
     "valor_unitario": 318.1,
     "moeda": "BRL",
     "id": 1781871646757,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0117",
-    "fase_desde": "2026-06-26T17:50:09.370Z",
-    "codigo": 401200030
+    "fase_desde": "2026-07-01T20:23:54.201Z",
+    "codigo": 401200030,
+    "arquivado_em": "2026-07-01T20:23:54.201Z"
   },
   {
     "nome": "SWITCH SMART DE 28 PORTAS GIGABIT COM 24 PORTAS POE+ JETSTREAM  SG2428P",
@@ -1114,10 +1122,11 @@
     "valor_unitario": 1400,
     "moeda": "BRL",
     "id": 1781871933261,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0118",
-    "fase_desde": "2026-06-26T17:50:49.245Z",
-    "codigo": 401200047
+    "fase_desde": "2026-07-01T20:24:36.990Z",
+    "codigo": 401200047,
+    "arquivado_em": "2026-07-01T20:24:36.990Z"
   },
   {
     "nome": "Switch Gerenciável Gigabit L2+ de 24 portas  - SG3428 Local",
@@ -1133,10 +1142,11 @@
     "valor_unitario": 876.72,
     "moeda": "BRL",
     "id": 1781872072617,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0119",
-    "fase_desde": "2026-06-26T17:50:52.881Z",
-    "codigo": 401200069
+    "fase_desde": "2026-07-01T20:26:27.498Z",
+    "codigo": 401200069,
+    "arquivado_em": "2026-07-01T20:26:27.498Z"
   },
   {
     "nome": "SWITCH NAO GER. LINHA OMADA 24GE TPLINK  TLSG1024D LOCAL",
@@ -1190,10 +1200,11 @@
     "valor_unitario": 418.97,
     "moeda": "BRL",
     "id": 1781872243193,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0122",
-    "fase_desde": "2026-06-26T17:50:56.849Z",
-    "codigo": 401200075
+    "fase_desde": "2026-07-01T20:26:35.989Z",
+    "codigo": 401200075,
+    "arquivado_em": "2026-07-01T20:26:35.989Z"
   },
   {
     "nome": "ONT WIFI 6 AX3000 ZYXEL PX3321T1",
@@ -1494,5 +1505,25 @@
     "fase": "producao",
     "codigo_pedido": "PED-0146",
     "fase_desde": "2026-07-01T14:38:59.133Z"
+  },
+  {
+    "codigo": 401200031,
+    "nome": "SWITCH NAO GER. LINHA OMADA 24GE TPLINK  TLSG1024D LOCAL",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 3,
+    "semana": 28,
+    "mes": "JUL/26",
+    "data": "2026-07-06",
+    "origem": "Avulso",
+    "processo": "024.2026 VERDANT",
+    "modal": null,
+    "valor_unitario": 405.76,
+    "moeda": "BRL",
+    "id": 1782938089797,
+    "fase": "estoque",
+    "codigo_pedido": "PED-0147",
+    "fase_desde": "2026-07-01T20:35:01.009Z",
+    "arquivado_em": "2026-07-01T20:35:01.009Z"
   }
 ]
