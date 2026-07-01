@@ -1447,5 +1447,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-07-01T11:57:36.346Z",
     "codigo_pedido": "PED-0144"
+  },
+  {
+    "codigo": 400800004,
+    "nome": "ONT GPON AX3000 TP-Link  XX530V V2",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 1000,
+    "semana": 28,
+    "mes": "JUL/26",
+    "data": "2026-07-06",
+    "origem": "Avulso",
+    "processo": "036.2026 NTSC",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1782907504427,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-01T12:05:04.427Z",
+    "codigo_pedido": "PED-0145"
   }
 ]
