@@ -1543,6 +1543,10 @@
     "id": 1782940028473,
     "fase": "pendente",
     "pendente_desde": "2026-07-01T21:07:08.473Z",
-    "codigo_pedido": "PED-0148"
+    "codigo_pedido": "PED-0148",
+    "cancelado": true,
+    "motivo_cancelamento": "TESTE",
+    "cancelado_em": "2026-07-01T21:07:36.781Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   }
 ]
