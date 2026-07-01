@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-06-30T10:28:40",
+  "gerado_em": "2026-07-01T11:41:44",
   "semana_atual": 23,
   "semana_estoque": 23,
   "week_to_month": {
@@ -5904,8 +5904,24 @@
       "saldo_atual": 0,
       "fc_sem": 900,
       "in_transit": 0,
-      "prox_chegada": null,
-      "entradas": [],
+      "prox_chegada": {
+        "semana": 28,
+        "quantidade": 1000,
+        "status": "PEDIDO",
+        "mes": "JUL/26",
+        "codigo_pedido": "PED-0145",
+        "fase": "pendente"
+      },
+      "entradas": [
+        {
+          "semana": 28,
+          "quantidade": 1000,
+          "status": "PEDIDO",
+          "mes": "JUL/26",
+          "codigo_pedido": "PED-0145",
+          "fase": "pendente"
+        }
+      ],
       "fcst_mensal": {
         "JAN/26": 2500,
         "FEV/26": 2500,
@@ -6108,7 +6124,7 @@
           0,
           0,
           0,
-          0,
+          1000,
           0,
           0,
           0,
@@ -6218,7 +6234,7 @@
           0,
           0,
           0,
-          0,
+          200,
           0,
           0,
           0,
@@ -15946,8 +15962,16 @@
           "fase": "producao"
         },
         {
+          "semana": 45,
+          "quantidade": 1000,
+          "status": "PEDIDO",
+          "mes": "NOV/26",
+          "codigo_pedido": "PED-0146",
+          "fase": "producao"
+        },
+        {
           "semana": 47,
-          "quantidade": 1,
+          "quantidade": 1000,
           "status": "PEDIDO",
           "mes": "NOV/26",
           "codigo_pedido": "PED-0065",
@@ -16155,9 +16179,9 @@
           0,
           0,
           0,
-          1000,
+          2000,
           0,
-          1,
+          1000,
           0,
           0,
           0,
@@ -16265,15 +16289,15 @@
           551,
           311,
           0,
-          667,
-          334,
-          2,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0
+          1667,
+          1334,
+          2001,
+          1668,
+          1428,
+          1188,
+          948,
+          708,
+          468
         ]
       }
     },
@@ -22652,8 +22676,16 @@
           "fase": "producao"
         },
         {
+          "semana": 45,
+          "quantidade": 1000,
+          "status": "PEDIDO",
+          "mes": "NOV/26",
+          "codigo_pedido": "PED-0146",
+          "fase": "producao"
+        },
+        {
           "semana": 47,
-          "quantidade": 1,
+          "quantidade": 1000,
           "status": "PEDIDO",
           "mes": "NOV/26",
           "codigo_pedido": "PED-0065",
@@ -22831,9 +22863,9 @@
           0,
           0,
           0,
-          1000,
+          2000,
           0,
-          1,
+          1000,
           0,
           0,
           0,
@@ -22941,15 +22973,15 @@
           4711,
           4711,
           4711,
-          5711,
-          5711,
-          5712,
-          5712,
-          5712,
-          5712,
-          5712,
-          5712,
-          5712
+          6711,
+          6711,
+          7711,
+          7711,
+          7711,
+          7711,
+          7711,
+          7711,
+          7711
         ]
       },
       "_origem": "catalogo_promovido"
