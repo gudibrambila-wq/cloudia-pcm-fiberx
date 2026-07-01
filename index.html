@@ -3876,11 +3876,18 @@ function weekToMes(w) {
 // Agrega PEDIDOS (do kanban) por semana, para o produto informado.
 // Retorna Map<weekNum, { total, pendente, pedidosPorMes: Map<mes, [pedidos]> }>
 // Filtra fora a fase 'estoque' (já está em saldo_atual).
-function kanbanSellInForProduct(nome) {
+function kanbanSellInForProduct(nome, codigo) {
   const map = new Map();
-  if (!nome || typeof PEDIDOS === 'undefined' || !PEDIDOS.length) return map;
+  if (typeof PEDIDOS === 'undefined' || !PEDIDOS.length) return map;
+  const codNum = codigo != null ? parseInt(codigo) : null;
   PEDIDOS.forEach(p => {
-    if (p.nome !== nome) return;
+    // Match por CÓDIGO primeiro (estável — imune a renomeação/divergência
+    // catálogo x PSI). Se não bater código, cai pra nome exato.
+    // Motivo: produtos promovidos do catálogo têm nome do Sênior que pode
+    // diferir do nome usado nos pedidos antigos do kanban.
+    const bateCod  = codNum != null && p.codigo != null && parseInt(p.codigo) === codNum;
+    const bateNome = nome && p.nome === nome;
+    if (!bateCod && !bateNome) return;
     if (p.cancelado) return;  // pedido cancelado não conta como chegada
     const fase = p.fase || 'pendente';
     // Estoque entra apenas se for chegada HISTÓRICA (semana < SEMANA_ATUAL) — pra aparecer no Sell In do PSI.
@@ -4094,7 +4101,7 @@ function renderPSI() {
   // Re-cascateia TUDO (passado + presente + futuro) com floor=0 — saldo nunca fica negativo,
   // refletindo a realidade do ECOMM (não há venda sem estoque).
   // A venda perdida fica visível pela diferença entre Forecast e Realizado.
-  const kanbanByWeek = kanbanSellInForProduct(d.nome || d.name || '');
+  const kanbanByWeek = kanbanSellInForProduct(d.nome || d.name || '', d.codigo || d.code);
   function injectKanbanIntoDs(targetDs) {
     const curIdx = targetDs.labels.findIndex(lbl => labelToWeek(lbl) === SEMANA_ATUAL);
     if (curIdx < 0) return;
