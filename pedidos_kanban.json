@@ -1351,10 +1351,10 @@
     "valor_unitario": null,
     "moeda": null,
     "id": 1782906656970,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-01T11:50:56.970Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0139",
-    "fase_desde": "2026-07-01T11:50:56.970Z"
+    "fase_desde": "2026-07-01T14:44:02.823Z",
+    "pago_desde": "2026-07-01T14:44:02.823Z"
   },
   {
     "codigo": 400700029,
