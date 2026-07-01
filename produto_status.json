@@ -205,5 +205,6 @@
   "403900001": "inativo",
   "403900002": "inativo",
   "902300001": "inativo",
-  "null": "inativo"
+  "null": "inativo",
+  "_test_trigger": "0.9330276557678259"
 }
