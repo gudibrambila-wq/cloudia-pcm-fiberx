@@ -6410,10 +6410,13 @@ const FASE_LABELS = {
   estoque_fornecedor: 'Aguard Estoque Forneced',
   pago:               'Aguardando pagamento',
   backorder:          'Backorder',
-  pago1:              'Aguardando pagamento',
+  // Nas fases 1 e 2 do fluxo Importado, o kanban visual mostra
+  // ambas como "Aguardando pagamento" mas o EXPORT precisa diferenciar
+  // pra permitir agregação correta (ex: SOMASES por status no Excel).
+  pago1:              'Aguardando pagamento 1º',
   producao:           'Produção',
   inspecao:           'Inspeção',
-  pago2:              'Aguardando pagamento',
+  pago2:              'Aguardando pagamento 2º',
   faturado:           'Faturado',
   embarque:           'Embarque',
   transito:           'Em Trânsito',
