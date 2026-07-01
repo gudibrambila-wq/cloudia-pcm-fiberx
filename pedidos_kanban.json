@@ -1352,5 +1352,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-07-01T11:50:56.970Z",
     "codigo_pedido": "PED-0139"
+  },
+  {
+    "codigo": 400700029,
+    "nome": "Liquidificador Portátil Velds - Active Move (ROSA)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 1000,
+    "semana": 44,
+    "mes": "NOV/26",
+    "data": "2026-10-30",
+    "origem": "Avulso",
+    "processo": "017.2026 VSC",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1782906676718,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-01T11:51:16.718Z",
+    "codigo_pedido": "PED-0140"
   }
 ]
