@@ -1058,10 +1058,11 @@
     "valor_unitario": 429.31,
     "moeda": "BRL",
     "id": 1781871457945,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0115",
-    "fase_desde": "2026-06-26T17:49:39.342Z",
-    "codigo": 401300019
+    "fase_desde": "2026-07-01T20:21:52.477Z",
+    "codigo": 401300019,
+    "arquivado_em": "2026-07-01T20:21:52.477Z"
   },
   {
     "nome": "Switch de Mesa de 10 Portas Gigabit   - TL-SG1210P",
