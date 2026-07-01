@@ -8692,8 +8692,14 @@ async function carregarDados() {
     // save antigo (que mandava o grid inteiro) mas cujo valor é IGUAL ao original do Excel.
     // Esses meses não foram realmente editados pelo usuário, mas estavam triggerando a
     // propagação semanal indevidamente. Edições REAIS (valor ≠ original) são preservadas.
+    //
+    // ⚠ NÃO roda em produto CURVA-A VIRTUAL (promovido do catálogo). O `p.fcst_mensal`
+    // desses já É o valor do override (o gerar_dados.py copia do overrides pro dados.json),
+    // então a comparação sempre bate e a migração APAGARIA TODO O FORECAST. Bug real que
+    // fez o V50/V50 PRO 110V/220V perderem forecast em 01/07/2026.
     let limpou = 0;
     DADOS.produtos.forEach(p => {
+      if (p._origem === 'catalogo_promovido') return; // fcst_mensal é o próprio override
       const ov = PRODUTO_OVERRIDES[String(p.codigo)];
       if (!ov || !ov.fcst_mensal) return;
       Object.keys(ov.fcst_mensal).forEach(mes => {
