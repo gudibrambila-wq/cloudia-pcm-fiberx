@@ -8386,6 +8386,7 @@ function exportarTimelineNac() {
   const pedidos = (PEDIDOS || [])
     .filter(p => (p.tipo || 'Nacional') === 'Nacional')
     .filter(p => !_arquivado(p))
+    .filter(p => !p.cancelado)   // pedidos cancelados NÃO devem sair no export
     .sort((a, b) => (a.semana || 0) - (b.semana || 0));
 
   if (pedidos.length === 0) { mostrarToast('Nenhum processo nacional pra exportar'); return; }
@@ -8431,6 +8432,7 @@ function exportarTimelineImp() {
   const pedidos = (PEDIDOS || [])
     .filter(p => (p.tipo || 'Nacional') === 'Importado')
     .filter(p => !_arquivado(p))
+    .filter(p => !p.cancelado)   // pedidos cancelados NÃO devem sair no export
     .sort((a, b) => (a.semana || 0) - (b.semana || 0));
 
   if (pedidos.length === 0) { mostrarToast('Nenhum processo importado pra exportar'); return; }
