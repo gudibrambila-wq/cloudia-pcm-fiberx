@@ -1475,5 +1475,24 @@
     "pendente_desde": "2026-07-01T12:05:04.427Z",
     "codigo_pedido": "PED-0145",
     "fase_desde": "2026-07-01T12:05:04.427Z"
+  },
+  {
+    "codigo": 400700012,
+    "nome": "ROBO ASPIRADOR INTELIGENTE DE PO LASER -  V50",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 1000,
+    "semana": 45,
+    "mes": "NOV/26",
+    "data": "2026-11-02",
+    "origem": "Avulso",
+    "processo": "008.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1782916716556,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-01T14:38:36.556Z",
+    "codigo_pedido": "PED-0146"
   }
 ]
