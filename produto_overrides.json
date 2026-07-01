@@ -167,6 +167,23 @@
     "pv_mensal": {},
     "pc_mensal": {}
   },
+  "400700029": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 0,
+    "pc": 0,
+    "fcst_mensal": {
+      "NOV/26": 50,
+      "DEZ/26": 50,
+      "JAN/27": 50,
+      "FEV/27": 50,
+      "MAR/27": 50,
+      "ABR/27": 50,
+      "MAI/27": 50
+    },
+    "pv_mensal": {},
+    "pc_mensal": {}
+  },
   "400800003": {
     "marca": "TP-Link",
     "tipo": "Nacional",
