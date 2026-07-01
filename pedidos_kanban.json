@@ -1118,10 +1118,11 @@
     "valor_unitario": 1400,
     "moeda": "BRL",
     "id": 1781871933261,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0118",
-    "fase_desde": "2026-06-26T17:50:49.245Z",
-    "codigo": 401200047
+    "fase_desde": "2026-07-01T20:24:36.990Z",
+    "codigo": 401200047,
+    "arquivado_em": "2026-07-01T20:24:36.990Z"
   },
   {
     "nome": "Switch Gerenciável Gigabit L2+ de 24 portas  - SG3428 Local",
