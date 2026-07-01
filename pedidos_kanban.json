@@ -1311,10 +1311,10 @@
     "valor_unitario": null,
     "moeda": null,
     "id": 1782906332943,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-01T11:45:32.943Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0137",
-    "fase_desde": "2026-07-01T11:45:32.943Z"
+    "fase_desde": "2026-07-01T14:43:57.407Z",
+    "pago_desde": "2026-07-01T14:43:57.407Z"
   },
   {
     "codigo": 400700026,
