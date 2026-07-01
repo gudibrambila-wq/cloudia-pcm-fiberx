@@ -1409,5 +1409,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-07-01T11:54:39.083Z",
     "codigo_pedido": "PED-0142"
+  },
+  {
+    "codigo": 401700026,
+    "nome": "INJETOR POE+ 2GE 30W LINHA OMADA TPLINK  POE160S",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 65,
+    "semana": 31,
+    "mes": "AGO/26",
+    "data": "2026-07-29",
+    "origem": "Avulso",
+    "processo": "035.2026 SÃO MARCOS",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1782906985854,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-01T11:56:25.854Z",
+    "codigo_pedido": "PED-0143"
   }
 ]
