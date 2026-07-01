@@ -6219,6 +6219,11 @@ function _normalizarProcesso(s) {
 function _formatarProcessoImp(s) {
   if (!s) return '';
   const norm = _normalizarProcesso(s);
+  // Se tem letra DENTRO da parte numérica (ex: 008B.2026), não reformata —
+  // pode ser sufixo intermediário custom. Só formata padrões puros NNN.NNNN.
+  // Detecta: letras nos primeiros 12 chars (antes do sufixo VSC/etc no fim).
+  const parteNumerica = norm.replace(/\s+[A-Z]{2,}$/, '');  // remove sufixo final se houver
+  if (/[A-Za-z]/.test(parteNumerica)) return norm;  // tem letra no meio → mantém como digitado
   // Extrai só os dígitos
   const digitos = (norm.match(/\d+/g) || []).join('');
   if (digitos.length !== 7) return norm; // não é o padrão — deixa como veio (sem quebrar)
