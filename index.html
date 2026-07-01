@@ -8644,6 +8644,7 @@ function buildPSIProducts(prods) {
       ? { qty: p.prox_chegada.quantidade, label: 'W' + p.prox_chegada.semana }
       : null;
     out[String(i)] = {
+      codigo:        p.codigo,
       nome:          p.nome,
       name:          p.nome,
       marca:         p.marca || '',
