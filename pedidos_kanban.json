@@ -1003,10 +1003,11 @@
     "valor_unitario": 297.1,
     "moeda": "BRL",
     "id": 1781724055867,
-    "fase": "faturado",
+    "fase": "estoque",
     "codigo_pedido": "PED-0112",
-    "fase_desde": "2026-06-19T14:38:13.026Z",
-    "codigo": 401300011
+    "fase_desde": "2026-07-01T20:30:40.193Z",
+    "codigo": 401300011,
+    "arquivado_em": "2026-07-01T20:30:40.193Z"
   },
   {
     "nome": "ROTEADOR WIFI 6 AX3000 ZYXEL  EX3320T0",
