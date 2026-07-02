@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-02T18:25:46",
+  "gerado_em": "2026-07-02T18:26:25",
   "semana_atual": 27,
   "semana_estoque": 27,
   "week_to_month": {
@@ -16812,10 +16812,10 @@
           "fase": "producao"
         },
         {
-          "semana": 44,
+          "semana": 43,
           "quantidade": 1000,
           "status": "PEDIDO",
-          "mes": "NOV/26",
+          "mes": "OUT/26",
           "codigo_pedido": "PED-0071",
           "fase": "producao"
         }
@@ -17019,8 +17019,8 @@
           0,
           0,
           0,
-          0,
           1000,
+          0,
           0,
           0,
           0,
@@ -17129,7 +17129,7 @@
           835,
           710,
           585,
-          460,
+          1460,
           1200,
           940,
           680,
@@ -23097,10 +23097,10 @@
           "fase": "producao"
         },
         {
-          "semana": 44,
+          "semana": 43,
           "quantidade": 1000,
           "status": "PEDIDO",
-          "mes": "NOV/26",
+          "mes": "OUT/26",
           "codigo_pedido": "PED-0071",
           "fase": "producao"
         }
@@ -23274,8 +23274,8 @@
           0,
           0,
           0,
-          0,
           1000,
+          0,
           0,
           0,
           0,
@@ -23384,7 +23384,7 @@
           903,
           753,
           603,
-          453,
+          1453,
           1245,
           1037,
           829,
