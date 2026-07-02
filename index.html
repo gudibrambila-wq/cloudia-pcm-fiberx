@@ -7673,13 +7673,54 @@ function sincronizarTudoComServidor() {
   _postSync('/api/save-status',    PRODUTO_STATUS || {});
 }
 
-function getProdStatus(codigo) {
-  return PRODUTO_STATUS[String(codigo)] || 'forecast';
+// Chave do produto_status: quando o produto tem nome (objeto), grava por
+// "codigo|nome_normalizado" pra suportar mesmo código com produtos diferentes
+// em empresas distintas. Quando recebe só o código (compat), grava a chave
+// simples "codigo" (fallback do getter).
+function _statusKey(prodOuCod, nomeOpc) {
+  if (prodOuCod && typeof prodOuCod === 'object') {
+    const c = prodOuCod.codigo;
+    const n = _normStatusNome(prodOuCod.nome);
+    return n ? `${c}|${n}` : String(c);
+  }
+  if (nomeOpc) {
+    const n = _normStatusNome(nomeOpc);
+    return n ? `${prodOuCod}|${n}` : String(prodOuCod);
+  }
+  return String(prodOuCod);
+}
+function _normStatusNome(s) {
+  if (!s) return '';
+  let n = String(s).toUpperCase();
+  n = n.replace(/[^A-Z0-9]+/g, ' ').replace(/\s+/g, ' ').trim();
+  return n;
+}
+function getProdStatus(prodOuCod, nomeOpc) {
+  const chaveComp = _statusKey(prodOuCod, nomeOpc);
+  const chaveSimples = String(typeof prodOuCod === 'object' ? prodOuCod.codigo : prodOuCod);
+  return PRODUTO_STATUS[chaveComp] || PRODUTO_STATUS[chaveSimples] || 'forecast';
 }
 
-function setProdStatus(codigo, status) {
-  PRODUTO_STATUS[String(codigo)] = status;
+function setProdStatus(prodOuCod, status, nomeOpc) {
+  const cod = typeof prodOuCod === 'object' ? prodOuCod.codigo : prodOuCod;
+  const nome = typeof prodOuCod === 'object' ? prodOuCod.nome : nomeOpc;
+  // Se o cod tem >1 cadastro (catálogo+PSI), sempre grava chave composta.
+  // Caso contrário, chave simples pra manter compat.
+  if (nome && _codTemMultiplosCadastros(cod)) {
+    const chaveComp = _statusKey({codigo: cod, nome});
+    PRODUTO_STATUS[chaveComp] = status;
+    delete PRODUTO_STATUS[String(cod)];  // limpa chave simples pra não vazar
+  } else {
+    PRODUTO_STATUS[String(cod)] = status;
+  }
   saveProdutoStatus();
+}
+function _codTemMultiplosCadastros(cod) {
+  if (!window.DADOS) return false;
+  let n = 0;
+  for (const p of (DADOS.produtos || [])) if (p.codigo == cod) { n++; if (n > 1) return true; }
+  for (const c of (DADOS.catalogo || [])) if (c.codigo == cod) { n++; if (n > 1) return true; }
+  return false;
 }
 
 // Aplica filtro de status (chamado pelos cards-KPI) e rola até a tabela
@@ -7809,7 +7850,7 @@ function reconstruirPlanProducts() {
   if (!DADOS) return;
   populatePSIDropdown();
   popularCoberturaReal(); // status mudou → repopula Cobertura (inativos saem/voltam)
-  const ativos = DADOS.produtos.filter(p => getProdStatus(p.codigo) === 'forecast');
+  const ativos = DADOS.produtos.filter(p => getProdStatus(p) === 'forecast');
   PLAN_PRODUCTS = ativos.map(p => ({
     nome:        p.nome,
     marca:       p.marca,
@@ -7829,7 +7870,7 @@ function reconstruirPlanProducts() {
     const semRup = fc > 0 ? Math.round(SEMANA_ATUAL + p.saldo_atual / fc) : 999;
     return {
       codigo: p.codigo,
-      status: getProdStatus(p.codigo),
+      status: getProdStatus(p),
       nome: p.nome, marca: p.marca, fonte: 'real',
       saldo: p.saldo_atual, fcSem: fc || null, wos,
       ruptura: fc > 0 ? 'W' + semRup : 'Sem est.',
@@ -7846,7 +7887,7 @@ function reconstruirPlanProducts() {
 }
 
 function prodBulkSet(status) {
-  _prodFiltrados.forEach(p => setProdStatus(p.codigo, status));
+  _prodFiltrados.forEach(p => setProdStatus(p, status));
   reconstruirPlanProducts();
   renderProdutos();
 }
@@ -7858,23 +7899,40 @@ function prodToggleAll(checked) {
   });
 }
 
-function prodStatusBadge(status, codigo) {
+function prodStatusBadge(status, codigo, nome) {
+  // Encodifica nome como base64 pra sobreviver a aspas/acentos no onclick
+  const nomeB64 = nome ? btoa(unescape(encodeURIComponent(nome))) : '';
+  const args = `${codigo}, atob('${nomeB64}')`;
   if (status === 'inativo') {
     return `<div class="flex items-center gap-1 justify-center">
       <span class="px-2 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-400">Inativo</span>
-      <button onclick="setProdStatus(${codigo},'forecast');reconstruirPlanProducts();renderProdutos()" title="Restaurar" class="text-slate-300 hover:text-emerald-600 transition-colors text-base leading-none">↩</button>
+      <button onclick="setProdStatusByCodNome(${args},'forecast');reconstruirPlanProducts();renderProdutos()" title="Restaurar" class="text-slate-300 hover:text-emerald-600 transition-colors text-base leading-none">↩</button>
     </div>`;
   }
   if (status === 'forecast') {
     return `<div class="flex items-center gap-1 justify-center">
-      <button onclick="toggleProdStatus(${codigo})" class="px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors">Forecast</button>
-      <button onclick="setProdStatus(${codigo},'inativo');reconstruirPlanProducts();renderProdutos()" title="Inativar produto" class="text-slate-300 hover:text-red-400 transition-colors text-base leading-none">✕</button>
+      <button onclick="toggleProdStatusByCodNome(${args})" class="px-2 py-1 rounded-full text-xs font-semibold bg-blue-100 text-blue-700 hover:bg-blue-200 transition-colors">Forecast</button>
+      <button onclick="setProdStatusByCodNome(${args},'inativo');reconstruirPlanProducts();renderProdutos()" title="Inativar produto" class="text-slate-300 hover:text-red-400 transition-colors text-base leading-none">✕</button>
     </div>`;
   }
   return `<div class="flex items-center gap-1 justify-center">
-    <button onclick="toggleProdStatus(${codigo})" class="px-2 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors">Monitorar</button>
-    <button onclick="setProdStatus(${codigo},'inativo');reconstruirPlanProducts();renderProdutos()" title="Inativar produto" class="text-slate-300 hover:text-red-400 transition-colors text-base leading-none">✕</button>
+    <button onclick="toggleProdStatusByCodNome(${args})" class="px-2 py-1 rounded-full text-xs font-semibold bg-slate-100 text-slate-500 hover:bg-slate-200 transition-colors">Monitorar</button>
+    <button onclick="setProdStatusByCodNome(${args},'inativo');reconstruirPlanProducts();renderProdutos()" title="Inativar produto" class="text-slate-300 hover:text-red-400 transition-colors text-base leading-none">✕</button>
   </div>`;
+}
+
+// Helpers pros onclick (usam decodificação UTF-8 do base64)
+function setProdStatusByCodNome(codigo, nomeUtf8, status) {
+  try { nomeUtf8 = decodeURIComponent(escape(nomeUtf8)); } catch {}
+  setProdStatus(codigo, status, nomeUtf8);
+}
+function toggleProdStatusByCodNome(codigo, nomeUtf8) {
+  try { nomeUtf8 = decodeURIComponent(escape(nomeUtf8)); } catch {}
+  const atual = getProdStatus(codigo, nomeUtf8);
+  const next = atual === 'forecast' ? 'monitorar' : 'forecast';
+  setProdStatus(codigo, next, nomeUtf8);
+  reconstruirPlanProducts();
+  renderProdutos();
 }
 
 function popularProdFiltros() {
@@ -8511,7 +8569,7 @@ function renderProdutos() {
   _prodFiltrados = todosProdutos.filter(p => {
     if (fMarca  && p.marca !== fMarca)         return false;
     if (fFam    && p.familia !== fFam)         return false;
-    const st = getProdStatus(p.codigo);
+    const st = getProdStatus(p);  // passa objeto pra resolver cod duplicado por nome
     // Lógica do filtro Status:
     //   ''         → Curva A ativos (exclui inativos e catálogo)
     //   'catalogo' → só itens do catálogo
@@ -8538,11 +8596,11 @@ function renderProdutos() {
     return true;
   });
 
-  // KPIs
-  const nFc      = psiProds.filter(p => getProdStatus(p.codigo) === 'forecast').length;
-  const nMon     = psiProds.filter(p => getProdStatus(p.codigo) === 'monitorar').length;
-  const nInativo = psiProds.filter(p => getProdStatus(p.codigo) === 'inativo').length;
-  const nCatalogo = todosProdutos.filter(p => p._categoria === 'catalogo' && getProdStatus(p.codigo) !== 'inativo').length;
+  // KPIs — passa objeto pra resolver cod duplicado por nome
+  const nFc      = psiProds.filter(p => getProdStatus(p) === 'forecast').length;
+  const nMon     = psiProds.filter(p => getProdStatus(p) === 'monitorar').length;
+  const nInativo = psiProds.filter(p => getProdStatus(p) === 'inativo').length;
+  const nCatalogo = todosProdutos.filter(p => p._categoria === 'catalogo' && getProdStatus(p) !== 'inativo').length;
   document.getElementById('prod-kpis').innerHTML = `
     <div class="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center cursor-pointer hover:bg-blue-100 transition-colors" onclick="filtrarProdutosPorStatus('forecast')">
       <p class="text-2xl font-bold text-blue-700">${nFc}</p>
@@ -8566,7 +8624,7 @@ function renderProdutos() {
   if (!tbody) return;
 
   tbody.innerHTML = _prodFiltrados.map(p => {
-    const st  = getProdStatus(p.codigo);
+    const st  = getProdStatus(p);  // objeto pra desambiguar cod duplicado
     const wos = p.fc_sem > 0 ? (p.saldo_atual / p.fc_sem).toFixed(1) : '—';
     const wosColor = p.fc_sem > 0
       ? (parseFloat(wos) >= 8 ? 'text-emerald-600' : parseFloat(wos) >= 4 ? 'text-amber-600' : parseFloat(wos) > 0 ? 'text-orange-600' : 'text-red-600')
@@ -8586,7 +8644,7 @@ function renderProdutos() {
       : '';
     const colunaStatus = isCatalogo
       ? `<span class="px-2 py-1 rounded-full text-xs font-semibold bg-amber-100 text-amber-700">📦 Catálogo</span>`
-      : prodStatusBadge(st, p.codigo);
+      : prodStatusBadge(st, p.codigo, p.nome);
     const colunaAcao = isCatalogo
       ? `<button onclick="abrirModalEditarProduto('${p.codigo}')" title="Promover pra Curva A (forecast mensal)" class="text-amber-500 hover:text-amber-700 transition-colors text-base font-bold">✚</button>`
       : `<button onclick="abrirModalEditarProduto('${p.codigo}')" title="Editar marca, tipo, preços e forecast" class="text-slate-300 hover:text-blue-600 transition-colors">
