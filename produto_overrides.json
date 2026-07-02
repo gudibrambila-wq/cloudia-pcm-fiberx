@@ -17,7 +17,10 @@
       "MAI/26": 250,
       "JUN/26": 288
     },
-    "pc_mensal": {}
+    "pc_mensal": {},
+    "fcst_mensal": {
+      "JUL/26": 875
+    }
   },
   "400700001": {
     "marca": "Velds",
