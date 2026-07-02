@@ -1569,5 +1569,24 @@
     "pendente_desde": "2026-07-02T12:48:09.814Z",
     "codigo_pedido": "PED-0149",
     "fase_desde": "2026-07-02T12:48:09.814Z"
+  },
+  {
+    "codigo": 400700001,
+    "nome": "ROBO ASPIRADOR LASER  VDS RALWC",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 1000,
+    "semana": 43,
+    "mes": "OUT/26",
+    "data": "2026-10-21",
+    "origem": "Avulso",
+    "processo": "SIMU",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1783015462631,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-02T18:04:22.631Z",
+    "codigo_pedido": "PED-0150"
   }
 ]
