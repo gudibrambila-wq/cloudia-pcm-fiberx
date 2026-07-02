@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-02T09:10:04",
+  "gerado_em": "2026-07-02T09:35:19",
   "semana_atual": 27,
   "semana_estoque": 27,
   "week_to_month": {
@@ -24084,6 +24084,15 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 401700027,
+      "nome": "ACCESS POINT LINHA OMADA AX3000 TPLINK EAP650 GP DESKTOP",
+      "marca": "TP-Link",
+      "referencia": "",
+      "empresa_principal": "TELECOM",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401700007,
       "nome": "ACCESS POINT TPLINK  EAP653",
       "marca": "TP-Link",
@@ -24885,6 +24894,15 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 400900012,
+      "nome": "FONTE DC OLT X2",
+      "marca": "Huawei",
+      "referencia": "",
+      "empresa_principal": "FX",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401200078,
       "nome": "FONTE DC S12700E-4 2200W",
       "marca": "Huawei",
@@ -24917,6 +24935,15 @@
       "marca": "Huawei",
       "referencia": "02312QJK",
       "empresa_principal": "FX",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 401200003,
+      "nome": "FONTE DC S673057315732  02312QJK",
+      "marca": "Huawei",
+      "referencia": "02312QJK",
+      "empresa_principal": "TELECOM",
       "saldo_atual": 5,
       "preco_medio": 0.0
     },
@@ -25075,6 +25102,15 @@
     },
     {
       "codigo": 401900011,
+      "nome": "HDD DESKTOP PURPLE SURVEILLANCE 2TB SATA3 WESTERN DIGITAL  WD102PURP",
+      "marca": "Sandisk",
+      "referencia": "WD102PURP",
+      "empresa_principal": "TELECOM",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 401900011,
       "nome": "HDD DESKTOP PURPLE SURVEILLANCE 2TB SATA3 WESTERN DIGITAL  WD23PURZ",
       "marca": "Sandisk",
       "referencia": "WD23PURZ",
@@ -25092,11 +25128,29 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 401900013,
+      "nome": "HDD DESKTOP PURPLE SURVEILLANCE 4TB SATA3 WESTERN DIGITAL  WD43PURZ",
+      "marca": "Sandisk",
+      "referencia": "WD43PURZ",
+      "empresa_principal": "FX",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401900012,
       "nome": "HDD DESKTOP PURPLE SURVEILLANCE 6TB SATA3 WESTERN DIGITAL  WD122PURP",
       "marca": "Sandisk",
       "referencia": "WD122PURP",
       "empresa_principal": "TELECOM",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 401900012,
+      "nome": "HDD DESKTOP PURPLE SURVEILLANCE 6TB SATA3 WESTERN DIGITAL  WD64PURZ",
+      "marca": "Sandisk",
+      "referencia": "WD64PURZ",
+      "empresa_principal": "FX",
       "saldo_atual": 0,
       "preco_medio": 0.0
     },
@@ -25331,6 +25385,15 @@
       "marca": "Huawei",
       "referencia": "03033GLB-CR8DIPU480C",
       "empresa_principal": "TELECOM",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 400700010,
+      "nome": "KIT PECAS MOP 2 UNIDADES VDS RALWC",
+      "marca": "Velds",
+      "referencia": "VDS RALW-C",
+      "empresa_principal": "VELDS",
       "saldo_atual": 0,
       "preco_medio": 0.0
     },
@@ -26001,6 +26064,15 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 400800014,
+      "nome": "ONT GPON AX3000 TPLINK XX535",
+      "marca": "TP-Link",
+      "referencia": "",
+      "empresa_principal": "TELECOM",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 400800002,
       "nome": "ONT WIFI 6 AX3000 XSIRIUS   XSIG410W6",
       "marca": "XSirius",
@@ -26307,6 +26379,15 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 401200061,
+      "nome": "PLACA CIRCUITO IMPRESSO P/CHASSI S12700E-4 COM 24X100-QSFP28",
+      "marca": "Huawei",
+      "referencia": "03033FGU-002",
+      "empresa_principal": "TELECOM",
+      "saldo_atual": 6,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401200008,
       "nome": "PLACA DE CONTROLE DE SWITCH S12700E4 SFU  03033ERD",
       "marca": "Huawei",
@@ -26384,7 +26465,7 @@
       "marca": "-",
       "referencia": "V50",
       "empresa_principal": "FX",
-      "saldo_atual": 10,
+      "saldo_atual": 0,
       "preco_medio": 0.0
     },
     {
@@ -26505,6 +26586,15 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 401300038,
+      "nome": "ROTEADOR HUAWEI AX2S PRETO",
+      "marca": "Huawei",
+      "referencia": "",
+      "empresa_principal": "TELECOM",
+      "saldo_atual": 52,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401300017,
       "nome": "ROTEADOR MESH WIFI 6 MERCUSYS  HALO H60X(2PACK)",
       "marca": "TP-Link",
@@ -26532,6 +26622,15 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 401300035,
+      "nome": "ROTEADOR VPN LINHA OMADA GIGABIT TPLINK  ER7206",
+      "marca": "TP-Link",
+      "referencia": "ER7206",
+      "empresa_principal": "TELECOM",
+      "saldo_atual": 200,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401300011,
       "nome": "ROTEADOR VPN LINHA OMADA TPLINK  ER605",
       "marca": "TP-Link",
@@ -26541,10 +26640,28 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 401300036,
+      "nome": "ROTEADOR VPN LINHA OMADA TPLINK ER605 LOCAL",
+      "marca": "TP-Link",
+      "referencia": "ER605 LOCAL",
+      "empresa_principal": "TELECOM",
+      "saldo_atual": 300,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401300015,
       "nome": "ROTEADOR WIFI 6 AX3000 TPLINK  ARCHER AX53",
       "marca": "TP-Link",
       "referencia": "ARCHER AX53",
+      "empresa_principal": "FX",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 401300032,
+      "nome": "ROTEADOR WIFI 6 GIGABAIT AX1500  MR60X LOCAL",
+      "marca": "TP-Link",
+      "referencia": "MR60X LOCAL",
       "empresa_principal": "FX",
       "saldo_atual": 0,
       "preco_medio": 0.0
@@ -26613,6 +26730,15 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 401300034,
+      "nome": "ROTEADOR WIFI DECO AC1300 - M5 3PACK - LOCAL",
+      "marca": "TP-Link",
+      "referencia": "Deco M5(3-Pack) local",
+      "empresa_principal": "TELECOM",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401300028,
       "nome": "ROTEADOR WIFI DUAL BAND AC1200 MOD  ARCHER C20 LOCAL",
       "marca": "TP-Link",
@@ -26640,12 +26766,21 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 401300037,
+      "nome": "ROTEADOR WIFI LINHA DECO AC1200  DECO M4(3PACK)",
+      "marca": "TP-Link",
+      "referencia": "DECO M4(3-PACK)",
+      "empresa_principal": "FX",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401300038,
       "nome": "ROTEADOR WIFI LINHA DECO AC1200  DECO M4(3PACK)LOCAL",
       "marca": "TP-Link",
       "referencia": "DECO M4(3-PACK)LOCAL",
       "empresa_principal": "FX",
-      "saldo_atual": 52,
+      "saldo_atual": 0,
       "preco_medio": 0.0
     },
     {
@@ -26685,6 +26820,15 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 401300033,
+      "nome": "ROTEADOR WIFI LINHA DECO AC1300  DECO M5(2PACK)",
+      "marca": "TP-Link",
+      "referencia": "DECO M5(2-PACK)",
+      "empresa_principal": "FX",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401300041,
       "nome": "ROTEADOR WIFI LINHA DECO AC1300  DECO M5(2PACK)LOCAL",
       "marca": "TP-Link",
@@ -26717,7 +26861,7 @@
       "marca": "OMADA - TP-LINK",
       "referencia": "DECO S7(1-PACK)",
       "empresa_principal": "FX",
-      "saldo_atual": 300,
+      "saldo_atual": 0,
       "preco_medio": 0.0
     },
     {
@@ -26726,7 +26870,7 @@
       "marca": "OMADA - TP-LINK",
       "referencia": "DECO S7(3-PACK)LOCAL",
       "empresa_principal": "FX",
-      "saldo_atual": 200,
+      "saldo_atual": 0,
       "preco_medio": 0.0
     },
     {
@@ -26826,6 +26970,15 @@
       "referencia": "02352QPV-001",
       "empresa_principal": "TELECOM",
       "saldo_atual": 2,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 401200060,
+      "nome": "S5735-L24P4XE-A-V2 (24x10/100/1000BASE-T POE,4x10GE SFP+)AC",
+      "marca": "Huawei",
+      "referencia": "S5735-L24P4XE-A-V2",
+      "empresa_principal": "FX",
+      "saldo_atual": 6,
       "preco_medio": 0.0
     },
     {
@@ -27117,6 +27270,15 @@
       "preco_medio": 0.0
     },
     {
+      "codigo": 401200059,
+      "nome": "SWITCH GERENCIAVEL OMADA 16 PORTASD POE+ - ES220GMP",
+      "marca": "OMADA - TP-LINK",
+      "referencia": "ES220GMP",
+      "empresa_principal": "TELECOM",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
       "codigo": 401200064,
       "nome": "SWITCH GERENCIÁVEL DE 16 PORTAS 10GE  L2 - SX3016F",
       "marca": "OMADA - TP-LINK",
@@ -27167,7 +27329,7 @@
       "marca": "TP-Link",
       "referencia": "IES210GPP",
       "empresa_principal": "TELECOM",
-      "saldo_atual": 10,
+      "saldo_atual": 4,
       "preco_medio": 0.0
     },
     {
@@ -27175,6 +27337,15 @@
       "nome": "SWITCH GERENCIÁVEL L3 26 PORTAS - SX6632YF",
       "marca": "OMADA - TP-LINK",
       "referencia": "SX6632YF",
+      "empresa_principal": "TELECOM",
+      "saldo_atual": 0,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 401200062,
+      "nome": "Switch Gigabit 48 Portas - TL-SG1048",
+      "marca": "OMADA - TP-LINK",
+      "referencia": "TL-SG1048",
       "empresa_principal": "TELECOM",
       "saldo_atual": 0,
       "preco_medio": 0.0
@@ -27212,7 +27383,7 @@
       "marca": "Huawei",
       "referencia": "S6730-H48X6C",
       "empresa_principal": "FX",
-      "saldo_atual": 6,
+      "saldo_atual": 0,
       "preco_medio": 0.0
     },
     {
@@ -27501,6 +27672,15 @@
       "referencia": "34061089",
       "empresa_principal": "TELECOM",
       "saldo_atual": 24,
+      "preco_medio": 0.0
+    },
+    {
+      "codigo": 401400005,
+      "nome": "TRANSCEIVER-OMN0D1N01  34061089",
+      "marca": "Huawei",
+      "referencia": "34061089",
+      "empresa_principal": "FX",
+      "saldo_atual": 0,
       "preco_medio": 0.0
     },
     {
