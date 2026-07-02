@@ -119,7 +119,7 @@
   },
   "400700027": {
     "marca": "Velds",
-    "tipo": "Importado",
+    "tipo": "Nacional",
     "pv": 0,
     "pc": 0,
     "fcst_mensal": {
@@ -129,7 +129,8 @@
       "FEV/27": 50,
       "MAR/27": 50,
       "ABR/27": 50,
-      "MAI/27": 50
+      "MAI/27": 50,
+      "OUT/26": 50
     },
     "pv_mensal": {},
     "pc_mensal": {}
