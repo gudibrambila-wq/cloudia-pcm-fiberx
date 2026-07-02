@@ -8747,6 +8747,18 @@ async function carregarDados() {
       if (!resp.ok) throw new Error('HTTP ' + resp.status);
       DADOS = await resp.json();
     }
+    // FILTRO DEFENSIVO: gerar_dados.py às vezes emite produtos com codigo=null
+    // (resíduo do PSI Excel — cadastros sem SKU cadastrado no Sênior). Isso
+    // quebra vários lookups no JS ao tentar acessar `.codigo`. Descarta aqui.
+    if (Array.isArray(DADOS.produtos)) {
+      const antes = DADOS.produtos.length;
+      DADOS.produtos = DADOS.produtos.filter(p => p && p.codigo != null);
+      const rm = antes - DADOS.produtos.length;
+      if (rm > 0) console.warn(`[carregarDados] ${rm} produtos com codigo=null descartados`);
+    }
+    if (Array.isArray(DADOS.catalogo)) {
+      DADOS.catalogo = DADOS.catalogo.filter(c => c && c.codigo != null);
+    }
 
     // Aplica overrides manuais (preços, forecast, marca, tipo) sobre os dados do Excel
     loadProdutoOverrides();
