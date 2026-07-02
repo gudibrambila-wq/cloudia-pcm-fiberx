@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-02T18:33:15",
+  "gerado_em": "2026-07-02T18:36:36",
   "semana_atual": 27,
   "semana_estoque": 27,
   "week_to_month": {
@@ -17180,10 +17180,10 @@
           "fase": "transito"
         },
         {
-          "semana": 34,
+          "semana": 36,
           "quantidade": 100,
           "status": "EM_TRANSITO",
-          "mes": "AGO/26",
+          "mes": "SET/26",
           "codigo_pedido": "PED-0100",
           "fase": "transito"
         },
@@ -17394,9 +17394,9 @@
           0,
           350,
           0,
+          0,
+          0,
           100,
-          0,
-          0,
           0,
           0,
           500,
@@ -17504,8 +17504,8 @@
           101,
           418,
           385,
-          452,
-          419,
+          352,
+          319,
           379,
           339,
           299,
@@ -23436,10 +23436,10 @@
           "fase": "transito"
         },
         {
-          "semana": 34,
+          "semana": 36,
           "quantidade": 100,
           "status": "EM_TRANSITO",
-          "mes": "AGO/26",
+          "mes": "SET/26",
           "codigo_pedido": "PED-0100",
           "fase": "transito"
         },
@@ -23620,9 +23620,9 @@
           0,
           350,
           0,
+          0,
+          0,
           100,
-          0,
-          0,
           0,
           0,
           500,
@@ -23730,8 +23730,8 @@
           149,
           459,
           419,
-          479,
-          439,
+          379,
+          339,
           399,
           359,
           319,
