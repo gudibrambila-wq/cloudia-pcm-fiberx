@@ -1549,5 +1549,24 @@
     "cancelado_em": "2026-07-01T21:07:36.781Z",
     "cancelado_por": "douglas.brambila@velds.com.br",
     "fase_desde": "2026-07-01T21:07:08.473Z"
+  },
+  {
+    "codigo": 400800014,
+    "nome": "ONT GPON AX3000 TPLINK XX535",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 200,
+    "semana": 31,
+    "mes": "AGO/26",
+    "data": "2026-07-30",
+    "origem": "Avulso",
+    "processo": "036.2026 NTSC",
+    "modal": null,
+    "valor_unitario": 206.15,
+    "moeda": "BRL",
+    "id": 1782996489814,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-02T12:48:09.814Z",
+    "codigo_pedido": "PED-0149"
   }
 ]
