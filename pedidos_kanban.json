@@ -1473,9 +1473,9 @@
     "marca": "TP-Link",
     "tipo": "Nacional",
     "qtd": 1000,
-    "semana": 28,
-    "mes": "JUL/26",
-    "data": "2026-07-06",
+    "semana": 31,
+    "mes": "AGO/26",
+    "data": "2026-07-30",
     "origem": "Avulso",
     "processo": "036.2026 NTSC",
     "modal": null,
@@ -1547,6 +1547,7 @@
     "cancelado": true,
     "motivo_cancelamento": "TESTE",
     "cancelado_em": "2026-07-01T21:07:36.781Z",
-    "cancelado_por": "douglas.brambila@velds.com.br"
+    "cancelado_por": "douglas.brambila@velds.com.br",
+    "fase_desde": "2026-07-01T21:07:08.473Z"
   }
 ]
