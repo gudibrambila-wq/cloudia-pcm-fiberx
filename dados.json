@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-02T18:07:57",
+  "gerado_em": "2026-07-02T18:19:40",
   "semana_atual": 27,
   "semana_estoque": 27,
   "week_to_month": {
@@ -16041,10 +16041,10 @@
           "fase": "producao"
         },
         {
-          "semana": 55,
+          "semana": 51,
           "quantidade": 1000,
           "status": "PEDIDO",
-          "mes": "JAN/27",
+          "mes": "DEZ/26",
           "codigo_pedido": "PED-0146",
           "fase": "producao"
         },
@@ -16264,7 +16264,7 @@
           0,
           0,
           0,
-          0,
+          1000,
           0,
           0
         ],
@@ -16374,9 +16374,9 @@
           1,
           0,
           0,
-          0,
-          0,
-          0
+          760,
+          520,
+          280
         ]
       }
     },
@@ -22741,10 +22741,10 @@
           "fase": "producao"
         },
         {
-          "semana": 55,
+          "semana": 51,
           "quantidade": 1000,
           "status": "PEDIDO",
-          "mes": "JAN/27",
+          "mes": "DEZ/26",
           "codigo_pedido": "PED-0146",
           "fase": "producao"
         },
@@ -22935,7 +22935,7 @@
           0,
           0,
           0,
-          0,
+          1000,
           0,
           0
         ],
@@ -23045,9 +23045,9 @@
           1589,
           1289,
           989,
-          689,
-          389,
-          189
+          1689,
+          1389,
+          1189
         ]
       },
       "_origem": "catalogo_promovido"
