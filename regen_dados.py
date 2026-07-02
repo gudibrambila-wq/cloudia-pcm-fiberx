@@ -101,9 +101,12 @@ def propagar_fcst_mensal(psi, fcst_mensal):
         if future_in_month <= 0: continue
 
         restante = max(0, total - fc_fixo)
-        per_week = round(restante / future_in_month)
-        for i in idx_futuros:
-            forecast[i] = per_week
+        # Distribui exato: quociente inteiro + 1 unidade nas primeiras `extra` semanas.
+        # Assim a soma bate EXATAMENTE com o total (sem perda por round).
+        per_week = restante // future_in_month
+        extra    = restante - per_week * future_in_month
+        for pos, i in enumerate(idx_futuros):
+            forecast[i] = per_week + (1 if pos < extra else 0)
 
 
 def aplicar_kanban_sell_in(produtos, kanban_ativos):
@@ -169,8 +172,16 @@ def aplicar_overrides(produtos, overrides):
         if ov.get("pv")    is not None: p["pv"]    = ov["pv"]
         if ov.get("pc")    is not None: p["pc"]    = ov["pc"]
         if ov.get("fcst_mensal"):
-            p["fcst_mensal"] = {**(p.get("fcst_mensal") or {}), **{k:v for k,v in ov["fcst_mensal"].items() if v}}
-            propagar_fcst_mensal(p.get("psi"), ov["fcst_mensal"])
+            # Inclui zeros no merge (v é 0 legítimo pra meses zerados de propósito).
+            # Filtrar por `if v` estava mantendo o valor antigo em meses zerados.
+            p["fcst_mensal"] = {**(p.get("fcst_mensal") or {}), **ov["fcst_mensal"]}
+        # Sempre re-propaga TODOS os meses do fcst_mensal (não só os do override).
+        # Se override sumiu — cliente deleta chaves iguais ao dados.json na migração
+        # fantasma — as semanas continuavam com distribuição arredondada antiga.
+        # Propagar em cima do fcst_mensal completo garante que a soma semanal
+        # sempre bate exato com o mensal.
+        if p.get("fcst_mensal"):
+            propagar_fcst_mensal(p.get("psi"), p["fcst_mensal"])
         if ov.get("pv_mensal"):
             p["pv_mensal"] = {**(p.get("pv_mensal") or {}), **ov["pv_mensal"]}
         if ov.get("pc_mensal"):

@@ -7453,8 +7453,12 @@ function propagarFcstMensalParaPSI(p, fcstOverride) {
     const futureInMonth = r.count - pastInMonth;
     if (futureInMonth <= 0) return;
     const restante = Math.max(0, total - fcFixo);
-    const perWeek  = Math.round(restante / futureInMonth);
-    idxFuturos.forEach(i => { forecast[i] = perWeek; });
+    // Distribui exato: quociente inteiro + 1 un nas primeiras `extra` semanas.
+    // Round simples perdia até (futureInMonth-1) unidades — usuário via 1399 em
+    // vez de 1400. Agora a soma bate EXATO com o total do override.
+    const perWeek = Math.floor(restante / futureInMonth);
+    const extra   = restante - perWeek * futureInMonth;
+    idxFuturos.forEach((i, pos) => { forecast[i] = perWeek + (pos < extra ? 1 : 0); });
   });
 
   // Re-cascateia saldo a partir de SEMANA_ATUAL com floor=0
