@@ -9257,11 +9257,12 @@ function _iniciarModoView() {
     'douglas.brambila@fiberx.com.br',
     'douglas.brambila@velds.com.br',
   ];
-  let ativarView = _getUrlParam('view') === '1';
-  if (window.__USER_EMAIL__) {
-    const email = String(window.__USER_EMAIL__ || '').trim().toLowerCase();
-    if (email && !ADMIN_EMAILS.includes(email)) ativarView = true;
-  }
+  // FAIL-CLOSED: qualquer coisa que NÃO seja um email da lista de admin → view.
+  // Isso inclui email undefined (auth ainda não carregou, injeção falhou etc.).
+  // ?view=1 na URL também força view. Só passa direto se email casar com admin.
+  const email = String(window.__USER_EMAIL__ || '').trim().toLowerCase();
+  const isAdmin = ADMIN_EMAILS.includes(email);
+  const ativarView = _getUrlParam('view') === '1' || !isAdmin;
   if (!ativarView) return;
 
   // Renomeia a aba pra identificar fácil (sobrescrevido se kiosk também ativo)
