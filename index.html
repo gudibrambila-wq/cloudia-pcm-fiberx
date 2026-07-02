@@ -7434,31 +7434,26 @@ function propagarFcstMensalParaPSI(p, fcstOverride) {
   Object.entries(fcstOverride).forEach(([mes, totalRaw]) => {
     const r = getMonthWeekRangeSim(mes);
     if (!r) return;
-    if (r.end <= SEMANA_ATUAL) return; // mês 100% passado: não toca
+    if (r.end < SEMANA_ATUAL) return; // mês 100% passado: não toca
     const total = parseInt(totalRaw) || 0;
-    let fcFixo = 0;
-    const idxFuturos = [];
+
+    // Distribui IGUAL entre TODAS as semanas do mês (inclusive semana atual).
+    // Ex: JUL/26=1400 → 350 x 4 semanas (W27-W30). Douglas prefere ver o valor
+    // uniforme; o cascade usa `realizado` quando existe, então sobrescrever a
+    // semana atual não distorce o histórico.
+    const idxDoMes = [];
     semanas.forEach((w, i) => {
-      if (w < r.start || w > r.end) return;
-      if (w <= SEMANA_ATUAL) fcFixo += forecast[i] || 0;
-      else idxFuturos.push(i);
+      if (w >= r.start && w <= r.end) idxDoMes.push(i);
     });
-    if (idxFuturos.length === 0) return;
-    // Conta TODAS as semanas futuras do mês (não só as que estão em semanas[]).
-    // Pra meses que estão parcialmente em semanas[] (ex: JAN/27 tem só W53 em
-    // semanas e W54-W57 são projetadas pelo buildProjection), divisor é o
-    // total de semanas futuras do mês inteiro — assim cada semana fica com a
-    // mesma fatia, e o buildProjection (que usa total ÷ range.count) bate.
-    const pastInMonth = r.start <= SEMANA_ATUAL ? (Math.min(SEMANA_ATUAL, r.end) - r.start + 1) : 0;
-    const futureInMonth = r.count - pastInMonth;
-    if (futureInMonth <= 0) return;
-    const restante = Math.max(0, total - fcFixo);
-    // Distribui exato: quociente inteiro + 1 un nas primeiras `extra` semanas.
-    // Round simples perdia até (futureInMonth-1) unidades — usuário via 1399 em
-    // vez de 1400. Agora a soma bate EXATO com o total do override.
-    const perWeek = Math.floor(restante / futureInMonth);
-    const extra   = restante - perWeek * futureInMonth;
-    idxFuturos.forEach((i, pos) => { forecast[i] = perWeek + (pos < extra ? 1 : 0); });
+    if (idxDoMes.length === 0) return;
+
+    const perWeek = Math.floor(total / r.count);
+    const extra   = total - perWeek * r.count;
+    idxDoMes.forEach(i => {
+      const w = semanas[i];
+      const posNoMes = w - r.start;   // 0..r.count-1
+      forecast[i] = perWeek + (posNoMes < extra ? 1 : 0);
+    });
   });
 
   // Re-cascateia saldo a partir de SEMANA_ATUAL com floor=0

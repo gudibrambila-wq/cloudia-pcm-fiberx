@@ -85,28 +85,22 @@ def propagar_fcst_mensal(psi, fcst_mensal):
         r = _month_week_range(mes)
         if not r: continue
         r_start, r_end, r_count = r
-        if r_end <= SEMANA_ATUAL: continue   # mês 100% passado
+        if r_end < SEMANA_ATUAL: continue   # mês 100% passado — não toca
         total = int(total_raw) if isinstance(total_raw, (int, float)) else 0
 
-        fc_fixo = 0
-        idx_futuros = []
-        for i, w in enumerate(semanas):
-            if w < r_start or w > r_end: continue
-            if w <= SEMANA_ATUAL: fc_fixo += forecast[i] or 0
-            else:                 idx_futuros.append(i)
-        if not idx_futuros: continue
+        # Distribui IGUAL entre TODAS as semanas do mês (inclusive a atual/passadas
+        # dentro do mês corrente). Ex: JUL/26=1400 → 350 x 4 semanas (W27-W30).
+        # Douglas prefere ver o valor uniforme; o cascade usa `realizado` quando
+        # existe, então sobrescrever a semana atual não distorce o histórico.
+        idx_do_mes = [i for i, w in enumerate(semanas) if r_start <= w <= r_end]
+        if not idx_do_mes: continue
 
-        past_in_month   = (min(SEMANA_ATUAL, r_end) - r_start + 1) if r_start <= SEMANA_ATUAL else 0
-        future_in_month = r_count - past_in_month
-        if future_in_month <= 0: continue
-
-        restante = max(0, total - fc_fixo)
-        # Distribui exato: quociente inteiro + 1 unidade nas primeiras `extra` semanas.
-        # Assim a soma bate EXATAMENTE com o total (sem perda por round).
-        per_week = restante // future_in_month
-        extra    = restante - per_week * future_in_month
-        for pos, i in enumerate(idx_futuros):
-            forecast[i] = per_week + (1 if pos < extra else 0)
+        per_week = total // r_count
+        extra    = total - per_week * r_count
+        for i in idx_do_mes:
+            w = semanas[i]
+            pos_no_mes = w - r_start   # 0..r_count-1
+            forecast[i] = per_week + (1 if pos_no_mes < extra else 0)
 
 
 def aplicar_kanban_sell_in(produtos, kanban_ativos):
