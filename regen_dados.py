@@ -183,11 +183,11 @@ def aplicar_overrides(produtos, overrides):
 
 
 def cascatear_saldo(produtos):
-    """Recalcula psi.saldo (backward + forward) a partir da foto do Sênior.
+    """Recalcula psi.saldo APENAS forward — semanas passadas ficam como estavam.
     - Semana < SEMANA_ATUAL com realizado > 0: usa realizado
     - Senão: usa forecast
-    - Cascade backward: preenche saldos passados desconhecidos
-    - Cascade forward: cascateia futuro
+    - Cascade FORWARD apenas (backward foi removido em 02/07/2026 — causava
+      padrão dente-de-serra nas semanas passadas).
     """
     for p in produtos:
         psi = p.get("psi")
@@ -201,10 +201,7 @@ def cascatear_saldo(produtos):
 
         idx = semanas.index(SEMANA_ESTOQUE)
         # Saldo inicial da SEMANA_ESTOQUE = saldo_atual do produto (foto Sênior)
-        # (permanece o mesmo do dados.json anterior — não recalculamos foto aqui)
         saldo_foto = int(p.get("saldo_atual") or 0)
-        if idx > 0:
-            saldo[idx - 1] = max(0, saldo_foto)
 
         def _consumo(i):
             w = semanas[i]
@@ -212,14 +209,8 @@ def cascatear_saldo(produtos):
             rl = realizado[i]
             return rl if (w <= SEMANA_ATUAL and rl > 0) else fc
 
-        # BACKWARD
-        for i in range(idx - 1, 0, -1):
-            if saldo[i] > 0 and semanas[i] <= SEMANA_ATUAL - 4:
-                continue  # semana congelada com valor bom — não recalcula
-            prev = saldo[i] + _consumo(i) - sell_in[i]
-            saldo[i - 1] = max(0, round(prev))
-
-        # FORWARD
+        # FORWARD apenas — semanas passadas mantêm o valor que estava em psi.saldo
+        # (que foi calculado pelo gerar_dados.py com histórico congelado).
         saldo[idx] = max(0, round(saldo_foto - _consumo(idx) + sell_in[idx]))
         for i in range(idx + 1, len(semanas)):
             saldo[i] = max(0, round(saldo[i-1] + sell_in[i] - _consumo(i)))
