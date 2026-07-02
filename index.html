@@ -9084,8 +9084,11 @@ window.addEventListener('DOMContentLoaded', async () => {
   _atualizaBadgeChegadas();  // Badge Chegadas (sidebar) — reflete o nº real de pedidos ativos
   renderKanban();
   initFlatpickrCustom();
+  // IMPORTANTE: _iniciarModoView roda ANTES do carregarDados pra bloquear as
+  // funções de edição enquanto o load acontece — se o usuário conseguir clicar
+  // em algo no meio do await, o override já tá aplicado. Não depende de DADOS.
+  _iniciarModoView();   // ?view=1 ou email não-admin — bloqueia edições
   await carregarDados();
-  _iniciarModoView();   // ?view=1 — bloqueia edições (depois do load pra os overrides pegarem)
   _iniciarModoKiosk();  // ?kiosk=1 — TV (compatível com ?view=1)
 });
 
@@ -9361,6 +9364,13 @@ function _iniciarModoView() {
     'saveProdutoOverridesLS','saveProdutoStatusLS','_postSync',
     'toggleCatStatus','setFasePedido','npSelecionarProduto','duplicarPedido',
     'restaurarPedidoCancelado','abrirModalCancelados',
+    // Adicionados 02/07/2026 — funções que estavam escapando ao override
+    'setProdStatusByCodNome','toggleProdStatusByCodNome','toggleProdStatus',
+    'confirmarModalNovoPedido','confirmarModalCompra','abrirModalCompra',
+    'efetivarCompra','efetivarCompras','restaurarOverridesProduto',
+    'saveProdutoOverrides','saveProdutoStatus',
+    'prodBulkSet','trocarProduto','abrirModalFcst',
+    'salvarPedidoRow','atualizarPedidoLocal','salvarValorPedido',
   ];
   fnsSave.forEach(fn => {
     if (typeof window[fn] === 'function') window[fn] = noop;
