@@ -4671,13 +4671,19 @@ function monthLastDay(mes) {
   return new Date(year, mm[mAbr], 0); // último dia do mês
 }
 function getMonthWeekRange(mes) {
+  // Unificado com getMonthWeekRangeSim em 02/07/2026: usa a fronteira do
+  // WEEK_TO_MONTH pra decidir onde o mês termina, não `monthLastDay`. Antes,
+  // JUL/26 tinha 5 semanas (W27-W31) porque 31/jul cai em W31, mas a
+  // propagação do fcst_mensal usa (W27-W30) — o card somava as 5 e mostrava
+  // valor diferente do que o Douglas salvou (500 em JUL/26 virava 612 porque
+  // W31=112 de AGO era somada junto). Agora ambas usam a mesma fronteira.
   const entries = Object.entries(WEEK_TO_MONTH)
     .map(([w, m]) => ({ w: +w, m }))
     .sort((a, b) => a.w - b.w);
   const idx = entries.findIndex(e => e.m === mes);
   if (idx < 0) return null;
   const start = entries[idx].w;
-  const end = dateToWeekJS(monthLastDay(mes));
+  const end = idx + 1 < entries.length ? entries[idx + 1].w - 1 : start + 3;
   return { start, end, count: end - start + 1 };
 }
 // Versão para simulação: usa fronteiras do WEEK_TO_MONTH (end = próximo_start - 1)
