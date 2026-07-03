@@ -284,6 +284,17 @@
       "JUN/26": 177.88
     }
   },
+  "401500015": {
+    "marca": "Fibratech",
+    "tipo": "Nacional",
+    "pv": 8.9,
+    "pc": 4.8,
+    "fcst_mensal": {
+      "AGO/26": 350
+    },
+    "pv_mensal": {},
+    "pc_mensal": {}
+  },
   "401500023": {
     "marca": "Fastt10",
     "tipo": "Importado",
