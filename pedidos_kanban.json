@@ -1445,10 +1445,9 @@
     "valor_unitario": 106.904,
     "moeda": "BRL",
     "id": 1782906985854,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-01T11:56:25.854Z",
+    "fase": "pago",
     "codigo_pedido": "PED-0143",
-    "fase_desde": "2026-07-01T11:56:25.854Z"
+    "fase_desde": "2026-07-03T12:23:50.965Z"
   },
   {
     "codigo": 401200030,
