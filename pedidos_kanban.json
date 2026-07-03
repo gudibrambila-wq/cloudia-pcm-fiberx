@@ -401,9 +401,9 @@
     "processo": "025.2026 NTSC",
     "modal": null,
     "id": 1779476027448,
-    "fase": "transito",
+    "fase": "recebido",
     "codigo_pedido": "PED-0074",
-    "fase_desde": "2026-06-16T16:41:57.755Z",
+    "fase_desde": "2026-07-03T12:17:49.438Z",
     "valor_unitario": 28,
     "moeda": "BRL",
     "codigo": 400800011
@@ -1587,6 +1587,7 @@
     "id": 1783015462631,
     "fase": "pendente",
     "pendente_desde": "2026-07-02T18:04:22.631Z",
-    "codigo_pedido": "PED-0150"
+    "codigo_pedido": "PED-0150",
+    "fase_desde": "2026-07-02T18:04:22.631Z"
   }
 ]
