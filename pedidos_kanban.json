@@ -1406,10 +1406,9 @@
     "valor_unitario": 772,
     "moeda": "BRL",
     "id": 1782906795202,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-01T11:53:15.202Z",
+    "fase": "pago",
     "codigo_pedido": "PED-0141",
-    "fase_desde": "2026-07-01T11:53:15.202Z"
+    "fase_desde": "2026-07-03T12:23:35.829Z"
   },
   {
     "codigo": 401700007,
