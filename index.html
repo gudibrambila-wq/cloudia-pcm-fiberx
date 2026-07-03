@@ -4551,45 +4551,66 @@ function renderPSI() {
           }
         }
 
-        // Saldo "ótica do mês anterior" — só quando há atribuição ao mês não-dono
-        let boundarySaldoEarlier = null;
-        if (isBoundaryWeek && earlierAttribQty > 0) {
-          const fullSaldo  = (tblDs.saldo  || [])[col.dataIdx] || 0;
-          const fullSellIn = (tblDs.sellIn || [])[col.dataIdx] || 0;
-          boundarySaldoEarlier = fullSaldo - fullSellIn + earlierAttribQty;
+        // ═══ Cascade "por mês" em semanas-fronteira (Opção C, 03/07/2026) ═══
+        // Cada coluna representa o que rola dentro do MÊS DELA. Isso significa:
+        //   Col JUN W27: Est.Ini = saldo W26, Forecast = 63 (parte JUN), Saldo Final = 1495-63 = 1432
+        //   Col JUL W27: Est.Ini = 1432 (fim da col JUN), Forecast = 226 (parte JUL), Saldo Final = 1206
+        // Assim W27 tem cascade PROPRIO em cada mês, sem "juntar" JUN e JUL.
+        let fcParteEarlier = 0, fcParteDono = 0;
+        let siEarlier = 0, siDono = 0;
+        let saldoAntes = 0, saldoFimEarlier = 0, saldoFimDono = 0;
+        let mesEarlier = null;
+        if (isBoundaryWeek && d.fcstMensal) {
+          const mesDono = WEEK_TO_MONTH[col.weekNum];
+          const wtmEntries = Object.entries(WEEK_TO_MONTH).map(([w,m])=>({w:+w,m})).sort((a,b)=>a.w-b.w);
+          const idxDono = wtmEntries.findIndex(e => e.m === mesDono);
+          mesEarlier = idxDono > 0 ? wtmEntries[idxDono - 1].m : null;
+          if (mesEarlier) {
+            try {
+              const rEarlier = _mesRangeDate(mesEarlier);
+              const rDono    = _mesRangeDate(mesDono);
+              const dE = _mesDiasNoMes(mesEarlier);
+              const dD = _mesDiasNoMes(mesDono);
+              const dSemE = _diasSemanaNoMes(col.weekNum, rEarlier.ini, rEarlier.fim);
+              const dSemD = _diasSemanaNoMes(col.weekNum, rDono.ini,    rDono.fim);
+              fcParteEarlier = dE > 0 ? Math.round((d.fcstMensal[mesEarlier] || 0) / dE * dSemE) : 0;
+              fcParteDono    = dD > 0 ? Math.round((d.fcstMensal[mesDono]    || 0) / dD * dSemD) : 0;
+            } catch (e) {}
+          }
+          siEarlier = earlierAttribQty;
+          siDono    = ((tblData.sellIn || [])[col.dataIdx] || 0) - earlierAttribQty;
+          const iAnt = col.dataIdx - 1;
+          saldoAntes = iAnt >= 0 ? ((tblData.saldo || [])[iAnt] || 0) : 0;
+          // Realizado dividido (se existir realizado_split das duas partes)
+          const rlKeyE = mesEarlier ? `${col.weekNum}_${mesEarlier}` : null;
+          const rlKeyD = `${col.weekNum}_${mesDono}`;
+          const rlE = (d.realizadoSplit && rlKeyE) ? (d.realizadoSplit[rlKeyE] || 0) : 0;
+          const rlD = (d.realizadoSplit) ? (d.realizadoSplit[rlKeyD] || 0) : 0;
+          const consE = rlE > 0 ? rlE : fcParteEarlier;
+          const consD = rlD > 0 ? rlD : fcParteDono;
+          saldoFimEarlier = Math.max(0, saldoAntes      - consE + siEarlier);
+          saldoFimDono    = Math.max(0, saldoFimEarlier - consD + siDono);
         }
 
         let v;
-        // Opção C (03/07/2026): forecast em semanas-fronteira aparece em AMBAS as
-        // colunas com valor proporcional aos dias que caem no mês (via minha lógica
-        // abaixo). O tratamento antigo (V3 Opção C2) zerava o boundaryEarlier —
-        // removido em favor da divisão por dia.
         if (row.key === 'forecast' && simDs && simDs.displayFcOverride && simDs.displayFcOverride.has(overrideKey)) {
           v = simDs.displayFcOverride.get(overrideKey);
         } else if (row.key === 'sellIn' && isBoundaryWeek) {
-          v = isBoundaryEarlier
-            ? earlierAttribQty
-            : ((tblData[row.key]||[])[col.dataIdx] || 0) - earlierAttribQty;
-        } else if (row.key === 'saldo' && isBoundaryEarlier && boundarySaldoEarlier !== null) {
-          // Saldo Final do mês anterior (JUN/W27): exclui o sell_in que vai para JUL
-          v = boundarySaldoEarlier;
-        } else if (row.key === 'estoque' && !isBoundaryEarlier && isBoundaryWeek && boundarySaldoEarlier !== null) {
-          // Estoque Inicial do mês dono (JUL/W27): começa do Saldo Final de JUN
-          v = boundarySaldoEarlier;
-        } else if (row.key === 'wos' && isBoundaryEarlier && boundarySaldoEarlier !== null) {
-          // WOS do mês anterior: recalcula do saldo ajustado
+          v = isBoundaryEarlier ? siEarlier : siDono;
+        } else if (row.key === 'saldo' && isBoundaryWeek) {
+          v = isBoundaryEarlier ? saldoFimEarlier : saldoFimDono;
+        } else if (row.key === 'estoque' && isBoundaryWeek) {
+          v = isBoundaryEarlier ? saldoAntes : saldoFimEarlier;
+        } else if (row.key === 'wos' && isBoundaryWeek) {
           const fc = d.avgWeeklyFc || 1;
-          v = fc > 0 ? Math.max(0, +(boundarySaldoEarlier / fc).toFixed(1)) : 0;
+          const s = isBoundaryEarlier ? saldoFimEarlier : saldoFimDono;
+          v = fc > 0 ? Math.max(0, +(s / fc).toFixed(1)) : 0;
           if (!v) v = null;
         } else if (row.key === 'realizado' && d.realizadoSplit) {
-          // Realizado por (semana, mes calendário) — vendas B2B atribuídas pela data
-          // Em semanas-fronteira (W23/W27/W31...) cada coluna pega só o que pertence ao seu mês
           const key = `${col.weekNum}_${col.mes}`;
           v = d.realizadoSplit[key] || 0;
         } else if (row.key === 'forecast' && col.mes && d.fcstMensal && d.fcstMensal[col.mes] != null) {
-          // Opção C (03/07/2026): coluna mensal mostra a PARTE proporcional do forecast
-          // que cai naquele mês. W27 (29/jun-5/jul) na col JUN mostra 2/30 × mensal_JUN;
-          // na col JUL mostra 5/31 × mensal_JUL. Soma das partes = mensal exato.
+          // Semana cheia (não-fronteira): forecast da coluna = proporção do mês (que é o total, pois só há 1 mês)
           try {
             const { ini, fim } = _mesRangeDate(col.mes);
             const diasNoMes = _mesDiasNoMes(col.mes);
