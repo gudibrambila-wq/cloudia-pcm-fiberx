@@ -1,0 +1,370 @@
+{
+  "4007011": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 1699,
+    "pc": 1020,
+    "pv_mensal": {},
+    "pc_mensal": {}
+  },
+  "400600001": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 289.9,
+    "pc": 172,
+    "pv_mensal": {
+      "ABR/26": 200,
+      "MAI/26": 250,
+      "JUN/26": 288
+    },
+    "pc_mensal": {}
+  },
+  "400700001": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 1499,
+    "pc": 900,
+    "pv_mensal": {
+      "MAI/26": 1499,
+      "JUN/26": 1299
+    },
+    "pc_mensal": {}
+  },
+  "400700012": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 1299,
+    "pc": 780,
+    "pv_mensal": {},
+    "pc_mensal": {},
+    "fcst_mensal": {
+      "JUN/26": 50,
+      "JUL/26": 500,
+      "AGO/26": 560,
+      "SET/26": 640,
+      "OUT/26": 1000,
+      "NOV/26": 1400,
+      "JAN/27": 1000,
+      "FEV/27": 1040,
+      "MAR/27": 1640,
+      "ABR/27": 1500,
+      "MAI/27": 1500,
+      "DEZ/26": 1200
+    }
+  },
+  "400700013": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 1699,
+    "pc": 1020,
+    "pv_mensal": {},
+    "pc_mensal": {},
+    "fcst_mensal": {
+      "JUN/26": 15,
+      "JUL/26": 135,
+      "SET/26": 400,
+      "OUT/26": 600,
+      "NOV/26": 1040,
+      "DEZ/26": 760,
+      "FEV/27": 360,
+      "MAR/27": 560,
+      "ABR/27": 560,
+      "MAI/27": 560,
+      "AGO/26": 500
+    }
+  },
+  "400700014": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 1699,
+    "pc": 1020,
+    "pv_mensal": {},
+    "pc_mensal": {},
+    "fcst_mensal": {
+      "JUN/26": 10,
+      "JUL/26": 90,
+      "SET/26": 160,
+      "OUT/26": 240,
+      "NOV/26": 560,
+      "DEZ/26": 340,
+      "FEV/27": 140,
+      "MAR/27": 220,
+      "ABR/27": 220,
+      "MAI/27": 220,
+      "AGO/26": 200
+    }
+  },
+  "400700026": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 0,
+    "pc": 0,
+    "fcst_mensal": {
+      "NOV/26": 50,
+      "DEZ/26": 50,
+      "JAN/27": 50,
+      "FEV/27": 50,
+      "MAR/27": 50,
+      "ABR/27": 50,
+      "MAI/27": 50,
+      "OUT/26": 50
+    },
+    "pv_mensal": {},
+    "pc_mensal": {}
+  },
+  "400700027": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 0,
+    "pc": 0,
+    "fcst_mensal": {
+      "NOV/26": 50,
+      "DEZ/26": 50,
+      "JAN/27": 50,
+      "FEV/27": 50,
+      "MAR/27": 50,
+      "ABR/27": 50,
+      "MAI/27": 50,
+      "OUT/26": 50
+    },
+    "pv_mensal": {},
+    "pc_mensal": {}
+  },
+  "400700028": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 0,
+    "pc": 0,
+    "fcst_mensal": {
+      "NOV/26": 300,
+      "DEZ/26": 300,
+      "JAN/27": 300,
+      "FEV/27": 300,
+      "MAR/27": 300,
+      "ABR/27": 300,
+      "MAI/27": 300
+    },
+    "pv_mensal": {},
+    "pc_mensal": {}
+  },
+  "400700029": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 0,
+    "pc": 0,
+    "fcst_mensal": {
+      "NOV/26": 50,
+      "DEZ/26": 50,
+      "JAN/27": 50,
+      "FEV/27": 50,
+      "MAR/27": 50,
+      "ABR/27": 50,
+      "MAI/27": 50
+    },
+    "pv_mensal": {},
+    "pc_mensal": {}
+  },
+  "400800003": {
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "pv": 50,
+    "pc": 135.51,
+    "pv_mensal": {
+      "MAI/26": 159.9,
+      "JUN/26": 159.9
+    },
+    "pc_mensal": {
+      "JUN/26": 135.51
+    }
+  },
+  "400800004": {
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "pv": 50,
+    "pc": 199.92,
+    "pv_mensal": {
+      "MAI/26": 235.9,
+      "JUN/26": 235.9
+    },
+    "pc_mensal": {
+      "JUN/26": 208.39
+    }
+  },
+  "400800005": {
+    "marca": "Zyxel",
+    "tipo": "Nacional",
+    "pv": 520,
+    "pc": 187,
+    "pv_mensal": {
+      "JUN/26": 199.5
+    },
+    "pc_mensal": {}
+  },
+  "400800006": {
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "pv": 50,
+    "pc": 143.98,
+    "pv_mensal": {
+      "MAI/26": 169.9,
+      "JUN/26": 169.9
+    },
+    "pc_mensal": {
+      "JUN/26": 143.98
+    }
+  },
+  "401300001": {
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "pv": 50,
+    "pc": 127.03,
+    "pv_mensal": {
+      "MAI/26": 149.9,
+      "JUN/26": 149.9
+    },
+    "pc_mensal": {
+      "JUN/26": 127.03
+    }
+  },
+  "401300002": {
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "pv": 50,
+    "pc": 110.08,
+    "pv_mensal": {
+      "MAI/26": 129.9,
+      "JUN/26": 129.9
+    },
+    "pc_mensal": {
+      "MAI/26": 110.08,
+      "JUN/26": 110.08
+    }
+  },
+  "401300007": {
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "pv": 50,
+    "pc": 156.69,
+    "pv_mensal": {
+      "MAI/26": 184.9,
+      "JUN/26": 184.9
+    },
+    "pc_mensal": {
+      "JUN/26": 156.69
+    }
+  },
+  "401300012": {
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "pv": 149.9,
+    "pc": 97.37,
+    "pv_mensal": {
+      "MAI/26": 114.99,
+      "JUN/26": 114.99
+    },
+    "pc_mensal": {
+      "MAI/26": 97.37,
+      "JUN/26": 97.37
+    }
+  },
+  "401300013": {
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "pv": 50,
+    "pc": 177.88,
+    "pv_mensal": {
+      "MAI/26": 209.9,
+      "JUN/26": 209.9
+    },
+    "pc_mensal": {
+      "MAI/26": 177.88,
+      "JUN/26": 177.88
+    }
+  },
+  "401500023": {
+    "marca": "Fastt10",
+    "tipo": "Importado",
+    "pv": 320,
+    "pc": 0,
+    "pv_mensal": {
+      "MAI/26": 50,
+      "JUN/26": 60
+    },
+    "pc_mensal": {}
+  },
+  "401700002": {
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "pv": 50,
+    "pc": 480,
+    "pv_mensal": {
+      "MAI/26": 644.81,
+      "JUN/26": 644.81
+    },
+    "pc_mensal": {
+      "MAI/26": 584.84,
+      "JUN/26": 584.84
+    }
+  },
+  "401800003": {
+    "marca": "Fastt10",
+    "tipo": "Importado",
+    "pv": 0,
+    "pc": 0,
+    "pv_mensal": {
+      "MAI/26": 72,
+      "JUN/26": 72
+    },
+    "pc_mensal": {}
+  },
+  "401900001": {
+    "marca": "Sandisk",
+    "tipo": "Importado",
+    "pv": 39.9,
+    "pc": 22,
+    "pv_mensal": {
+      "MAI/26": 84,
+      "JUN/26": 84
+    },
+    "pc_mensal": {}
+  },
+  "401900005": {
+    "marca": "Sandisk",
+    "tipo": "Importado",
+    "pv": 119.9,
+    "pc": 72,
+    "pv_mensal": {
+      "MAI/26": 246,
+      "JUN/26": 246
+    },
+    "pc_mensal": {}
+  },
+  "401900014": {
+    "marca": "Sandisk",
+    "tipo": "Importado",
+    "pv": 59.9,
+    "pc": 34,
+    "pv_mensal": {
+      "MAI/26": 134.54,
+      "JUN/26": 134.54
+    },
+    "pc_mensal": {}
+  },
+  "999000001": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 0,
+    "pc": 0,
+    "fcst_mensal": {
+      "NOV/26": 100,
+      "DEZ/26": 350,
+      "JAN/27": 400,
+      "FEV/27": 400,
+      "MAR/27": 400,
+      "ABR/27": 400,
+      "MAI/27": 400
+    },
+    "pv_mensal": {},
+    "pc_mensal": {}
+  }
+}
