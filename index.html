@@ -4560,11 +4560,11 @@ function renderPSI() {
         }
 
         let v;
-        // V3 (Opção C2): forecast da semana-fronteira só aparece no mês-DONO; nas
-        // colunas do mês não-dono fica 0. Mantém soma visual do mês = fcst_mensal.
-        if (row.key === 'forecast' && isBoundaryEarlier) {
-          v = 0;
-        } else if (row.key === 'forecast' && simDs && simDs.displayFcOverride && simDs.displayFcOverride.has(overrideKey)) {
+        // Opção C (03/07/2026): forecast em semanas-fronteira aparece em AMBAS as
+        // colunas com valor proporcional aos dias que caem no mês (via minha lógica
+        // abaixo). O tratamento antigo (V3 Opção C2) zerava o boundaryEarlier —
+        // removido em favor da divisão por dia.
+        if (row.key === 'forecast' && simDs && simDs.displayFcOverride && simDs.displayFcOverride.has(overrideKey)) {
           v = simDs.displayFcOverride.get(overrideKey);
         } else if (row.key === 'sellIn' && isBoundaryWeek) {
           v = isBoundaryEarlier
