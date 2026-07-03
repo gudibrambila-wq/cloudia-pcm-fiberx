@@ -1609,8 +1609,8 @@
     "valor_unitario": 405.76,
     "moeda": "BRL",
     "id": 1783081155026,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-03T12:19:15.026Z",
-    "codigo_pedido": "PED-0151"
+    "fase": "transito",
+    "codigo_pedido": "PED-0151",
+    "fase_desde": "2026-07-03T12:19:20.378Z"
   }
 ]
