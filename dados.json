@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-03T09:39:24",
+  "gerado_em": "2026-07-03T12:43:07",
   "semana_atual": 27,
   "semana_estoque": 27,
   "week_to_month": {
@@ -7364,19 +7364,19 @@
       "prox_chegada": {
         "semana": 27,
         "quantidade": 300,
-        "status": "PEDIDO",
+        "status": "RECEBIDO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0076",
-        "fase": "faturado"
+        "fase": "estoque"
       },
       "entradas": [
         {
           "semana": 27,
           "quantidade": 300,
-          "status": "PEDIDO",
+          "status": "RECEBIDO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0076",
-          "fase": "faturado"
+          "fase": "estoque"
         }
       ],
       "fcst_mensal": {
