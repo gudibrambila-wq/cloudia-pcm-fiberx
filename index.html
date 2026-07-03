@@ -105,6 +105,10 @@
       <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       Financeiro
     </a>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/50" data-view="calendario" onclick="navigate('calendario',this);return false">
+      <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+      Calendário
+    </a>
   </nav>
 
   <div class="p-4 border-t border-white/10 flex items-center gap-3">
@@ -2045,6 +2049,33 @@
 
     </div>
 
+    <!-- ===== VIEW CALENDARIO ===== -->
+    <div id="view-calendario" class="view">
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mb-4 text-xs text-slate-600 leading-relaxed">
+        <div class="flex items-start gap-3">
+          <span class="inline-block bg-amber-100 text-amber-800 px-2 py-0.5 rounded font-semibold">Fronteira</span>
+          <span>Dias em amarelo = semana que atravessa 2 meses. Nessas semanas o forecast é dividido proporcional aos dias em cada mês.</span>
+        </div>
+        <div class="mt-1 text-slate-500">Base: <b>W1 começa em 29/dez/2025</b> (segunda-feira). Semana = seg a dom.</div>
+      </div>
+      <div id="cal-grid" class="grid gap-4 mb-6" style="grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));"></div>
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+        <h3 class="text-sm font-semibold text-slate-800 mb-3">Resumo das Semanas-Fronteira</h3>
+        <div class="overflow-x-auto">
+          <table class="min-w-full text-xs">
+            <thead>
+              <tr class="border-b border-slate-200">
+                <th class="text-left py-2 pr-4 font-semibold text-slate-500 uppercase tracking-wide">Semana</th>
+                <th class="text-left py-2 pr-4 font-semibold text-slate-500 uppercase tracking-wide">Datas</th>
+                <th class="text-left py-2 font-semibold text-slate-500 uppercase tracking-wide">Distribuição</th>
+              </tr>
+            </thead>
+            <tbody id="cal-fronteiras"></tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
   </main>
 </div>
 
@@ -2758,6 +2789,7 @@ const PAGE_META = {
   catalogo:     ['Catálogo','Produtos do Sênior sem forecast · disponíveis pra criar pedido'],
   timeline:     ['Linha do Tempo · Importados','Acompanhamento visual dos processos de compra importados'],
   'timeline-nac': ['Linha do Tempo · Nacionais','Acompanhamento visual dos processos de compra nacionais'],
+  calendario:   ['Calendário PSI','Referência semana × mês · base W1 = 29/dez/2025'],
 };
 
 // ===== NAVIGATION =====
@@ -2825,6 +2857,7 @@ function navigate(view, el) {
   if (view === 'timeline-nac') setTimeout(renderTimelineNac, 50);
   if (view === 'vendas')       setTimeout(renderVendas, 50);
   if (view === 'estoque')      setTimeout(renderEstoque, 50);
+  if (view === 'calendario')   setTimeout(renderCalendario, 50);
 }
 
 // ===== MODAL =====
@@ -7191,6 +7224,99 @@ const FIN_MES_SEMANAS = [[18,22],[23,26],[27,30],[31,35],[36,39],[40,43]];
 const BRL = v => 'R$ ' + Math.round(v).toLocaleString('pt-BR');
 
 let chartFinanceiro = null;
+
+// ===== CALENDÁRIO PSI =====
+// Gera visualização mês-a-mês (JAN/26 até MAI/27) com número da semana à esquerda
+// e dias de semanas-fronteira destacados em amarelo. Usa BASE_DATE_JS + WEEK_TO_MONTH.
+function renderCalendario() {
+  const grid = document.getElementById('cal-grid');
+  const front = document.getElementById('cal-fronteiras');
+  if (!grid || !front) return;
+  const MESES = ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+  const MES_ABR = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+
+  const semanaDe = (d) => Math.max(1, Math.floor((d - BASE_DATE_JS) / 86400000 / 7) + 1);
+  const diasNoMes = (y, m) => new Date(y, m + 1, 0).getDate();  // m: 0-indexed
+  const semAtual = SEMANA_ATUAL;
+
+  // Gera blocos mês a mês (JAN/26 - MAI/27 = 17 meses)
+  let blocos = '';
+  const meses = [];
+  for (let year = 2026; year <= 2027; year++) {
+    const mMax = year === 2026 ? 12 : 5;
+    for (let m = 0; m < mMax; m++) meses.push({ year, month: m });
+  }
+
+  meses.forEach(({ year, month }) => {
+    const dias = diasNoMes(year, month);
+    const dow1 = new Date(year, month, 1).getDay();
+    const seg1 = (dow1 + 6) % 7;  // seg=0
+    const cells = [];
+    for (let i = 0; i < seg1; i++) cells.push(null);
+    for (let d = 1; d <= dias; d++) cells.push(d);
+    while (cells.length % 7 !== 0) cells.push(null);
+
+    let corpo = '';
+    for (let i = 0; i < cells.length; i += 7) {
+      const linha = cells.slice(i, i + 7);
+      const primeiro = linha.find(x => x !== null);
+      if (primeiro == null) continue;
+      const dRef = new Date(year, month, primeiro);
+      const seg = new Date(dRef);
+      seg.setDate(seg.getDate() - ((seg.getDay() + 6) % 7));
+      const w = semanaDe(seg);
+      const dom = new Date(seg); dom.setDate(dom.getDate() + 6);
+      const eFronteira = seg.getMonth() !== dom.getMonth() || seg.getFullYear() !== dom.getFullYear();
+      const wCls = w === semAtual ? 'bg-blue-100 text-blue-700 font-bold' : 'text-slate-400';
+      corpo += `<tr><td class="text-[10px] italic ${wCls} py-1 px-1 w-8 text-center">W${w}</td>`;
+      linha.forEach(d => {
+        if (d == null) { corpo += '<td></td>'; return; }
+        // Marca dia como fronteira se a semana dele atravessa 2 meses
+        const dd = new Date(year, month, d);
+        const segD = new Date(dd); segD.setDate(segD.getDate() - ((segD.getDay() + 6) % 7));
+        const domD = new Date(segD); domD.setDate(domD.getDate() + 6);
+        const isFront = segD.getMonth() !== domD.getMonth() || segD.getFullYear() !== domD.getFullYear();
+        const cls = isFront ? 'bg-amber-100 text-amber-800 font-bold rounded' : 'text-slate-800';
+        corpo += `<td class="text-xs py-1 text-center ${cls}">${d}</td>`;
+      });
+      corpo += '</tr>';
+    }
+    blocos += `<div class="bg-white rounded-lg overflow-hidden border border-slate-200 shadow-sm">
+      <div class="bg-blue-900 text-white text-center py-2 text-sm font-bold">${MESES[month]} ${year}</div>
+      <table class="w-full">
+        <thead><tr class="bg-slate-100 text-slate-500 text-[10px] uppercase font-semibold">
+          <th class="w-8"></th><th>S</th><th>T</th><th>Q</th><th>Q</th><th>S</th><th>S</th><th>D</th>
+        </tr></thead>
+        <tbody>${corpo}</tbody>
+      </table>
+    </div>`;
+  });
+  grid.innerHTML = blocos;
+
+  // Tabela de resumo das fronteiras
+  let linhasFront = '';
+  for (let w = 1; w < 90; w++) {
+    const ini = new Date(BASE_DATE_JS);
+    ini.setDate(ini.getDate() + (w - 1) * 7);
+    const fim = new Date(ini); fim.setDate(fim.getDate() + 6);
+    if (ini.getFullYear() > 2027) break;
+    if (ini.getMonth() !== fim.getMonth() || ini.getFullYear() !== fim.getFullYear()) {
+      const mA = `${MES_ABR[ini.getMonth()]}/${String(ini.getFullYear()).slice(-2)}`;
+      const mB = `${MES_ABR[fim.getMonth()]}/${String(fim.getFullYear()).slice(-2)}`;
+      const ultimoDia = diasNoMes(ini.getFullYear(), ini.getMonth());
+      const dA = ultimoDia - ini.getDate() + 1;
+      const dB = 7 - dA;
+      const fmtData = (d) => `${String(d.getDate()).padStart(2,'0')}/${String(d.getMonth()+1).padStart(2,'0')}`;
+      const atual = w === semAtual ? ' bg-blue-50' : '';
+      linhasFront += `<tr class="border-b border-slate-100${atual}">
+        <td class="py-2 pr-4 font-bold text-slate-800">W${w}</td>
+        <td class="py-2 pr-4 text-slate-600 font-mono">${fmtData(ini)} - ${fmtData(fim)}</td>
+        <td class="py-2 text-slate-700"><b class="text-amber-700">${dA}</b> dias ${mA} <span class="text-slate-400">+</span> <b class="text-amber-700">${dB}</b> dias ${mB}</td>
+      </tr>`;
+    }
+  }
+  front.innerHTML = linhasFront;
+}
 
 function renderFinanceiro() {
   finPopularFiltros();
