@@ -834,7 +834,11 @@
     "processo": "023.2026 NTSC",
     "valor_unitario": 70.99,
     "moeda": "BRL",
-    "codigo": 401500019
+    "codigo": 401500019,
+    "cancelado": true,
+    "motivo_cancelamento": "Cliente cancelou o pedido porque demorou mais de 3 meses para chegar",
+    "cancelado_em": "2026-07-03T12:18:28.045Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 220V",
