@@ -947,9 +947,9 @@
     "processo": "032.2026 LIGGA",
     "modal": null,
     "id": 1781549919286,
-    "fase": "estoque_fornecedor",
+    "fase": "pago",
     "codigo_pedido": "PED-0108",
-    "fase_desde": "2026-06-18T20:40:06.143Z",
+    "fase_desde": "2026-07-03T12:22:21.041Z",
     "valor_unitario": 470.73,
     "moeda": "BRL",
     "codigo": 401700004
