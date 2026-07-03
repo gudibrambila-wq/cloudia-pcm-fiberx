@@ -1612,5 +1612,24 @@
     "fase": "transito",
     "codigo_pedido": "PED-0151",
     "fase_desde": "2026-07-03T12:19:20.378Z"
+  },
+  {
+    "codigo": 401600062,
+    "nome": "Módulo MiniGBIC - SM311LM",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 2,
+    "semana": 31,
+    "mes": "AGO/26",
+    "data": "2026-07-27",
+    "origem": "Avulso",
+    "processo": "022.2026 BAVARESCO",
+    "modal": null,
+    "valor_unitario": 67.42,
+    "moeda": "BRL",
+    "id": 1783081292762,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-03T12:21:32.762Z",
+    "codigo_pedido": "PED-0152"
   }
 ]
