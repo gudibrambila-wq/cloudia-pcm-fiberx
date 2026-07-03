@@ -4812,89 +4812,72 @@ function calcSimData(d) {
   const mes1 = idxAtualMes >= 0 ? wtm[idxAtualMes].m : 'MAI/26';
   const mes2 = idxAtualMes + 1 < wtm.length ? wtm[idxAtualMes + 1].m : 'JUN/26';
   const mes3 = idxAtualMes + 2 < wtm.length ? wtm[idxAtualMes + 2].m : 'JUL/26';
-  const r1 = getMonthWeekRangeSim(mes1);
-  const r2 = getMonthWeekRangeSim(mes2);
-  const r3 = getMonthWeekRangeSim(mes3);
 
-  if (SIM_STATE.fc1 !== null && r1) {
-    // MAI/26: semanas passadas + atual (W18..W20) ficam com forecast original.
-    // Soma essas semanas fixas e distribui o restante apenas em W21, W22.
-    let fcFixo = 0;
-    ds.labels.forEach((lbl, i) => {
-      const w = labelToWeek(lbl);
-      if (w >= r1.start && w <= SEMANA_ATUAL) fcFixo += ds.forecast[i] || 0;
+  // Opção C (03/07/2026): monta simFcstMensal = fcst_mensal original + overrides
+  // da simulação, e distribui proporcional por dia (igual propagarFcstMensalParaPSI).
+  // Assim W27 (parte JUN + parte JUL) na simulação também respeita as duas contribuições.
+  const simFcstMensal = { ...(d.fcstMensal || {}) };
+  if (SIM_STATE.fc1 !== null) simFcstMensal[mes1] = SIM_STATE.fc1;
+  if (SIM_STATE.fc2 !== null) simFcstMensal[mes2] = SIM_STATE.fc2;
+  if (SIM_STATE.fc3 !== null) simFcstMensal[mes3] = SIM_STATE.fc3;
+
+  const rangesSim = {};
+  Object.entries(simFcstMensal).forEach(([mes, totalRaw]) => {
+    try {
+      const { ini, fim } = _mesRangeDate(mes);
+      const dias = _mesDiasNoMes(mes);
+      const total = parseInt(totalRaw, 10) || 0;
+      rangesSim[mes] = { ini, fim, dias, total };
+    } catch (e) {}
+  });
+
+  // Descobre quais índices serão tocados (têm dias em algum mês do simFcstMensal)
+  const tocadas = new Set();
+  ds.labels.forEach((lbl, i) => {
+    const w = labelToWeek(lbl);
+    Object.values(rangesSim).forEach(({ ini, fim }) => {
+      if (_diasSemanaNoMes(w, ini, fim) > 0) tocadas.add(i);
     });
-    const semanasFuturasMes1 = [];
-    ds.labels.forEach((lbl, i) => {
-      const w = labelToWeek(lbl);
-      if (w > SEMANA_ATUAL && w >= r1.start && w <= r1.end) semanasFuturasMes1.push(i);
+  });
+
+  // Zera antes de somar contribuições
+  tocadas.forEach(i => { simFc[i] = 0; });
+
+  // Soma contribuições proporcionais por dia
+  Object.values(rangesSim).forEach(({ ini, fim, dias, total }) => {
+    if (dias <= 0 || total < 0) return;
+    const valPorDia = dias > 0 ? total / dias : 0;
+    tocadas.forEach(i => {
+      const w = labelToWeek(ds.labels[i]);
+      const dSem = _diasSemanaNoMes(w, ini, fim);
+      if (dSem > 0) simFc[i] += valPorDia * dSem;
     });
-    if (semanasFuturasMes1.length > 0) {
-      const restante = Math.max(0, SIM_STATE.fc1 - fcFixo);
-      const perWeek  = restante / semanasFuturasMes1.length;
-      semanasFuturasMes1.forEach(i => { simFc[i] = Math.round(perWeek); });
-    }
-  }
-  if (SIM_STATE.fc2 !== null && r2) {
-    // Mesmo padrão do mes1: semanas passadas/atual ficam fixas, restante vai para as futuras.
-    let fcFixo2 = 0;
-    ds.labels.forEach((lbl, i) => {
-      const w = labelToWeek(lbl);
-      if (w >= r2.start && w <= SEMANA_ATUAL) fcFixo2 += ds.forecast[i] || 0;
-    });
-    const semanasFuturasMes2 = [];
-    ds.labels.forEach((lbl, i) => {
-      const w = labelToWeek(lbl);
-      if (w > SEMANA_ATUAL && w >= r2.start && w <= r2.end) semanasFuturasMes2.push(i);
-    });
-    if (semanasFuturasMes2.length > 0) {
-      const restante = Math.max(0, SIM_STATE.fc2 - fcFixo2);
-      const perWeek  = restante / semanasFuturasMes2.length;
-      semanasFuturasMes2.forEach(i => { simFc[i] = Math.round(perWeek); });
-    }
-  }
-  if (SIM_STATE.fc3 !== null && r3) {
-    let fcFixo3 = 0;
-    ds.labels.forEach((lbl, i) => {
-      const w = labelToWeek(lbl);
-      if (w >= r3.start && w <= SEMANA_ATUAL) fcFixo3 += ds.forecast[i] || 0;
-    });
-    const semanasFuturasMes3 = [];
-    ds.labels.forEach((lbl, i) => {
-      const w = labelToWeek(lbl);
-      if (w > SEMANA_ATUAL && w >= r3.start && w <= r3.end) semanasFuturasMes3.push(i);
-    });
-    if (semanasFuturasMes3.length > 0) {
-      const restante = Math.max(0, SIM_STATE.fc3 - fcFixo3);
-      const perWeek  = restante / semanasFuturasMes3.length;
-      semanasFuturasMes3.forEach(i => { simFc[i] = Math.round(perWeek); });
-    }
-  }
+  });
+  tocadas.forEach(i => { simFc[i] = Math.round(simFc[i]); });
+
   SIM_STATE.pedidos.forEach(({ qty, week }) => {
     if (qty > 0 && week) ds.labels.forEach((lbl, i) => {
       if (labelToWeek(lbl) === week) simSellIn[i] += qty;
     });
   });
 
-  // V3 (Opção C2): displayFcOverride calcula a divisão usando SOMENTE semanas-donas
-  // do mês (sem fronteira). Antes usava getMonthWeekRange (com fronteira), o que dava
-  // perWeek menor que o esperado — ex: JUL=500 / 5 = 100 em vez de JUL=500 / 4 = 125.
-  // A fronteira no mês não-dono é zerada no render do PSI (isBoundaryEarlier).
+  // displayFcOverride: valor da célula PARCIAL em coluna de mês (Opção C).
+  // Ex: W27 na col JUN mostra 2/30 × mes1_sim; na col JUL mostra 5/31 × mes2_sim.
+  // Chave: `${mes}:${w}` — usada no renderPSI pra sobrescrever a célula visual.
   const displayFcOverride = new Map();
-  [[SIM_STATE.fc1, mes1, r1], [SIM_STATE.fc2, mes2, r2], [SIM_STATE.fc3, mes3, r3]].forEach(([fcTotal, mesN, rSim]) => {
-    if (fcTotal === null || !rSim) return;
-    let fixo = 0;
-    const futWeeks = [];
-    ds.labels.forEach((lbl, i) => {
-      const w = labelToWeek(lbl);
-      if (w >= rSim.start && w <= rSim.end) {   // ← rSim (sem fronteira)
-        if (w <= SEMANA_ATUAL) fixo += ds.forecast[i] || 0;
-        else futWeeks.push(w);
-      }
-    });
-    if (futWeeks.length === 0) return;
-    const perWeek = Math.round(Math.max(0, fcTotal - fixo) / futWeeks.length);
-    futWeeks.forEach(w => displayFcOverride.set(`${mesN}:${w}`, perWeek));
+  [[SIM_STATE.fc1, mes1], [SIM_STATE.fc2, mes2], [SIM_STATE.fc3, mes3]].forEach(([fcTotal, mesN]) => {
+    if (fcTotal === null) return;
+    try {
+      const { ini, fim } = _mesRangeDate(mesN);
+      const dias = _mesDiasNoMes(mesN);
+      if (dias <= 0) return;
+      const valPorDia = fcTotal / dias;
+      ds.labels.forEach((lbl) => {
+        const w = labelToWeek(lbl);
+        const dSem = _diasSemanaNoMes(w, ini, fim);
+        if (dSem > 0) displayFcOverride.set(`${mesN}:${w}`, Math.round(valPorDia * dSem));
+      });
+    } catch (e) {}
   });
 
   const simSaldo = [...ds.saldo];
