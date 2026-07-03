@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-03T12:17:58",
+  "gerado_em": "2026-07-03T12:18:37",
   "semana_atual": 27,
   "semana_estoque": 27,
   "week_to_month": {
@@ -1081,24 +1081,8 @@
       "saldo_atual": 0,
       "fc_sem": 20,
       "in_transit": 0,
-      "prox_chegada": {
-        "semana": 27,
-        "quantidade": 11,
-        "status": "PEDIDO",
-        "mes": "JUL/26",
-        "codigo_pedido": "PED-0099",
-        "fase": "estoque_fornecedor"
-      },
-      "entradas": [
-        {
-          "semana": 27,
-          "quantidade": 11,
-          "status": "PEDIDO",
-          "mes": "JUL/26",
-          "codigo_pedido": "PED-0099",
-          "fase": "estoque_fornecedor"
-        }
-      ],
+      "prox_chegada": null,
+      "entradas": [],
       "fcst_mensal": {
         "JAN/26": 30,
         "FEV/26": 30,
@@ -1285,7 +1269,7 @@
           0,
           0,
           0,
-          11,
+          0,
           0,
           0,
           0,
