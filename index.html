@@ -7530,7 +7530,11 @@ function aplicarOverridesEmDados() {
     if (ov.fcst_mensal) {
       p.fcst_mensal = { ...(p.fcst_mensal || {}), ...ov.fcst_mensal };
       // Propaga o forecast mensal pras semanas FUTURAS do PSI semanal
-      propagarFcstMensalParaPSI(p, ov.fcst_mensal);
+      // Passa fcst_mensal COMPLETO (não só override) — na Opção C semanas-fronteira
+      // dependem de contribuição de 2 meses. Se propagar só o override JUL/26=1400,
+      // W27 recebe só a parte de JUL (226) e não JUN+JUL (289 total). Isso quebra o
+      // cascade do saldo. Passando p.fcst_mensal inteiro, todos os meses contribuem.
+      propagarFcstMensalParaPSI(p, p.fcst_mensal);
     }
     if (ov.pv_mensal)   p.pv_mensal   = { ...(p.pv_mensal   || {}), ...ov.pv_mensal };
     if (ov.pc_mensal)   p.pc_mensal   = { ...(p.pc_mensal   || {}), ...ov.pc_mensal };
