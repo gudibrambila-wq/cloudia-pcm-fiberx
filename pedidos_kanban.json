@@ -1628,8 +1628,8 @@
     "valor_unitario": 67.42,
     "moeda": "BRL",
     "id": 1783081292762,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-03T12:21:32.762Z",
-    "codigo_pedido": "PED-0152"
+    "fase": "pago",
+    "codigo_pedido": "PED-0152",
+    "fase_desde": "2026-07-03T12:21:37.051Z"
   }
 ]
