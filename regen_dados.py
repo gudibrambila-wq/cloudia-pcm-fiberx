@@ -23,6 +23,7 @@ Uso: python regen_dados.py [--dry-run]
 import json
 import os
 import sys
+import calendar
 import datetime
 from copy import deepcopy
 
@@ -72,35 +73,79 @@ def _month_week_range(mes):
     return None
 
 
+_MM_ABR = {'JAN':1,'FEV':2,'MAR':3,'ABR':4,'MAI':5,'JUN':6,
+           'JUL':7,'AGO':8,'SET':9,'OUT':10,'NOV':11,'DEZ':12}
+
+
+def _mes_start_end(mes: str):
+    """('JUL/26') → (date(2026,7,1), date(2026,7,31), 31)"""
+    m_abr, y_suf = mes.split('/')
+    year, month = 2000 + int(y_suf), _MM_ABR[m_abr]
+    dias = calendar.monthrange(year, month)[1]
+    return datetime.date(year, month, 1), datetime.date(year, month, dias), dias
+
+
+def _dias_semana_no_mes(semana: int, ini_mes: datetime.date, fim_mes: datetime.date) -> int:
+    """Quantos dias da semana W caem no intervalo do mês (0..7)."""
+    ini_sem = BASE_DATE + datetime.timedelta(days=(semana - 1) * 7)
+    fim_sem = ini_sem + datetime.timedelta(days=6)
+    inicio = max(ini_sem, ini_mes)
+    fim    = min(fim_sem, fim_mes)
+    return max(0, (fim - inicio).days + 1)
+
+
 def propagar_fcst_mensal(psi, fcst_mensal):
-    """Distribui fcst_mensal (override) por semana (só semanas futuras).
-    Replica a lógica do V3 propagarFcstMensalParaPSI.
+    """Distribui fcst_mensal por semana, PROPORCIONAL aos dias que caem em cada mês.
+
+    Regra (Opção C, 03/07/2026):
+    - Cada dia do mês vale `total_mensal / dias_do_mes`.
+    - Cada semana ganha a SOMA dos valores dos 7 dias dela (que podem estar em
+      meses diferentes, no caso de semanas-fronteira).
+    - Exemplo: W27 (29/jun-5/jul) com JUN/26=950 (30 dias) e JUL/26=1400 (31 dias):
+        forecast[W27] = 2 × (950/30) + 5 × (1400/31) = 63.3 + 225.8 = 289 un.
+    - Semanas 100% passadas (fim antes da SEMANA_ATUAL) NÃO são tocadas.
     """
     if not psi or not isinstance(psi.get("forecast"), list) or not isinstance(psi.get("semanas"), list):
         return
     semanas  = psi["semanas"]
     forecast = psi["forecast"]
 
-    for mes, total_raw in fcst_mensal.items():
-        r = _month_week_range(mes)
-        if not r: continue
-        r_start, r_end, r_count = r
-        if r_end < SEMANA_ATUAL: continue   # mês 100% passado — não toca
-        total = int(total_raw) if isinstance(total_raw, (int, float)) else 0
+    # Pré-calcula ranges dos meses do fcst_mensal (uma vez só)
+    ranges = {}
+    for mes in fcst_mensal:
+        try:
+            ini, fim, dias = _mes_start_end(mes)
+            total = int(fcst_mensal[mes]) if isinstance(fcst_mensal[mes], (int, float)) else 0
+            ranges[mes] = (ini, fim, dias, total)
+        except (KeyError, ValueError):
+            continue
 
-        # Distribui IGUAL entre TODAS as semanas do mês (inclusive a atual/passadas
-        # dentro do mês corrente). Ex: JUL/26=1400 → 350 x 4 semanas (W27-W30).
-        # Douglas prefere ver o valor uniforme; o cascade usa `realizado` quando
-        # existe, então sobrescrever a semana atual não distorce o histórico.
-        idx_do_mes = [i for i, w in enumerate(semanas) if r_start <= w <= r_end]
-        if not idx_do_mes: continue
+    # Descobre quais semanas serão tocadas (têm dias em algum dos meses do fcst_mensal).
+    # Inclui semanas passadas — o cascade usa `realizado` quando existe (não afeta saldo),
+    # mas o forecast semanal precisa refletir o mensal pra o card do mês bater.
+    semanas_tocadas = set()
+    for mes, (ini, fim, dias, total) in ranges.items():
+        for i, w in enumerate(semanas):
+            if _dias_semana_no_mes(w, ini, fim) > 0:
+                semanas_tocadas.add(i)
 
-        per_week = total // r_count
-        extra    = total - per_week * r_count
-        for i in idx_do_mes:
-            w = semanas[i]
-            pos_no_mes = w - r_start   # 0..r_count-1
-            forecast[i] = per_week + (1 if pos_no_mes < extra else 0)
+    # Zera as tocadas antes de somar as contribuições
+    for i in semanas_tocadas:
+        forecast[i] = 0.0
+
+    # Soma as contribuições proporcionais de cada mês
+    for mes, (ini, fim, dias, total) in ranges.items():
+        if dias <= 0 or total < 0: continue
+        val_por_dia = total / dias if dias else 0
+        for i, w in enumerate(semanas):
+            if i not in semanas_tocadas: continue
+            d_sem = _dias_semana_no_mes(w, ini, fim)
+            if d_sem > 0:
+                forecast[i] += val_por_dia * d_sem
+
+    # Arredonda pra inteiro nas semanas tocadas
+    for i in semanas_tocadas:
+        forecast[i] = int(round(forecast[i]))
 
 
 def aplicar_kanban_sell_in(produtos, kanban_ativos):

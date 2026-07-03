@@ -4185,20 +4185,12 @@ function renderPSI() {
     const entries = Object.entries(WEEK_TO_MONTH).map(([w,m]) => ({w:+w,m})).sort((a,b)=>a.w-b.w);
     return [...entries].reverse().find(e => e.w <= SEMANA_ATUAL)?.m || null;
   })();
-  // Forecast do mês = soma do forecast SEMANAL real do mês corrente (cenario 1).
-  // Se vier zerado (mês sem semanas no dado), faz fallback para fcstMensal (aba Lista) ou avg*4.
-  let fcMes = 0;
-  if (mesAtual && d.semanas && d.forecast) {
-    const rMes = getMonthWeekRange(mesAtual);
-    if (rMes) {
-      for (let i = 0; i < d.semanas.length; i++) {
-        const w = d.semanas[i];
-        if (w >= rMes.start && w <= rMes.end) fcMes += d.forecast[i] || 0;
-      }
-    }
-  }
+  // Forecast do mês = valor direto do fcstMensal (Opção C, 03/07/2026).
+  // Antes somava forecast semanal — mas com semanas-fronteira aparecendo nos 2 meses,
+  // a soma dava mais do que o mensal. Agora usa direto o valor mensal do PSI.
+  let fcMes = mesAtual && d.fcstMensal ? (d.fcstMensal[mesAtual] || 0) : 0;
   if (fcMes === 0) {
-    fcMes = mesAtual && d.fcstMensal ? (d.fcstMensal[mesAtual] || 0) : (d.avgWeeklyFc || 0) * 4;
+    fcMes = (d.avgWeeklyFc || 0) * 4;  // fallback só quando produto não tem fcstMensal
   }
 
   // 3. WoS = cobertura REAL baseada no cascade semana a semana
@@ -4594,6 +4586,19 @@ function renderPSI() {
           // Em semanas-fronteira (W23/W27/W31...) cada coluna pega só o que pertence ao seu mês
           const key = `${col.weekNum}_${col.mes}`;
           v = d.realizadoSplit[key] || 0;
+        } else if (row.key === 'forecast' && col.mes && d.fcstMensal && d.fcstMensal[col.mes] != null) {
+          // Opção C (03/07/2026): coluna mensal mostra a PARTE proporcional do forecast
+          // que cai naquele mês. W27 (29/jun-5/jul) na col JUN mostra 2/30 × mensal_JUN;
+          // na col JUL mostra 5/31 × mensal_JUL. Soma das partes = mensal exato.
+          try {
+            const { ini, fim } = _mesRangeDate(col.mes);
+            const diasNoMes = _mesDiasNoMes(col.mes);
+            const dSem = _diasSemanaNoMes(col.weekNum, ini, fim);
+            v = diasNoMes > 0 ? (d.fcstMensal[col.mes] / diasNoMes) * dSem : 0;
+            v = Math.round(v);
+          } catch (e) {
+            v = (tblData[row.key]||[])[col.dataIdx];
+          }
         } else {
           v = (tblData[row.key]||[])[col.dataIdx];
         }
@@ -4671,19 +4676,17 @@ function monthLastDay(mes) {
   return new Date(year, mm[mAbr], 0); // último dia do mês
 }
 function getMonthWeekRange(mes) {
-  // Unificado com getMonthWeekRangeSim em 02/07/2026: usa a fronteira do
-  // WEEK_TO_MONTH pra decidir onde o mês termina, não `monthLastDay`. Antes,
-  // JUL/26 tinha 5 semanas (W27-W31) porque 31/jul cai em W31, mas a
-  // propagação do fcst_mensal usa (W27-W30) — o card somava as 5 e mostrava
-  // valor diferente do que o Douglas salvou (500 em JUL/26 virava 612 porque
-  // W31=112 de AGO era somada junto). Agora ambas usam a mesma fronteira.
+  // Range REAL do mês (Opção C, 03/07/2026): usa o último DIA civil do mês pra
+  // decidir o fim. Isso INCLUI semanas-fronteira nos DOIS meses (ex: W27 aparece
+  // em JUN E JUL, W31 em JUL E AGO). A renderização mostra cada semana-fronteira
+  // com valor PROPORCIONAL aos dias que caem no mês (via dias_semana_no_mes).
   const entries = Object.entries(WEEK_TO_MONTH)
     .map(([w, m]) => ({ w: +w, m }))
     .sort((a, b) => a.w - b.w);
   const idx = entries.findIndex(e => e.m === mes);
   if (idx < 0) return null;
   const start = entries[idx].w;
-  const end = idx + 1 < entries.length ? entries[idx + 1].w - 1 : start + 3;
+  const end = dateToWeekJS(monthLastDay(mes));
   return { start, end, count: end - start + 1 };
 }
 // Versão para simulação: usa fronteiras do WEEK_TO_MONTH (end = próximo_start - 1)
@@ -7425,42 +7428,82 @@ function clearProdutoOverride(codigo) {
   saveProdutoOverridesLS();
 }
 
-// Propaga o forecast mensal overridado pras semanas FUTURAS do psi.forecast[]
-// e re-cascateia psi.saldo[] a partir de SEMANA_ATUAL (floor=0, igual ao injectKanbanIntoDs).
+// Propaga o forecast mensal (override + fcst_mensal completo) pras semanas do
+// psi.forecast[] usando DIVISÃO PROPORCIONAL POR DIA (Opção C, 03/07/2026).
 // Regra:
-//   - Semanas passadas + atual mantêm o forecast original (não mexe em fato consumado)
-//   - restante = max(0, total_mensal_override - soma_semanas_passadas_e_atual)
-//   - perWeek  = restante ÷ qtd_semanas_futuras (round)
+//   - Cada dia do mês vale `total_mensal / dias_do_mes`.
+//   - Cada semana ganha a soma dos 7 dias (dias podem estar em meses diferentes).
+//   - Ex: W27 (29/jun-5/jul) com JUN=950 (30 d) e JUL=1400 (31 d):
+//         2 × (950/30) + 5 × (1400/31) = 63.3 + 225.8 = 289 un.
+//   - psi.saldo é re-cascateado a partir da SEMANA_ATUAL.
+function _mesDiasNoMes(mes) {
+  const mm = {JAN:1,FEV:2,MAR:3,ABR:4,MAI:5,JUN:6,JUL:7,AGO:8,SET:9,OUT:10,NOV:11,DEZ:12};
+  const [abr, ySuf] = mes.split('/');
+  const year = 2000 + parseInt(ySuf, 10);
+  const month = mm[abr];
+  return new Date(year, month, 0).getDate();  // último dia do mês
+}
+function _mesRangeDate(mes) {
+  const mm = {JAN:1,FEV:2,MAR:3,ABR:4,MAI:5,JUN:6,JUL:7,AGO:8,SET:9,OUT:10,NOV:11,DEZ:12};
+  const [abr, ySuf] = mes.split('/');
+  const year = 2000 + parseInt(ySuf, 10);
+  const month = mm[abr];
+  const ini = new Date(year, month - 1, 1);
+  const fim = new Date(year, month - 1, new Date(year, month, 0).getDate());
+  return { ini, fim };
+}
+function _diasSemanaNoMes(semana, iniMes, fimMes) {
+  const iniSem = new Date(BASE_DATE_JS);
+  iniSem.setDate(iniSem.getDate() + (semana - 1) * 7);
+  const fimSem = new Date(iniSem);
+  fimSem.setDate(fimSem.getDate() + 6);
+  const ini = iniSem > iniMes ? iniSem : iniMes;
+  const fim = fimSem < fimMes ? fimSem : fimMes;
+  const dias = Math.floor((fim - ini) / 86400000) + 1;
+  return Math.max(0, dias);
+}
+
 function propagarFcstMensalParaPSI(p, fcstOverride) {
   if (!p || !p.psi || !Array.isArray(p.psi.forecast) || !Array.isArray(p.psi.semanas)) return;
   if (!fcstOverride || typeof fcstOverride !== 'object') return;
   const semanas  = p.psi.semanas;
   const forecast = p.psi.forecast;
 
+  // Pré-calcula ranges dos meses no fcst
+  const ranges = {};
   Object.entries(fcstOverride).forEach(([mes, totalRaw]) => {
-    const r = getMonthWeekRangeSim(mes);
-    if (!r) return;
-    if (r.end < SEMANA_ATUAL) return; // mês 100% passado: não toca
-    const total = parseInt(totalRaw) || 0;
+    try {
+      const { ini, fim } = _mesRangeDate(mes);
+      const dias = _mesDiasNoMes(mes);
+      const total = parseInt(totalRaw, 10) || 0;
+      ranges[mes] = { ini, fim, dias, total };
+    } catch(e) {}
+  });
 
-    // Distribui IGUAL entre TODAS as semanas do mês (inclusive semana atual).
-    // Ex: JUL/26=1400 → 350 x 4 semanas (W27-W30). Douglas prefere ver o valor
-    // uniforme; o cascade usa `realizado` quando existe, então sobrescrever a
-    // semana atual não distorce o histórico.
-    const idxDoMes = [];
+  // Descobre quais semanas serão tocadas (têm dias em algum dos meses)
+  const tocadas = new Set();
+  Object.values(ranges).forEach(({ ini, fim }) => {
     semanas.forEach((w, i) => {
-      if (w >= r.start && w <= r.end) idxDoMes.push(i);
-    });
-    if (idxDoMes.length === 0) return;
-
-    const perWeek = Math.floor(total / r.count);
-    const extra   = total - perWeek * r.count;
-    idxDoMes.forEach(i => {
-      const w = semanas[i];
-      const posNoMes = w - r.start;   // 0..r.count-1
-      forecast[i] = perWeek + (posNoMes < extra ? 1 : 0);
+      if (_diasSemanaNoMes(w, ini, fim) > 0) tocadas.add(i);
     });
   });
+
+  // Zera antes de somar contribuições
+  tocadas.forEach(i => { forecast[i] = 0; });
+
+  // Soma contribuições proporcionais de cada mês
+  Object.values(ranges).forEach(({ ini, fim, dias, total }) => {
+    if (dias <= 0 || total < 0) return;
+    const valPorDia = dias > 0 ? total / dias : 0;
+    tocadas.forEach(i => {
+      const w = semanas[i];
+      const dSem = _diasSemanaNoMes(w, ini, fim);
+      if (dSem > 0) forecast[i] += valPorDia * dSem;
+    });
+  });
+
+  // Arredonda pra inteiro
+  tocadas.forEach(i => { forecast[i] = Math.round(forecast[i]); });
 
   // Re-cascateia saldo a partir de SEMANA_ATUAL com floor=0
   const idxAtual = semanas.findIndex(w => w === SEMANA_ATUAL);
