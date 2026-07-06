@@ -4653,25 +4653,13 @@ function renderPSI() {
         } else if (row.key === 'estoque' && isBoundaryWeek) {
           v = isBoundaryEarlier ? saldoAntes : saldoFimEarlier;
         } else if (row.key === 'wos' && isBoundaryWeek) {
-          // WOS na fronteira também usa CASCADE (igual às semanas cheias, via
-          // wosCascade). Estoque inicial do cascade = saldo fim da coluna atual.
-          // Consumo começa na semana SEGUINTE (i+1) — o consumo restante de W
-          // dentro do outro mês fica pra a outra coluna.
-          const estIni = isBoundaryEarlier ? saldoFimEarlier : saldoFimDono;
-          let est = estIni;
-          let weeks = 0;
-          let rompeu = false;
-          for (let j = col.dataIdx + 1; j < (tblDs.forecast || []).length; j++) {
-            const fcJ = tblDs.forecast[j] || 0;
-            if (fcJ <= 0) continue;
-            if (est >= fcJ) { weeks += 1; est -= fcJ; }
-            else { weeks += Math.max(0, est) / fcJ; rompeu = true; break; }
-          }
-          if (!rompeu && est > 0 && (d.avgWeeklyFc || 0) > 0) {
-            weeks += est / d.avgWeeklyFc;
-          }
-          v = Math.max(0, +weeks.toFixed(1));
-          if (!v) v = null;
+          // WOS na semana-fronteira: ambas colunas (JUL e AGO no caso de W31)
+          // mostram o MESMO wosCascade[i] — é a mesma semana física, mesmo
+          // estoque e forecast total. Antes, cascade separado por coluna fazia
+          // col-dono empatar com a semana cheia seguinte (bug apontado 06/07):
+          // W31 col AGO virava igual W32. Agora W31 col JUL = W31 col AGO e W32
+          // fica com valor distinto.
+          v = (tblData[row.key] || [])[col.dataIdx];
         } else if (row.key === 'realizado' && d.realizadoSplit) {
           const key = `${col.weekNum}_${col.mes}`;
           v = d.realizadoSplit[key] || 0;
