@@ -2259,7 +2259,7 @@ function popularCoberturaReal() {
       if (saldo > 0 && fcSem > 0) wos = +(saldo / fcSem).toFixed(1);
 
       // Próxima chegada via Kanban (mesma fonte do PSI/Catálogo)
-      const kb = (typeof proxChegadaKanban === 'function') ? proxChegadaKanban(p.nome) : null;
+      const kb = (typeof proxChegadaKanban === 'function') ? proxChegadaKanban(p) : null;
       const chegada = kb ? { qty: kb.qtd, label: 'W' + kb.semana + (kb.mes ? ' · ' + kb.mes : '') } : null;
 
       // Ruptura textual: estima semana em que o estoque acaba
@@ -2526,7 +2526,7 @@ function renderCobertura() {
       <tbody class="divide-y divide-slate-50">
         ${top5.map(sku => {
           // Próxima chegada vem do Kanban (Planejamento), não mais do Excel
-          const kb = (typeof proxChegadaKanban === 'function') ? proxChegadaKanban(sku.nome) : null;
+          const kb = (typeof proxChegadaKanban === 'function') ? proxChegadaKanban(sku) : null;
           const chegadaHtml = kb
             ? `<span class="text-emerald-600 font-medium">${kb.qtd.toLocaleString('pt-BR')} un · W${kb.semana}${kb.mes?' · '+kb.mes:''}</span>`
             : '<span class="text-slate-300">—</span>';
@@ -3415,14 +3415,34 @@ function renderDashProxChegadas() {
 }
 
 // Busca a próxima chegada de um produto no Kanban (substitui prox_chegada do Excel)
-function proxChegadaKanban(nome) {
+// Match: código primeiro, senão nome. Mesmo padrão do backend (aplicar_kanban_sell_in).
+// Isso resolve o caso de produto renomeado onde pedidos antigos no kanban ficaram
+// com o nome antigo — antes o match por nome-exato ignorava esses pedidos.
+function proxChegadaKanban(nomeOuProd, codigo) {
   if (!Array.isArray(PEDIDOS)) return null;
-  const futuras = PEDIDOS
-    .filter(p => p.nome === nome)
-    .filter(p => (p.fase || 'pendente') !== 'estoque')   // estoque já entrou no saldo
-    .filter(p => (p.semana || 0) >= SEMANA_ATUAL)
-    .sort((a, b) => (a.semana || 0) - (b.semana || 0));
-  return futuras[0] || null;
+  // Aceita objeto produto (com codigo+nome) ou string+codigo separados
+  let nome, cod;
+  if (typeof nomeOuProd === 'object' && nomeOuProd !== null) {
+    nome = nomeOuProd.nome; cod = nomeOuProd.codigo;
+  } else {
+    nome = nomeOuProd; cod = codigo;
+  }
+  const filtrar = (p) => {
+    if ((p.fase || 'pendente') === 'estoque') return false;   // já entrou no saldo
+    if ((p.semana || 0) < SEMANA_ATUAL) return false;
+    return true;
+  };
+  // Tenta primeiro por código
+  let candidatos = [];
+  if (cod != null) {
+    candidatos = PEDIDOS.filter(p => p.codigo == cod && filtrar(p));
+  }
+  // Fallback pelo nome se não achou por código
+  if (candidatos.length === 0 && nome) {
+    candidatos = PEDIDOS.filter(p => p.nome === nome && filtrar(p));
+  }
+  candidatos.sort((a, b) => (a.semana || 0) - (b.semana || 0));
+  return candidatos[0] || null;
 }
 
 // ── Alertas de Estoque (top SKUs forecast com WoS crítico/risco/alerta) ──
@@ -3464,7 +3484,7 @@ function renderDashAlertas() {
     const cobertura = s.wos > 0 ? `${s.wos.toFixed(1)} sem de cobertura` : 'Sem estoque';
 
     // Chegada vem do Kanban (Planejamento)
-    const kb = proxChegadaKanban(s.nome);
+    const kb = proxChegadaKanban(s);
     // Chegada "iminente" = próximas 2 semanas E qtd suficiente pra cobrir ≥2 semanas de consumo
     const semanasAteChegada = kb ? (kb.semana - SEMANA_ATUAL) : 999;
     const fcSem = s.fcSem || 1;
@@ -4293,7 +4313,7 @@ function renderPSI() {
 
   // Próx. Chegada considera Kanban + pedidos simulados (compara o que chega ANTES).
   // Cor laranja quando o pedido mais próximo veio da simulação (cenário não-efetivado).
-  const proxKb = proxChegadaKanban(d.nome || d.name || '');
+  const proxKb = proxChegadaKanban({ nome: d.nome || d.name || '', codigo: d.codigo });
   const simPedidosFuturos = (SIM_STATE.active ? SIM_STATE.pedidos : [])
     .filter(p => p.qty > 0 && p.week && p.week >= SEMANA_ATUAL)
     .map(p => ({ semana: p.week, qtd: p.qty, mes: p.mes, origem: 'sim' }))
@@ -6875,7 +6895,7 @@ function calcPlan(p) {
 
   // Próxima chegada já planejada (do Kanban, fonte oficial): usa a semana dela como base do ciclo
   // Senão, usa a semana de ruptura projetada como referência da "chegada necessária"
-  const kbProx = (typeof proxChegadaKanban === 'function') ? proxChegadaKanban(p.nome) : null;
+  const kbProx = (typeof proxChegadaKanban === 'function') ? proxChegadaKanban(p) : null;
   const baseChegada = kbProx ? kbProx.semana
     : (p.proxChegada ? p.proxChegada.semana
        : Math.min(semanaRuptura, SEMANA_ATUAL + Math.max(1, Math.round(p.saldo / (fc || 1)))));
@@ -6963,7 +6983,7 @@ function renderPlanejamento() {
       : '<span class="w-2 h-2 rounded-full bg-violet-500 inline-block"></span>';
 
     // Próx Chegada vem do Kanban (Planejamento)
-    const kb = proxChegadaKanban(p.nome);
+    const kb = proxChegadaKanban(p);
     const chegadaHtml = kb
       ? `<span class="text-emerald-700 font-medium">${kb.qtd.toLocaleString('pt-BR')} un</span><br><span class="text-slate-400">W${kb.semana}${kb.mes ? ' · '+kb.mes : ''}</span>`
       : '<span class="text-slate-300">—</span>';
