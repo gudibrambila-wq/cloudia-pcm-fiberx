@@ -206,10 +206,10 @@
     "origem": "Avulso",
     "processo": "238.2024 TSC",
     "id": 1779307106900,
-    "fase": "porto",
+    "fase": "recebido",
     "modal": "LCL",
     "codigo_pedido": "PED-0063",
-    "fase_desde": "2026-06-26T13:18:00.808Z",
+    "fase_desde": "2026-07-06T13:05:37.881Z",
     "data": "2026-07-03",
     "codigo": 400300006
   },
