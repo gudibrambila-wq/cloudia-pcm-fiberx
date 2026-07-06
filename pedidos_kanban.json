@@ -1587,7 +1587,11 @@
     "fase": "pendente",
     "pendente_desde": "2026-07-02T18:04:22.631Z",
     "codigo_pedido": "PED-0150",
-    "fase_desde": "2026-07-02T18:04:22.631Z"
+    "fase_desde": "2026-07-02T18:04:22.631Z",
+    "cancelado": true,
+    "motivo_cancelamento": "era simulação da reunião de forecast",
+    "cancelado_em": "2026-07-06T13:07:35.162Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "codigo": 401200031,
