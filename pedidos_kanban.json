@@ -83,11 +83,11 @@
     "mes": "JUL/26",
     "origem": "VELDS_PSI W20",
     "processo": "01.2026 + 4.2026",
-    "fase": "transito",
+    "fase": "numerario",
     "_unique_key": "velds_w20_ROBO ASPIRADOR V50 PRO 220 V_22_233",
     "modal": "FCL",
     "codigo_pedido": "PED-0056",
-    "fase_desde": "2026-06-09T13:50:16.895Z",
+    "fase_desde": "2026-07-07T19:18:55.805Z",
     "data": "2026-07-17",
     "codigo": 400700014
   },
