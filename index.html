@@ -2814,19 +2814,30 @@ function toggleTimelineFullscreen() {
     document.exitFullscreen?.() || document.webkitExitFullscreen?.();
   }
 }
-// Quando entra/sai de fullscreen, ajusta a altura do wrap e re-renderiza
+// Quando entra/sai de fullscreen, ajusta a altura do wrap (Importado ou Nacional)
+// e re-renderiza. Trata AMBOS os wraps (antes só cuidava do Importado, o que
+// fazia o rodapé sair da tela ao trocar pra Nacional no modo kiosk).
 document.addEventListener('fullscreenchange', () => {
-  const wrap = document.getElementById('tl-cena-wrap');
-  if (!wrap) return;
-  if (document.fullscreenElement === wrap) {
-    wrap.dataset.prevStyle = wrap.getAttribute('style') || '';
-    wrap.style.height = '100vh';
-    wrap.style.minHeight = '100vh';
-    wrap.style.borderRadius = '0';
-  } else {
-    wrap.setAttribute('style', wrap.dataset.prevStyle || 'height: calc(100vh - 220px); min-height: 520px;');
-  }
-  setTimeout(() => renderTimeline(), 120);
+  const wrapImp = document.getElementById('tl-cena-wrap');
+  const wrapNac = document.getElementById('tl-nac-wrap');
+  const fs = document.fullscreenElement;
+  [wrapImp, wrapNac].forEach(wrap => {
+    if (!wrap) return;
+    if (fs === wrap) {
+      wrap.dataset.prevStyle = wrap.getAttribute('style') || '';
+      wrap.style.height = '100vh';
+      wrap.style.minHeight = '100vh';
+      wrap.style.borderRadius = '0';
+    } else if (wrap.dataset.prevStyle !== undefined) {
+      // Só restaura se ANTES estava em fullscreen (evita zerar style de wrap intocado)
+      wrap.setAttribute('style', wrap.dataset.prevStyle || 'height: calc(100vh - 220px); min-height: 520px;');
+      delete wrap.dataset.prevStyle;
+    }
+  });
+  setTimeout(() => {
+    if (fs && fs.id === 'tl-nac-wrap') { if (typeof renderTimelineNac === 'function') renderTimelineNac(); }
+    else                                { if (typeof renderTimeline === 'function')    renderTimeline(); }
+  }, 120);
 });
 
 function navigate(view, el) {
@@ -9381,12 +9392,27 @@ function _iniciarModoKiosk() {
   edgeTrigger.id = 'kiosk-edge-trigger';
   document.body.insertBefore(edgeTrigger, document.getElementById('sidebar'));
 
-  // Alterna timeline ↔ timeline-nac periodicamente
+  // Alterna timeline ↔ timeline-nac periodicamente. Se estiver em fullscreen no
+  // wrap da view atual, transfere pro wrap da próxima — antes o fullscreen ficava
+  // preso no wrap escondido e o rodapé sumia da tela do wrap novo.
   let mostrandoImp = true;
   navigate('timeline');
-  setInterval(() => {
+  setInterval(async () => {
     mostrandoImp = !mostrandoImp;
-    navigate(mostrandoImp ? 'timeline' : 'timeline-nac');
+    const proxima  = mostrandoImp ? 'timeline'    : 'timeline-nac';
+    const proxWrap = mostrandoImp ? 'tl-cena-wrap': 'tl-nac-wrap';
+    const emFs = document.fullscreenElement;
+    if (emFs && (emFs.id === 'tl-cena-wrap' || emFs.id === 'tl-nac-wrap')) {
+      // Sai do fullscreen atual, troca view, entra fullscreen no novo wrap
+      try { await (document.exitFullscreen?.() || document.webkitExitFullscreen?.()); } catch (e) {}
+      navigate(proxima);
+      setTimeout(() => {
+        const w = document.getElementById(proxWrap);
+        if (w) { (w.requestFullscreen?.() || w.webkitRequestFullscreen?.())?.catch?.(() => {}); }
+      }, 250);
+    } else {
+      navigate(proxima);
+    }
   }, rotateSec * 1000);
 
   // Refresh DE DADOS a cada N min — SEM recarregar a página (preserva fullscreen).
