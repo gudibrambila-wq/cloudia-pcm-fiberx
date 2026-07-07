@@ -1389,10 +1389,9 @@
     "valor_unitario": null,
     "moeda": null,
     "id": 1782906676718,
-    "fase": "pago1",
+    "fase": "producao",
     "codigo_pedido": "PED-0140",
-    "fase_desde": "2026-07-01T14:44:04.656Z",
-    "pago_desde": "2026-07-01T14:44:04.656Z"
+    "fase_desde": "2026-07-07T19:17:04.821Z"
   },
   {
     "codigo": 401200069,
