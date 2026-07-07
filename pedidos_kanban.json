@@ -539,7 +539,7 @@
     "codigo": 401700004
   },
   {
-    "nome": "ACCESS POINT LINHA OMADA AX1800 TP-Link  EAP610",
+    "nome": "ACCESS POINT LINHA OMADA AX3000 TPLINK  EAP650",
     "marca": "TP-Link",
     "tipo": "Nacional",
     "qtd": 20,
@@ -555,7 +555,7 @@
     "fase_desde": "2026-06-09T13:50:16.895Z",
     "valor_unitario": 367.06,
     "moeda": "BRL",
-    "codigo": 401700002
+    "codigo": 401700004
   },
   {
     "nome": "Switch Smart Gigabit de 8 portas com 4 portas PoE+ - SG2008P",
