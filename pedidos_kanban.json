@@ -402,12 +402,13 @@
     "processo": "025.2026 NTSC",
     "modal": null,
     "id": 1779476027448,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0074",
-    "fase_desde": "2026-07-03T12:17:49.438Z",
+    "fase_desde": "2026-07-07T11:49:14.087Z",
     "valor_unitario": 28,
     "moeda": "BRL",
-    "codigo": 400800011
+    "codigo": 400800011,
+    "arquivado_em": "2026-07-07T11:49:14.087Z"
   },
   {
     "id": 246826789156491,
