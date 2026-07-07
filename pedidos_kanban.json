@@ -969,9 +969,9 @@
     "processo": "031.2026 SINCES",
     "modal": null,
     "id": 1781550006478,
-    "fase": "transito",
+    "fase": "recebido",
     "codigo_pedido": "PED-0109",
-    "fase_desde": "2026-06-24T13:14:33.838Z",
+    "fase_desde": "2026-07-07T11:49:59.379Z",
     "valor_unitario": 975.35,
     "moeda": "BRL",
     "codigo": 401200072
