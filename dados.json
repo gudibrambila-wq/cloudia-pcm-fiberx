@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-07T19:18:36",
+  "gerado_em": "2026-07-07T19:19:16",
   "semana_atual": 28,
   "semana_estoque": 28,
   "week_to_month": {
@@ -15944,7 +15944,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0067",
-        "fase": "transito"
+        "fase": "numerario"
       },
       "entradas": [
         {
@@ -15953,7 +15953,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0067",
-          "fase": "transito"
+          "fase": "numerario"
         },
         {
           "semana": 32,
@@ -16718,7 +16718,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0053",
-        "fase": "transito"
+        "fase": "numerario"
       },
       "entradas": [
         {
@@ -16727,7 +16727,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0053",
-          "fase": "transito"
+          "fase": "numerario"
         },
         {
           "semana": 32,
@@ -17094,7 +17094,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0056",
-        "fase": "transito"
+        "fase": "numerario"
       },
       "entradas": [
         {
@@ -17103,7 +17103,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0056",
-          "fase": "transito"
+          "fase": "numerario"
         },
         {
           "semana": 32,
@@ -22623,7 +22623,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0067",
-        "fase": "transito"
+        "fase": "numerario"
       },
       "entradas": [
         {
@@ -22632,7 +22632,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0067",
-          "fase": "transito"
+          "fase": "numerario"
         },
         {
           "semana": 32,
@@ -22991,7 +22991,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0053",
-        "fase": "transito"
+        "fase": "numerario"
       },
       "entradas": [
         {
@@ -23000,7 +23000,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0053",
-          "fase": "transito"
+          "fase": "numerario"
         },
         {
           "semana": 32,
@@ -23342,7 +23342,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0056",
-        "fase": "transito"
+        "fase": "numerario"
       },
       "entradas": [
         {
@@ -23351,7 +23351,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0056",
-          "fase": "transito"
+          "fase": "numerario"
         },
         {
           "semana": 32,
