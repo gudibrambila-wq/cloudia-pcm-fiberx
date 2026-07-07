@@ -550,9 +550,9 @@
     "processo": "021.2026 PORTO RICO",
     "modal": null,
     "id": 1779805611260,
-    "fase": "faturado",
+    "fase": "transito",
     "codigo_pedido": "PED-0083",
-    "fase_desde": "2026-07-07T11:51:56.783Z",
+    "fase_desde": "2026-07-07T11:51:58.967Z",
     "valor_unitario": 367.06,
     "moeda": "BRL",
     "codigo": 401700004
