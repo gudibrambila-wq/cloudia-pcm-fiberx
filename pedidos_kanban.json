@@ -931,9 +931,9 @@
     "processo": "032.2026 LIGGA",
     "modal": null,
     "id": 1781549887066,
-    "fase": "transito",
+    "fase": "recebido",
     "codigo_pedido": "PED-0107",
-    "fase_desde": "2026-06-24T13:14:43.396Z",
+    "fase_desde": "2026-07-07T11:50:29.619Z",
     "valor_unitario": 1688.46,
     "moeda": "BRL",
     "codigo": 401200071
