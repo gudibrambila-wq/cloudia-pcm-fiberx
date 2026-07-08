@@ -1650,7 +1650,8 @@
     "id": 1783517091392,
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:24:51.392Z",
-    "codigo_pedido": "PED-0153"
+    "codigo_pedido": "PED-0153",
+    "fase_desde": "2026-07-08T13:24:51.392Z"
   },
   {
     "codigo": 400700033,
@@ -1669,7 +1670,8 @@
     "id": 1783517133440,
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:25:33.440Z",
-    "codigo_pedido": "PED-0154"
+    "codigo_pedido": "PED-0154",
+    "fase_desde": "2026-07-08T13:25:33.440Z"
   },
   {
     "codigo": 400700032,
@@ -1688,7 +1690,8 @@
     "id": 1783517313068,
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:28:33.068Z",
-    "codigo_pedido": "PED-0155"
+    "codigo_pedido": "PED-0155",
+    "fase_desde": "2026-07-08T13:28:33.068Z"
   },
   {
     "codigo": 400700031,
@@ -1707,7 +1710,8 @@
     "id": 1783517338780,
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:28:58.780Z",
-    "codigo_pedido": "PED-0156"
+    "codigo_pedido": "PED-0156",
+    "fase_desde": "2026-07-08T13:28:58.780Z"
   },
   {
     "codigo": 400700030,
@@ -1726,7 +1730,8 @@
     "id": 1783517372036,
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:29:32.036Z",
-    "codigo_pedido": "PED-0157"
+    "codigo_pedido": "PED-0157",
+    "fase_desde": "2026-07-08T13:29:32.036Z"
   },
   {
     "codigo": 400700036,
@@ -1745,7 +1750,8 @@
     "id": 1783517837900,
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:37:17.900Z",
-    "codigo_pedido": "PED-0158"
+    "codigo_pedido": "PED-0158",
+    "fase_desde": "2026-07-08T13:37:17.900Z"
   },
   {
     "codigo": 400700038,
@@ -1764,7 +1770,8 @@
     "id": 1783517865360,
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:37:45.360Z",
-    "codigo_pedido": "PED-0159"
+    "codigo_pedido": "PED-0159",
+    "fase_desde": "2026-07-08T13:37:45.360Z"
   },
   {
     "codigo": 400700037,
@@ -1783,7 +1790,8 @@
     "id": 1783517899227,
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:38:19.227Z",
-    "codigo_pedido": "PED-0160"
+    "codigo_pedido": "PED-0160",
+    "fase_desde": "2026-07-08T13:38:19.227Z"
   },
   {
     "codigo": 400700039,
@@ -1802,7 +1810,8 @@
     "id": 1783517932508,
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:38:52.508Z",
-    "codigo_pedido": "PED-0161"
+    "codigo_pedido": "PED-0161",
+    "fase_desde": "2026-07-08T13:38:52.508Z"
   },
   {
     "codigo": 400700035,
@@ -1821,7 +1830,8 @@
     "id": 1783517964440,
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:39:24.440Z",
-    "codigo_pedido": "PED-0162"
+    "codigo_pedido": "PED-0162",
+    "fase_desde": "2026-07-08T13:39:24.440Z"
   },
   {
     "codigo": 400700040,
@@ -1840,6 +1850,26 @@
     "id": 1783517990912,
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:39:50.912Z",
-    "codigo_pedido": "PED-0163"
+    "codigo_pedido": "PED-0163",
+    "fase_desde": "2026-07-08T13:39:50.912Z"
+  },
+  {
+    "codigo": 400700041,
+    "nome": "ROBÔ ASPIRADOR INTELIGENTE VELDS - VDS V40 PRO (220V)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 500,
+    "semana": 44,
+    "mes": "NOV/26",
+    "data": "2026-10-30",
+    "origem": "Avulso",
+    "processo": "020.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1783543598890,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-08T20:46:38.890Z",
+    "codigo_pedido": "PED-0164"
   }
 ]
