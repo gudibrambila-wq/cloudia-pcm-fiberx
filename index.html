@@ -1700,7 +1700,7 @@
             <span class="w-1.5 h-1.5 rounded-full bg-violet-500"></span>
             Nacionais
           </h4>
-          <div id="kanban-board-nacional" class="grid grid-cols-8 gap-0.5">
+          <div id="kanban-board-nacional" class="grid grid-cols-8 gap-0.5" style="grid-auto-rows: minmax(0, 1fr); min-height: 0;">
 
             <div data-fase="pendente" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
               <div class="px-3 py-2 border-b border-blue-100 flex items-center gap-2 bg-blue-50">
@@ -1708,7 +1708,7 @@
                 <span class="text-xs font-semibold text-blue-800 flex-1">Pedido</span>
                 <span id="kanban-count-nacional-pendente" class="text-xs bg-blue-200 text-blue-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-pendente" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
+              <div id="kanban-cards-nacional-pendente" class="flex-1 overflow-y-auto p-1 space-y-1.5 min-h-0"></div>
             </div>
 
             <div data-fase="estoque_fornecedor" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1717,7 +1717,7 @@
                 <span class="text-xs font-semibold text-cyan-800 flex-1 truncate" title="Aguardando estoque no fornecedor — backorder pré-pagamento">Aguard Estoque Forneced</span>
                 <span id="kanban-count-nacional-estoque_fornecedor" class="text-xs bg-cyan-200 text-cyan-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-estoque_fornecedor" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
+              <div id="kanban-cards-nacional-estoque_fornecedor" class="flex-1 overflow-y-auto p-1 space-y-1.5 min-h-0"></div>
             </div>
 
             <div data-fase="pago" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1726,7 +1726,7 @@
                 <span class="text-xs font-semibold text-amber-800 flex-1 truncate" title="Aguardando pagamento">Aguardando pagamento</span>
                 <span id="kanban-count-nacional-pago" class="text-xs bg-amber-200 text-amber-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-pago" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
+              <div id="kanban-cards-nacional-pago" class="flex-1 overflow-y-auto p-1 space-y-1.5 min-h-0"></div>
             </div>
 
             <div data-fase="backorder" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1735,7 +1735,7 @@
                 <span class="text-xs font-semibold text-rose-800 flex-1" title="Pedido pago mas em backorder no fornecedor">Backorder</span>
                 <span id="kanban-count-nacional-backorder" class="text-xs bg-rose-200 text-rose-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-backorder" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
+              <div id="kanban-cards-nacional-backorder" class="flex-1 overflow-y-auto p-1 space-y-1.5 min-h-0"></div>
             </div>
 
             <div data-fase="faturado" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1744,7 +1744,7 @@
                 <span class="text-xs font-semibold text-orange-800 flex-1">Faturado</span>
                 <span id="kanban-count-nacional-faturado" class="text-xs bg-orange-200 text-orange-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-faturado" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
+              <div id="kanban-cards-nacional-faturado" class="flex-1 overflow-y-auto p-1 space-y-1.5 min-h-0"></div>
             </div>
 
             <div data-fase="transito" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1753,7 +1753,7 @@
                 <span class="text-xs font-semibold text-violet-800 flex-1">Em Trânsito</span>
                 <span id="kanban-count-nacional-transito" class="text-xs bg-violet-200 text-violet-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-transito" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
+              <div id="kanban-cards-nacional-transito" class="flex-1 overflow-y-auto p-1 space-y-1.5 min-h-0"></div>
             </div>
 
             <div data-fase="recebido" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1762,7 +1762,7 @@
                 <span class="text-xs font-semibold text-emerald-800 flex-1">Recebido</span>
                 <span id="kanban-count-nacional-recebido" class="text-xs bg-emerald-200 text-emerald-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-recebido" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
+              <div id="kanban-cards-nacional-recebido" class="flex-1 overflow-y-auto p-1 space-y-1.5 min-h-0"></div>
             </div>
 
             <div data-fase="estoque" class="flex flex-col rounded-xl overflow-hidden border border-slate-200 bg-white shadow-sm">
@@ -1771,7 +1771,7 @@
                 <span class="text-xs font-semibold text-teal-800 flex-1">Estoque</span>
                 <span id="kanban-count-nacional-estoque" class="text-xs bg-teal-200 text-teal-800 font-bold px-1.5 rounded-full min-w-[18px] text-center">0</span>
               </div>
-              <div id="kanban-cards-nacional-estoque" class="flex-1 p-1 space-y-1.5 min-h-24"></div>
+              <div id="kanban-cards-nacional-estoque" class="flex-1 overflow-y-auto p-1 space-y-1.5 min-h-0"></div>
             </div>
 
           </div>
@@ -9364,22 +9364,6 @@ function _iniciarModoKiosk() {
     body.modo-kiosk:has(#view-timeline-nac.active) #tl-nac-wrap {
       height: calc(100vh - 64px) !important;
     }
-    /* Colunas do Kanban Nacional: overflow individual em kiosk (pra auto-scroll
-       funcionar por coluna, e não a página inteira). Hoje elas crescem
-       indefinidamente — sem isso, o Nacional não rola em kiosk. */
-    body.modo-kiosk:has(#view-timeline-nac.active) #kanban-board-nacional {
-      max-height: 100%;
-      align-items: stretch;
-    }
-    body.modo-kiosk:has(#view-timeline-nac.active) #kanban-board-nacional > div {
-      max-height: 100%;
-      overflow: hidden;
-    }
-    body.modo-kiosk:has(#view-timeline-nac.active) [id^="kanban-cards-nacional-"] {
-      overflow-y: auto !important;
-      min-height: 0 !important;
-      flex: 1 1 0% !important;
-    }
     /* Tarja MODO VIEW escondida em timeline + kiosk (fica feio no fundo verde) */
     body.modo-view.modo-kiosk:has(#view-timeline.active)::before,
     body.modo-view.modo-kiosk:has(#view-timeline-nac.active)::before {
@@ -9409,29 +9393,6 @@ function _iniciarModoKiosk() {
   edgeTrigger.id = 'kiosk-edge-trigger';
   document.body.insertBefore(edgeTrigger, document.getElementById('sidebar'));
 
-  // Aplica overflow direto nas colunas do Nacional (fallback pro CSS :has que
-  // pode não pegar em alguns browsers). Douglas 08/07: Nacional não rolava.
-  const _aplicaOverflowNacional = () => {
-    const board = document.getElementById('kanban-board-nacional');
-    if (!board) return;
-    board.style.maxHeight = 'calc(100vh - 200px)';
-    board.style.overflow = 'hidden';
-    board.querySelectorAll(':scope > div').forEach(colWrap => {
-      colWrap.style.maxHeight = '100%';
-      colWrap.style.overflow = 'hidden';
-    });
-    document.querySelectorAll('[id^="kanban-cards-nacional-"]').forEach(el => {
-      el.style.overflowY = 'auto';
-      el.style.minHeight = '0';
-      el.style.flex = '1 1 0%';
-      el.style.maxHeight = 'calc(100vh - 260px)';
-    });
-  };
-  _aplicaOverflowNacional();
-  // Reaplica ao trocar de view (renderKanban pode recriar cards)
-  const _obs = new MutationObserver(() => _aplicaOverflowNacional());
-  const _nacBoard = document.getElementById('kanban-board-nacional');
-  if (_nacBoard) _obs.observe(_nacBoard, { childList: true, subtree: true });
 
   // Alterna timeline ↔ timeline-nac periodicamente. Fullscreen fica no
   // documentElement (não no wrap), então persiste ao trocar view — sem
@@ -9453,38 +9414,7 @@ function _iniciarModoKiosk() {
   // Quando chega no fim, pausa 4s, volta pro topo suave, pausa 2s, e reinicia.
   const _kioskScrollState = new WeakMap();  // el → { pausaAte: timestamp, indoTopo: bool }
 
-  // Aplica altura FIXA no board Nacional pra o overflow-y-auto das colunas
-  // funcionar. Sem calcular via getBoundingClientRect (deu 0 na TV do Douglas —
-  // provavelmente porque o Nacional estava escondido no momento da medição).
-  // Usa calc(100vh - offset) direto no style — funciona mesmo sem view ativa.
-  function _fixaAlturaBoardNacional() {
-    const wrap  = document.getElementById('tl-nac-wrap');
-    const board = document.getElementById('kanban-board-nacional');
-    if (!wrap || !board) return;
-    // Força o wrap ter altura fixa mesmo que CSS :has() não pegue no browser
-    wrap.style.height = 'calc(100vh - 64px)';
-    wrap.style.maxHeight = 'calc(100vh - 64px)';
-    // Board dentro do wrap: desconta ~120px da paisagem SVG que fica em cima
-    board.style.height = 'calc(100vh - 200px)';
-    board.style.maxHeight = 'calc(100vh - 200px)';
-    board.style.overflow = 'hidden';
-    board.querySelectorAll(':scope > div').forEach(colWrap => {
-      colWrap.style.maxHeight = '100%';
-      colWrap.style.overflow = 'hidden';
-    });
-    document.querySelectorAll('[id^="kanban-cards-nacional-"]').forEach(el => {
-      el.style.overflowY = 'auto';
-      el.style.minHeight = '0';
-      el.style.flex = '1 1 0%';
-      el.style.maxHeight = 'calc(100vh - 260px)';
-    });
-  }
-
   setInterval(() => {
-    // Reforça altura do board Nacional (independente da view ativa — usa calc(100vh)
-    // que funciona mesmo pra elementos escondidos, e valores só "aparecem" quando
-    // display muda de none pra block).
-    _fixaAlturaBoardNacional();
     const cols = document.querySelectorAll('[id^="tl-col-"], [id^="kanban-cards-nacional-"], [id^="kanban-cards-importado-"]');
     const agora = performance.now();
     cols.forEach(el => {
