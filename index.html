@@ -9409,6 +9409,30 @@ function _iniciarModoKiosk() {
   edgeTrigger.id = 'kiosk-edge-trigger';
   document.body.insertBefore(edgeTrigger, document.getElementById('sidebar'));
 
+  // Aplica overflow direto nas colunas do Nacional (fallback pro CSS :has que
+  // pode não pegar em alguns browsers). Douglas 08/07: Nacional não rolava.
+  const _aplicaOverflowNacional = () => {
+    const board = document.getElementById('kanban-board-nacional');
+    if (!board) return;
+    board.style.maxHeight = 'calc(100vh - 200px)';
+    board.style.overflow = 'hidden';
+    board.querySelectorAll(':scope > div').forEach(colWrap => {
+      colWrap.style.maxHeight = '100%';
+      colWrap.style.overflow = 'hidden';
+    });
+    document.querySelectorAll('[id^="kanban-cards-nacional-"]').forEach(el => {
+      el.style.overflowY = 'auto';
+      el.style.minHeight = '0';
+      el.style.flex = '1 1 0%';
+      el.style.maxHeight = 'calc(100vh - 260px)';
+    });
+  };
+  _aplicaOverflowNacional();
+  // Reaplica ao trocar de view (renderKanban pode recriar cards)
+  const _obs = new MutationObserver(() => _aplicaOverflowNacional());
+  const _nacBoard = document.getElementById('kanban-board-nacional');
+  if (_nacBoard) _obs.observe(_nacBoard, { childList: true, subtree: true });
+
   // Alterna timeline ↔ timeline-nac periodicamente. Fullscreen fica no
   // documentElement (não no wrap), então persiste ao trocar view — sem
   // precisar sair e entrar de novo (o que o browser bloqueava por ser fora
