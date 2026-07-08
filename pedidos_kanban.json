@@ -1625,8 +1625,8 @@
     "valor_unitario": 67.42,
     "moeda": "BRL",
     "id": 1783081292762,
-    "fase": "pago",
+    "fase": "backorder",
     "codigo_pedido": "PED-0152",
-    "fase_desde": "2026-07-03T12:21:37.051Z"
+    "fase_desde": "2026-07-08T12:04:15.780Z"
   }
 ]
