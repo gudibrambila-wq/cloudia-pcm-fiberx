@@ -952,9 +952,9 @@
     "processo": "032.2026 LIGGA",
     "modal": null,
     "id": 1781549919286,
-    "fase": "faturado",
+    "fase": "transito",
     "codigo_pedido": "PED-0108",
-    "fase_desde": "2026-07-08T12:02:52.347Z",
+    "fase_desde": "2026-07-08T17:06:40.398Z",
     "valor_unitario": 470.73,
     "moeda": "BRL",
     "codigo": 401700004
