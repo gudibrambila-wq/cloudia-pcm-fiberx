@@ -913,9 +913,9 @@
     "processo": "030.2026 RIBEIRÃO",
     "modal": null,
     "id": 1781542585213,
-    "fase": "faturado",
+    "fase": "transito",
     "codigo_pedido": "PED-0106",
-    "fase_desde": "2026-07-08T12:02:57.284Z",
+    "fase_desde": "2026-07-08T17:06:42.173Z",
     "valor_unitario": 437.17,
     "moeda": "BRL",
     "codigo": 401700004
