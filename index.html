@@ -9402,7 +9402,41 @@ function _iniciarModoKiosk() {
   setInterval(() => {
     mostrandoImp = !mostrandoImp;
     navigate(mostrandoImp ? 'timeline' : 'timeline-nac');
+    // Reseta scroll das colunas quando troca view (começa do topo na próxima)
+    document.querySelectorAll('[id^="tl-col-"], [id^="kanban-cards-nacional-"], [id^="kanban-cards-importado-"]')
+      .forEach(el => { el.scrollTop = 0; });
   }, rotateSec * 1000);
+
+  // Auto-scroll lento nas colunas do Kanban quando tem mais pedidos que cabem
+  // (Douglas 08/07: em vez de mostrar barra de rolagem manual, rola sozinho).
+  // A cada 60ms, desce 1px em cada coluna scrollável. Quando chega no fim,
+  // pausa 4s, volta pro topo suave, pausa 2s, e reinicia.
+  const _kioskScrollState = new WeakMap();  // el → { pausaAte: timestamp, indoTopo: bool }
+  setInterval(() => {
+    const cols = document.querySelectorAll('[id^="tl-col-"], [id^="kanban-cards-nacional-"], [id^="kanban-cards-importado-"]');
+    const agora = performance.now();
+    cols.forEach(el => {
+      if (el.scrollHeight <= el.clientHeight) return;  // sem overflow, ignora
+      const state = _kioskScrollState.get(el) || {};
+      if (state.pausaAte && agora < state.pausaAte) return;  // em pausa
+      const noFim = el.scrollTop >= (el.scrollHeight - el.clientHeight - 2);
+      if (noFim && !state.indoTopo) {
+        // Chegou no fim — pausa 4s antes de voltar pro topo
+        state.pausaAte = agora + 4000;
+        state.indoTopo = true;
+        _kioskScrollState.set(el, state);
+        setTimeout(() => {
+          el.scrollTo({ top: 0, behavior: 'smooth' });
+          const s = _kioskScrollState.get(el) || {};
+          s.pausaAte = performance.now() + 2000;  // pausa 2s no topo
+          s.indoTopo = false;
+          _kioskScrollState.set(el, s);
+        }, 4000);
+      } else if (!state.indoTopo) {
+        el.scrollTop += 1;  // desce 1px por tick (~17px/s a 60ms)
+      }
+    });
+  }, 60);
 
   // Refresh DE DADOS a cada N min — SEM recarregar a página (preserva fullscreen).
   // Atualiza pedidos/overrides/status do servidor e re-renderiza views ativas.
