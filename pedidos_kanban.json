@@ -1723,5 +1723,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:29:32.036Z",
     "codigo_pedido": "PED-0157"
+  },
+  {
+    "codigo": 400700036,
+    "nome": "VELDS AIRFRYER DE VIDRO DIGITAL VDS AV-01 4L (110V)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 749,
+    "semana": 44,
+    "mes": "NOV/26",
+    "data": "2026-10-30",
+    "origem": "Avulso",
+    "processo": "018.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1783517837900,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-08T13:37:17.900Z",
+    "codigo_pedido": "PED-0158"
   }
 ]
