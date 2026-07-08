@@ -1666,5 +1666,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:25:33.440Z",
     "codigo_pedido": "PED-0154"
+  },
+  {
+    "codigo": 400700032,
+    "nome": "TAMPA LIQUIDIFICADOR PORTATIL VELDS ACTIVE MOVE (CINZA)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 100,
+    "semana": 44,
+    "mes": "NOV/26",
+    "data": "2026-10-30",
+    "origem": "Avulso",
+    "processo": "017.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1783517313068,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-08T13:28:33.068Z",
+    "codigo_pedido": "PED-0155"
   }
 ]
