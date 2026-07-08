@@ -1405,9 +1405,9 @@
     "valor_unitario": 772,
     "moeda": "BRL",
     "id": 1782906795202,
-    "fase": "pago",
+    "fase": "faturado",
     "codigo_pedido": "PED-0141",
-    "fase_desde": "2026-07-03T12:23:35.829Z"
+    "fase_desde": "2026-07-08T12:03:20.323Z"
   },
   {
     "codigo": 401700007,
