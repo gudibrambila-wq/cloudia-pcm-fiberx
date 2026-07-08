@@ -1799,5 +1799,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-07-08T13:38:52.508Z",
     "codigo_pedido": "PED-0161"
+  },
+  {
+    "codigo": 400700035,
+    "nome": "VELDS AIRFRYER COM FUNCAO VAPOR VDS AOV-01 DIGITAL 10,5L (110V)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 450,
+    "semana": 44,
+    "mes": "NOV/26",
+    "data": "2026-10-30",
+    "origem": "Avulso",
+    "processo": "018.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1783517964440,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-08T13:39:24.440Z",
+    "codigo_pedido": "PED-0162"
   }
 ]
