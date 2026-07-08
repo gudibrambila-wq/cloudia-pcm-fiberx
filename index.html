@@ -9364,6 +9364,21 @@ function _iniciarModoKiosk() {
     body.modo-kiosk:has(#view-timeline-nac.active) #tl-nac-wrap {
       height: calc(100vh - 64px) !important;
     }
+    /* Ganho de tela em modo kiosk (Douglas 08/07):
+       - Zera padding do <main> (era p-6 = 24px de cada lado)
+       - Remove border/rounded do wrap (bordas roubavam alguns px)
+       - Wrap ocupa 100vh cheio (sem descontar altura de header/filtro)
+     */
+    body.modo-kiosk main {
+      padding: 0 !important;
+    }
+    body.modo-kiosk:has(#view-timeline.active) #tl-cena-wrap,
+    body.modo-kiosk:has(#view-timeline-nac.active) #tl-nac-wrap {
+      height: 100vh !important;
+      border-radius: 0 !important;
+      border: none !important;
+      box-shadow: none !important;
+    }
     /* Tarja MODO VIEW escondida em timeline + kiosk (fica feio no fundo verde) */
     body.modo-view.modo-kiosk:has(#view-timeline.active)::before,
     body.modo-view.modo-kiosk:has(#view-timeline-nac.active)::before {
