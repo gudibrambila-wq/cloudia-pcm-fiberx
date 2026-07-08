@@ -1628,5 +1628,24 @@
     "fase": "backorder",
     "codigo_pedido": "PED-0152",
     "fase_desde": "2026-07-08T12:04:15.780Z"
+  },
+  {
+    "codigo": 400700034,
+    "nome": "TAMPA LIQUIDIFICADOR PORTATIL VELDS ACTIVE MOVE (ROSA)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 100,
+    "semana": 44,
+    "mes": "NOV/26",
+    "data": "2026-10-30",
+    "origem": "Avulso",
+    "processo": "018.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1783517091392,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-08T13:24:51.392Z",
+    "codigo_pedido": "PED-0153"
   }
 ]
