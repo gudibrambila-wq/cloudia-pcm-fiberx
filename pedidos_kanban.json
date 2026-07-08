@@ -1871,5 +1871,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-07-08T20:46:38.890Z",
     "codigo_pedido": "PED-0164"
+  },
+  {
+    "codigo": 400700042,
+    "nome": "ROBÔ ASPIRADOR INTELIGENTE VELDS - VDS V40 PRO (110V)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 500,
+    "semana": 44,
+    "mes": "NOV/26",
+    "data": "2026-10-30",
+    "origem": "Avulso",
+    "processo": "020.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1783543626825,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-08T20:47:06.825Z",
+    "codigo_pedido": "PED-0165"
   }
 ]
