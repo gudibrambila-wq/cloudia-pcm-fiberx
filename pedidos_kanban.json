@@ -931,12 +931,13 @@
     "processo": "032.2026 LIGGA",
     "modal": null,
     "id": 1781549887066,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0107",
-    "fase_desde": "2026-07-07T11:50:29.619Z",
+    "fase_desde": "2026-07-08T13:43:38.448Z",
     "valor_unitario": 1688.46,
     "moeda": "BRL",
-    "codigo": 401200071
+    "codigo": 401200071,
+    "arquivado_em": "2026-07-08T13:43:38.448Z"
   },
   {
     "nome": "ACCESS POINT LINHA OMADA AX3000 TPLINK  EAP650",
