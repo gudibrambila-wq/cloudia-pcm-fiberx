@@ -9453,22 +9453,22 @@ function _iniciarModoKiosk() {
   // Quando chega no fim, pausa 4s, volta pro topo suave, pausa 2s, e reinicia.
   const _kioskScrollState = new WeakMap();  // el → { pausaAte: timestamp, indoTopo: bool }
 
-  // Detecta a altura disponível pro board Nacional (kanban-board-nacional cresce
-  // livre sem isso). Precisa fixar altura pro overflow-y-auto das colunas funcionar.
+  // Aplica altura FIXA no board Nacional pra o overflow-y-auto das colunas
+  // funcionar. Sem calcular via getBoundingClientRect (deu 0 na TV do Douglas —
+  // provavelmente porque o Nacional estava escondido no momento da medição).
+  // Usa calc(100vh - offset) direto no style — funciona mesmo sem view ativa.
   function _fixaAlturaBoardNacional() {
     const wrap  = document.getElementById('tl-nac-wrap');
     const board = document.getElementById('kanban-board-nacional');
     if (!wrap || !board) return;
-    // Descobre onde board começa dentro do wrap
-    const rectWrap  = wrap.getBoundingClientRect();
-    const rectBoard = board.getBoundingClientRect();
-    const topo = rectBoard.top - rectWrap.top;
-    const alturaDisponivel = Math.max(200, rectWrap.height - topo - 8);
-    board.style.height = alturaDisponivel + 'px';
-    board.style.maxHeight = alturaDisponivel + 'px';
+    // Força o wrap ter altura fixa mesmo que CSS :has() não pegue no browser
+    wrap.style.height = 'calc(100vh - 64px)';
+    wrap.style.maxHeight = 'calc(100vh - 64px)';
+    // Board dentro do wrap: desconta ~120px da paisagem SVG que fica em cima
+    board.style.height = 'calc(100vh - 200px)';
+    board.style.maxHeight = 'calc(100vh - 200px)';
     board.style.overflow = 'hidden';
     board.querySelectorAll(':scope > div').forEach(colWrap => {
-      colWrap.style.height = '100%';
       colWrap.style.maxHeight = '100%';
       colWrap.style.overflow = 'hidden';
     });
@@ -9476,14 +9476,15 @@ function _iniciarModoKiosk() {
       el.style.overflowY = 'auto';
       el.style.minHeight = '0';
       el.style.flex = '1 1 0%';
+      el.style.maxHeight = 'calc(100vh - 260px)';
     });
   }
 
   setInterval(() => {
-    // Refaz altura do board Nacional (defensivo — layout pode ter mudado)
-    if (document.getElementById('view-timeline-nac')?.classList.contains('active')) {
-      _fixaAlturaBoardNacional();
-    }
+    // Reforça altura do board Nacional (independente da view ativa — usa calc(100vh)
+    // que funciona mesmo pra elementos escondidos, e valores só "aparecem" quando
+    // display muda de none pra block).
+    _fixaAlturaBoardNacional();
     const cols = document.querySelectorAll('[id^="tl-col-"], [id^="kanban-cards-nacional-"], [id^="kanban-cards-importado-"]');
     const agora = performance.now();
     cols.forEach(el => {
