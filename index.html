@@ -9364,6 +9364,22 @@ function _iniciarModoKiosk() {
     body.modo-kiosk:has(#view-timeline-nac.active) #tl-nac-wrap {
       height: calc(100vh - 64px) !important;
     }
+    /* Colunas do Kanban Nacional: overflow individual em kiosk (pra auto-scroll
+       funcionar por coluna, e não a página inteira). Hoje elas crescem
+       indefinidamente — sem isso, o Nacional não rola em kiosk. */
+    body.modo-kiosk:has(#view-timeline-nac.active) #kanban-board-nacional {
+      max-height: 100%;
+      align-items: stretch;
+    }
+    body.modo-kiosk:has(#view-timeline-nac.active) #kanban-board-nacional > div {
+      max-height: 100%;
+      overflow: hidden;
+    }
+    body.modo-kiosk:has(#view-timeline-nac.active) [id^="kanban-cards-nacional-"] {
+      overflow-y: auto !important;
+      min-height: 0 !important;
+      flex: 1 1 0% !important;
+    }
     /* Tarja MODO VIEW escondida em timeline + kiosk (fica feio no fundo verde) */
     body.modo-view.modo-kiosk:has(#view-timeline.active)::before,
     body.modo-view.modo-kiosk:has(#view-timeline-nac.active)::before {
