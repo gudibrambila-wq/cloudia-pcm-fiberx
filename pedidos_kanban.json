@@ -912,9 +912,9 @@
     "processo": "030.2026 RIBEIRÃO",
     "modal": null,
     "id": 1781542585213,
-    "fase": "pago",
+    "fase": "backorder",
     "codigo_pedido": "PED-0106",
-    "fase_desde": "2026-07-03T12:22:04.882Z",
+    "fase_desde": "2026-07-08T12:02:42.715Z",
     "valor_unitario": 437.17,
     "moeda": "BRL",
     "codigo": 401700004
