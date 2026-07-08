@@ -9449,10 +9449,41 @@ function _iniciarModoKiosk() {
 
   // Auto-scroll lento nas colunas do Kanban quando tem mais pedidos que cabem
   // (Douglas 08/07: em vez de mostrar barra de rolagem manual, rola sozinho).
-  // A cada 60ms, desce 1px em cada coluna scrollável. Quando chega no fim,
-  // pausa 4s, volta pro topo suave, pausa 2s, e reinicia.
+  // A cada 60ms: reforça overflow (defensive) + desce 1px se tem scroll.
+  // Quando chega no fim, pausa 4s, volta pro topo suave, pausa 2s, e reinicia.
   const _kioskScrollState = new WeakMap();  // el → { pausaAte: timestamp, indoTopo: bool }
+
+  // Detecta a altura disponível pro board Nacional (kanban-board-nacional cresce
+  // livre sem isso). Precisa fixar altura pro overflow-y-auto das colunas funcionar.
+  function _fixaAlturaBoardNacional() {
+    const wrap  = document.getElementById('tl-nac-wrap');
+    const board = document.getElementById('kanban-board-nacional');
+    if (!wrap || !board) return;
+    // Descobre onde board começa dentro do wrap
+    const rectWrap  = wrap.getBoundingClientRect();
+    const rectBoard = board.getBoundingClientRect();
+    const topo = rectBoard.top - rectWrap.top;
+    const alturaDisponivel = Math.max(200, rectWrap.height - topo - 8);
+    board.style.height = alturaDisponivel + 'px';
+    board.style.maxHeight = alturaDisponivel + 'px';
+    board.style.overflow = 'hidden';
+    board.querySelectorAll(':scope > div').forEach(colWrap => {
+      colWrap.style.height = '100%';
+      colWrap.style.maxHeight = '100%';
+      colWrap.style.overflow = 'hidden';
+    });
+    document.querySelectorAll('[id^="kanban-cards-nacional-"]').forEach(el => {
+      el.style.overflowY = 'auto';
+      el.style.minHeight = '0';
+      el.style.flex = '1 1 0%';
+    });
+  }
+
   setInterval(() => {
+    // Refaz altura do board Nacional (defensivo — layout pode ter mudado)
+    if (document.getElementById('view-timeline-nac')?.classList.contains('active')) {
+      _fixaAlturaBoardNacional();
+    }
     const cols = document.querySelectorAll('[id^="tl-col-"], [id^="kanban-cards-nacional-"], [id^="kanban-cards-importado-"]');
     const agora = performance.now();
     cols.forEach(el => {
@@ -9461,19 +9492,18 @@ function _iniciarModoKiosk() {
       if (state.pausaAte && agora < state.pausaAte) return;  // em pausa
       const noFim = el.scrollTop >= (el.scrollHeight - el.clientHeight - 2);
       if (noFim && !state.indoTopo) {
-        // Chegou no fim — pausa 4s antes de voltar pro topo
         state.pausaAte = agora + 4000;
         state.indoTopo = true;
         _kioskScrollState.set(el, state);
         setTimeout(() => {
           el.scrollTo({ top: 0, behavior: 'smooth' });
           const s = _kioskScrollState.get(el) || {};
-          s.pausaAte = performance.now() + 2000;  // pausa 2s no topo
+          s.pausaAte = performance.now() + 2000;
           s.indoTopo = false;
           _kioskScrollState.set(el, s);
         }, 4000);
       } else if (!state.indoTopo) {
-        el.scrollTop += 1;  // desce 1px por tick (~17px/s a 60ms)
+        el.scrollTop += 1;
       }
     });
   }, 60);
