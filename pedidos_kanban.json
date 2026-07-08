@@ -1408,9 +1408,9 @@
     "valor_unitario": 772,
     "moeda": "BRL",
     "id": 1782906795202,
-    "fase": "faturado",
+    "fase": "transito",
     "codigo_pedido": "PED-0141",
-    "fase_desde": "2026-07-08T12:03:20.323Z"
+    "fase_desde": "2026-07-08T17:06:36.372Z"
   },
   {
     "codigo": 401700007,
