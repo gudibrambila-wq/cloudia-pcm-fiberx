@@ -1922,6 +1922,7 @@
     "id": 1783602962001,
     "fase": "pago2",
     "codigo_pedido": "PED-0167",
-    "fase_desde": "2026-07-09T14:02:01.521Z"
+    "fase_desde": "2026-07-09T14:02:01.521Z",
+    "processo": "005B.2026 VSC"
   }
 ]
