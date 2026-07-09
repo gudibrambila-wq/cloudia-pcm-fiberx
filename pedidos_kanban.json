@@ -1891,5 +1891,18 @@
     "fase": "pendente",
     "pendente_desde": "2026-07-08T20:47:06.825Z",
     "codigo_pedido": "PED-0165"
+  },
+  {
+    "nome": "ALIMENTADOR PET  VDS APBW",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 1000,
+    "semana": 46,
+    "mes": "NOV/26",
+    "origem": "Simulado",
+    "id": 1783602540061,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-09T13:09:00.061Z",
+    "codigo_pedido": "PED-0166"
   }
 ]
