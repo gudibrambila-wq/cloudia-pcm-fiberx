@@ -1901,10 +1901,11 @@
     "mes": "NOV/26",
     "origem": "Simulado",
     "id": 1783602540061,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-09T13:09:00.061Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0166",
     "modal": "FCL",
-    "processo": "011B.2026 VSC"
+    "processo": "011B.2026 VSC",
+    "fase_desde": "2026-07-09T13:09:46.446Z",
+    "pago_desde": "2026-07-09T13:09:46.446Z"
   }
 ]
