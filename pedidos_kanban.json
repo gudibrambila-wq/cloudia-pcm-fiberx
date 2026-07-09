@@ -1920,8 +1920,8 @@
     "mes": "NOV/26",
     "origem": "Simulado",
     "id": 1783602962001,
-    "fase": "inspecao",
+    "fase": "pago2",
     "codigo_pedido": "PED-0167",
-    "fase_desde": "2026-07-09T14:01:55.210Z"
+    "fase_desde": "2026-07-09T14:02:01.521Z"
   }
 ]
