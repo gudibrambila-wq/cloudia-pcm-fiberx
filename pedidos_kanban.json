@@ -1906,5 +1906,18 @@
     "modal": "FCL",
     "processo": "011B.2026 VSC",
     "fase_desde": "2026-07-09T13:09:51.077Z"
+  },
+  {
+    "nome": "ROBO ASPIRADOR LASER  VDS RALWC",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 1000,
+    "semana": 45,
+    "mes": "NOV/26",
+    "origem": "Simulado",
+    "id": 1783602962001,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-09T13:16:02.001Z",
+    "codigo_pedido": "PED-0167"
   }
 ]
