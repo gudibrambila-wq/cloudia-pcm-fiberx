@@ -8671,7 +8671,7 @@ function exportarTimelineNac() {
 
   const headers = ['PED', 'Código', 'Produto', 'Quantidade', 'Status', 'Nº Processo', 'Semana', 'Prev. Chegada'];
   const linhas = pedidos.map(p => {
-    const cod = acharCodigoProd(p.nome, lookup);
+    const cod = p.codigo || acharCodigoProd(p.nome, lookup);
     const etapa = _etapaTimelineNac(p.fase || 'pendente');
     const status = TL_ETAPA_LABEL[etapa] || etapa;
     const dataISO = p.data || (p.semana ? semanaToDataISO(p.semana) : '');
@@ -8717,7 +8717,7 @@ function exportarTimelineImp() {
 
   const headers = ['PED', 'Código', 'Produto', 'Marca', 'Quantidade', 'Status', 'Nº Processo', 'Semana', 'Prev. Chegada'];
   const linhas = pedidos.map(p => {
-    const cod = acharCodigoProd(p.nome, lookup);
+    const cod = p.codigo || acharCodigoProd(p.nome, lookup);
     const fase = p.fase || 'pendente';
     const status = FASE_LABELS[fase] || fase;
     const dataISO = p.data || (p.semana ? semanaToDataISO(p.semana) : '');
