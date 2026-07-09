@@ -550,12 +550,13 @@
     "processo": "021.2026 PORTO RICO",
     "modal": null,
     "id": 1779805611260,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0083",
-    "fase_desde": "2026-07-08T20:29:38.385Z",
+    "fase_desde": "2026-07-09T11:39:47.485Z",
     "valor_unitario": 367.06,
     "moeda": "BRL",
-    "codigo": 401700004
+    "codigo": 401700004,
+    "arquivado_em": "2026-07-09T11:39:47.485Z"
   },
   {
     "nome": "Switch Smart Gigabit de 8 portas com 4 portas PoE+ - SG2008P",
