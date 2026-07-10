@@ -426,7 +426,9 @@
     "fase_desde": "2026-06-25T17:50:15.347Z",
     "modal": "FCL",
     "data": "2026-07-28",
-    "codigo": 400600001
+    "codigo": 400600001,
+    "valor_unitario": 16.5,
+    "moeda": "BRL"
   },
   {
     "nome": "ROTEADOR WIFI AX1500 TP-Link  EX141",
