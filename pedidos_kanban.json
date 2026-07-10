@@ -335,8 +335,8 @@
     "processo": "011A.2026 VSC",
     "codigo_pedido": "PED-0070",
     "fase_desde": "2026-06-15T16:39:23.684Z",
-    "valor_unitario": null,
-    "moeda": null,
+    "valor_unitario": 16.5,
+    "moeda": "BRL",
     "codigo": 400600001
   },
   {
