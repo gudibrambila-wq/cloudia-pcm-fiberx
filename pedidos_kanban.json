@@ -1913,7 +1913,8 @@
     "codigo_pedido": "PED-0166",
     "modal": "FCL",
     "processo": "011B.2026 VSC",
-    "fase_desde": "2026-07-09T13:09:51.077Z"
+    "fase_desde": "2026-07-09T13:09:51.077Z",
+    "moeda": "USD"
   },
   {
     "nome": "ROBO ASPIRADOR LASER  VDS RALWC",
