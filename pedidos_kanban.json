@@ -308,7 +308,9 @@
     "codigo_pedido": "PED-0068",
     "fase_desde": "2026-06-25T17:51:26.516Z",
     "data": "2026-08-06",
-    "codigo": 400700012
+    "codigo": 400700012,
+    "valor_unitario": 65,
+    "moeda": "USD"
   },
   {
     "id": 242035838580445,
@@ -328,7 +330,7 @@
     "data": "2026-08-17",
     "codigo": 400700012,
     "valor_unitario": 65,
-    "moeda": "BRL"
+    "moeda": "USD"
   },
   {
     "nome": "ALIMENTADOR PET  VDS APBW",
@@ -364,7 +366,9 @@
     "processo": "013.2026 VSC",
     "codigo_pedido": "PED-0071",
     "fase_desde": "2026-06-15T16:39:22.173Z",
-    "codigo": 400700013
+    "codigo": 400700013,
+    "valor_unitario": 95,
+    "moeda": "BRL"
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 220V",
