@@ -6909,6 +6909,28 @@ function _fpAtualizaKPIs(parcelas) {
   setTxt('fp-warn-sem-fob', semFob);
 }
 
+function _fpNomeProdutoCurto(nome) {
+  if (!nome) return '';
+  // Tira "ROBO ASPIRADOR", "LIQUIDIFICADOR", "TAMPA", etc pra ficar mais curto
+  return String(nome)
+    .replace(/^ROBO ASPIRADOR (LASER )?(DUST BIN - |INTELIGENTE (VELDS |DE PO LASER - )?- ?)?/i, '')
+    .replace(/^ROBO ASPIRADOR LASER /i, '')
+    .replace(/^LIQUIDIFICADOR PORT[AÁ]TIL VELDS - /i, 'Liq. ')
+    .replace(/^TAMPA LIQUIDIFICADOR PORTATIL VELDS /i, 'Tampa ')
+    .replace(/^COPO ACRILICO LIQUIDIFICADOR VELDS /i, 'Copo ')
+    .replace(/^VELDS AIRFRYER /i, 'Air ')
+    .replace(/^ALIMENTADOR PET /i, 'Alim. ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 20);
+}
+
+const _FP_PARCELA_BADGE = {
+  primeiro: { txt: '1º', bg: 'bg-sky-100',     text: 'text-sky-800' },
+  segundo:  { txt: '2º', bg: 'bg-indigo-100',  text: 'text-indigo-800' },
+  terceiro: { txt: '3º', bg: 'bg-fuchsia-100', text: 'text-fuchsia-800' },
+};
+
 function _fpRenderCalendario(parcelas) {
   const cont = document.getElementById('fp-calendario');
   const tit  = document.getElementById('fp-cal-titulo');
@@ -6940,11 +6962,12 @@ function _fpRenderCalendario(parcelas) {
   ).join('');
 
   // Células vazias antes do dia 1
-  const vaziosInicio = Array(offsetSeg).fill('<div></div>').join('');
+  const vaziosInicio = Array(offsetSeg).fill('<div class="min-h-[110px]"></div>').join('');
 
   // Células dos dias
   const hoje = new Date();
   const hojeStr = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
+  const MAX_ITEMS_VISIVEIS = 3;
   const dias = [];
   for (let d = 1; d <= totalDias; d++) {
     const iso = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
@@ -6953,22 +6976,45 @@ function _fpRenderCalendario(parcelas) {
     const total = items.reduce((s, x) => s + x.valor_brl, 0);
     const temPendente = items.some(x => !x.pago);
     const soPago = items.length > 0 && !temPendente;
-    const bg = items.length === 0
-      ? 'bg-white'
+    const bgFundo = items.length === 0
+      ? 'bg-white border-slate-100'
       : soPago
-        ? 'bg-emerald-50 border-emerald-200'
-        : temPendente
-          ? 'bg-amber-50 border-amber-200'
-          : 'bg-white';
-    const borda = eHoje ? 'ring-2 ring-blue-400' : '';
-    const num = eHoje ? '<b>' + d + '</b>' : d;
-    const valorTag = total > 0
-      ? `<div class="text-[9px] font-semibold ${soPago?'text-emerald-700':'text-amber-800'} truncate">${_fpFmtBRL(total)}</div>`
+        ? 'bg-emerald-50/40 border-emerald-200'
+        : 'bg-amber-50/40 border-amber-200';
+    const borda = eHoje ? 'ring-2 ring-blue-500' : '';
+    const numCor = eHoje ? 'text-blue-700 font-bold' : 'text-slate-600 font-semibold';
+
+    // Ordena items por parcela (1º → 2º → 3º) pra visual coerente
+    const ordem = { primeiro: 1, segundo: 2, terceiro: 3 };
+    items.sort((a, b) => (ordem[a.parcelaKey] || 9) - (ordem[b.parcelaKey] || 9));
+
+    const visiveis = items.slice(0, MAX_ITEMS_VISIVEIS);
+    const extras = items.length - visiveis.length;
+
+    const miniCards = visiveis.map(x => {
+      const bd = _FP_PARCELA_BADGE[x.parcelaKey];
+      const strike = x.pago ? 'line-through opacity-60' : '';
+      const dot = x.pago ? '✓' : '';
+      const tooltip = `${x.codPedido} · ${x.nomeProduto} · ${x.qtd} un\n${x.nome_parcela}\n${_fpFmtBRL(x.valor_brl)}${x.pago ? '\n✓ pago em ' + _fpFmtDia(x.data_efetiva || x.data_iso) : ''}`;
+      return `<div class="text-[9px] leading-tight rounded px-1 py-0.5 ${bd.bg} ${bd.text} ${strike} border border-transparent hover:border-slate-300 truncate cursor-pointer" title="${tooltip.replace(/"/g,'&quot;')}" onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',${!x.pago})">
+        <span class="font-bold">${bd.txt}</span> ${x.codPedido.replace('PED-','')} ${dot} · ${_fpFmtBRL(x.valor_brl)}
+      </div>`;
+    }).join('');
+
+    const maisTag = extras > 0
+      ? `<div class="text-[9px] text-slate-500 italic pl-1">+${extras} ${extras === 1 ? 'pgto' : 'pgtos'}</div>`
       : '';
+
+    const totalTag = items.length > 0
+      ? `<div class="text-[9px] font-bold ${soPago?'text-emerald-700':'text-amber-800'} border-t border-slate-200/60 pt-0.5 mt-0.5 text-right">${_fpFmtBRL(total)}</div>`
+      : '';
+
     dias.push(
-      `<div class="border ${bg} rounded p-1.5 min-h-[54px] ${borda}" title="${items.length ? items.length + ' pagamento(s)' : ''}">
-         <div class="text-[10px] text-slate-500">${num}</div>
-         ${valorTag}
+      `<div class="border ${bgFundo} rounded p-1 min-h-[110px] flex flex-col gap-0.5 ${borda}">
+         <div class="text-[10px] ${numCor} px-0.5">${d}</div>
+         ${miniCards}
+         ${maisTag}
+         ${totalTag}
        </div>`
     );
   }
