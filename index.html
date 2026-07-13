@@ -6520,6 +6520,133 @@ const FASE_LABELS = {
   estoque:            'Estoque',
 };
 
+// ============================================================================
+// FLUXO DE PAGAMENTOS — Config + funcoes de calculo (13/07/2026)
+// ============================================================================
+// Modelo: cada pedido Importado gera 3 parcelas em dias exatos, ancoradas na
+// data de chegada do pedido no BR. Fornecedor determina % de cada parcela.
+// Formula: parcela_BRL = FOB_USD × pct × qtd × PTAX
+// Dia da parcela = data_chegada − (delta_semanas × 7 dias).
+// ----------------------------------------------------------------------------
+
+// PTAX inicial (usuário edita via input na aba Fluxo de Pagamentos).
+// Persistido em pagamentos_config.json quando disponivel; senao usa este default.
+let FLUXO_PTAX = 5.17;
+
+// Delta em semanas — quantas semanas ANTES da chegada BR cada parcela vence.
+const FLUXO_DELTAS = {
+  primeiro:  -15,   // 1o pgto — inicio producao (sinal ao fornecedor)
+  segundo:   -9,    // 2o pgto — pre-embarque (saldo antes de embarcar)
+  terceiro:  -2,    // 3o pgto — numerario (impostos + despachante + armazenagem)
+};
+
+// Nomes exibidos + fase do Kanban correspondente
+const FLUXO_PARCELAS_META = {
+  primeiro:  { nome: '1º Pgto — Início Produção', fase_kanban: 'pago1' },
+  segundo:   { nome: '2º Pgto — Pré-Embarque',    fase_kanban: 'pago2' },
+  terceiro:  { nome: '3º Pgto — Numerário',       fase_kanban: 'numerario' },
+};
+
+// Mapeamento fornecedor chinês → % das 3 parcelas
+// Base: modelo do diretor comercial + confirmacoes Douglas 10-13/07/2026.
+// Numerario 45% uniforme (engloba impostos + despachante + armazenagem).
+const FLUXO_FORNECEDOR_PCT = {
+  'LIVIROBO':      { primeiro: 0.20, segundo: 0.80, terceiro: 0.45 },
+  'GOLDEN VISION': { primeiro: 0.20, segundo: 0.80, terceiro: 0.45 },
+  'HOWGA':         { primeiro: 0.10, segundo: 0.90, terceiro: 0.45 },
+  'WONJA':         { primeiro: 0.10, segundo: 0.90, terceiro: 0.45 },
+  'SHARETRONICS':  { primeiro: 0.30, segundo: 0.70, terceiro: 0.45 },
+  'RITUS':         { primeiro: 0.30, segundo: 0.70, terceiro: 0.45 },
+  'CARELINE':      { primeiro: 0.30, segundo: 0.70, terceiro: 0.45 },
+};
+
+// Mapeamento código do produto → fornecedor chinês
+// Só produtos em escopo Fase 1 (Importado Velds). V70/Blender/etc ficam fora.
+const FLUXO_CODIGO_FORNECEDOR = {
+  400600001: 'GOLDEN VISION',  // Alimentador Pet APBW
+  400700001: 'LIVIROBO',        // Ralwc (Genesis)
+  400700012: 'HOWGA',           // V50
+  400700013: 'HOWGA',           // V50 PRO 110V
+  400700014: 'HOWGA',           // V50 PRO 220V
+  400700025: 'WONJA',           // V30
+  400700026: 'RITUS',           // Liquidificador Active Move CINZA
+  400700027: 'RITUS',           // Liquidificador Active Move BRANCO
+  400700028: 'RITUS',           // Liquidificador Active Move AZUL
+  400700029: 'RITUS',           // Liquidificador Active Move ROSA
+  400700030: 'RITUS',           // Copo acrílico Active Move
+  400700031: 'RITUS',           // Tampa BRANCO
+  400700032: 'RITUS',           // Tampa CINZA
+  400700033: 'RITUS',           // Tampa AZUL
+  400700034: 'RITUS',           // Tampa ROSA
+  400700036: 'CARELINE',        // Airfryer VDS AV-01 4L 110V
+  400700041: 'SHARETRONICS',    // V40 PRO 220V
+  400700042: 'SHARETRONICS',    // V40 PRO 110V
+};
+
+// Descobre o fornecedor chinês de um pedido (por codigo).
+function fluxoFornecedorDoPedido(p) {
+  if (!p || !p.codigo) return null;
+  return FLUXO_CODIGO_FORNECEDOR[p.codigo] || null;
+}
+
+// Subtrai N semanas de uma data ISO (YYYY-MM-DD), mantendo mesmo dia da semana.
+// Retorna string ISO. Se dataISO inválida, retorna null.
+function fluxoDataParcela(dataChegadaISO, deltaSemanas) {
+  if (!dataChegadaISO || typeof dataChegadaISO !== 'string') return null;
+  const [y, m, d] = dataChegadaISO.split('-').map(Number);
+  if (!y || !m || !d) return null;
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  dt.setUTCDate(dt.getUTCDate() + (deltaSemanas * 7));
+  const yy = dt.getUTCFullYear();
+  const mm = String(dt.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(dt.getUTCDate()).padStart(2, '0');
+  return `${yy}-${mm}-${dd}`;
+}
+
+// Calcula as 3 parcelas de um pedido Importado.
+// Retorna array de 3 objetos { key, nome, fase_kanban, pct, delta_sem, data_iso, valor_brl }
+// Retorna [] se pedido não é elegível (não-Importado, cancelado, sem data/valor/fornecedor).
+function fluxoParcelasDoPedido(p, ptax = FLUXO_PTAX) {
+  if (!p || p.cancelado) return [];
+  if ((p.tipo || 'Nacional') !== 'Importado') return [];
+  if (!p.data || !p.qtd) return [];
+  // Valor unitario: pra Importado o modelo espera USD. Se estiver em BRL,
+  // ainda calcula (assume PTAX=1) mas emite aviso via campo _moeda_erro.
+  const valorUnit = Number(p.valor_unitario);
+  if (!valorUnit || valorUnit <= 0) return [];
+
+  const fornecedor = fluxoFornecedorDoPedido(p);
+  if (!fornecedor) return [];
+  const pcts = FLUXO_FORNECEDOR_PCT[fornecedor];
+  if (!pcts) return [];
+
+  const moeda = (p.moeda || 'BRL').toUpperCase();
+  const cambio = moeda === 'USD' ? ptax : 1;  // BRL: ja em reais, nao converte
+
+  return ['primeiro', 'segundo', 'terceiro'].map(key => {
+    const meta = FLUXO_PARCELAS_META[key];
+    const pct = pcts[key];
+    const delta = FLUXO_DELTAS[key];
+    const dataISO = fluxoDataParcela(p.data, delta);
+    const valorBRL = valorUnit * pct * p.qtd * cambio;
+    return {
+      key,
+      nome: meta.nome,
+      fase_kanban: meta.fase_kanban,
+      pct,
+      delta_sem: delta,
+      data_iso: dataISO,
+      valor_brl: Math.round(valorBRL * 100) / 100,
+      fornecedor,
+      moeda_origem: moeda,
+    };
+  });
+}
+
+// Expõe pra debug via console
+window._fluxoParcelas = fluxoParcelasDoPedido;
+window._fluxoFornecedor = fluxoFornecedorDoPedido;
+
 function getTipoBoard(p) {
   return (p && p.tipo === 'Importado') ? 'importado' : 'nacional';
 }
