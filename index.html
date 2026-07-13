@@ -101,6 +101,10 @@
       Planejamento
       <span id="nav-pedidos-badge" class="hidden ml-auto bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded-full min-w-[18px] text-center leading-tight"></span>
     </a>
+    <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/50" data-view="fluxo-pagamentos" onclick="navigate('fluxo-pagamentos',this);return false">
+      <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 8h6m-5 0a3 3 0 110 6H9l3 3m-3-6h6m6 1a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Fluxo Pagamentos
+    </a>
     <a href="#" class="nav-item flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-white/50" data-view="financeiro" onclick="navigate('financeiro',this);return false">
       <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
       Financeiro
@@ -2048,6 +2052,83 @@
     </div>
 
     <!-- ===== VIEW CALENDARIO ===== -->
+    <div id="view-fluxo-pagamentos" class="view">
+      <!-- Cabeçalho: PTAX + resumo -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mb-4">
+        <div class="flex flex-wrap items-center gap-4">
+          <div>
+            <label class="text-xs text-slate-500 font-medium block mb-1">PTAX (R$ por US$)</label>
+            <input id="fp-ptax" type="number" step="0.01" min="0" value="5.17"
+              oninput="fpAtualizarPtax(this.value)"
+              class="w-28 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          </div>
+          <div class="flex-1"></div>
+          <div class="grid grid-cols-4 gap-4 text-center">
+            <div>
+              <p class="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Total previsto</p>
+              <p id="fp-total-previsto" class="text-base font-bold text-slate-800">—</p>
+            </div>
+            <div>
+              <p class="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Total pago</p>
+              <p id="fp-total-pago" class="text-base font-bold text-emerald-700">—</p>
+            </div>
+            <div>
+              <p class="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Pendente</p>
+              <p id="fp-total-pendente" class="text-base font-bold text-amber-700">—</p>
+            </div>
+            <div>
+              <p class="text-[10px] font-medium text-slate-500 uppercase tracking-wide">Parcelas</p>
+              <p id="fp-total-parcelas" class="text-base font-bold text-slate-800">—</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filtros -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-3 mb-4 flex flex-wrap items-center gap-3">
+        <select id="fp-filtro-fornecedor" onchange="renderFluxoPagamentos()"
+          class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Todos os fornecedores</option>
+        </select>
+        <select id="fp-filtro-parcela" onchange="renderFluxoPagamentos()"
+          class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Todas as parcelas</option>
+          <option value="primeiro">1º Pgto — Início Produção</option>
+          <option value="segundo">2º Pgto — Pré-Embarque</option>
+          <option value="terceiro">3º Pgto — Numerário</option>
+        </select>
+        <select id="fp-filtro-status" onchange="renderFluxoPagamentos()"
+          class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <option value="">Todos os status</option>
+          <option value="pendente">Pendente</option>
+          <option value="pago">Pago</option>
+        </select>
+        <div class="flex-1"></div>
+        <div class="text-xs text-slate-500">
+          Sem cadastro de FOB: <span id="fp-warn-sem-fob" class="font-semibold text-amber-700">0</span> pedidos importados
+        </div>
+      </div>
+
+      <!-- Calendário mensal -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 mb-4">
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-3">
+            <button onclick="fpMudarMes(-1)" class="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600" title="Mês anterior">‹</button>
+            <h3 id="fp-cal-titulo" class="text-sm font-semibold text-slate-800 min-w-[140px] text-center">—</h3>
+            <button onclick="fpMudarMes(1)" class="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600" title="Mês seguinte">›</button>
+            <button onclick="fpIrHoje()" class="text-xs text-blue-600 hover:underline ml-2">Hoje</button>
+          </div>
+        </div>
+        <div id="fp-calendario" class="grid grid-cols-7 gap-1"></div>
+      </div>
+
+      <!-- Lista de dias com movimento -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+        <h3 class="text-sm font-semibold text-slate-800 mb-3">Próximos pagamentos</h3>
+        <div id="fp-lista-dias" class="space-y-2"></div>
+      </div>
+    </div>
+
     <div id="view-calendario" class="view">
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-4 mb-4 text-xs text-slate-600 leading-relaxed">
         <div class="flex items-start gap-3">
@@ -2780,6 +2861,7 @@ const PAGE_META = {
   vendas:       ['Vendas','B2B e B2C · Maio 2026'],
   estoque:      ['Estoque','Posição atual · Sênior'],
   financeiro:   ['Financeiro','Receita, investimento e margem · horizonte 12 semanas'],
+  'fluxo-pagamentos': ['Fluxo de Pagamentos','Pagamentos importados · 3 parcelas por pedido (Sinal · Pré-embarque · Numerário)'],
   planejamento: ['Planejamento','Planejamento de compras'],
   cobertura:    ['Cobertura WOS','Semanas de estoque por SKU · W18 atual'],
   giro:         ['Giro de Estoque','Produtos parados em estoque · status baseado em dias desde a última venda'],
@@ -2861,6 +2943,7 @@ function navigate(view, el) {
   if (view === 'giro')         setTimeout(renderGiro, 50);
   if (view === 'planejamento') { setTimeout(renderPlanejamento, 50); setTimeout(renderKanban, 80); }
   if (view === 'financeiro')   setTimeout(renderFinanceiro, 50);
+  if (view === 'fluxo-pagamentos') setTimeout(renderFluxoPagamentos, 50);
   if (view === 'produtos')     setTimeout(renderProdutos, 50);
   if (view === 'catalogo')     setTimeout(renderCatalogo, 50);
   if (view === 'timeline')     setTimeout(renderTimeline, 50);
@@ -6714,6 +6797,274 @@ function desmarcarParcelaPaga(codPedido, parcelaKey) {
 window.marcarParcelaPaga = marcarParcelaPaga;
 window.desmarcarParcelaPaga = desmarcarParcelaPaga;
 window.getStatusParcela = getStatusParcela;
+
+// ----------------------------------------------------------------------------
+// UI: Aba Fluxo de Pagamentos
+// ----------------------------------------------------------------------------
+// Estado do calendário (mês visualizado). Default = mês da SEMANA_ATUAL.
+let _fpMesVisualizado = null;  // { year, month } — month 0-indexed
+
+function fpAtualizarPtax(v) {
+  const novo = Number(v);
+  if (novo > 0) {
+    FLUXO_PTAX = novo;
+    renderFluxoPagamentos();
+  }
+}
+
+function fpMudarMes(delta) {
+  if (!_fpMesVisualizado) return;
+  const m = _fpMesVisualizado.month + delta;
+  const d = new Date(_fpMesVisualizado.year, m, 1);
+  _fpMesVisualizado = { year: d.getFullYear(), month: d.getMonth() };
+  renderFluxoPagamentos();
+}
+
+function fpIrHoje() {
+  const now = new Date();
+  _fpMesVisualizado = { year: now.getFullYear(), month: now.getMonth() };
+  renderFluxoPagamentos();
+}
+
+function _fpFmtBRL(v) {
+  return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
+}
+function _fpFmtDia(iso) {
+  const [y,m,d] = iso.split('-'); return `${d}/${m}`;
+}
+function _fpDiaSemanaLabel(iso) {
+  const [y,m,d] = iso.split('-').map(Number);
+  const dt = new Date(y, m-1, d);
+  return ['dom','seg','ter','qua','qui','sex','sáb'][dt.getDay()];
+}
+
+// Coleta TODAS as parcelas de todos os pedidos elegíveis, aplicando status pago/pendente.
+// Retorna array unificado com { codPedido, nomeProduto, fornecedor, parcelaKey, nome_parcela,
+//                                fase_kanban, data_iso, valor_brl, pago, data_efetiva, valor_efetivo }
+function fpColetarParcelas() {
+  const out = [];
+  (PEDIDOS || []).forEach(p => {
+    const parcelas = fluxoParcelasDoPedido(p, FLUXO_PTAX);
+    parcelas.forEach(par => {
+      const st = getStatusParcela(p.codigo_pedido, par.key);
+      out.push({
+        codPedido: p.codigo_pedido,
+        nomeProduto: p.nome,
+        qtd: p.qtd,
+        fornecedor: par.fornecedor,
+        parcelaKey: par.key,
+        nome_parcela: par.nome,
+        fase_kanban: par.fase_kanban,
+        data_iso: par.data_iso,
+        valor_brl: par.valor_brl,
+        pago: !!st.pago,
+        data_efetiva: st.data_efetiva || null,
+        valor_efetivo: st.valor_efetivo || null,
+      });
+    });
+  });
+  return out;
+}
+
+function _fpAplicarFiltros(parcelas) {
+  const fF  = document.getElementById('fp-filtro-fornecedor')?.value || '';
+  const fP  = document.getElementById('fp-filtro-parcela')?.value || '';
+  const fS  = document.getElementById('fp-filtro-status')?.value || '';
+  return parcelas.filter(x => {
+    if (fF && x.fornecedor !== fF) return false;
+    if (fP && x.parcelaKey !== fP) return false;
+    if (fS === 'pago' && !x.pago) return false;
+    if (fS === 'pendente' && x.pago) return false;
+    return true;
+  });
+}
+
+function _fpPopularFiltroFornecedor(parcelas) {
+  const sel = document.getElementById('fp-filtro-fornecedor');
+  if (!sel) return;
+  const atual = sel.value;
+  const fornecedores = [...new Set(parcelas.map(x => x.fornecedor))].sort();
+  sel.innerHTML = '<option value="">Todos os fornecedores</option>' +
+    fornecedores.map(f => `<option value="${f}"${f===atual?' selected':''}>${f}</option>`).join('');
+}
+
+function _fpAtualizaKPIs(parcelas) {
+  const previsto = parcelas.reduce((s, x) => s + x.valor_brl, 0);
+  const pagos = parcelas.filter(x => x.pago);
+  const pago = pagos.reduce((s, x) => s + (x.valor_efetivo != null ? x.valor_efetivo : x.valor_brl), 0);
+  const pendente = previsto - pagos.reduce((s, x) => s + x.valor_brl, 0);
+  const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  setTxt('fp-total-previsto', _fpFmtBRL(previsto));
+  setTxt('fp-total-pago',     _fpFmtBRL(pago));
+  setTxt('fp-total-pendente', _fpFmtBRL(pendente));
+  setTxt('fp-total-parcelas', parcelas.length.toLocaleString('pt-BR'));
+
+  // Aviso de importados sem FOB
+  const semFob = (PEDIDOS || []).filter(p => {
+    if (p.cancelado) return false;
+    if ((p.tipo || 'Nacional') !== 'Importado') return false;
+    if (!p.codigo || !FLUXO_CODIGO_FORNECEDOR[p.codigo]) return false;
+    return !p.valor_unitario;
+  }).length;
+  setTxt('fp-warn-sem-fob', semFob);
+}
+
+function _fpRenderCalendario(parcelas) {
+  const cont = document.getElementById('fp-calendario');
+  const tit  = document.getElementById('fp-cal-titulo');
+  if (!cont || !tit) return;
+  const { year, month } = _fpMesVisualizado;
+  const mesNomes = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+  tit.textContent = `${mesNomes[month]}/${year}`;
+
+  const primeiroDia = new Date(year, month, 1);
+  const ultimoDia = new Date(year, month + 1, 0);
+  const diaSemInicio = primeiroDia.getDay(); // 0=dom
+  const totalDias = ultimoDia.getDate();
+  // Ajuste pra segunda começar na esquerda (0=seg, 6=dom)
+  const offsetSeg = (diaSemInicio + 6) % 7;
+
+  // Agrupa parcelas por dia do mês visualizado
+  const porDia = new Map();
+  parcelas.forEach(x => {
+    if (!x.data_iso) return;
+    const [y, m, d] = x.data_iso.split('-').map(Number);
+    if (y !== year || (m-1) !== month) return;
+    if (!porDia.has(d)) porDia.set(d, []);
+    porDia.get(d).push(x);
+  });
+
+  // Cabeçalho dias da semana
+  const cabecalho = ['SEG','TER','QUA','QUI','SEX','SÁB','DOM'].map(l =>
+    `<div class="text-[10px] text-center text-slate-500 font-semibold py-1">${l}</div>`
+  ).join('');
+
+  // Células vazias antes do dia 1
+  const vaziosInicio = Array(offsetSeg).fill('<div></div>').join('');
+
+  // Células dos dias
+  const hoje = new Date();
+  const hojeStr = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
+  const dias = [];
+  for (let d = 1; d <= totalDias; d++) {
+    const iso = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+    const eHoje = iso === hojeStr;
+    const items = porDia.get(d) || [];
+    const total = items.reduce((s, x) => s + x.valor_brl, 0);
+    const temPendente = items.some(x => !x.pago);
+    const soPago = items.length > 0 && !temPendente;
+    const bg = items.length === 0
+      ? 'bg-white'
+      : soPago
+        ? 'bg-emerald-50 border-emerald-200'
+        : temPendente
+          ? 'bg-amber-50 border-amber-200'
+          : 'bg-white';
+    const borda = eHoje ? 'ring-2 ring-blue-400' : '';
+    const num = eHoje ? '<b>' + d + '</b>' : d;
+    const valorTag = total > 0
+      ? `<div class="text-[9px] font-semibold ${soPago?'text-emerald-700':'text-amber-800'} truncate">${_fpFmtBRL(total)}</div>`
+      : '';
+    dias.push(
+      `<div class="border ${bg} rounded p-1.5 min-h-[54px] ${borda}" title="${items.length ? items.length + ' pagamento(s)' : ''}">
+         <div class="text-[10px] text-slate-500">${num}</div>
+         ${valorTag}
+       </div>`
+    );
+  }
+
+  cont.innerHTML = cabecalho + vaziosInicio + dias.join('');
+}
+
+function _fpRenderLista(parcelas) {
+  const cont = document.getElementById('fp-lista-dias');
+  if (!cont) return;
+
+  // Filtra a partir do dia 1 do mês visualizado (mostra o mês e próximos)
+  const { year, month } = _fpMesVisualizado;
+  const inicio = `${year}-${String(month+1).padStart(2,'0')}-01`;
+  const ordenadas = parcelas
+    .filter(x => x.data_iso && x.data_iso >= inicio)
+    .sort((a, b) => a.data_iso.localeCompare(b.data_iso));
+
+  if (ordenadas.length === 0) {
+    cont.innerHTML = '<div class="text-center text-slate-400 py-8 text-xs">Nenhum pagamento no período com os filtros aplicados.</div>';
+    return;
+  }
+
+  // Agrupa por dia
+  const grupos = new Map();
+  ordenadas.forEach(x => {
+    if (!grupos.has(x.data_iso)) grupos.set(x.data_iso, []);
+    grupos.get(x.data_iso).push(x);
+  });
+
+  const parcelaBadgeCor = { primeiro: 'bg-sky-100 text-sky-800', segundo: 'bg-indigo-100 text-indigo-800', terceiro: 'bg-fuchsia-100 text-fuchsia-800' };
+  const parcelaBadgeTxt = { primeiro: '1º', segundo: '2º', terceiro: '3º' };
+
+  const linhas = [];
+  grupos.forEach((items, dataISO) => {
+    const total = items.reduce((s, x) => s + x.valor_brl, 0);
+    const temPend = items.some(x => !x.pago);
+    linhas.push(`
+      <div class="border ${temPend?'border-amber-200 bg-amber-50/30':'border-emerald-200 bg-emerald-50/30'} rounded-lg overflow-hidden">
+        <div class="flex items-center justify-between px-3 py-2 bg-white/50">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-700">${_fpDiaSemanaLabel(dataISO)} ${_fpFmtDia(dataISO)}</span>
+            <span class="text-[10px] text-slate-500">${items.length} pagamento${items.length>1?'s':''}</span>
+          </div>
+          <span class="text-sm font-bold ${temPend?'text-amber-800':'text-emerald-700'}">${_fpFmtBRL(total)}</span>
+        </div>
+        <div class="divide-y divide-slate-100">
+          ${items.map(x => `
+            <div class="flex items-center gap-3 px-3 py-2 text-xs hover:bg-white transition-colors">
+              <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${parcelaBadgeCor[x.parcelaKey]}">${parcelaBadgeTxt[x.parcelaKey]}</span>
+              <div class="flex-1 min-w-0">
+                <div class="font-medium text-slate-700 truncate">${x.nomeProduto}</div>
+                <div class="text-[10px] text-slate-500">${x.codPedido} · ${x.fornecedor} · ${x.qtd} un</div>
+              </div>
+              <div class="text-right">
+                <div class="font-semibold text-slate-800">${_fpFmtBRL(x.valor_brl)}</div>
+                ${x.pago
+                  ? `<button onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',false)" class="text-[10px] text-emerald-700 hover:underline">✓ pago em ${_fpFmtDia(x.data_efetiva || dataISO)}</button>`
+                  : `<button onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',true)" class="text-[10px] text-slate-400 hover:text-emerald-700 hover:underline">marcar como pago</button>`}
+              </div>
+            </div>`).join('')}
+        </div>
+      </div>
+    `);
+  });
+  cont.innerHTML = linhas.join('');
+}
+
+function _fpTogglePago(codPedido, parcelaKey, marcar) {
+  if (marcar) {
+    marcarParcelaPaga(codPedido, parcelaKey);
+  } else {
+    desmarcarParcelaPaga(codPedido, parcelaKey);
+  }
+  renderFluxoPagamentos();
+}
+window._fpTogglePago = _fpTogglePago;
+
+function renderFluxoPagamentos() {
+  if (!_fpMesVisualizado) {
+    const now = new Date();
+    _fpMesVisualizado = { year: now.getFullYear(), month: now.getMonth() };
+  }
+  // Sincroniza input PTAX
+  const inp = document.getElementById('fp-ptax');
+  if (inp && Number(inp.value) !== FLUXO_PTAX) inp.value = FLUXO_PTAX;
+
+  const todas = fpColetarParcelas();
+  _fpPopularFiltroFornecedor(todas);
+  const filtradas = _fpAplicarFiltros(todas);
+  _fpAtualizaKPIs(filtradas);
+  _fpRenderCalendario(filtradas);
+  _fpRenderLista(filtradas);
+}
+
+window.renderFluxoPagamentos = renderFluxoPagamentos;
 
 function getTipoBoard(p) {
   return (p && p.tipo === 'Importado') ? 'importado' : 'nacional';
