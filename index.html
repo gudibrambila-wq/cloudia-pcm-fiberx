@@ -5872,7 +5872,7 @@ function kanbanCardHTML(p) {
           ${((p.valor_unitario && p.qtd) || p.codigo_pedido) ? `
           <div class="flex items-center justify-between gap-2 mt-0.5">
             <span class="text-[10px] text-emerald-700 font-semibold">${(p.valor_unitario && p.qtd) ? _fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL') : ''}</span>
-            ${p.codigo_pedido ? `<span class="text-[10px] font-bold text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded whitespace-nowrap" title="Número do pedido (usado no Fluxo de Pagamentos)">${p.codigo_pedido}</span>` : ''}
+            ${p.codigo_pedido ? `<span class="text-xs text-slate-500 whitespace-nowrap" title="Número do pedido (usado no Fluxo de Pagamentos)">${p.codigo_pedido}</span>` : ''}
           </div>` : ''}
           ${(fase === 'estoque' && p.arquivado_em) ? (() => {
             const restantes = Math.max(0, Math.ceil(DIAS_VISIVEL_ESTOQUE - _diasDesde(p.arquivado_em)));
