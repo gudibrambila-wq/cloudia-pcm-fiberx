@@ -1930,6 +1930,8 @@
     "codigo_pedido": "PED-0167",
     "fase_desde": "2026-07-09T14:02:01.521Z",
     "processo": "005B.2026 VSC",
-    "modal": "FCL"
+    "modal": "FCL",
+    "valor_unitario": 88.3,
+    "moeda": "BRL"
   }
 ]
