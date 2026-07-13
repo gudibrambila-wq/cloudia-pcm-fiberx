@@ -1212,7 +1212,11 @@
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0120",
     "fase_desde": "2026-06-24T18:20:09.716Z",
-    "codigo": 401200031
+    "codigo": 401200031,
+    "cancelado": true,
+    "motivo_cancelamento": "Foi mandado a solicitação de compra pelo Jean e esse item não estava no escopo do projeto",
+    "cancelado_em": "2026-07-13T20:13:56.707Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "nome": "Switch Easy Smart Gigabit de 8 Portas - TL-SG108E",
