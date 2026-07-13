@@ -5869,8 +5869,11 @@ function kanbanCardHTML(p) {
             const txt = dias < 1 ? 'hoje' : `${dias}d`;
             return ` &nbsp;·&nbsp; <span class="text-slate-400" title="Tempo nesta fase (sem SLA definido)">${txt}</span>`;
           })() : ''}</p>
-          ${(p.valor_unitario && p.qtd) ? `
-          <p class="text-[10px] text-emerald-700 mt-0.5 font-semibold">${_fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL')}</p>` : ''}
+          ${((p.valor_unitario && p.qtd) || p.codigo_pedido) ? `
+          <div class="flex items-center justify-between gap-2 mt-0.5">
+            <span class="text-[10px] text-emerald-700 font-semibold">${(p.valor_unitario && p.qtd) ? _fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL') : ''}</span>
+            ${p.codigo_pedido ? `<span class="text-[10px] font-bold text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded whitespace-nowrap" title="Número do pedido (usado no Fluxo de Pagamentos)">${p.codigo_pedido}</span>` : ''}
+          </div>` : ''}
           ${(fase === 'estoque' && p.arquivado_em) ? (() => {
             const restantes = Math.max(0, Math.ceil(DIAS_VISIVEL_ESTOQUE - _diasDesde(p.arquivado_em)));
             return `<p class="text-[10px] text-teal-600 mt-0.5">arquiva em ${restantes} dia${restantes !== 1 ? 's' : ''}</p>`;
@@ -5898,7 +5901,6 @@ function kanbanCardHTML(p) {
           })() : ''}
         </div>
         <div class="flex items-center gap-1 shrink-0 mt-0.5">
-          ${p.codigo_pedido ? `<span class="text-[10px] font-bold text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded whitespace-nowrap" title="Número do pedido (usado no Fluxo de Pagamentos)">${p.codigo_pedido}</span>` : ''}
           <button onclick="event.stopPropagation();duplicarPedido(${p.id})"
             class="text-slate-300 hover:text-blue-500 text-base leading-none transition-colors shrink-0" title="Duplicar pedido">⎘</button>
           <button onclick="event.stopPropagation();removerPedido(${p.id})"
