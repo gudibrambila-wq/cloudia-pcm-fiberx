@@ -6655,6 +6655,66 @@ function fluxoParcelasDoPedido(p, ptax = FLUXO_PTAX) {
 window._fluxoParcelas = fluxoParcelasDoPedido;
 window._fluxoFornecedor = fluxoFornecedorDoPedido;
 
+// ----------------------------------------------------------------------------
+// Status de PAGO/PENDENTE por parcela — persistido em pagamentos_status.json
+// Formato: { "PED-NNNN": { "primeiro"|"segundo"|"terceiro": { pago, data_efetiva, valor_efetivo } } }
+// Se PED não tem entry → todas as parcelas são "pendente" (não pagas).
+// ----------------------------------------------------------------------------
+const PAGAMENTOS_STATUS_KEY = 'cloudia_pagamentos_status_v1';
+let PAGAMENTOS_STATUS = {};
+
+function loadPagamentosStatus() {
+  try {
+    const s = localStorage.getItem(PAGAMENTOS_STATUS_KEY);
+    PAGAMENTOS_STATUS = s ? JSON.parse(s) : {};
+  } catch (e) { PAGAMENTOS_STATUS = {}; }
+  window.PAGAMENTOS_STATUS = PAGAMENTOS_STATUS;
+}
+
+// Debounce 1s pra agrupar edições consecutivas num único save
+let _syncPagStatusTimer = null;
+function salvarPagamentosStatus() {
+  try { localStorage.setItem(PAGAMENTOS_STATUS_KEY, JSON.stringify(PAGAMENTOS_STATUS)); } catch(e) {}
+  clearTimeout(_syncPagStatusTimer);
+  _syncPagStatusTimer = setTimeout(() => _postSync('/api/save-pagamentos-status', PAGAMENTOS_STATUS), 1000);
+}
+
+// Retorna o status de uma parcela específica. Nunca null — sempre um objeto.
+function getStatusParcela(codPedido, parcelaKey) {
+  const p = PAGAMENTOS_STATUS[codPedido];
+  if (!p) return { pago: false };
+  return p[parcelaKey] || { pago: false };
+}
+
+// Marca uma parcela como paga. dataEfetiva opcional (default hoje). valorEfetivo opcional.
+function marcarParcelaPaga(codPedido, parcelaKey, dataEfetiva, valorEfetivo) {
+  if (!codPedido || !parcelaKey) return;
+  if (!PAGAMENTOS_STATUS[codPedido]) PAGAMENTOS_STATUS[codPedido] = {};
+  const hoje = new Date();
+  const dataISO = dataEfetiva || `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
+  PAGAMENTOS_STATUS[codPedido][parcelaKey] = {
+    pago: true,
+    data_efetiva: dataISO,
+    ...(valorEfetivo != null ? { valor_efetivo: valorEfetivo } : {}),
+  };
+  salvarPagamentosStatus();
+}
+
+function desmarcarParcelaPaga(codPedido, parcelaKey) {
+  if (!codPedido || !parcelaKey) return;
+  if (!PAGAMENTOS_STATUS[codPedido]) return;
+  delete PAGAMENTOS_STATUS[codPedido][parcelaKey];
+  // Se o objeto do pedido ficou vazio, remove pra manter o JSON limpo
+  if (Object.keys(PAGAMENTOS_STATUS[codPedido]).length === 0) {
+    delete PAGAMENTOS_STATUS[codPedido];
+  }
+  salvarPagamentosStatus();
+}
+
+window.marcarParcelaPaga = marcarParcelaPaga;
+window.desmarcarParcelaPaga = desmarcarParcelaPaga;
+window.getStatusParcela = getStatusParcela;
+
 function getTipoBoard(p) {
   return (p && p.tipo === 'Importado') ? 'importado' : 'nacional';
 }
@@ -7926,9 +7986,10 @@ async function _commitToGitHub(file, payload) {
 
 // Mapeia URL legado do server.py local → arquivo no repo.
 const _GH_FILE_MAP = {
-  '/api/save-pedidos':   'pedidos_kanban.json',
-  '/api/save-overrides': 'produto_overrides.json',
-  '/api/save-status':    'produto_status.json',
+  '/api/save-pedidos':            'pedidos_kanban.json',
+  '/api/save-overrides':          'produto_overrides.json',
+  '/api/save-status':             'produto_status.json',
+  '/api/save-pagamentos-status':  'pagamentos_status.json',
 };
 
 // Sincroniza status (forecast/monitorar/inativo) com o backend.
@@ -9154,6 +9215,7 @@ async function carregarDados() {
 
     const prods = DADOS.produtos;
     loadProdutoStatus(); // garante que PRODUTO_STATUS está atualizado
+    loadPagamentosStatus(); // status pago/pendente das parcelas do Fluxo de Pagamentos
     popularCoberturaReal(); // Cobertura WOS (substitui mock hardcoded por DADOS.produtos)
 
     // ── Rebuild PLAN_PRODUCTS (apenas Forecast) ──
@@ -9310,6 +9372,7 @@ async function _carregarPersistenciaInicial() {
     { key: 'cloudia_pedidos',              url: '/pedidos_kanban.json',    inline: window.__PEDIDOS_INLINE__ },
     { key: 'cloudia_produto_overrides_v1', url: '/produto_overrides.json', inline: window.__OVERRIDES_INLINE__ },
     { key: PROD_STATUS_KEY,                url: '/produto_status.json',    inline: window.__STATUS_INLINE__ },
+    { key: PAGAMENTOS_STATUS_KEY,          url: '/pagamentos_status.json', inline: window.__PAG_STATUS_INLINE__ },
   ];
   for (const a of arquivos) {
     if (!forceFresh && localStorage.getItem(a.key)) continue; // já existe → não sobrescreve
