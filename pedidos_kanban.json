@@ -1527,7 +1527,11 @@
     "id": 1782907504427,
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0145",
-    "fase_desde": "2026-07-03T12:24:15.729Z"
+    "fase_desde": "2026-07-03T12:24:15.729Z",
+    "cancelado": true,
+    "motivo_cancelamento": "(sem motivo informado)",
+    "cancelado_em": "2026-07-13T20:15:12.770Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "codigo": 400700012,
