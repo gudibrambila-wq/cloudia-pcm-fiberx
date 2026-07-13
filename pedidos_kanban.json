@@ -111,7 +111,9 @@
     "codigo_pedido": "PED-0057",
     "fase_desde": "2026-06-25T17:51:27.787Z",
     "data": "2026-08-06",
-    "codigo": 400700014
+    "codigo": 400700014,
+    "valor_unitario": 95,
+    "moeda": "BRL"
   },
   {
     "id": 264460338366470,
