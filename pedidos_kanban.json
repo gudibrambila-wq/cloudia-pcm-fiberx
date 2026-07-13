@@ -1322,11 +1322,7 @@
     "pendente_desde": "2026-06-29T12:29:36.120Z",
     "codigo_pedido": "PED-0127",
     "fase_desde": "2026-06-29T12:29:36.120Z",
-    "processo": "016.2026 VSC",
-    "cancelado": true,
-    "motivo_cancelamento": "de momento vamos cancelar a compra desse Robo",
-    "cancelado_em": "2026-07-09T14:00:58.601Z",
-    "cancelado_por": "douglas.brambila@velds.com.br"
+    "processo": "016.2026 VSC"
   },
   {
     "codigo": 400700027,
