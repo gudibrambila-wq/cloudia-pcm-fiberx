@@ -5898,6 +5898,7 @@ function kanbanCardHTML(p) {
           })() : ''}
         </div>
         <div class="flex items-center gap-1 shrink-0 mt-0.5">
+          ${p.codigo_pedido ? `<span class="text-[10px] font-bold text-blue-700 bg-blue-100 px-1.5 py-0.5 rounded whitespace-nowrap" title="Número do pedido (usado no Fluxo de Pagamentos)">${p.codigo_pedido}</span>` : ''}
           <button onclick="event.stopPropagation();duplicarPedido(${p.id})"
             class="text-slate-300 hover:text-blue-500 text-base leading-none transition-colors shrink-0" title="Duplicar pedido">⎘</button>
           <button onclick="event.stopPropagation();removerPedido(${p.id})"
