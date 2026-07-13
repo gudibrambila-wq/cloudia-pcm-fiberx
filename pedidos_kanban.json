@@ -144,7 +144,7 @@
     "data": "2026-07-22",
     "codigo": 400700001,
     "valor_unitario": 78,
-    "moeda": "BRL"
+    "moeda": "USD"
   },
   {
     "id": 104827302770868,
@@ -288,7 +288,9 @@
     "codigo_pedido": "PED-0067",
     "fase_desde": "2026-07-07T19:18:59.845Z",
     "data": "2026-07-17",
-    "codigo": 400700012
+    "codigo": 400700012,
+    "valor_unitario": 65,
+    "moeda": "USD"
   },
   {
     "id": 191560432685838,
@@ -324,7 +326,9 @@
     "codigo_pedido": "PED-0069",
     "fase_desde": "2026-07-01T14:41:41.763Z",
     "data": "2026-08-17",
-    "codigo": 400700012
+    "codigo": 400700012,
+    "valor_unitario": 65,
+    "moeda": "BRL"
   },
   {
     "nome": "ALIMENTADOR PET  VDS APBW",
