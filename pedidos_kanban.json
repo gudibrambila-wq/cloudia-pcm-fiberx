@@ -391,7 +391,9 @@
     "processo": "014.2026 VSC",
     "codigo_pedido": "PED-0072",
     "fase_desde": "2026-06-15T16:39:20.717Z",
-    "codigo": 400700014
+    "codigo": 400700014,
+    "valor_unitario": 95,
+    "moeda": "BRL"
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 110V",
