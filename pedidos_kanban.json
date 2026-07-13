@@ -142,7 +142,9 @@
     "codigo_pedido": "PED-0059",
     "fase_desde": "2026-06-15T16:43:15.441Z",
     "data": "2026-07-22",
-    "codigo": 400700001
+    "codigo": 400700001,
+    "valor_unitario": 78,
+    "moeda": "BRL"
   },
   {
     "id": 104827302770868,
@@ -160,7 +162,9 @@
     "data": "2026-09-25",
     "codigo_pedido": "PED-0060",
     "fase_desde": "2026-06-09T13:50:16.895Z",
-    "codigo": 400700001
+    "codigo": 400700001,
+    "valor_unitario": 88.3,
+    "moeda": "USD"
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 220V",
@@ -1932,6 +1936,6 @@
     "processo": "005B.2026 VSC",
     "modal": "FCL",
     "valor_unitario": 88.3,
-    "moeda": "BRL"
+    "moeda": "USD"
   }
 ]
