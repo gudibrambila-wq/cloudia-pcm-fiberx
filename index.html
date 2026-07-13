@@ -5870,7 +5870,7 @@ function kanbanCardHTML(p) {
             return ` &nbsp;·&nbsp; <span class="text-slate-400" title="Tempo nesta fase (sem SLA definido)">${txt}</span>`;
           })() : ''}</p>
           ${((p.valor_unitario && p.qtd) || p.codigo_pedido) ? `
-          <div class="flex items-center justify-between gap-2 mt-0.5 -mr-2">
+          <div class="flex items-center justify-between gap-2 mt-0.5 -mr-3">
             <span class="text-[10px] text-emerald-700 font-semibold">${(p.valor_unitario && p.qtd) ? _fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL') : ''}</span>
             ${p.codigo_pedido ? `<span class="text-xs text-slate-500 whitespace-nowrap" title="Número do pedido (usado no Fluxo de Pagamentos)">${p.codigo_pedido}</span>` : ''}
           </div>` : ''}
