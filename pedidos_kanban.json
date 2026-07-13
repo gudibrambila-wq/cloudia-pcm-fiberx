@@ -1609,7 +1609,11 @@
     "id": 1782996489814,
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0149",
-    "fase_desde": "2026-07-03T12:24:13.190Z"
+    "fase_desde": "2026-07-03T12:24:13.190Z",
+    "cancelado": true,
+    "motivo_cancelamento": "Candelado pois o fornecedor não tem estoque",
+    "cancelado_em": "2026-07-13T20:15:03.987Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "codigo": 400700001,
