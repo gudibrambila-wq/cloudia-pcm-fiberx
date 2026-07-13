@@ -5864,7 +5864,7 @@ function kanbanCardHTML(p) {
       <div class="flex items-start gap-2">
         <div class="flex-1 min-w-0">
           <p class="text-xs font-semibold text-slate-800 leading-tight truncate" title="${(() => { const c = p.codigo || codigoDoProdutoPorNome(p.nome); const baseTip = (c ? 'Cód: ' + c + ' · ' : '') + p.nome; if (p.valor_unitario && p.qtd) return baseTip + ' · Total ' + _fmtMoeda(p.valor_unitario * p.qtd, p.moeda || 'BRL'); return baseTip; })()}">${nomeShort}</p>
-          <p class="text-xs text-slate-500 mt-0.5">${(p.qtd||0).toLocaleString('pt-BR')} un &nbsp;·&nbsp; ${semOuData}${p.modal ? ` &nbsp;·&nbsp; ${p.modal}` : ''}${(p.fase_desde && !['pendente','pago1','estoque'].includes(fase)) ? (() => {
+          <p class="text-xs text-slate-500 mt-0.5 truncate">${(p.qtd||0).toLocaleString('pt-BR')} un &nbsp;·&nbsp; ${semOuData}${p.modal ? ` &nbsp;·&nbsp; ${p.modal}` : ''}${(p.fase_desde && !['pendente','pago1','estoque'].includes(fase)) ? (() => {
             const dias = Math.floor(_diasDesde(p.fase_desde));
             const txt = dias < 1 ? 'hoje' : `${dias}d`;
             return ` &nbsp;·&nbsp; <span class="text-slate-400" title="Tempo nesta fase (sem SLA definido)">${txt}</span>`;
