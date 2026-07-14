@@ -6963,12 +6963,12 @@ function _fpRenderCalendario(parcelas) {
   ).join('');
 
   // Células vazias antes do dia 1
-  const vaziosInicio = Array(offsetSeg).fill('<div class="min-h-[110px]"></div>').join('');
+  const vaziosInicio = Array(offsetSeg).fill('<div class="min-h-[130px]"></div>').join('');
 
   // Células dos dias
   const hoje = new Date();
   const hojeStr = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
-  const MAX_ITEMS_VISIVEIS = 3;
+  const MAX_ITEMS_VISIVEIS = 4;
   const dias = [];
   for (let d = 1; d <= totalDias; d++) {
     const iso = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
@@ -7016,7 +7016,7 @@ function _fpRenderCalendario(parcelas) {
       : `<div class="text-[10px] ${numCor} px-0.5">${d}</div>`;
 
     dias.push(
-      `<div class="border ${bgFundo} rounded p-1 min-h-[110px] flex flex-col gap-0.5 ${borda}">
+      `<div class="border ${bgFundo} rounded p-1 min-h-[130px] flex flex-col gap-0.5 ${borda}">
          ${diaClick}
          ${miniCards}
          ${maisTag}
