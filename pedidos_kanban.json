@@ -950,12 +950,13 @@
     "processo": "030.2026 RIBEIRÃO",
     "modal": null,
     "id": 1781542585213,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0106",
-    "fase_desde": "2026-07-10T19:24:20.081Z",
+    "fase_desde": "2026-07-14T19:19:09.009Z",
     "valor_unitario": 437.17,
     "moeda": "BRL",
-    "codigo": 401700004
+    "codigo": 401700004,
+    "arquivado_em": "2026-07-14T19:19:09.009Z"
   },
   {
     "nome": "Switch Omada with 24-Port PoE+ - ES228GMP",
