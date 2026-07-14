@@ -6839,6 +6839,27 @@ function _fpDiaSemanaLabel(iso) {
   return ['dom','seg','ter','qua','qui','sex','sáb'][dt.getDay()];
 }
 
+// Retorna dias de atraso (positivo = passou; 0 = hoje; negativo = futuro).
+// Usa comparação de string ISO 'YYYY-MM-DD' pra evitar problemas de timezone.
+function _fpDiasAtraso(iso) {
+  if (!iso) return null;
+  const hoje = new Date();
+  const hojeISO = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
+  if (iso >= hojeISO) return iso === hojeISO ? 0 : -1;
+  // Calcula diferença em dias
+  const [y1,m1,d1] = iso.split('-').map(Number);
+  const [y2,m2,d2] = hojeISO.split('-').map(Number);
+  const dt1 = new Date(y1, m1-1, d1);
+  const dt2 = new Date(y2, m2-1, d2);
+  return Math.round((dt2 - dt1) / (1000 * 60 * 60 * 24));
+}
+
+function _fpBadgeAtrasado(dias) {
+  if (!dias || dias <= 0) return '';
+  const txt = dias === 1 ? 'há 1 dia' : `há ${dias} dias`;
+  return `<span class="ml-2 text-[9px] font-bold px-1.5 py-0.5 rounded bg-red-100 text-red-700 whitespace-nowrap uppercase tracking-wide">⚠ Atrasado ${txt}</span>`;
+}
+
 // Coleta TODAS as parcelas de todos os pedidos elegíveis, aplicando status pago/pendente.
 // Retorna array unificado com { codPedido, nomeProduto, fornecedor, parcelaKey, nome_parcela,
 //                                fase_kanban, data_iso, valor_brl, pago, data_efetiva, valor_efetivo }
@@ -7059,18 +7080,28 @@ function _fpRenderLista(parcelas) {
   grupos.forEach((items, dataISO) => {
     const total = items.reduce((s, x) => s + x.valor_brl, 0);
     const temPend = items.some(x => !x.pago);
+    const diasAtraso = _fpDiasAtraso(dataISO);
+    const temAtrasado = items.some(x => !x.pago) && diasAtraso > 0;
+    const bordaHeader = temAtrasado
+      ? 'border-red-300 bg-red-50/40'
+      : temPend
+        ? 'border-amber-200 bg-amber-50/30'
+        : 'border-emerald-200 bg-emerald-50/30';
     linhas.push(`
-      <div class="border ${temPend?'border-amber-200 bg-amber-50/30':'border-emerald-200 bg-emerald-50/30'} rounded-lg overflow-hidden">
+      <div class="border ${bordaHeader} rounded-lg overflow-hidden">
         <div class="flex items-center justify-between px-3 py-2 bg-white/50">
-          <div class="flex items-center gap-2">
+          <div class="flex items-center gap-2 flex-wrap">
             <span class="text-xs font-bold text-slate-700">${_fpDiaSemanaLabel(dataISO)} ${_fpFmtDia(dataISO)}</span>
             <span class="text-[10px] text-slate-500">${items.length} pagamento${items.length>1?'s':''}</span>
+            ${temAtrasado ? _fpBadgeAtrasado(diasAtraso) : ''}
           </div>
-          <span class="text-sm font-bold ${temPend?'text-amber-800':'text-emerald-700'}">${_fpFmtBRL(total)}</span>
+          <span class="text-sm font-bold ${temAtrasado?'text-red-700':temPend?'text-amber-800':'text-emerald-700'}">${_fpFmtBRL(total)}</span>
         </div>
         <div class="divide-y divide-slate-100">
-          ${items.map(x => `
-            <div class="flex items-center gap-3 px-3 py-2 text-xs hover:bg-white transition-colors">
+          ${items.map(x => {
+            const xAtrasado = !x.pago && diasAtraso > 0;
+            return `
+            <div class="flex items-center gap-3 px-3 py-2 text-xs hover:bg-white transition-colors ${xAtrasado?'bg-red-50/30':''}">
               <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${parcelaBadgeCor[x.parcelaKey]}">${parcelaBadgeTxt[x.parcelaKey]}</span>
               <div class="flex-1 min-w-0">
                 <div class="font-medium text-slate-700 truncate">${x.nomeProduto}</div>
@@ -7080,9 +7111,10 @@ function _fpRenderLista(parcelas) {
                 <div class="font-semibold text-slate-800">${_fpFmtBRL(x.valor_brl)}</div>
                 ${x.pago
                   ? `<button onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',false)" class="text-[10px] text-emerald-700 hover:underline">✓ pago em ${_fpFmtDia(x.data_efetiva || dataISO)}</button>`
-                  : `<button onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',true)" class="text-[10px] text-slate-400 hover:text-emerald-700 hover:underline">marcar como pago</button>`}
+                  : `<button onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',true)" class="text-[10px] ${xAtrasado?'text-red-700 font-bold':'text-slate-400'} hover:text-emerald-700 hover:underline">${xAtrasado?'⚠ ':''}marcar como pago</button>`}
               </div>
-            </div>`).join('')}
+            </div>`;
+          }).join('')}
         </div>
       </div>
     `);
@@ -7140,17 +7172,23 @@ function _fpAbrirDia(dataISO) {
   } else {
     lista.innerHTML = items.map(x => {
       const bd = _FP_PARCELA_BADGE[x.parcelaKey];
-      const bordaCor = x.pago ? 'border-emerald-300 bg-emerald-50/40' : 'border-amber-300 bg-amber-50/40';
+      const diasAtraso = _fpDiasAtraso(x.data_iso);
+      const xAtrasado = !x.pago && diasAtraso > 0;
+      const bordaCor = x.pago
+        ? 'border-emerald-300 bg-emerald-50/40'
+        : xAtrasado
+          ? 'border-red-300 bg-red-50/40'
+          : 'border-amber-300 bg-amber-50/40';
       const btnAcao = x.pago
         ? `<button onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',false)" class="text-xs px-3 py-1.5 rounded-lg border border-emerald-300 text-emerald-700 bg-white hover:bg-emerald-50 font-medium">✓ Pago em ${_fpFmtDia(x.data_efetiva || x.data_iso)} · desmarcar</button>`
-        : `<button onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',true)" class="text-xs px-3 py-1.5 rounded-lg bg-emerald-600 text-white hover:bg-emerald-700 font-medium">Marcar como pago</button>`;
+        : `<button onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',true)" class="text-xs px-3 py-1.5 rounded-lg ${xAtrasado?'bg-red-600 hover:bg-red-700':'bg-emerald-600 hover:bg-emerald-700'} text-white font-medium">${xAtrasado?'⚠ ':''}Marcar como pago</button>`;
       return `
         <div class="border ${bordaCor} rounded-lg p-3">
           <div class="flex items-start justify-between gap-3">
             <div class="flex items-start gap-3 flex-1 min-w-0">
               <span class="text-[11px] font-bold px-2 py-1 rounded ${bd.bg} ${bd.text} shrink-0">${bd.txt}</span>
               <div class="flex-1 min-w-0">
-                <div class="text-sm font-semibold text-slate-800">${x.nomeProduto}</div>
+                <div class="text-sm font-semibold text-slate-800">${x.nomeProduto}${xAtrasado ? _fpBadgeAtrasado(diasAtraso) : ''}</div>
                 <div class="text-xs text-slate-600 mt-0.5">${x.nome_parcela}</div>
                 <div class="text-xs text-slate-500 mt-1 space-x-3">
                   <span>${x.codPedido}</span>
