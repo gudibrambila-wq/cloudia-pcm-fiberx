@@ -1350,7 +1350,7 @@
     "origem": "Avulso",
     "modal": "FCL",
     "valor_unitario": 53.5,
-    "moeda": "BRL",
+    "moeda": "USD",
     "id": 1782736176120,
     "fase": "pago1",
     "codigo_pedido": "PED-0127",
