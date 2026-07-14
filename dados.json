@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-14T17:01:01",
+  "gerado_em": "2026-07-14T18:42:18",
   "semana_atual": 29,
   "semana_estoque": 29,
   "week_to_month": {
@@ -15964,7 +15964,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0067",
-        "fase": "numerario"
+        "fase": "porto"
       },
       "entradas": [
         {
@@ -15973,7 +15973,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0067",
-          "fase": "numerario"
+          "fase": "porto"
         },
         {
           "semana": 32,
@@ -16739,7 +16739,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0053",
-        "fase": "numerario"
+        "fase": "porto"
       },
       "entradas": [
         {
@@ -16748,7 +16748,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0053",
-          "fase": "numerario"
+          "fase": "porto"
         },
         {
           "semana": 32,
@@ -17115,7 +17115,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0056",
-        "fase": "numerario"
+        "fase": "porto"
       },
       "entradas": [
         {
@@ -17124,7 +17124,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0056",
-          "fase": "numerario"
+          "fase": "porto"
         },
         {
           "semana": 32,
@@ -22649,7 +22649,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0067",
-        "fase": "numerario"
+        "fase": "porto"
       },
       "entradas": [
         {
@@ -22658,7 +22658,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0067",
-          "fase": "numerario"
+          "fase": "porto"
         },
         {
           "semana": 32,
@@ -23018,7 +23018,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0053",
-        "fase": "numerario"
+        "fase": "porto"
       },
       "entradas": [
         {
@@ -23027,7 +23027,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0053",
-          "fase": "numerario"
+          "fase": "porto"
         },
         {
           "semana": 32,
@@ -23370,7 +23370,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0056",
-        "fase": "numerario"
+        "fase": "porto"
       },
       "entradas": [
         {
@@ -23379,7 +23379,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0056",
-          "fase": "numerario"
+          "fase": "porto"
         },
         {
           "semana": 32,
