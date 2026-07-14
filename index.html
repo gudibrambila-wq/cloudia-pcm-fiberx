@@ -7125,6 +7125,9 @@ function _fpRenderLista(parcelas) {
 function _fpTogglePago(codPedido, parcelaKey, marcar) {
   if (marcar) {
     marcarParcelaPaga(codPedido, parcelaKey);
+    // Sincronia Fluxo → Kanban: se o pedido está na fase esperada dessa
+    // parcela (pago1/pago2/numerario), avança pra próxima fase automático.
+    _fpTalvezAvancarKanban(codPedido, parcelaKey);
   } else {
     desmarcarParcelaPaga(codPedido, parcelaKey);
   }
@@ -7136,6 +7139,87 @@ function _fpTogglePago(codPedido, parcelaKey, marcar) {
   }
 }
 window._fpTogglePago = _fpTogglePago;
+
+// Sincronia Fluxo → Kanban (opção A do desenho 14/07/2026)
+// Marcar parcela paga move o pedido pra próxima fase se está na fase que
+// espera essa parcela (pago1/pago2/numerario). Toast com "desfazer" reverte
+// os dois lados (desmarca pgto + volta fase).
+function _fpTalvezAvancarKanban(codPedido, parcelaKey) {
+  const p = (PEDIDOS || []).find(x => x.codigo_pedido === codPedido);
+  if (!p) return;
+  const meta = FLUXO_PARCELAS_META[parcelaKey];
+  if (!meta) return;
+  // Só avança se o pedido está EXATAMENTE na fase que espera essa parcela.
+  // Se está em outra fase (ex: já avançou manual, ou está atrás), não mexe.
+  if (p.fase !== meta.fase_kanban) return;
+
+  const fases = KANBAN_CONFIG.importado.fases;
+  const idx = fases.indexOf(p.fase);
+  const proxima = fases[idx + 1];
+  if (!proxima) return; // já era última fase, nada a fazer
+
+  const faseAnterior = p.fase;
+  p.fase = proxima;
+  p.fase_desde = new Date().toISOString();
+  salvarPedidos();
+
+  // Toast com botão "desfazer" — 6 segundos pra clicar
+  _fpToastSyncKanban(codPedido, parcelaKey, faseAnterior, proxima);
+}
+
+function _fpToastSyncKanban(codPedido, parcelaKey, faseAnterior, novaFase) {
+  let toast = document.getElementById('fp-toast-sync');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'fp-toast-sync';
+    toast.className = 'fixed bottom-6 right-6 z-[70] bg-slate-800 text-white text-sm px-4 py-3 rounded-lg shadow-xl flex items-center gap-3 transition-all duration-300';
+    document.body.appendChild(toast);
+  }
+  const labelAnt = FASE_LABELS[faseAnterior] || faseAnterior;
+  const labelNova = FASE_LABELS[novaFase] || novaFase;
+  toast.innerHTML = `
+    <div>
+      <div class="font-semibold">${codPedido} movido no Kanban</div>
+      <div class="text-xs text-slate-300 mt-0.5">${labelAnt} → ${labelNova}</div>
+    </div>
+    <button onclick="_fpDesfazerSync('${codPedido}','${parcelaKey}','${faseAnterior}','${novaFase}')" class="ml-2 text-xs font-bold bg-white/10 hover:bg-white/20 text-white px-3 py-1.5 rounded transition-colors">↺ Desfazer</button>
+  `;
+  toast.style.opacity = '1';
+  toast.style.transform = 'translateY(0)';
+  clearTimeout(window._fpToastSyncTimer);
+  window._fpToastSyncTimer = setTimeout(() => {
+    toast.style.opacity = '0';
+    toast.style.transform = 'translateY(20px)';
+  }, 6000);
+}
+
+function _fpDesfazerSync(codPedido, parcelaKey, faseAnterior, faseAtual) {
+  const p = (PEDIDOS || []).find(x => x.codigo_pedido === codPedido);
+  if (!p) return;
+  // Só desfaz se o pedido ainda está na fase pra qual a gente moveu (usuário
+  // pode ter mudado manualmente depois — se sim, respeita a decisão dele).
+  if (p.fase !== faseAtual) {
+    mostrarToast(`Pedido já foi movido manualmente — desfazer ignorado`);
+    return;
+  }
+  p.fase = faseAnterior;
+  p.fase_desde = new Date().toISOString();
+  salvarPedidos();
+  desmarcarParcelaPaga(codPedido, parcelaKey);
+  // Esconde toast
+  const toast = document.getElementById('fp-toast-sync');
+  if (toast) { toast.style.opacity = '0'; toast.style.transform = 'translateY(20px)'; }
+  clearTimeout(window._fpToastSyncTimer);
+  // Re-renderiza tudo
+  renderFluxoPagamentos();
+  if (typeof renderKanban === 'function') renderKanban();
+  const modal = document.getElementById('modal-fp-dia');
+  if (modal && !modal.classList.contains('hidden') && _FP_DIA_ATIVO) {
+    _fpAbrirDia(_FP_DIA_ATIVO);
+  }
+  mostrarToast(`↺ Desfeito — ${codPedido} voltou pra ${FASE_LABELS[faseAnterior] || faseAnterior}`);
+}
+window._fpDesfazerSync = _fpDesfazerSync;
 
 // Modal com todos os pagamentos de um dia (usado quando +3 pgtos no dia OU click no número)
 let _FP_DIA_ATIVO = null;
