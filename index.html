@@ -6610,18 +6610,20 @@ const FASE_LABELS = {
 // Modelo: cada pedido Importado gera 3 parcelas em dias exatos, ancoradas na
 // data de chegada do pedido no BR. Fornecedor determina % de cada parcela.
 // Formula: parcela_BRL = FOB_USD × pct × qtd × PTAX
-// Dia da parcela = data_chegada − (delta_semanas × 7 dias).
+// Dia da parcela = data_chegada − delta_dias.
 // ----------------------------------------------------------------------------
 
 // PTAX inicial (usuário edita via input na aba Fluxo de Pagamentos).
 // Persistido em pagamentos_config.json quando disponivel; senao usa este default.
 let FLUXO_PTAX = 5.17;
 
-// Delta em semanas — quantas semanas ANTES da chegada BR cada parcela vence.
+// Delta em DIAS — quantos dias ANTES da chegada BR cada parcela vence.
+// Antes eram semanas (-15/-9/-2). Trocado pra dias em 14/07/2026 quando a
+// Aline pediu numerário 10 dias antes (não bate com semana exata).
 const FLUXO_DELTAS = {
-  primeiro:  -15,   // 1o pgto — inicio producao (sinal ao fornecedor)
-  segundo:   -9,    // 2o pgto — pre-embarque (saldo antes de embarcar)
-  terceiro:  -2,    // 3o pgto — numerario (impostos + despachante + armazenagem)
+  primeiro:  -105,  // 1o pgto — inicio producao (sinal ao fornecedor) — 15 semanas
+  segundo:   -63,   // 2o pgto — pre-embarque (saldo antes de embarcar) — 9 semanas
+  terceiro:  -10,   // 3o pgto — numerario (impostos + despachante + armazenagem) — 10 dias (Aline)
 };
 
 // Nomes exibidos + fase do Kanban correspondente
@@ -6681,14 +6683,14 @@ function fluxoFornecedorDoPedido(p) {
   return FLUXO_CODIGO_FORNECEDOR[p.codigo] || null;
 }
 
-// Subtrai N semanas de uma data ISO (YYYY-MM-DD), mantendo mesmo dia da semana.
+// Soma deltaDias (pode ser negativo) a uma data ISO (YYYY-MM-DD).
 // Retorna string ISO. Se dataISO inválida, retorna null.
-function fluxoDataParcela(dataChegadaISO, deltaSemanas) {
+function fluxoDataParcela(dataChegadaISO, deltaDias) {
   if (!dataChegadaISO || typeof dataChegadaISO !== 'string') return null;
   const [y, m, d] = dataChegadaISO.split('-').map(Number);
   if (!y || !m || !d) return null;
   const dt = new Date(Date.UTC(y, m - 1, d));
-  dt.setUTCDate(dt.getUTCDate() + (deltaSemanas * 7));
+  dt.setUTCDate(dt.getUTCDate() + deltaDias);
   const yy = dt.getUTCFullYear();
   const mm = String(dt.getUTCMonth() + 1).padStart(2, '0');
   const dd = String(dt.getUTCDate()).padStart(2, '0');
@@ -6696,7 +6698,7 @@ function fluxoDataParcela(dataChegadaISO, deltaSemanas) {
 }
 
 // Calcula as 3 parcelas de um pedido Importado.
-// Retorna array de 3 objetos { key, nome, fase_kanban, pct, delta_sem, data_iso, valor_brl }
+// Retorna array de 3 objetos { key, nome, fase_kanban, pct, delta_dias, data_iso, valor_brl }
 // Retorna [] se pedido não é elegível (não-Importado, cancelado, sem data/valor/fornecedor).
 function fluxoParcelasDoPedido(p, ptax = FLUXO_PTAX) {
   if (!p || p.cancelado) return [];
@@ -6726,7 +6728,7 @@ function fluxoParcelasDoPedido(p, ptax = FLUXO_PTAX) {
       nome: meta.nome,
       fase_kanban: meta.fase_kanban,
       pct,
-      delta_sem: delta,
+      delta_dias: delta,
       data_iso: dataISO,
       valor_brl: Math.round(valorBRL * 100) / 100,
       fornecedor,
