@@ -4,5 +4,11 @@
       "pago": true,
       "data_efetiva": "2026-07-14"
     }
+  },
+  "PED-0053": {
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-07-14"
+    }
   }
 }
