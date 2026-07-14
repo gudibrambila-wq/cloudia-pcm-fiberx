@@ -1352,11 +1352,11 @@
     "valor_unitario": null,
     "moeda": null,
     "id": 1782736176120,
-    "fase": "pendente",
-    "pendente_desde": "2026-06-29T12:29:36.120Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0127",
-    "fase_desde": "2026-06-29T12:29:36.120Z",
-    "processo": "016.2026 VSC"
+    "fase_desde": "2026-07-14T16:55:03.085Z",
+    "processo": "016.2026 VSC",
+    "pago_desde": "2026-07-14T16:55:03.085Z"
   },
   {
     "codigo": 400700027,
