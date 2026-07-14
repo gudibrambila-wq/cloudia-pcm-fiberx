@@ -1233,10 +1233,11 @@
     "valor_unitario": 146.65,
     "moeda": "BRL",
     "id": 1781872147937,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0121",
-    "fase_desde": "2026-07-10T19:24:15.969Z",
-    "codigo": 401200074
+    "fase_desde": "2026-07-14T19:20:25.013Z",
+    "codigo": 401200074,
+    "arquivado_em": "2026-07-14T19:20:25.013Z"
   },
   {
     "nome": "Switch Gerenciável Gigabit L2+ de 8 portas - SG3210",
