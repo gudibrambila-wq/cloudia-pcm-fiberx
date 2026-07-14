@@ -6851,6 +6851,7 @@ function fpColetarParcelas() {
         codPedido: p.codigo_pedido,
         nomeProduto: p.nome,
         qtd: p.qtd,
+        processo: p.processo || '',
         fornecedor: par.fornecedor,
         parcelaKey: par.key,
         nome_parcela: par.nome,
@@ -6995,7 +6996,7 @@ function _fpRenderCalendario(parcelas) {
       const bd = _FP_PARCELA_BADGE[x.parcelaKey];
       const strike = x.pago ? 'line-through opacity-60' : '';
       const dot = x.pago ? '✓' : '';
-      const tooltip = `${x.codPedido} · ${x.nomeProduto} · ${x.qtd} un\n${x.nome_parcela}\n${_fpFmtBRL(x.valor_brl)}${x.pago ? '\n✓ pago em ' + _fpFmtDia(x.data_efetiva || x.data_iso) : ''}`;
+      const tooltip = `${x.codPedido} · ${x.nomeProduto} · ${x.qtd} un${x.processo ? '\nProc: ' + x.processo : ''}\n${x.nome_parcela}\n${_fpFmtBRL(x.valor_brl)}${x.pago ? '\n✓ pago em ' + _fpFmtDia(x.data_efetiva || x.data_iso) : ''}`;
       return `<div class="text-[9px] leading-tight rounded px-1 py-0.5 ${bd.bg} ${bd.text} ${strike} border border-transparent hover:border-slate-300 truncate cursor-pointer" title="${tooltip.replace(/"/g,'&quot;')}" onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',${!x.pago})">
         <span class="font-bold">${bd.txt}</span> ${x.codPedido.replace('PED-','')} ${dot} · ${_fpFmtBRL(x.valor_brl)}
       </div>`;
