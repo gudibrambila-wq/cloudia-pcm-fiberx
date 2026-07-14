@@ -83,7 +83,7 @@
     "marca": "Velds",
     "tipo": "Importado",
     "qtd": 233,
-    "semana": 29,
+    "semana": 30,
     "mes": "JUL/26",
     "origem": "VELDS_PSI W20",
     "processo": "01.2026 + 4.2026",
@@ -92,7 +92,7 @@
     "modal": "FCL",
     "codigo_pedido": "PED-0056",
     "fase_desde": "2026-07-07T19:18:55.805Z",
-    "data": "2026-07-17",
+    "data": "2026-07-20",
     "codigo": 400700014,
     "valor_unitario": 95,
     "moeda": "USD"
