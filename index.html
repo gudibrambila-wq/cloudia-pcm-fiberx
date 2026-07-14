@@ -2861,7 +2861,7 @@ const PAGE_META = {
   vendas:       ['Vendas','B2B e B2C · Maio 2026'],
   estoque:      ['Estoque','Posição atual · Sênior'],
   financeiro:   ['Financeiro','Receita, investimento e margem · horizonte 12 semanas'],
-  'fluxo-pagamentos': ['Fluxo de Pagamentos','Pagamentos importados · 3 parcelas por pedido (Sinal · Pré-embarque · Numerário)'],
+  'fluxo-pagamentos': ['Fluxo de Pagamentos','Pagamentos importados · 3 parcelas por pedido (<span class="px-1.5 py-0.5 rounded bg-sky-100 text-sky-800 font-semibold">1º Sinal</span> · <span class="px-1.5 py-0.5 rounded bg-indigo-100 text-indigo-800 font-semibold">2º Pré-embarque</span> · <span class="px-1.5 py-0.5 rounded bg-fuchsia-100 text-fuchsia-800 font-semibold">3º Numerário</span>)'],
   planejamento: ['Planejamento','Planejamento de compras'],
   cobertura:    ['Cobertura WOS','Semanas de estoque por SKU · W18 atual'],
   giro:         ['Giro de Estoque','Produtos parados em estoque · status baseado em dias desde a última venda'],
@@ -2934,7 +2934,8 @@ function navigate(view, el) {
   if (target) { target.classList.add('active','text-white'); target.classList.remove('text-white/50'); }
   if (PAGE_META[view]) {
     document.getElementById('page-title').textContent = PAGE_META[view][0];
-    document.getElementById('page-sub').textContent   = PAGE_META[view][1];
+    // Aceita HTML no subtitulo (spans coloridos, etc). Fonte é hardcoded — sem risco XSS.
+    document.getElementById('page-sub').innerHTML     = PAGE_META[view][1];
   }
   if (view === 'dashboard')    setTimeout(renderDashboardKpis, 50);
   if (view === 'psi')          setTimeout(renderPSI, 50);
