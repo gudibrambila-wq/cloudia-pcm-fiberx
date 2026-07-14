@@ -1349,8 +1349,8 @@
     "data": "2026-10-06",
     "origem": "Avulso",
     "modal": "FCL",
-    "valor_unitario": null,
-    "moeda": null,
+    "valor_unitario": 53.5,
+    "moeda": "BRL",
     "id": 1782736176120,
     "fase": "pago1",
     "codigo_pedido": "PED-0127",
@@ -1697,10 +1697,10 @@
     "valor_unitario": 2.78,
     "moeda": "USD",
     "id": 1783517091392,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T13:24:51.392Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0153",
-    "fase_desde": "2026-07-08T13:24:51.392Z"
+    "fase_desde": "2026-07-14T16:55:05.253Z",
+    "pago_desde": "2026-07-14T16:55:05.253Z"
   },
   {
     "codigo": 400700033,
@@ -1717,10 +1717,10 @@
     "valor_unitario": 2.78,
     "moeda": "USD",
     "id": 1783517133440,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T13:25:33.440Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0154",
-    "fase_desde": "2026-07-08T13:25:33.440Z"
+    "fase_desde": "2026-07-14T16:55:07.200Z",
+    "pago_desde": "2026-07-14T16:55:07.200Z"
   },
   {
     "codigo": 400700032,
@@ -1737,10 +1737,10 @@
     "valor_unitario": 2.78,
     "moeda": "USD",
     "id": 1783517313068,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T13:28:33.068Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0155",
-    "fase_desde": "2026-07-08T13:28:33.068Z"
+    "fase_desde": "2026-07-14T16:55:09.152Z",
+    "pago_desde": "2026-07-14T16:55:09.152Z"
   },
   {
     "codigo": 400700031,
@@ -1757,10 +1757,10 @@
     "valor_unitario": 2.78,
     "moeda": "USD",
     "id": 1783517338780,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T13:28:58.780Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0156",
-    "fase_desde": "2026-07-08T13:28:58.780Z"
+    "fase_desde": "2026-07-14T16:55:11.060Z",
+    "pago_desde": "2026-07-14T16:55:11.060Z"
   },
   {
     "codigo": 400700030,
@@ -1777,10 +1777,10 @@
     "valor_unitario": 4.7,
     "moeda": "USD",
     "id": 1783517372036,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T13:29:32.036Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0157",
-    "fase_desde": "2026-07-08T13:29:32.036Z"
+    "fase_desde": "2026-07-14T16:55:12.828Z",
+    "pago_desde": "2026-07-14T16:55:12.828Z"
   },
   {
     "codigo": 400700036,
@@ -1797,10 +1797,10 @@
     "valor_unitario": 30.5,
     "moeda": "USD",
     "id": 1783517837900,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T13:37:17.900Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0158",
-    "fase_desde": "2026-07-08T13:37:17.900Z"
+    "fase_desde": "2026-07-14T16:55:15.481Z",
+    "pago_desde": "2026-07-14T16:55:15.481Z"
   },
   {
     "codigo": 400700038,
@@ -1817,10 +1817,10 @@
     "valor_unitario": 30.5,
     "moeda": "USD",
     "id": 1783517865360,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T13:37:45.360Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0159",
-    "fase_desde": "2026-07-08T13:37:45.360Z"
+    "fase_desde": "2026-07-14T16:55:17.181Z",
+    "pago_desde": "2026-07-14T16:55:17.181Z"
   },
   {
     "codigo": 400700037,
@@ -1837,10 +1837,10 @@
     "valor_unitario": 38.5,
     "moeda": "USD",
     "id": 1783517899227,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T13:38:19.227Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0160",
-    "fase_desde": "2026-07-08T13:38:19.227Z"
+    "fase_desde": "2026-07-14T16:55:19.352Z",
+    "pago_desde": "2026-07-14T16:55:19.352Z"
   },
   {
     "codigo": 400700039,
@@ -1857,10 +1857,10 @@
     "valor_unitario": 38.5,
     "moeda": "USD",
     "id": 1783517932508,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T13:38:52.508Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0161",
-    "fase_desde": "2026-07-08T13:38:52.508Z"
+    "fase_desde": "2026-07-14T16:55:21.128Z",
+    "pago_desde": "2026-07-14T16:55:21.128Z"
   },
   {
     "codigo": 400700035,
@@ -1877,10 +1877,10 @@
     "valor_unitario": 56,
     "moeda": "USD",
     "id": 1783517964440,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T13:39:24.440Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0162",
-    "fase_desde": "2026-07-08T13:39:24.440Z"
+    "fase_desde": "2026-07-14T16:55:23.884Z",
+    "pago_desde": "2026-07-14T16:55:23.884Z"
   },
   {
     "codigo": 400700040,
@@ -1897,10 +1897,10 @@
     "valor_unitario": 56,
     "moeda": "USD",
     "id": 1783517990912,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T13:39:50.912Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0163",
-    "fase_desde": "2026-07-08T13:39:50.912Z"
+    "fase_desde": "2026-07-14T16:55:28.420Z",
+    "pago_desde": "2026-07-14T16:55:28.420Z"
   },
   {
     "codigo": 400700041,
