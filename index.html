@@ -7105,7 +7105,7 @@ function _fpRenderLista(parcelas) {
               <span class="text-[10px] font-bold px-1.5 py-0.5 rounded ${parcelaBadgeCor[x.parcelaKey]}">${parcelaBadgeTxt[x.parcelaKey]}</span>
               <div class="flex-1 min-w-0">
                 <div class="font-medium text-slate-700 truncate">${x.nomeProduto}</div>
-                <div class="text-[10px] text-slate-500">${x.codPedido} · ${x.fornecedor} · ${x.qtd} un</div>
+                <div class="text-[10px] text-slate-500">${x.codPedido} · ${x.fornecedor} · ${x.qtd} un${x.processo ? ' · Proc: ' + x.processo : ''}</div>
               </div>
               <div class="text-right">
                 <div class="font-semibold text-slate-800">${_fpFmtBRL(x.valor_brl)}</div>
