@@ -1928,10 +1928,10 @@
     "valor_unitario": 88.9,
     "moeda": "USD",
     "id": 1783543626825,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T20:47:06.825Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0165",
-    "fase_desde": "2026-07-08T20:47:06.825Z"
+    "fase_desde": "2026-07-16T17:15:26.207Z",
+    "pago_desde": "2026-07-16T17:15:26.207Z"
   },
   {
     "nome": "ALIMENTADOR PET  VDS APBW",
