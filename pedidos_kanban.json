@@ -1960,7 +1960,8 @@
     "processo": "011B.2026 VSC",
     "fase_desde": "2026-07-09T13:09:51.077Z",
     "moeda": "USD",
-    "valor_unitario": 16.5
+    "valor_unitario": 16.5,
+    "codigo": 400600001
   },
   {
     "nome": "ROBO ASPIRADOR LASER  VDS RALWC",
@@ -1977,6 +1978,7 @@
     "processo": "005B.2026 VSC",
     "modal": "FCL",
     "valor_unitario": 88.3,
-    "moeda": "USD"
+    "moeda": "USD",
+    "codigo": 400700001
   }
 ]

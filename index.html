@@ -6677,10 +6677,20 @@ const FLUXO_CODIGO_FORNECEDOR = {
   //   401800003: ONU FASTT10 BRIDGE F10G10NW GN114Z
 };
 
-// Descobre o fornecedor chinês de um pedido (por codigo).
+// Descobre o fornecedor chinês de um pedido.
+// Prioridade: p.codigo (fonte da verdade). Fallback: lookup por nome (mesmo padrão
+// do tooltip do Kanban) — protege contra pedidos que perderam código por bug de
+// duplicação. Se o fallback acha código, também popula p.codigo pra corrigir
+// silenciosamente na próxima persistência.
 function fluxoFornecedorDoPedido(p) {
-  if (!p || !p.codigo) return null;
-  return FLUXO_CODIGO_FORNECEDOR[p.codigo] || null;
+  if (!p) return null;
+  let cod = p.codigo;
+  if (!cod && typeof codigoDoProdutoPorNome === 'function') {
+    cod = codigoDoProdutoPorNome(p.nome);
+    if (cod) p.codigo = cod;  // self-heal: grava o código encontrado
+  }
+  if (!cod) return null;
+  return FLUXO_CODIGO_FORNECEDOR[cod] || null;
 }
 
 // Soma deltaDias (pode ser negativo) a uma data ISO (YYYY-MM-DD).
