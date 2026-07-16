@@ -46,5 +46,23 @@
       "pago": true,
       "data_efetiva": "2026-07-16"
     }
+  },
+  "PED-0154": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-07-16"
+    }
+  },
+  "PED-0155": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-07-16"
+    }
+  },
+  "PED-0156": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-07-16"
+    }
   }
 }
