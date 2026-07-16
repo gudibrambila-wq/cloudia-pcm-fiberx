@@ -1889,10 +1889,9 @@
     "valor_unitario": 56,
     "moeda": "USD",
     "id": 1783517990912,
-    "fase": "pago1",
+    "fase": "producao",
     "codigo_pedido": "PED-0163",
-    "fase_desde": "2026-07-14T16:55:28.420Z",
-    "pago_desde": "2026-07-14T16:55:28.420Z"
+    "fase_desde": "2026-07-16T17:15:15.602Z"
   },
   {
     "codigo": 400700041,
