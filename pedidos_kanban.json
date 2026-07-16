@@ -791,9 +791,9 @@
     "processo": "024.2026 Verdant",
     "modal": null,
     "id": 1779817895130,
-    "fase": "backorder",
+    "fase": "faturado",
     "codigo_pedido": "PED-0095",
-    "fase_desde": "2026-07-01T20:36:10.365Z",
+    "fase_desde": "2026-07-16T17:25:00.726Z",
     "valor_unitario": 405.76,
     "moeda": "BRL",
     "codigo": 401200031
