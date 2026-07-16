@@ -1832,10 +1832,9 @@
     "valor_unitario": 38.5,
     "moeda": "USD",
     "id": 1783517899227,
-    "fase": "pago1",
+    "fase": "producao",
     "codigo_pedido": "PED-0160",
-    "fase_desde": "2026-07-14T16:55:19.352Z",
-    "pago_desde": "2026-07-14T16:55:19.352Z"
+    "fase_desde": "2026-07-16T17:15:08.610Z"
   },
   {
     "codigo": 400700039,
