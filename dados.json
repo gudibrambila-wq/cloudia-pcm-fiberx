@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-16T17:14:01",
+  "gerado_em": "2026-07-16T17:15:57",
   "semana_atual": 29,
   "semana_estoque": 29,
   "week_to_month": {
@@ -16364,7 +16364,7 @@
         "status": "EM_TRANSITO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0059",
-        "fase": "numerario"
+        "fase": "porto"
       },
       "entradas": [
         {
@@ -16373,7 +16373,7 @@
           "status": "EM_TRANSITO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0059",
-          "fase": "numerario"
+          "fase": "porto"
         },
         {
           "semana": 39,
@@ -20969,7 +20969,7 @@
         "status": "PEDIDO",
         "mes": "OUT/26",
         "codigo_pedido": "PED-0127",
-        "fase": "pago1"
+        "fase": "producao"
       },
       "entradas": [
         {
@@ -20978,7 +20978,7 @@
           "status": "PEDIDO",
           "mes": "OUT/26",
           "codigo_pedido": "PED-0127",
-          "fase": "pago1"
+          "fase": "producao"
         }
       ],
       "fcst_mensal": {
