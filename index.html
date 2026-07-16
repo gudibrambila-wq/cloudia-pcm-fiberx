@@ -7121,7 +7121,21 @@ function _fpRenderLista(parcelas) {
         <div class="flex items-center justify-between px-3 py-2 bg-white/50">
           <div class="flex items-center gap-2 flex-wrap">
             <span class="text-xs font-bold text-slate-700">${_fpDiaSemanaLabel(dataISO)} ${_fpFmtDia(dataISO)}</span>
-            <span class="text-[10px] text-slate-500">${items.length} pagamento${items.length>1?'s':''}</span>
+            <span class="text-[10px] text-slate-500">${(() => {
+              // Se só tem 1 pgto no dia, mostra o tipo da parcela (mais informativo).
+              // Se tem >1, mostra a contagem por tipo (ex: "3 pgtos · 2× 1º · 1× 3º").
+              if (items.length === 1) {
+                const nomeCurto = { primeiro: '1º Sinal', segundo: '2º Pré-Embarque', terceiro: '3º Numerário' };
+                return nomeCurto[items[0].parcelaKey] || '1 pagamento';
+              }
+              const contPorTipo = { primeiro: 0, segundo: 0, terceiro: 0 };
+              items.forEach(x => { if (contPorTipo[x.parcelaKey] != null) contPorTipo[x.parcelaKey]++; });
+              const partes = [];
+              if (contPorTipo.primeiro) partes.push(`${contPorTipo.primeiro}× 1º`);
+              if (contPorTipo.segundo)  partes.push(`${contPorTipo.segundo}× 2º`);
+              if (contPorTipo.terceiro) partes.push(`${contPorTipo.terceiro}× 3º`);
+              return `${items.length} pgtos · ${partes.join(' · ')}`;
+            })()}</span>
             ${temAtrasado ? _fpBadgeAtrasado(diasAtraso) : ''}
           </div>
           <span class="text-sm font-bold ${temAtrasado?'text-red-700':temPend?'text-amber-800':'text-emerald-700'}">${_fpFmtBRL(total)}</span>
