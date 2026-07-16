@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-15T14:40:12",
+  "gerado_em": "2026-07-16T17:14:01",
   "semana_atual": 29,
   "semana_estoque": 29,
   "week_to_month": {
@@ -9133,6 +9133,14 @@
           "mes": "OUT/26",
           "codigo_pedido": "PED-0070",
           "fase": "producao"
+        },
+        {
+          "semana": 46,
+          "quantidade": 1000,
+          "status": "PEDIDO",
+          "mes": "NOV/26",
+          "codigo_pedido": "PED-0166",
+          "fase": "producao"
         }
       ],
       "fcst_mensal": {
@@ -9351,7 +9359,7 @@
           0,
           0,
           0,
-          0,
+          1000,
           0,
           0,
           0,
@@ -9461,14 +9469,14 @@
           1565,
           1369,
           1136,
-          903,
-          670,
-          437,
-          210,
-          0,
-          0,
-          0,
-          0
+          1903,
+          1670,
+          1437,
+          1210,
+          984,
+          758,
+          532,
+          335
         ]
       },
       "pv_mensal": {
@@ -16374,6 +16382,14 @@
           "mes": "SET/26",
           "codigo_pedido": "PED-0060",
           "fase": "pago2"
+        },
+        {
+          "semana": 45,
+          "quantidade": 1000,
+          "status": "PEDIDO",
+          "mes": "NOV/26",
+          "codigo_pedido": "PED-0167",
+          "fase": "pago2"
         }
       ],
       "fcst_mensal": {
@@ -16596,7 +16612,7 @@
           0,
           0,
           0,
-          0,
+          1000,
           0,
           0,
           0,
@@ -16706,14 +16722,14 @@
           880,
           609,
           350,
-          163,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
-          0,
+          1163,
+          976,
+          789,
+          602,
+          463,
+          332,
+          201,
+          70,
           0
         ]
       },
@@ -20949,7 +20965,7 @@
       "in_transit": 0,
       "prox_chegada": {
         "semana": 41,
-        "quantidade": 2650,
+        "quantidade": 1500,
         "status": "PEDIDO",
         "mes": "OUT/26",
         "codigo_pedido": "PED-0127",
@@ -20958,7 +20974,7 @@
       "entradas": [
         {
           "semana": 41,
-          "quantidade": 2650,
+          "quantidade": 1500,
           "status": "PEDIDO",
           "mes": "OUT/26",
           "codigo_pedido": "PED-0127",
@@ -21162,7 +21178,7 @@
           0,
           0,
           0,
-          2650,
+          1500,
           0,
           0,
           0,
@@ -21272,15 +21288,15 @@
           0,
           0,
           0,
-          2450,
-          2250,
-          2050,
-          1717,
-          1384,
-          1051,
-          718,
-          385,
-          85,
+          1300,
+          1100,
+          900,
+          567,
+          234,
+          0,
+          0,
+          0,
+          0,
           0,
           0,
           0,
