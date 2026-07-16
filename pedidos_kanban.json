@@ -1967,5 +1967,24 @@
     "valor_unitario": 88.3,
     "moeda": "USD",
     "codigo": 400700001
+  },
+  {
+    "codigo": 400700048,
+    "nome": "VELDS ASPIRADOR DE PO VDS S1-1 SEM FIO",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 750,
+    "semana": 55,
+    "mes": "JAN/27",
+    "data": "2027-01-15",
+    "origem": "Avulso",
+    "processo": "022.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1784235227196,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-16T20:53:47.196Z",
+    "codigo_pedido": "PED-0168"
   }
 ]
