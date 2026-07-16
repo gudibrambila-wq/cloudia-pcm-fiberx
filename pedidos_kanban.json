@@ -1354,11 +1354,10 @@
     "valor_unitario": 53.5,
     "moeda": "USD",
     "id": 1782736176120,
-    "fase": "pago1",
+    "fase": "producao",
     "codigo_pedido": "PED-0127",
-    "fase_desde": "2026-07-14T16:55:03.085Z",
-    "processo": "016.2026 VSC",
-    "pago_desde": "2026-07-14T16:55:03.085Z"
+    "fase_desde": "2026-07-16T17:14:48.454Z",
+    "processo": "016.2026 VSC"
   },
   {
     "codigo": 400700027,
