@@ -2086,6 +2086,9 @@
 
       <!-- Filtros -->
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-3 mb-4 flex flex-wrap items-center gap-3">
+        <input id="fp-filtro-busca" type="text" placeholder="🔍 Buscar (PED, produto, processo…)"
+          oninput="renderFluxoPagamentos()"
+          class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
         <select id="fp-filtro-fornecedor" onchange="renderFluxoPagamentos()"
           class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">Todos os fornecedores</option>
@@ -6911,11 +6914,19 @@ function _fpAplicarFiltros(parcelas) {
   const fF  = document.getElementById('fp-filtro-fornecedor')?.value || '';
   const fP  = document.getElementById('fp-filtro-parcela')?.value || '';
   const fS  = document.getElementById('fp-filtro-status')?.value || '';
+  const fB  = (document.getElementById('fp-filtro-busca')?.value || '').trim().toLowerCase();
   return parcelas.filter(x => {
     if (fF && x.fornecedor !== fF) return false;
     if (fP && x.parcelaKey !== fP) return false;
     if (fS === 'pago' && !x.pago) return false;
     if (fS === 'pendente' && x.pago) return false;
+    if (fB) {
+      // Busca livre em: PED, nome produto, fornecedor, processo
+      const alvo = `${x.codPedido||''} ${x.nomeProduto||''} ${x.fornecedor||''} ${x.processo||''}`.toLowerCase();
+      // Aceita busca parcial: "153" bate com "PED-0153"; "rosa" bate com nome; "ritus" com fornecedor.
+      // Também aceita PED sem prefixo: "0153" ou "153"
+      if (!alvo.includes(fB)) return false;
+    }
     return true;
   });
 }
