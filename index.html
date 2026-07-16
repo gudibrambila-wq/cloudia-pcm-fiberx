@@ -2127,7 +2127,7 @@
 
       <!-- Lista de dias com movimento -->
       <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-        <h3 class="text-sm font-semibold text-slate-800 mb-3">Próximos pagamentos</h3>
+        <h3 id="fp-lista-titulo" class="text-sm font-semibold text-slate-800 mb-3">Próximos pagamentos</h3>
         <div id="fp-lista-dias" class="space-y-2"></div>
       </div>
     </div>
@@ -7083,15 +7083,25 @@ function _fpRenderLista(parcelas) {
   const cont = document.getElementById('fp-lista-dias');
   if (!cont) return;
 
-  // Filtra a partir do dia 1 do mês visualizado (mostra o mês e próximos)
+  // Quando busca ativa: ignora o filtro de mês e mostra TODAS as parcelas
+  // do que casou (mesmo com data no passado). Facilita reconciliação de
+  // pagamentos atrasados.
+  const buscaAtiva = !!(document.getElementById('fp-filtro-busca')?.value || '').trim();
+
   const { year, month } = _fpMesVisualizado;
   const inicio = `${year}-${String(month+1).padStart(2,'0')}-01`;
   const ordenadas = parcelas
-    .filter(x => x.data_iso && x.data_iso >= inicio)
+    .filter(x => x.data_iso && (buscaAtiva || x.data_iso >= inicio))
     .sort((a, b) => a.data_iso.localeCompare(b.data_iso));
 
+  // Muda título dinamicamente pra sinalizar se está mostrando tudo ou só do mês em diante
+  const tituloEl = document.getElementById('fp-lista-titulo');
+  if (tituloEl) {
+    tituloEl.textContent = buscaAtiva ? 'Resultados da busca (todas as datas)' : 'Próximos pagamentos';
+  }
+
   if (ordenadas.length === 0) {
-    cont.innerHTML = '<div class="text-center text-slate-400 py-8 text-xs">Nenhum pagamento no período com os filtros aplicados.</div>';
+    cont.innerHTML = `<div class="text-center text-slate-400 py-8 text-xs">${buscaAtiva ? 'Nenhum pagamento bate com a busca.' : 'Nenhum pagamento no período com os filtros aplicados.'}</div>`;
     return;
   }
 
