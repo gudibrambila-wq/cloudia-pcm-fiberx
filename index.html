@@ -6713,7 +6713,13 @@ function fluxoDataParcela(dataChegadaISO, deltaDias) {
 function fluxoParcelasDoPedido(p, ptax = FLUXO_PTAX) {
   if (!p || p.cancelado) return [];
   if ((p.tipo || 'Nacional') !== 'Importado') return [];
-  if (!p.data || !p.qtd) return [];
+  if (!p.qtd) return [];
+  // Data de chegada: prefere p.data (dia exato). Fallback: deriva da semana
+  // via semanaToDataISO (retorna a segunda-feira da semana). Isso protege
+  // pedidos antigos criados sem data específica — o modal do Kanban já faz
+  // essa mesma derivação pra exibir a data no card.
+  const dataChegada = p.data || (p.semana && typeof semanaToDataISO === 'function' ? semanaToDataISO(p.semana) : null);
+  if (!dataChegada) return [];
   // Valor unitario: pra Importado o modelo espera USD. Se estiver em BRL,
   // ainda calcula (assume PTAX=1) mas emite aviso via campo _moeda_erro.
   const valorUnit = Number(p.valor_unitario);
@@ -6731,7 +6737,7 @@ function fluxoParcelasDoPedido(p, ptax = FLUXO_PTAX) {
     const meta = FLUXO_PARCELAS_META[key];
     const pct = pcts[key];
     const delta = FLUXO_DELTAS[key];
-    const dataISO = fluxoDataParcela(p.data, delta);
+    const dataISO = fluxoDataParcela(dataChegada, delta);
     const valorBRL = valorUnit * pct * p.qtd * cambio;
     return {
       key,
