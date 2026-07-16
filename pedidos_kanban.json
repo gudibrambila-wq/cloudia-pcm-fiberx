@@ -1986,5 +1986,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-07-16T20:53:47.196Z",
     "codigo_pedido": "PED-0168"
+  },
+  {
+    "codigo": 400700049,
+    "nome": "VELDS ASPIRADOR DE PO VDS S3-1 SEM FIO",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 500,
+    "semana": 55,
+    "mes": "JAN/27",
+    "data": "2027-01-15",
+    "origem": "Avulso",
+    "processo": "022.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1784235255607,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-16T20:54:15.607Z",
+    "codigo_pedido": "PED-0169"
   }
 ]
