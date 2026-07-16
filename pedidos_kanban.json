@@ -1908,10 +1908,10 @@
     "valor_unitario": 89.9,
     "moeda": "USD",
     "id": 1783543598890,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-08T20:46:38.890Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0164",
-    "fase_desde": "2026-07-08T20:46:38.890Z"
+    "fase_desde": "2026-07-16T17:15:30.466Z",
+    "pago_desde": "2026-07-16T17:15:30.466Z"
   },
   {
     "codigo": 400700042,
