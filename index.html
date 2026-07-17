@@ -2066,7 +2066,7 @@
         <div class="flex flex-wrap items-center gap-4">
           <div>
             <label class="text-xs text-slate-500 font-medium block mb-1">PTAX (R$ por US$)</label>
-            <input id="fp-ptax" type="number" step="0.01" min="0" value="5.17"
+            <input id="fp-ptax" type="number" step="0.0001" min="0" value="5.17"
               oninput="fpAtualizarPtax(this.value)"
               class="w-28 border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
           </div>
@@ -5536,7 +5536,7 @@ function abrirModalEditarProduto(codigo) {
     const div = document.createElement('div');
     div.innerHTML = `
       <label class="text-[10px] text-slate-400 font-medium block mb-0.5">${mes}</label>
-      <input data-mes="${mes}" type="number" step="0.01" min="0" value="${v}"
+      <input data-mes="${mes}" type="number" step="0.0001" min="0" value="${v}"
         placeholder="—"
         class="w-full border border-slate-200 rounded px-2 py-1 text-xs text-slate-700 bg-white focus:outline-none focus:ring-1 focus:ring-blue-400 placeholder-slate-300">
     `;
@@ -5552,7 +5552,7 @@ function abrirModalEditarProduto(codigo) {
     const div = document.createElement('div');
     div.innerHTML = `
       <label class="text-[10px] text-slate-400 font-medium block mb-0.5">${mes}</label>
-      <input data-mes="${mes}" type="number" step="0.01" min="0" value="${v}"
+      <input data-mes="${mes}" type="number" step="0.0001" min="0" value="${v}"
         placeholder="—"
         class="w-full border border-slate-200 rounded px-2 py-1 text-xs text-slate-700 bg-white focus:outline-none focus:ring-1 focus:ring-blue-400 placeholder-slate-300">
     `;
@@ -6062,7 +6062,7 @@ function kanbanCardHTML(p) {
       </div>
       <div class="flex items-center gap-1.5 pt-0.5" onclick="event.stopPropagation()">
         <span class="text-slate-400 shrink-0 w-10">Valor</span>
-        <input type="number" step="0.01" min="0"
+        <input type="number" step="0.0001" min="0"
           value="${p.valor_unitario || ''}"
           placeholder="0,00"
           onblur="salvarValorUnitario(${p.id}, this.value)"
@@ -10695,11 +10695,11 @@ function initFlatpickrCustom() {
       <div class="grid grid-cols-2 gap-3">
         <div>
           <label class="text-xs text-slate-500 font-medium block mb-1">Preço Venda (PV) — R$</label>
-          <input id="edit-pv" type="number" step="0.01" min="0" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input id="edit-pv" type="number" step="0.0001" min="0" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
         <div>
           <label class="text-xs text-slate-500 font-medium block mb-1">Preço Custo (PC) — R$</label>
-          <input id="edit-pc" type="number" step="0.01" min="0" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
+          <input id="edit-pc" type="number" step="0.0001" min="0" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500">
         </div>
       </div>
     </div>
@@ -10828,7 +10828,7 @@ function initFlatpickrCustom() {
       <div class="grid grid-cols-3 gap-3">
         <div class="col-span-2">
           <label class="text-xs text-slate-500 font-medium block mb-1">Valor unitário (opcional)</label>
-          <input id="np-valor-unit" type="number" step="0.01" min="0" placeholder="0,00" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="npAtualizarValorTotal()">
+          <input id="np-valor-unit" type="number" step="0.0001" min="0" placeholder="0,00" class="w-full border border-slate-200 rounded-lg px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500" oninput="npAtualizarValorTotal()">
         </div>
         <div>
           <label class="text-xs text-slate-500 font-medium block mb-1">Moeda</label>
