@@ -3299,6 +3299,15 @@ function renderEstoque() {
 // Isso garante coerência com o que o PSI exibe (que sempre usa o cascade real).
 function forecastMesProduto(p, mes) {
   if (!p || !mes) return 0;
+  // Prioriza fcst_mensal[mes] — é o valor OFICIAL definido no modal de produto,
+  // sem dupla contagem de semanas-fronteira. Antes usava soma semanal do PSI
+  // (getMonthWeekRange), que inflacionava porque W-fronteira (ex: W31 = JUL+AGO)
+  // era contada nos 2 meses. Bug reportado 17/07/2026.
+  const fm = p.fcst_mensal?.[mes];
+  if (fm != null && fm !== '') return fm;
+
+  // Fallback (só se fcst_mensal[mes] não existe): soma semanal do PSI.
+  // Mantém pra edge case de produtos sem fcst_mensal cadastrado.
   const psi = p.psi;
   if (psi && Array.isArray(psi.semanas) && Array.isArray(psi.forecast)) {
     const rMes = getMonthWeekRange(mes);
@@ -3311,7 +3320,7 @@ function forecastMesProduto(p, mes) {
       if (total > 0) return total;
     }
   }
-  return p.fcst_mensal?.[mes] || 0;
+  return 0;
 }
 
 // ===== DASHBOARD KPIs (4 cards do topo) =====
