@@ -707,7 +707,11 @@
           <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-teal-400"></span>Porto</span>
           <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>Estoque</span>
         </div>
-        <span id="tl-count" class="ml-auto text-xs text-slate-300">—</span>
+        <select id="tl-filtro-produto" onchange="renderTimeline()"
+          class="ml-auto text-sm border border-slate-600 rounded-lg px-3 py-2 bg-slate-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[280px]">
+          <option value="">Todos os produtos</option>
+        </select>
+        <span id="tl-count" class="text-xs text-slate-300">—</span>
         <button onclick="toggleTimelineFullscreen()" title="Tela cheia" id="tl-fullscreen-btn"
           class="text-slate-300 hover:text-white border border-slate-600 hover:border-slate-400 rounded-lg px-2.5 py-2 transition-colors flex items-center gap-1.5">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/></svg>
@@ -1139,7 +1143,11 @@
           <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>Recebido</span>
           <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-700"></span>Estoque</span>
         </div>
-        <span id="tln-count" class="ml-auto text-xs text-slate-300">—</span>
+        <select id="tln-filtro-produto" onchange="renderTimelineNac()"
+          class="ml-auto text-sm border border-slate-600 rounded-lg px-3 py-2 bg-slate-900 text-slate-100 focus:outline-none focus:ring-2 focus:ring-blue-500 max-w-[280px]">
+          <option value="">Todos os produtos</option>
+        </select>
+        <span id="tln-count" class="text-xs text-slate-300">—</span>
         <button onclick="exportarTimelineNac()" title="Exportar Excel"
           class="text-slate-300 hover:text-white border border-slate-600 hover:border-slate-400 rounded-lg px-2.5 py-2 transition-colors flex items-center gap-1.5">
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M4 4h16v16H4z"/></svg>
@@ -9240,13 +9248,20 @@ function renderTimeline() {
   if (!document.getElementById('tl-col-office')) return;
 
   const filtroEtapa = document.getElementById('tl-filtro-etapa')?.value || '';
+  const filtroProduto = document.getElementById('tl-filtro-produto')?.value || '';
 
-  const pedidos = (PEDIDOS || [])
+  // Base — todos os pedidos importados ativos (usado pra popular dropdown de produtos)
+  const baseAtivos = (PEDIDOS || [])
     .filter(p => (p.tipo || 'Nacional') === 'Importado')
     .filter(p => !_arquivado(p))
-    .filter(p => !p.cancelado)
+    .filter(p => !p.cancelado);
+
+  _tlPopularFiltroProduto('tl-filtro-produto', baseAtivos);
+
+  const pedidos = baseAtivos
     .map(p => ({ ...p, _etapa: _etapaTimeline(p.fase || 'pendente') }))
     .filter(p => !filtroEtapa || p._etapa === filtroEtapa)
+    .filter(p => !filtroProduto || p.nome === filtroProduto)
     .sort((a, b) => (a.semana || 0) - (b.semana || 0));
 
   if (countEl) countEl.textContent = `${pedidos.length} processo${pedidos.length !== 1 ? 's' : ''}`;
@@ -9346,6 +9361,18 @@ function renderTimeline() {
   });
 }
 
+// Popula dropdown de filtro por produto — só produtos que TÊM processo ativo.
+// selId = id do <select>. Preserva a seleção atual se o produto continuar na lista.
+function _tlPopularFiltroProduto(selId, pedidosAtivos) {
+  const sel = document.getElementById(selId);
+  if (!sel) return;
+  const atual = sel.value;
+  // Nomes únicos (ordena alfabético — mais fácil pra encontrar)
+  const nomes = [...new Set(pedidosAtivos.map(p => p.nome).filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">Todos os produtos</option>' +
+    nomes.map(n => `<option value="${n.replace(/"/g, '&quot;')}"${n===atual?' selected':''}>${n}</option>`).join('');
+}
+
 // ===== TIMELINE NACIONAL =====
 function renderTimelineNac() {
   const countEl = document.getElementById('tln-count');
@@ -9353,13 +9380,19 @@ function renderTimelineNac() {
   if (!document.getElementById('tln-col-pedido')) return;
 
   const filtroEtapa = document.getElementById('tln-filtro-etapa')?.value || '';
+  const filtroProduto = document.getElementById('tln-filtro-produto')?.value || '';
 
-  const pedidos = (PEDIDOS || [])
+  const baseAtivos = (PEDIDOS || [])
     .filter(p => (p.tipo || 'Nacional') === 'Nacional')
     .filter(p => !_arquivado(p))
-    .filter(p => !p.cancelado)
+    .filter(p => !p.cancelado);
+
+  _tlPopularFiltroProduto('tln-filtro-produto', baseAtivos);
+
+  const pedidos = baseAtivos
     .map(p => ({ ...p, _etapa: _etapaTimelineNac(p.fase || 'pendente') }))
     .filter(p => !filtroEtapa || p._etapa === filtroEtapa)
+    .filter(p => !filtroProduto || p.nome === filtroProduto)
     .sort((a, b) => (a.semana || 0) - (b.semana || 0));
 
   if (countEl) countEl.textContent = `${pedidos.length} processo${pedidos.length !== 1 ? 's' : ''}`;
