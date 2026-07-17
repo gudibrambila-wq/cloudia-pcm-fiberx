@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>CloudIA PCM | FiberX</title>
+  <title>Portal Supply | FiberX</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
@@ -38,7 +38,7 @@
     <div class="w-8 h-8 rounded-lg bg-blue-500 flex items-center justify-center font-bold text-xs text-white shrink-0">FX</div>
     <div class="flex-1 min-w-0">
       <div class="text-white font-bold text-sm leading-none">FiberX</div>
-      <div class="text-blue-400 text-xs mt-0.5">CloudIA · PCM</div>
+      <div class="text-blue-400 text-xs mt-0.5">Portal Supply</div>
     </div>
     <button onclick="toggleSidebar()" title="Recolher menu" class="text-white/50 hover:text-white transition-colors shrink-0">
       <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 19l-7-7 7-7m8 14l-7-7 7-7"/></svg>
@@ -10183,7 +10183,7 @@ function _iniciarModoKiosk() {
   if (_getUrlParam('kiosk') !== '1') return;
 
   // Renomeia a aba do navegador pra identificar fácil entre várias abas abertas
-  document.title = 'TV — CloudIA PCM';
+  document.title = 'TV — Portal Supply';
 
   const rotateSec  = Math.max(5,  parseInt(_getUrlParam('rotate'))  || 45);
   const refreshMin = Math.max(1,  parseInt(_getUrlParam('refresh')) || 10);
@@ -10401,7 +10401,7 @@ function _iniciarModoView() {
   if (!ativarView) return;
 
   // Renomeia a aba pra identificar fácil (sobrescrevido se kiosk também ativo)
-  document.title = '👁️ Visualização — CloudIA PCM';
+  document.title = '👁️ Visualização — Portal Supply';
 
   // 1) Marca body pra CSS pegar
   document.body.classList.add('modo-view');
