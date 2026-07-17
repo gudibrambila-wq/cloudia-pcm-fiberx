@@ -7185,6 +7185,13 @@ function _fpRenderLista(parcelas) {
 }
 
 function _fpTogglePago(codPedido, parcelaKey, marcar) {
+  // Bloqueio server-side: modo view-only não pode marcar/desmarcar pgto.
+  // CSS já esconde os botões, mas alguém pode chamar via console (F12).
+  if (document.body.classList.contains('modo-view')) {
+    console.warn('_fpTogglePago bloqueado: modo view-only não pode alterar status de pagamento.');
+    if (typeof mostrarToast === 'function') mostrarToast('⚠ Modo somente-leitura — sem permissão pra alterar pagamento');
+    return;
+  }
   if (marcar) {
     marcarParcelaPaga(codPedido, parcelaKey);
     // Sincronia Fluxo → Kanban: se o pedido está na fase esperada dessa
@@ -10436,8 +10443,24 @@ function _iniciarModoView() {
     body.modo-view button[onclick*="duplicarPedido"],
     body.modo-view button[onclick*="carregarDados"],
     body.modo-view button[onclick*="abrirModalCancelados"],
-    body.modo-view button[onclick*="restaurarPedidoCancelado"] {
+    body.modo-view button[onclick*="restaurarPedidoCancelado"],
+    /* Fluxo de Pagamentos — impede marcar/desmarcar parcela em view-only */
+    body.modo-view [onclick*="_fpTogglePago"],
+    body.modo-view [onclick*="_fpDesfazerSync"] {
       display: none !important;
+    }
+    /* Fluxo de Pagamentos: mini-cards do calendário continuam VISÍVEIS mas
+       não clicáveis (só informativos) + input do PTAX bloqueado em view-only */
+    body.modo-view #fp-calendario [onclick*="_fpTogglePago"] {
+      display: block !important;  /* mantém o card visível */
+      pointer-events: none !important;
+      cursor: default !important;
+    }
+    body.modo-view #fp-ptax {
+      pointer-events: none !important;
+      background-color: #f1f5f9 !important;
+      color: #64748b !important;
+      cursor: not-allowed !important;
     }
     /* Esconde indicador "Servidor OK/offline" — só faz sentido no V3 local com Python server */
     body.modo-view #header-sync-status,
