@@ -1491,9 +1491,10 @@
     "valor_unitario": 106.904,
     "moeda": "BRL",
     "id": 1782906985854,
-    "fase": "transito",
+    "fase": "estoque",
     "codigo_pedido": "PED-0143",
-    "fase_desde": "2026-07-16T17:24:32.495Z"
+    "fase_desde": "2026-07-20T19:10:32.254Z",
+    "arquivado_em": "2026-07-20T19:10:32.254Z"
   },
   {
     "codigo": 401200030,
