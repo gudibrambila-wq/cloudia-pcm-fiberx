@@ -294,16 +294,15 @@
     "mes": "JUL/26",
     "origem": "VELDS_PSI W20",
     "processo": "001.2026VSC",
-    "fase": "estoque",
+    "fase": "recebido",
     "_unique_key": "velds_w20_ROBO ASPIRADOR V50_22_1400",
     "modal": "FCL",
     "codigo_pedido": "PED-0067",
-    "fase_desde": "2026-07-20T18:52:50.918Z",
+    "fase_desde": "2026-07-20T19:04:32.263Z",
     "data": "2026-07-20",
     "codigo": 400700012,
     "valor_unitario": 65,
-    "moeda": "USD",
-    "arquivado_em": "2026-07-20T18:52:50.918Z"
+    "moeda": "USD"
   },
   {
     "id": 191560432685838,
