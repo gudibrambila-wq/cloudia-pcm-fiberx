@@ -4815,9 +4815,8 @@ function renderPSI() {
         // Para Estoque Inicial e Saldo Final, 0 é um valor real ("sem estoque") e deve aparecer como "0".
         // Para Forecast/Realizado/Sell In/WOS, 0 significa "sem evento" e fica como "—".
         const showZero = (row.key === 'estoque' || row.key === 'saldo');
-        const val = (v===null||v===undefined||(!showZero && v===0))
-          ? '—'
-          : (typeof v==='number' ? v.toLocaleString('pt-BR',{maximumFractionDigits:1}) : v);
+        // val é calculado APÓS o bloco do kanban (que pode sobrescrever v pra
+        // incluir chegadas ja recebidas no display).
 
         // Marcação visual para células de Sell In com pedidos do Kanban
         // - Pedidos em fase 'pendente' (aguardando pagamento) → cor âmbar + ⚠ + tooltip de aviso
@@ -4864,6 +4863,9 @@ function renderPSI() {
             }
           }
         }
+        const val = (v===null||v===undefined||(!showZero && v===0))
+          ? '—'
+          : (typeof v==='number' ? v.toLocaleString('pt-BR',{maximumFractionDigits:1}) : v);
         const titleAttr = cellTooltip ? ` title="${cellTooltip.replace(/"/g, '&quot;')}"` : '';
         return `<td class="py-2.5 px-3 text-right text-xs whitespace-nowrap ${sep} ${proj?'opacity-75 italic':''} ${cellColor} ${hl?'bg-blue-100':''}"${titleAttr}>${val}${cellSuffix}</td>`;
       }).join('')}
