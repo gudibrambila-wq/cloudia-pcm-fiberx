@@ -4066,16 +4066,21 @@ function kanbanSellInForProduct(nome, codigo) {
     const bateNome = nome && p.nome === nome;
     if (!bateCod && !bateNome) return;
     if (p.cancelado) return;  // pedido cancelado não conta como chegada
-    const fase = p.fase || 'pendente';
-    // Estoque entra apenas se for chegada HISTÓRICA (semana < SEMANA_ATUAL) — pra aparecer no Sell In do PSI.
-    // Pra semanas futuras estoque não conta (já está no saldo_atual).
-    if (fase === 'estoque' && (p.semana || 0) >= SEMANA_ATUAL) return;
     if (!p.semana || !p.qtd) return;
+    const fase = p.fase || 'pendente';
+    // Pedido "já chegou fisicamente" (fase estoque com semana atual/futura):
+    // NÃO entra no cascade do saldo (foto do Sênior já reflete quando atualizada),
+    // mas AINDA aparece no display do PSI como histórico marcado ✓.
+    const jaChegouFuturo = fase === 'estoque' && (p.semana || 0) >= SEMANA_ATUAL;
     const entry = map.get(p.semana) || {
-      total: 0, pendente: 0, pedidosPorMes: new Map(),
+      total: 0, totalCascade: 0, pendente: 0, pedidosPorMes: new Map(),
+      todosRecebidos: true,
     };
-    entry.total += p.qtd;
-    if ((p.fase || 'pendente') === 'pendente') entry.pendente += p.qtd;
+    entry.total += p.qtd;                                  // display: tudo
+    if (!jaChegouFuturo) entry.totalCascade += p.qtd;      // cascade: exclui recebido futuro
+    else entry.jaRecebidoQtd = (entry.jaRecebidoQtd || 0) + p.qtd;
+    if (!jaChegouFuturo) entry.todosRecebidos = false;
+    if (fase === 'pendente') entry.pendente += p.qtd;
     const mesKey = p.mes || WEEK_TO_MONTH[p.semana] || '';
     const arr = entry.pedidosPorMes.get(mesKey) || [];
     arr.push(p);
@@ -4286,13 +4291,14 @@ function renderPSI() {
     // — inclusive histórico. Resíduos da aba "cenario 1" (chegadas antigas
     // cadastradas no PSI antes da migração pro Kanban) não devem mais aparecer.
     targetDs.labels.forEach((_, i) => { targetDs.sellIn[i] = 0; });
-    // 2) Soma os pedidos do Kanban (exceto fase 'estoque', já no saldo_atual)
+    // 2) Soma os pedidos do Kanban (exceto fase 'estoque' + semana >= SEMANA_ATUAL,
+    //    que já é chegada efetivada e está contabilizada no saldo_atual)
     if (kanbanByWeek.size) {
       targetDs.labels.forEach((lbl, i) => {
         const w = labelToWeek(lbl);
         if (w < SEMANA_ATUAL) return;
         const entry = kanbanByWeek.get(w);
-        if (entry) targetDs.sellIn[i] = (targetDs.sellIn[i] || 0) + entry.total;
+        if (entry) targetDs.sellIn[i] = (targetDs.sellIn[i] || 0) + entry.totalCascade;
       });
     }
     // 2b) Soma os pedidos SIMULADOS (cenário em discussão, ainda não efetivado).
@@ -4821,7 +4827,7 @@ function renderPSI() {
         let cellTooltip = '';
         if (row.key === 'sellIn' && kanbanByWeek.has(col.weekNum)) {
           const entry = kanbanByWeek.get(col.weekNum);
-          let qty = 0, pendente = 0;
+          let qty = 0, pendente = 0, jaRecebido = 0;
           const bd = [];
           entry.pedidosPorMes.forEach((arr, mes) => {
             const inCell = !isBoundaryWeek || mes === col.mes;
@@ -4829,11 +4835,16 @@ function renderPSI() {
               arr.forEach(p => {
                 qty += p.qtd;
                 if ((p.fase || 'pendente') === 'pendente') pendente += p.qtd;
+                if ((p.fase === 'estoque') && (p.semana || 0) >= SEMANA_ATUAL) jaRecebido += p.qtd;
                 bd.push(p);
               });
             }
           });
           if (qty > 0) {
+            // Sobrescreve v pra mostrar o TOTAL (inclui recebidos futuros que o cascade
+            // excluiu) — preserva historico visual. Ver kanbanSellInForProduct.
+            if (jaRecebido > 0 && (v === 0 || v === null || v === undefined)) v = qty;
+            else if (jaRecebido > 0) v = (v || 0) + jaRecebido;
             const detalhe = bd.map(p =>
               `${p.qtd}un · ${(p.fase||'pendente').toUpperCase()}${p.processo ? ' · proc '+p.processo : ''}`
             ).join(' | ');
@@ -4841,6 +4852,13 @@ function renderPSI() {
               cellColor   = 'text-amber-700 font-bold';
               cellSuffix  = ' <span class="text-amber-600" style="font-size:0.7rem">⚠</span>';
               cellTooltip = `⚠ ${pendente} un AGUARDANDO PAGAMENTO — efetive o pagamento para confirmar a chegada. ${detalhe}`;
+            } else if (jaRecebido === qty) {
+              // Todos os pedidos ja receberam: estilo cinza+italico + marca ✓
+              cellColor   = 'text-slate-400 italic';
+              cellSuffix  = ' <span class="text-emerald-600" style="font-size:0.7rem">✓</span>';
+              cellTooltip = `✓ Ja recebido — chegada ja contabilizada no saldo do Senior. ${detalhe}`;
+            } else if (jaRecebido > 0) {
+              cellTooltip = `Kanban (${jaRecebido}un ja recebido ✓): ${detalhe}`;
             } else {
               cellTooltip = `Kanban: ${detalhe}`;
             }
