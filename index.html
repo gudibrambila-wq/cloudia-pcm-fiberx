@@ -4074,12 +4074,9 @@ function kanbanSellInForProduct(nome, codigo) {
     const jaChegouFuturo = fase === 'estoque' && (p.semana || 0) >= SEMANA_ATUAL;
     const entry = map.get(p.semana) || {
       total: 0, totalCascade: 0, pendente: 0, pedidosPorMes: new Map(),
-      todosRecebidos: true,
     };
-    entry.total += p.qtd;                                  // display: tudo
-    if (!jaChegouFuturo) entry.totalCascade += p.qtd;      // cascade: exclui recebido futuro
-    else entry.jaRecebidoQtd = (entry.jaRecebidoQtd || 0) + p.qtd;
-    if (!jaChegouFuturo) entry.todosRecebidos = false;
+    entry.total += p.qtd;                              // display: tudo
+    if (!jaChegouFuturo) entry.totalCascade += p.qtd;  // cascade: exclui estoque futuro
     if (fase === 'pendente') entry.pendente += p.qtd;
     const mesKey = p.mes || WEEK_TO_MONTH[p.semana] || '';
     const arr = entry.pedidosPorMes.get(mesKey) || [];
