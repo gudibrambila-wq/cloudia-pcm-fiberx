@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-20T19:10:42",
+  "gerado_em": "2026-07-20T20:34:55",
   "semana_atual": 30,
   "semana_estoque": 30,
   "week_to_month": {
@@ -16358,23 +16358,23 @@
       "pc": 900,
       "saldo_atual": 895,
       "fc_sem": 253,
-      "in_transit": 2500,
+      "in_transit": 0,
       "prox_chegada": {
         "semana": 30,
         "quantidade": 2500,
-        "status": "EM_TRANSITO",
+        "status": "RECEBIDO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0059",
-        "fase": "porto"
+        "fase": "recebido"
       },
       "entradas": [
         {
           "semana": 30,
           "quantidade": 2500,
-          "status": "EM_TRANSITO",
+          "status": "RECEBIDO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0059",
-          "fase": "porto"
+          "fase": "recebido"
         },
         {
           "semana": 39,
@@ -16757,7 +16757,7 @@
         "status": "RECEBIDO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0053",
-        "fase": "recebido"
+        "fase": "estoque"
       },
       "entradas": [
         {
@@ -16766,7 +16766,7 @@
           "status": "RECEBIDO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0053",
-          "fase": "recebido"
+          "fase": "estoque"
         },
         {
           "semana": 32,
@@ -17133,7 +17133,7 @@
         "status": "RECEBIDO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0056",
-        "fase": "recebido"
+        "fase": "estoque"
       },
       "entradas": [
         {
@@ -17142,7 +17142,7 @@
           "status": "RECEBIDO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0056",
-          "fase": "recebido"
+          "fase": "estoque"
         },
         {
           "semana": 32,
@@ -23037,7 +23037,7 @@
         "status": "RECEBIDO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0053",
-        "fase": "recebido"
+        "fase": "estoque"
       },
       "entradas": [
         {
@@ -23046,7 +23046,7 @@
           "status": "RECEBIDO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0053",
-          "fase": "recebido"
+          "fase": "estoque"
         },
         {
           "semana": 32,
@@ -23390,7 +23390,7 @@
         "status": "RECEBIDO",
         "mes": "JUL/26",
         "codigo_pedido": "PED-0056",
-        "fase": "recebido"
+        "fase": "estoque"
       },
       "entradas": [
         {
@@ -23399,7 +23399,7 @@
           "status": "RECEBIDO",
           "mes": "JUL/26",
           "codigo_pedido": "PED-0056",
-          "fase": "recebido"
+          "fase": "estoque"
         },
         {
           "semana": 32,
