@@ -146,15 +146,16 @@
     "mes": "JUL/26",
     "origem": "VELDS_PSI W20",
     "processo": "002.2026 VSC",
-    "fase": "recebido",
+    "fase": "estoque",
     "_unique_key": "velds_w20_ROBO ASPIRADOR GENESIS_19_2500",
     "modal": "FCL",
     "codigo_pedido": "PED-0059",
-    "fase_desde": "2026-07-20T20:34:45.026Z",
+    "fase_desde": "2026-07-21T12:03:18.228Z",
     "data": "2026-07-22",
     "codigo": 400700001,
     "valor_unitario": 78,
-    "moeda": "USD"
+    "moeda": "USD",
+    "arquivado_em": "2026-07-21T12:03:18.228Z"
   },
   {
     "id": 104827302770868,
