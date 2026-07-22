@@ -795,12 +795,13 @@
     "processo": "024.2026 VERDANT",
     "modal": null,
     "id": 1779817895130,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0095",
-    "fase_desde": "2026-07-21T17:53:24.874Z",
+    "fase_desde": "2026-07-22T13:51:29.547Z",
     "valor_unitario": 405.76,
     "moeda": "BRL",
-    "codigo": 401200031
+    "codigo": 401200031,
+    "arquivado_em": "2026-07-22T13:51:29.547Z"
   },
   {
     "nome": "SWITCH NAO GER. LINHA OMADA 16GE TPLINK  TLSG1016D LOCAL",
