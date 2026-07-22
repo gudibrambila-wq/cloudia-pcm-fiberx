@@ -2012,5 +2012,24 @@
     "pendente_desde": "2026-07-16T20:54:15.607Z",
     "codigo_pedido": "PED-0169",
     "fase_desde": "2026-07-16T20:54:15.607Z"
+  },
+  {
+    "codigo": 401300036,
+    "nome": "ROTEADOR VPN LINHA OMADA TPLINK ER605 LOCAL",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 50,
+    "semana": 33,
+    "mes": "AGO/26",
+    "data": "2026-08-15",
+    "origem": "Avulso",
+    "processo": "024.2026 VERDANT",
+    "modal": null,
+    "valor_unitario": 297.1,
+    "moeda": "BRL",
+    "id": 1784727098639,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-22T13:31:38.639Z",
+    "codigo_pedido": "PED-0170"
   }
 ]
