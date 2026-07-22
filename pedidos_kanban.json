@@ -1514,9 +1514,9 @@
     "valor_unitario": 261.37,
     "moeda": "BRL",
     "id": 1782907056346,
-    "fase": "estoque_fornecedor",
+    "fase": "pago",
     "codigo_pedido": "PED-0144",
-    "fase_desde": "2026-07-03T12:24:25.469Z"
+    "fase_desde": "2026-07-22T13:33:54.083Z"
   },
   {
     "codigo": 400800004,
