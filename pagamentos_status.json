@@ -172,5 +172,11 @@
       "pago": true,
       "data_efetiva": "2026-07-16"
     }
+  },
+  "PED-0060": {
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-07-22"
+    }
   }
 }
