@@ -2032,5 +2032,24 @@
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0170",
     "fase_desde": "2026-07-22T13:31:52.802Z"
+  },
+  {
+    "codigo": 401500023,
+    "nome": "CABO DROP FASTT10 CFOAC-BLI A/B-CM01F-AR-LSZH BOB 1KM",
+    "marca": "Fastt10",
+    "tipo": "Importado",
+    "qtd": 500,
+    "semana": 50,
+    "mes": "DEZ/26",
+    "data": "2026-12-09",
+    "origem": "Avulso",
+    "processo": "005.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1784744090001,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-22T18:14:50.001Z",
+    "codigo_pedido": "PED-0171"
   }
 ]
