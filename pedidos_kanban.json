@@ -2028,8 +2028,8 @@
     "valor_unitario": 297.1,
     "moeda": "BRL",
     "id": 1784727098639,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-22T13:31:38.639Z",
-    "codigo_pedido": "PED-0170"
+    "fase": "estoque_fornecedor",
+    "codigo_pedido": "PED-0170",
+    "fase_desde": "2026-07-22T13:31:52.802Z"
   }
 ]
