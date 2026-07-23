@@ -459,7 +459,7 @@
     "codigo_pedido": "PED-0075",
     "fase_desde": "2026-06-25T17:50:15.347Z",
     "modal": "FCL",
-    "data": "2026-07-28",
+    "data": "2026-07-31",
     "codigo": 400600001,
     "valor_unitario": 16.5,
     "moeda": "USD"
@@ -2054,6 +2054,7 @@
     "cancelado": true,
     "motivo_cancelamento": "TESTE TESTE",
     "cancelado_em": "2026-07-22T18:15:38.585Z",
-    "cancelado_por": "douglas.brambila@velds.com.br"
+    "cancelado_por": "douglas.brambila@velds.com.br",
+    "fase_desde": "2026-07-22T18:14:50.001Z"
   }
 ]
