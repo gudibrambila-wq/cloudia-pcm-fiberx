@@ -2056,5 +2056,23 @@
     "cancelado_em": "2026-07-22T18:15:38.585Z",
     "cancelado_por": "douglas.brambila@velds.com.br",
     "fase_desde": "2026-07-22T18:14:50.001Z"
+  },
+  {
+    "codigo": 400700047,
+    "nome": "VELDS LIMPADOR DE PISO SEM FIO VDS LPBA-S3",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 500,
+    "semana": 44,
+    "mes": "NOV/26",
+    "data": "2026-10-30",
+    "origem": "Avulso",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1784820834861,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-23T15:33:54.861Z",
+    "codigo_pedido": "PED-0172"
   }
 ]
