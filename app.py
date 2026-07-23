@@ -143,6 +143,8 @@ _ADMIN_EMAILS = {
     "comercial@velds.com.br",
     "douglas.brambila@fiberx.com.br",
     "douglas.brambila@velds.com.br",
+    "guilherme.furlan@fiberx.com.br",
+    "guilherme.furlan@velds.com.br",
 }
 _gh_token  = ""
 _gh_repo   = ""
