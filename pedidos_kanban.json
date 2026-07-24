@@ -2095,5 +2095,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-07-24T13:01:39.508Z",
     "codigo_pedido": "PED-0173"
+  },
+  {
+    "codigo": 400700045,
+    "nome": "VELDS PANELA DE PRESSÃO DIGITAL VDS PEPD-4L (220V)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 500,
+    "semana": 53,
+    "mes": "JAN/27",
+    "data": "2026-12-30",
+    "origem": "Avulso",
+    "processo": "026.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": 26.5,
+    "moeda": "USD",
+    "id": 1784922293765,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-24T19:44:53.765Z",
+    "codigo_pedido": "PED-0174"
   }
 ]
