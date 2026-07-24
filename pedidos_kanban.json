@@ -2074,6 +2074,26 @@
     "id": 1784820834861,
     "fase": "pendente",
     "pendente_desde": "2026-07-23T15:33:54.861Z",
-    "codigo_pedido": "PED-0172"
+    "codigo_pedido": "PED-0172",
+    "fase_desde": "2026-07-23T15:33:54.861Z"
+  },
+  {
+    "codigo": 400800005,
+    "nome": "ONT WIFI 6 AX3000 ZYXEL PX3321T1",
+    "marca": "Zyxel",
+    "tipo": "Nacional",
+    "qtd": 1000,
+    "semana": 34,
+    "mes": "AGO/26",
+    "data": "2026-08-17",
+    "origem": "Avulso",
+    "processo": "037.2026 NTSC",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1784898099508,
+    "fase": "pendente",
+    "pendente_desde": "2026-07-24T13:01:39.508Z",
+    "codigo_pedido": "PED-0173"
   }
 ]
