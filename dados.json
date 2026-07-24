@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-07-23T15:38:24",
+  "gerado_em": "2026-07-24T13:01:49",
   "semana_atual": 30,
   "semana_estoque": 30,
   "week_to_month": {
@@ -20239,6 +20239,14 @@
           "mes": "AGO/26",
           "codigo_pedido": "PED-0123",
           "fase": "estoque_fornecedor"
+        },
+        {
+          "semana": 34,
+          "quantidade": 1000,
+          "status": "PEDIDO",
+          "mes": "AGO/26",
+          "codigo_pedido": "PED-0173",
+          "fase": "pendente"
         }
       ],
       "fcst_mensal": {
@@ -20458,7 +20466,7 @@
           0,
           0,
           3000,
-          0,
+          1000,
           0,
           0,
           0,
@@ -20568,11 +20576,11 @@
           0,
           0,
           2435,
-          1870,
-          1305,
-          724,
-          141,
-          0,
+          2870,
+          2305,
+          1724,
+          1141,
+          558,
           0,
           0,
           0,
