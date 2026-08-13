@@ -418,7 +418,11 @@
     "fase_desde": "2026-06-15T16:39:20.717Z",
     "codigo": 400700014,
     "valor_unitario": 95,
-    "moeda": "USD"
+    "moeda": "USD",
+    "cancelado": true,
+    "motivo_cancelamento": "Cancelado por problemas de qualidade",
+    "cancelado_em": "2026-08-13T20:59:03.095Z",
+    "cancelado_por": "guilherme.furlan@fiberx.com.br"
   },
   {
     "nome": "ROBO ASPIRADOR LASER DUST BIN - V50 PRO 110V",
