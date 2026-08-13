@@ -2122,10 +2122,10 @@
     "valor_unitario": 26.5,
     "moeda": "USD",
     "id": 1784922293765,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-24T19:44:53.765Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0174",
-    "fase_desde": "2026-07-24T19:44:53.765Z"
+    "fase_desde": "2026-08-13T20:52:36.248Z",
+    "pago_desde": "2026-08-13T20:52:36.248Z"
   },
   {
     "codigo": 400700046,
