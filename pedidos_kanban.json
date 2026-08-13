@@ -2001,10 +2001,10 @@
     "valor_unitario": null,
     "moeda": null,
     "id": 1784235227196,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-16T20:53:47.196Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0168",
-    "fase_desde": "2026-07-16T20:53:47.196Z"
+    "fase_desde": "2026-08-13T20:51:45.150Z",
+    "pago_desde": "2026-08-13T20:51:45.150Z"
   },
   {
     "codigo": 400700049,
