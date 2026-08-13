@@ -2084,10 +2084,10 @@
     "valor_unitario": null,
     "moeda": null,
     "id": 1784820834861,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-23T15:33:54.861Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0172",
-    "fase_desde": "2026-07-23T15:33:54.861Z"
+    "fase_desde": "2026-08-13T20:52:00.358Z",
+    "pago_desde": "2026-08-13T20:52:00.358Z"
   },
   {
     "codigo": 400800005,
