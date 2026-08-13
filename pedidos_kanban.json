@@ -608,9 +608,9 @@
     "processo": "020.2026 LIGGA",
     "modal": null,
     "id": 1779805680412,
-    "fase": "backorder",
+    "fase": "faturado",
     "codigo_pedido": "PED-0084",
-    "fase_desde": "2026-06-09T13:50:16.895Z",
+    "fase_desde": "2026-08-13T20:38:41.012Z",
     "valor_unitario": 401.34,
     "moeda": "BRL",
     "codigo": 401200067
