@@ -1598,7 +1598,11 @@
     "id": 1782916716556,
     "fase": "producao",
     "codigo_pedido": "PED-0146",
-    "fase_desde": "2026-07-01T14:38:59.133Z"
+    "fase_desde": "2026-07-01T14:38:59.133Z",
+    "cancelado": true,
+    "motivo_cancelamento": "Cancelado por problemas de qualidade",
+    "cancelado_em": "2026-08-13T20:59:23.621Z",
+    "cancelado_por": "guilherme.furlan@fiberx.com.br"
   },
   {
     "codigo": 401200031,
