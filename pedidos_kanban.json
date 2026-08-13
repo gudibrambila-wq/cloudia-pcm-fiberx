@@ -608,12 +608,13 @@
     "processo": "020.2026 LIGGA",
     "modal": null,
     "id": 1779805680412,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0084",
-    "fase_desde": "2026-08-13T20:38:44.606Z",
+    "fase_desde": "2026-08-13T20:38:46.270Z",
     "valor_unitario": 401.34,
     "moeda": "BRL",
-    "codigo": 401200067
+    "codigo": 401200067,
+    "arquivado_em": "2026-08-13T20:38:46.270Z"
   },
   {
     "nome": "Omada 48-Port Gigabit Stackable L3 Managed Switch with 6 10G Slots - SG6654X",
