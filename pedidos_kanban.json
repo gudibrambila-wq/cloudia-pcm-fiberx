@@ -370,10 +370,10 @@
     "origem": "Avulso",
     "modal": "FCL",
     "id": 1779396384813,
-    "fase": "pago2",
+    "fase": "embarque",
     "processo": "011A.2026 VSC",
     "codigo_pedido": "PED-0070",
-    "fase_desde": "2026-08-13T21:00:32.011Z",
+    "fase_desde": "2026-08-13T21:00:35.779Z",
     "valor_unitario": 16.5,
     "moeda": "USD",
     "codigo": 400600001
