@@ -2135,5 +2135,24 @@
     "pendente_desde": "2026-07-24T19:45:45.176Z",
     "codigo_pedido": "PED-0175",
     "fase_desde": "2026-07-24T19:45:45.176Z"
+  },
+  {
+    "codigo": 400800011,
+    "nome": "FONTE ONT ZYXEL WI-FI 6 AX3000 PX3321-T1",
+    "marca": "Zyxel",
+    "tipo": "Nacional",
+    "qtd": 500,
+    "semana": 41,
+    "mes": "OUT/26",
+    "data": "2026-10-07",
+    "origem": "Avulso",
+    "processo": "041.2026NTSC",
+    "modal": null,
+    "valor_unitario": 28,
+    "moeda": "BRL",
+    "id": 1786653342475,
+    "fase": "pendente",
+    "pendente_desde": "2026-08-13T20:35:42.475Z",
+    "codigo_pedido": "PED-0176"
   }
 ]
