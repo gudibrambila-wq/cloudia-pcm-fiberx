@@ -1305,10 +1305,11 @@
     "valor_unitario": 527.99,
     "moeda": "BRL",
     "id": 1781879474082,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0124",
-    "fase_desde": "2026-08-13T20:44:20.051Z",
-    "codigo": 401700021
+    "fase_desde": "2026-08-13T20:44:31.190Z",
+    "codigo": 401700021,
+    "arquivado_em": "2026-08-13T20:44:31.190Z"
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA TPLINK ER605 LOCAL",
