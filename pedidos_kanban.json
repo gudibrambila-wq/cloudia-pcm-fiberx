@@ -1687,9 +1687,9 @@
     "valor_unitario": 67.42,
     "moeda": "BRL",
     "id": 1783081292762,
-    "fase": "transito",
+    "fase": "recebido",
     "codigo_pedido": "PED-0152",
-    "fase_desde": "2026-08-13T20:38:27.483Z"
+    "fase_desde": "2026-08-13T20:38:33.056Z"
   },
   {
     "codigo": 400700034,
