@@ -836,12 +836,13 @@
     "processo": "024.2026 VERDANT",
     "modal": null,
     "id": 1779818098310,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0097",
-    "fase_desde": "2026-08-13T20:44:15.816Z",
+    "fase_desde": "2026-08-13T20:44:26.326Z",
     "valor_unitario": 297.1,
     "moeda": "BRL",
-    "codigo": 401300036
+    "codigo": 401300036,
+    "arquivado_em": "2026-08-13T20:44:26.326Z"
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA TPLINK ER605 LOCAL",
