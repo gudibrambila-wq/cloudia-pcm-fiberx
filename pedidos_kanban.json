@@ -1284,9 +1284,9 @@
     "valor_unitario": 174,
     "moeda": "BRL",
     "id": 1781876316398,
-    "fase": "backorder",
+    "fase": "faturado",
     "codigo_pedido": "PED-0123",
-    "fase_desde": "2026-08-13T20:40:59.793Z",
+    "fase_desde": "2026-08-13T20:43:53.103Z",
     "codigo": 400800005
   },
   {
