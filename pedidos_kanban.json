@@ -1285,10 +1285,11 @@
     "valor_unitario": 174,
     "moeda": "BRL",
     "id": 1781876316398,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0123",
-    "fase_desde": "2026-08-13T20:44:17.819Z",
-    "codigo": 400800005
+    "fase_desde": "2026-08-13T20:44:28.742Z",
+    "codigo": 400800005,
+    "arquivado_em": "2026-08-13T20:44:28.742Z"
   },
   {
     "nome": "Access Point Wi-Fi 6  AX1800 de Parede e Mesa - EAP610GP-Desktop",
