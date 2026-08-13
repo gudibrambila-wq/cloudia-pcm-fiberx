@@ -273,7 +273,11 @@
     "fase_desde": "2026-06-15T16:39:25.581Z",
     "codigo": 400700012,
     "valor_unitario": 65,
-    "moeda": "USD"
+    "moeda": "USD",
+    "cancelado": true,
+    "motivo_cancelamento": "Cancelado por problemas de qualidade",
+    "cancelado_em": "2026-08-13T20:58:40.509Z",
+    "cancelado_por": "guilherme.furlan@fiberx.com.br"
   },
   {
     "id": 270880278736188,
