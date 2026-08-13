@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-08-13T20:59:38",
+  "gerado_em": "2026-08-13T20:59:57",
   "semana_atual": 33,
   "semana_estoque": 33,
   "week_to_month": {
@@ -9115,7 +9115,7 @@
         "status": "PEDIDO",
         "mes": "OUT/26",
         "codigo_pedido": "PED-0070",
-        "fase": "producao"
+        "fase": "inspecao"
       },
       "entradas": [
         {
@@ -9124,7 +9124,7 @@
           "status": "PEDIDO",
           "mes": "OUT/26",
           "codigo_pedido": "PED-0070",
-          "fase": "producao"
+          "fase": "inspecao"
         },
         {
           "semana": 46,
