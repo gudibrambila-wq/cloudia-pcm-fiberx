@@ -2271,5 +2271,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-08-13T21:09:12.903Z",
     "codigo_pedido": "PED-0180"
+  },
+  {
+    "codigo": 400700039,
+    "nome": "VELDS AIRFRYER DIGITAL DUAS GAVETAS VDS ADGH-01 11L (4L + 7L) (220V)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 96,
+    "semana": 51,
+    "mes": "DEZ/26",
+    "data": "2026-12-15",
+    "origem": "Avulso",
+    "processo": "018B.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": 38.5,
+    "moeda": "USD",
+    "id": 1786655411717,
+    "fase": "pendente",
+    "pendente_desde": "2026-08-13T21:10:11.717Z",
+    "codigo_pedido": "PED-0181"
   }
 ]
