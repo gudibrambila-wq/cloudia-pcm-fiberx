@@ -49,15 +49,16 @@
     "mes": "AGO/26",
     "origem": "VELDS_PSI W20",
     "processo": "004.2026A VSC",
-    "fase": "recebido",
+    "fase": "estoque",
     "_unique_key": "velds_w20_ROBO ASPIRADOR V50 PRO 110 V_23_600",
     "modal": "FCL",
     "codigo_pedido": "PED-0054",
-    "fase_desde": "2026-08-13T20:57:17.465Z",
+    "fase_desde": "2026-08-13T20:57:31.655Z",
     "data": "2026-08-06",
     "codigo": 400700013,
     "valor_unitario": 95,
-    "moeda": "USD"
+    "moeda": "USD",
+    "arquivado_em": "2026-08-13T20:57:31.655Z"
   },
   {
     "id": 1552238832438,
