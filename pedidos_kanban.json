@@ -1081,7 +1081,11 @@
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0113",
     "fase_desde": "2026-06-18T18:10:17.710Z",
-    "codigo": 401300006
+    "codigo": 401300006,
+    "cancelado": true,
+    "motivo_cancelamento": "Alta no preço , foi definido não seguir junto ao comercial",
+    "cancelado_em": "2026-08-13T20:41:57.670Z",
+    "cancelado_por": "guilherme.furlan@fiberx.com.br"
   },
   {
     "nome": "ROTEADOR VPN LINHA OMADA TPLINK ER605 LOCAL",
