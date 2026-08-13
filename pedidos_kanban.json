@@ -1284,9 +1284,9 @@
     "valor_unitario": 174,
     "moeda": "BRL",
     "id": 1781876316398,
-    "fase": "transito",
+    "fase": "recebido",
     "codigo_pedido": "PED-0123",
-    "fase_desde": "2026-08-13T20:44:04.921Z",
+    "fase_desde": "2026-08-13T20:44:17.819Z",
     "codigo": 400800005
   },
   {
