@@ -2084,10 +2084,9 @@
     "valor_unitario": null,
     "moeda": null,
     "id": 1784820834861,
-    "fase": "pago1",
+    "fase": "producao",
     "codigo_pedido": "PED-0172",
-    "fase_desde": "2026-08-13T20:52:00.358Z",
-    "pago_desde": "2026-08-13T20:52:00.358Z"
+    "fase_desde": "2026-08-13T20:52:04.684Z"
   },
   {
     "codigo": 400800005,
