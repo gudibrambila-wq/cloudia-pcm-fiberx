@@ -1481,9 +1481,9 @@
     "valor_unitario": 384.19,
     "moeda": "BRL",
     "id": 1782906879083,
-    "fase": "backorder",
+    "fase": "faturado",
     "codigo_pedido": "PED-0142",
-    "fase_desde": "2026-08-13T20:40:26.319Z"
+    "fase_desde": "2026-08-13T20:43:58.972Z"
   },
   {
     "codigo": 401700026,
