@@ -608,9 +608,9 @@
     "processo": "020.2026 LIGGA",
     "modal": null,
     "id": 1779805680412,
-    "fase": "faturado",
+    "fase": "transito",
     "codigo_pedido": "PED-0084",
-    "fase_desde": "2026-08-13T20:38:41.012Z",
+    "fase_desde": "2026-08-13T20:38:42.750Z",
     "valor_unitario": 401.34,
     "moeda": "BRL",
     "codigo": 401200067
