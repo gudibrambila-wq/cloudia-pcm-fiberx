@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-08-13T20:58:50",
+  "gerado_em": "2026-08-13T20:59:38",
   "semana_atual": 33,
   "semana_estoque": 33,
   "week_to_month": {
@@ -15975,22 +15975,6 @@
           "mes": "AGO/26",
           "codigo_pedido": "PED-0069",
           "fase": "transito"
-        },
-        {
-          "semana": 46,
-          "quantidade": 1000,
-          "status": "PEDIDO",
-          "mes": "NOV/26",
-          "codigo_pedido": "PED-0079",
-          "fase": "producao"
-        },
-        {
-          "semana": 51,
-          "quantidade": 1000,
-          "status": "PEDIDO",
-          "mes": "DEZ/26",
-          "codigo_pedido": "PED-0146",
-          "fase": "producao"
         }
       ],
       "fcst_mensal": {
@@ -16195,12 +16179,12 @@
           0,
           0,
           0,
-          1000,
           0,
           0,
           0,
           0,
-          1000,
+          0,
+          0,
           0,
           0
         ],
@@ -16305,14 +16289,14 @@
           0,
           0,
           0,
-          667,
-          334,
-          1,
           0,
           0,
-          760,
-          520,
-          280
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
         ]
       }
     },
@@ -16711,32 +16695,8 @@
       "saldo_atual": 0,
       "fc_sem": 41,
       "in_transit": 0,
-      "prox_chegada": {
-        "semana": 37,
-        "quantidade": 1000,
-        "status": "PEDIDO",
-        "mes": "SET/26",
-        "codigo_pedido": "PED-0073",
-        "fase": "producao"
-      },
-      "entradas": [
-        {
-          "semana": 37,
-          "quantidade": 1000,
-          "status": "PEDIDO",
-          "mes": "SET/26",
-          "codigo_pedido": "PED-0073",
-          "fase": "producao"
-        },
-        {
-          "semana": 43,
-          "quantidade": 1000,
-          "status": "PEDIDO",
-          "mes": "OUT/26",
-          "codigo_pedido": "PED-0071",
-          "fase": "producao"
-        }
-      ],
+      "prox_chegada": null,
+      "entradas": [],
       "fcst_mensal": {
         "JAN/26": 0,
         "FEV/26": 0,
@@ -16930,13 +16890,13 @@
           0,
           0,
           0,
-          1000,
           0,
           0,
           0,
           0,
           0,
-          1000,
+          0,
+          0,
           0,
           0,
           0,
@@ -17040,17 +17000,17 @@
           0,
           0,
           0,
-          883,
-          766,
-          649,
-          534,
-          421,
-          308,
-          1195,
-          1055,
-          752,
-          449,
-          146,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
           0,
           0,
           0,
@@ -17087,14 +17047,6 @@
           "mes": "AGO/26",
           "codigo_pedido": "PED-0100",
           "fase": "transito"
-        },
-        {
-          "semana": 45,
-          "quantidade": 600,
-          "status": "PEDIDO",
-          "mes": "NOV/26",
-          "codigo_pedido": "PED-0072",
-          "fase": "producao"
         }
       ],
       "fcst_mensal": {
@@ -17298,7 +17250,7 @@
           0,
           0,
           0,
-          600,
+          0,
           0,
           0,
           0,
@@ -17408,13 +17360,13 @@
           0,
           0,
           0,
-          484,
-          368,
-          252,
-          136,
-          96,
-          56,
-          16,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
           0,
           0
         ]
@@ -22589,22 +22541,6 @@
           "mes": "AGO/26",
           "codigo_pedido": "PED-0069",
           "fase": "transito"
-        },
-        {
-          "semana": 46,
-          "quantidade": 1000,
-          "status": "PEDIDO",
-          "mes": "NOV/26",
-          "codigo_pedido": "PED-0079",
-          "fase": "producao"
-        },
-        {
-          "semana": 51,
-          "quantidade": 1000,
-          "status": "PEDIDO",
-          "mes": "DEZ/26",
-          "codigo_pedido": "PED-0146",
-          "fase": "producao"
         }
       ],
       "fcst_mensal": {
@@ -22786,12 +22722,12 @@
           0,
           0,
           0,
-          1000,
           0,
           0,
           0,
           0,
-          1000,
+          0,
+          0,
           0,
           0
         ],
@@ -22896,14 +22832,14 @@
           1974,
           1734,
           1407,
-          2080,
-          1753,
-          1426,
-          1147,
-          876,
-          1605,
-          1334,
-          1082
+          1080,
+          753,
+          426,
+          147,
+          0,
+          0,
+          0,
+          0
         ]
       },
       "_origem": "catalogo_promovido"
@@ -22919,32 +22855,8 @@
       "saldo_atual": 567,
       "fc_sem": 41,
       "in_transit": 0,
-      "prox_chegada": {
-        "semana": 37,
-        "quantidade": 1000,
-        "status": "PEDIDO",
-        "mes": "SET/26",
-        "codigo_pedido": "PED-0073",
-        "fase": "producao"
-      },
-      "entradas": [
-        {
-          "semana": 37,
-          "quantidade": 1000,
-          "status": "PEDIDO",
-          "mes": "SET/26",
-          "codigo_pedido": "PED-0073",
-          "fase": "producao"
-        },
-        {
-          "semana": 43,
-          "quantidade": 1000,
-          "status": "PEDIDO",
-          "mes": "OUT/26",
-          "codigo_pedido": "PED-0071",
-          "fase": "producao"
-        }
-      ],
+      "prox_chegada": null,
+      "entradas": [],
       "fcst_mensal": {
         "JUN/26": 15,
         "JUL/26": 135,
@@ -23114,13 +23026,13 @@
           0,
           0,
           0,
-          1000,
           0,
           0,
           0,
           0,
           0,
-          1000,
+          0,
+          0,
           0,
           0,
           0,
@@ -23224,19 +23136,19 @@
           341,
           228,
           132,
-          1039,
-          946,
-          853,
-          736,
-          601,
-          466,
-          1331,
-          1180,
-          937,
-          694,
-          451,
-          208,
-          26,
+          39,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
           0,
           0,
           0,
@@ -23272,14 +23184,6 @@
           "mes": "AGO/26",
           "codigo_pedido": "PED-0100",
           "fase": "transito"
-        },
-        {
-          "semana": 45,
-          "quantidade": 600,
-          "status": "PEDIDO",
-          "mes": "NOV/26",
-          "codigo_pedido": "PED-0072",
-          "fase": "producao"
         }
       ],
       "fcst_mensal": {
@@ -23459,7 +23363,7 @@
           0,
           0,
           0,
-          600,
+          0,
           0,
           0,
           0,
@@ -23569,10 +23473,10 @@
           0,
           0,
           0,
-          469,
-          338,
-          207,
-          76,
+          0,
+          0,
+          0,
+          0,
           0,
           0,
           0,
