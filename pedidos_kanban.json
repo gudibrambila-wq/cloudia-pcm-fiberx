@@ -2141,10 +2141,10 @@
     "valor_unitario": 26.5,
     "moeda": "USD",
     "id": 1784922345176,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-24T19:45:45.176Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0175",
-    "fase_desde": "2026-07-24T19:45:45.176Z"
+    "fase_desde": "2026-08-13T20:52:46.476Z",
+    "pago_desde": "2026-08-13T20:52:46.476Z"
   },
   {
     "codigo": 400800011,
