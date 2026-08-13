@@ -2092,10 +2092,9 @@
     "valor_unitario": null,
     "moeda": null,
     "id": 1784898099508,
-    "fase": "pendente",
-    "pendente_desde": "2026-07-24T13:01:39.508Z",
+    "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0173",
-    "fase_desde": "2026-07-24T13:01:39.508Z"
+    "fase_desde": "2026-08-13T20:33:58.287Z"
   },
   {
     "codigo": 400700045,
