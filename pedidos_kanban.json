@@ -544,7 +544,11 @@
     "fase_desde": "2026-06-09T13:50:16.895Z",
     "codigo": 400700012,
     "valor_unitario": 65,
-    "moeda": "USD"
+    "moeda": "USD",
+    "cancelado": true,
+    "motivo_cancelamento": "Cancelado por problemas de qualidade",
+    "cancelado_em": "2026-08-13T20:59:17.331Z",
+    "cancelado_por": "guilherme.furlan@fiberx.com.br"
   },
   {
     "nome": "ONT WIFI 6 AX3000 ZYXEL PX3321T1",
