@@ -457,15 +457,16 @@
     "mes": "AGO/26",
     "origem": "VELDS_PSI W20",
     "processo": "007.2026 VSC",
-    "fase": "recebido",
+    "fase": "estoque",
     "_unique_key": "velds_w20_ALIMENTADOR AUTOMÁTICO_24_2000",
     "codigo_pedido": "PED-0075",
-    "fase_desde": "2026-08-13T20:57:28.517Z",
+    "fase_desde": "2026-08-13T20:57:38.697Z",
     "modal": "FCL",
     "data": "2026-07-31",
     "codigo": 400600001,
     "valor_unitario": 16.5,
-    "moeda": "USD"
+    "moeda": "USD",
+    "arquivado_em": "2026-08-13T20:57:38.697Z"
   },
   {
     "nome": "ROTEADOR WIFI AX1500 TP-Link  EX141",
