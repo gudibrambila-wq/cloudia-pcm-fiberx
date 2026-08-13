@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-08-13T20:40:40",
+  "gerado_em": "2026-08-13T20:41:18",
   "semana_atual": 33,
   "semana_estoque": 33,
   "week_to_month": {
@@ -20165,7 +20165,7 @@
         "status": "PEDIDO",
         "mes": "AGO/26",
         "codigo_pedido": "PED-0123",
-        "fase": "estoque_fornecedor"
+        "fase": "backorder"
       },
       "entradas": [
         {
@@ -20174,7 +20174,7 @@
           "status": "PEDIDO",
           "mes": "AGO/26",
           "codigo_pedido": "PED-0123",
-          "fase": "estoque_fornecedor"
+          "fase": "backorder"
         },
         {
           "semana": 34,
