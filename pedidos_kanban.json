@@ -2054,7 +2054,7 @@
     "data": "2027-01-15",
     "origem": "Avulso",
     "processo": "022.2026 VSC",
-    "modal": null,
+    "modal": "FCL",
     "valor_unitario": 45,
     "moeda": "BRL",
     "id": 1784235255607,
