@@ -1826,9 +1826,9 @@
     "valor_unitario": 4.7,
     "moeda": "USD",
     "id": 1783517372036,
-    "fase": "producao",
+    "fase": "transito",
     "codigo_pedido": "PED-0157",
-    "fase_desde": "2026-07-16T17:15:01.870Z"
+    "fase_desde": "2026-08-27T18:29:03.758Z"
   },
   {
     "codigo": 400700036,
