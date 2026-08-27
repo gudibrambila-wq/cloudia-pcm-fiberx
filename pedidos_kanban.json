@@ -1987,7 +1987,7 @@
     "marca": "Velds",
     "tipo": "Importado",
     "qtd": 1276,
-    "semana": 46,
+    "semana": 47,
     "mes": "NOV/26",
     "origem": "Simulado",
     "id": 1783602540061,
@@ -1998,7 +1998,8 @@
     "fase_desde": "2026-07-09T13:09:51.077Z",
     "moeda": "USD",
     "valor_unitario": 16.5,
-    "codigo": 400600001
+    "codigo": 400600001,
+    "data": "2026-11-19"
   },
   {
     "nome": "ROBO ASPIRADOR LASER  VDS RALWC",
