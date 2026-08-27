@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-08-27T18:28:07",
+  "gerado_em": "2026-08-27T18:28:54",
   "semana_atual": 35,
   "semana_estoque": 35,
   "week_to_month": {
@@ -23480,23 +23480,23 @@
       "pc": 0,
       "saldo_atual": 0,
       "fc_sem": 9,
-      "in_transit": 0,
+      "in_transit": 1000,
       "prox_chegada": {
         "semana": 42,
         "quantidade": 1000,
-        "status": "PEDIDO",
+        "status": "EM_TRANSITO",
         "mes": "OUT/26",
         "codigo_pedido": "PED-0138",
-        "fase": "producao"
+        "fase": "transito"
       },
       "entradas": [
         {
           "semana": 42,
           "quantidade": 1000,
-          "status": "PEDIDO",
+          "status": "EM_TRANSITO",
           "mes": "OUT/26",
           "codigo_pedido": "PED-0138",
-          "fase": "producao"
+          "fase": "transito"
         }
       ],
       "fcst_mensal": {
@@ -23800,23 +23800,23 @@
       "pc": 0,
       "saldo_atual": 0,
       "fc_sem": 9,
-      "in_transit": 0,
+      "in_transit": 500,
       "prox_chegada": {
         "semana": 42,
         "quantidade": 500,
-        "status": "PEDIDO",
+        "status": "EM_TRANSITO",
         "mes": "OUT/26",
         "codigo_pedido": "PED-0137",
-        "fase": "inspecao"
+        "fase": "transito"
       },
       "entradas": [
         {
           "semana": 42,
           "quantidade": 500,
-          "status": "PEDIDO",
+          "status": "EM_TRANSITO",
           "mes": "OUT/26",
           "codigo_pedido": "PED-0137",
-          "fase": "inspecao"
+          "fase": "transito"
         }
       ],
       "fcst_mensal": {
@@ -24120,23 +24120,23 @@
       "pc": 0,
       "saldo_atual": 0,
       "fc_sem": 56,
-      "in_transit": 0,
+      "in_transit": 1000,
       "prox_chegada": {
         "semana": 44,
         "quantidade": 1000,
-        "status": "PEDIDO",
+        "status": "EM_TRANSITO",
         "mes": "NOV/26",
         "codigo_pedido": "PED-0139",
-        "fase": "producao"
+        "fase": "transito"
       },
       "entradas": [
         {
           "semana": 44,
           "quantidade": 1000,
-          "status": "PEDIDO",
+          "status": "EM_TRANSITO",
           "mes": "NOV/26",
           "codigo_pedido": "PED-0139",
-          "fase": "producao"
+          "fase": "transito"
         }
       ],
       "fcst_mensal": {
@@ -24439,23 +24439,23 @@
       "pc": 0,
       "saldo_atual": 0,
       "fc_sem": 9,
-      "in_transit": 0,
+      "in_transit": 1000,
       "prox_chegada": {
         "semana": 42,
         "quantidade": 1000,
-        "status": "PEDIDO",
+        "status": "EM_TRANSITO",
         "mes": "OUT/26",
         "codigo_pedido": "PED-0140",
-        "fase": "producao"
+        "fase": "transito"
       },
       "entradas": [
         {
           "semana": 42,
           "quantidade": 1000,
-          "status": "PEDIDO",
+          "status": "EM_TRANSITO",
           "mes": "OUT/26",
           "codigo_pedido": "PED-0140",
-          "fase": "producao"
+          "fase": "transito"
         }
       ],
       "fcst_mensal": {
