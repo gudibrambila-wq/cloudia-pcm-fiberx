@@ -6174,7 +6174,13 @@ function trocarProdutoFiltrar(id) {
   drop.classList.remove('hidden');
 }
 
-// Commit da troca: atualiza codigo/nome/marca/tipo do pedido e re-renderiza.
+// Commit da troca: atualiza codigo/nome/marca do pedido e re-renderiza.
+// IMPORTANTE (fix 27/08/2026): NAO mexer em p.tipo. O tipo do pedido eh
+// decisao do usuario ao criar o pedido — se ele criou como Importado, deve
+// continuar Importado mesmo trocando o produto (o produto pode existir em
+// ambos os cadastros Nacional/Importado). Antes, mudar o produto quebrava
+// o pedido: fase 'pago1' (so Importado) ficava com tipo Nacional e o card
+// sumia de todos os Kanbans. Douglas achou o bug em PED-0168/0169.
 function trocarProdutoSelecionar(id, codigo, nome, marca, tipo) {
   const p = PEDIDOS.find(x => x.id === id);
   if (!p) return;
@@ -6182,9 +6188,7 @@ function trocarProdutoSelecionar(id, codigo, nome, marca, tipo) {
   p.codigo = isNaN(codNum) ? codigo : codNum;
   p.nome   = nome || '';
   p.marca  = marca || '';
-  p.tipo   = (tipo === 'Importado') ? 'Importado' : 'Nacional';
-  // Se virou Nacional, limpa modal (só faz sentido em Importado)
-  if (p.tipo === 'Nacional') p.modal = null;
+  // tipo intencionalmente NAO alterado
   salvarPedidos();
   renderKanban();
 }
