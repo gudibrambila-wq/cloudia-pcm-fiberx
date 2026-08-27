@@ -1417,9 +1417,9 @@
     "valor_unitario": 15.64,
     "moeda": "USD",
     "id": 1782906332943,
-    "fase": "producao",
+    "fase": "inspecao",
     "codigo_pedido": "PED-0137",
-    "fase_desde": "2026-07-07T19:17:09.162Z"
+    "fase_desde": "2026-08-27T18:27:57.434Z"
   },
   {
     "codigo": 400700026,
