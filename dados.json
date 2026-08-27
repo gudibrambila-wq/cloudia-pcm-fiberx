@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-08-27T18:24:46",
+  "gerado_em": "2026-08-27T18:25:32",
   "semana_atual": 35,
   "semana_estoque": 35,
   "week_to_month": {
@@ -9108,10 +9108,10 @@
       "pc": 172,
       "saldo_atual": 2662,
       "fc_sem": 140,
-      "in_transit": 1000,
+      "in_transit": 724,
       "prox_chegada": {
         "semana": 42,
-        "quantidade": 1000,
+        "quantidade": 724,
         "status": "EM_TRANSITO",
         "mes": "OUT/26",
         "codigo_pedido": "PED-0070",
@@ -9120,7 +9120,7 @@
       "entradas": [
         {
           "semana": 42,
-          "quantidade": 1000,
+          "quantidade": 724,
           "status": "EM_TRANSITO",
           "mes": "OUT/26",
           "codigo_pedido": "PED-0070",
@@ -9348,7 +9348,7 @@
           0,
           0,
           0,
-          1000,
+          724,
           0,
           0,
           0,
@@ -9458,18 +9458,18 @@
           1760,
           1572,
           1382,
-          2192,
-          2002,
-          1806,
-          1573,
-          2340,
-          2107,
-          1874,
-          1647,
-          1421,
-          1195,
-          969,
-          772
+          1916,
+          1726,
+          1530,
+          1297,
+          2064,
+          1831,
+          1598,
+          1371,
+          1145,
+          919,
+          693,
+          496
         ]
       },
       "pv_mensal": {
