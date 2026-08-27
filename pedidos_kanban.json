@@ -2273,10 +2273,9 @@
     "valor_unitario": 38.5,
     "moeda": "USD",
     "id": 1786655352903,
-    "fase": "pendente",
-    "pendente_desde": "2026-08-13T21:09:12.903Z",
+    "fase": "producao",
     "codigo_pedido": "PED-0180",
-    "fase_desde": "2026-08-13T21:09:12.903Z"
+    "fase_desde": "2026-08-27T20:08:02.039Z"
   },
   {
     "codigo": 400700039,
