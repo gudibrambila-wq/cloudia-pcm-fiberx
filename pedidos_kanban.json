@@ -2017,7 +2017,11 @@
     "modal": "FCL",
     "valor_unitario": 88.3,
     "moeda": "USD",
-    "codigo": 400700001
+    "codigo": 400700001,
+    "cancelado": true,
+    "motivo_cancelamento": "colocou no processo junto com o A",
+    "cancelado_em": "2026-08-27T18:27:36.159Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "codigo": 400700048,
