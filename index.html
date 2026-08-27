@@ -6039,7 +6039,7 @@ function kanbanCardHTML(p) {
         ${p.codigo_pedido ? `<span class="text-xs text-slate-500 whitespace-nowrap" title="Número do pedido (usado no Fluxo de Pagamentos)">${p.codigo_pedido}</span>` : ''}
       </div>` : ''}
     </div>
-    <div class="kanban-details hidden border-t border-slate-100 px-3 py-2 bg-slate-50 space-y-1.5 text-xs">
+    <div class="kanban-details ${(window._KANBAN_CARDS_ABERTOS && window._KANBAN_CARDS_ABERTOS.has(String(p.id))) ? '' : 'hidden'} border-t border-slate-100 px-3 py-2 bg-slate-50 space-y-1.5 text-xs">
       <div class="flex items-start gap-2 relative" onclick="event.stopPropagation()">
         <span class="text-slate-400 shrink-0 w-20 pt-0.5">Produto</span>
         <div class="flex-1 min-w-0 relative">
@@ -6520,8 +6520,23 @@ function confirmarModalNovoPedido() {
   renderKanban();
 }
 
+// Set global com IDs dos cards expandidos. Preservado entre renderKanban()s
+// pra que qualquer edicao num campo (que dispara re-render) NAO feche o card.
+// Antes: ao editar processo/qtd/data/etc, o card fechava e o usuario precisava
+// reabrir pra continuar (Douglas relatou 27/08/2026 que isso incomodava).
+if (typeof window._KANBAN_CARDS_ABERTOS === 'undefined') {
+  window._KANBAN_CARDS_ABERTOS = new Set();
+}
 function toggleKanbanCard(card) {
-  card.querySelector('.kanban-details')?.classList.toggle('hidden');
+  const details = card.querySelector('.kanban-details');
+  if (!details) return;
+  const vaiAbrir = details.classList.contains('hidden');
+  details.classList.toggle('hidden');
+  const id = card.getAttribute('data-id');
+  if (id) {
+    if (vaiAbrir) window._KANBAN_CARDS_ABERTOS.add(String(id));
+    else          window._KANBAN_CARDS_ABERTOS.delete(String(id));
+  }
 }
 
 function salvarProcesso(id, valor) {
