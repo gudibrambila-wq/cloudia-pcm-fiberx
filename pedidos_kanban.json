@@ -2330,9 +2330,8 @@
     "valor_unitario": 56,
     "moeda": "USD",
     "id": 1786655527195,
-    "fase": "pendente",
-    "pendente_desde": "2026-08-13T21:12:07.195Z",
+    "fase": "producao",
     "codigo_pedido": "PED-0183",
-    "fase_desde": "2026-08-13T21:12:07.195Z"
+    "fase_desde": "2026-08-27T20:08:15.663Z"
   }
 ]
