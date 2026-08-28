@@ -2216,9 +2216,10 @@
     "valor_unitario": 350.12,
     "moeda": "BRL",
     "id": 1786653464172,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0177",
-    "fase_desde": "2026-08-28T14:38:57.396Z"
+    "fase_desde": "2026-08-28T14:38:59.224Z",
+    "arquivado_em": "2026-08-28T14:38:59.224Z"
   },
   {
     "codigo": 400700036,
