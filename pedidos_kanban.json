@@ -2371,5 +2371,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-08-28T13:23:28.662Z",
     "codigo_pedido": "PED-0185"
+  },
+  {
+    "codigo": 400700059,
+    "nome": "ROBÔ ASPIRADOR INTELIGENTE VELDS V60 PRO (110V)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 1200,
+    "semana": 52,
+    "mes": "DEZ/26",
+    "data": "2026-12-25",
+    "origem": "Avulso",
+    "processo": "028.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": 101.5,
+    "moeda": "USD",
+    "id": 1787923501476,
+    "fase": "pendente",
+    "pendente_desde": "2026-08-28T13:25:01.476Z",
+    "codigo_pedido": "PED-0186"
   }
 ]
