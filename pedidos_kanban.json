@@ -2333,5 +2333,24 @@
     "fase": "producao",
     "codigo_pedido": "PED-0183",
     "fase_desde": "2026-08-27T20:08:15.663Z"
+  },
+  {
+    "codigo": 400700043,
+    "nome": "ROBÔ ASPIRADOR INTELIGENTE VELDS V40",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 1000,
+    "semana": 52,
+    "mes": "DEZ/26",
+    "data": "2026-12-25",
+    "origem": "Avulso",
+    "processo": "027.2026 VSC",
+    "modal": "FCL",
+    "valor_unitario": 70,
+    "moeda": "USD",
+    "id": 1787923300993,
+    "fase": "pendente",
+    "pendente_desde": "2026-08-28T13:21:40.993Z",
+    "codigo_pedido": "PED-0184"
   }
 ]
