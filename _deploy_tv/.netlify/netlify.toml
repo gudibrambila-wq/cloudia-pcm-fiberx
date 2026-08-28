@@ -1,0 +1,26 @@
+plugins = []
+headers = []
+redirects = []
+
+[functions]
+
+[functions."*"]
+
+[build]
+publish = "C:\\Users\\DouglasBrambila\\AppData\\Local\\Temp\\claude\\c--Users-DouglasBrambila-OneDrive---FiberX--rea-de-Trabalho-Cloud-PCM-CloudIA\\466ad289-bd14-4829-a49e-26c62746976b\\scratchpad\\repo_autosync\\_deploy_tv"
+publishOrigin = "default"
+base = "C:\\Users\\DouglasBrambila\\AppData\\Local\\Temp\\claude\\c--Users-DouglasBrambila-OneDrive---FiberX--rea-de-Trabalho-Cloud-PCM-CloudIA\\466ad289-bd14-4829-a49e-26c62746976b\\scratchpad\\repo_autosync\\_deploy_tv"
+
+[build.environment]
+
+[build.processing]
+
+[build.processing.css]
+
+[build.processing.html]
+
+[build.processing.images]
+
+[build.processing.js]
+
+[build.services]
