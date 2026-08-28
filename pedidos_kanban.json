@@ -520,13 +520,12 @@
     "processo": "027.2026 NTSC",
     "modal": null,
     "id": 1779800169888,
-    "fase": "estoque",
+    "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0078",
-    "fase_desde": "2026-08-28T14:46:08.561Z",
+    "fase_desde": "2026-08-28T14:46:29.660Z",
     "valor_unitario": 156.69,
     "moeda": "BRL",
-    "codigo": 401300007,
-    "arquivado_em": "2026-08-28T14:46:08.561Z"
+    "codigo": 401300007
   },
   {
     "nome": "ROBO ASPIRADOR INTELIGENTE DE PO LASER -  V50",
