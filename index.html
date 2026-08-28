@@ -6950,6 +6950,10 @@ function _fpBadgeAtrasado(dias) {
 function fpColetarParcelas() {
   const out = [];
   (PEDIDOS || []).forEach(p => {
+    // Pedido em fase 'estoque' ja chegou fisicamente — deixa fora do Fluxo de
+    // Pagamentos pra o Total Previsto refletir 'saídas de caixa em andamento'
+    // e nao 'histórico total'. Douglas alinhou isso em 28/08/2026.
+    if ((p.fase || '').toLowerCase() === 'estoque') return;
     const parcelas = fluxoParcelasDoPedido(p, FLUXO_PTAX);
     parcelas.forEach(par => {
       const st = getStatusParcela(p.codigo_pedido, par.key);
