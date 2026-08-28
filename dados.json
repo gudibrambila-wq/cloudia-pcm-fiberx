@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-08-28T14:41:19",
+  "gerado_em": "2026-08-28T14:46:15",
   "semana_atual": 35,
   "semana_estoque": 35,
   "week_to_month": {
@@ -8397,19 +8397,19 @@
       "prox_chegada": {
         "semana": 41,
         "quantidade": 1000,
-        "status": "PEDIDO",
+        "status": "RECEBIDO",
         "mes": "OUT/26",
         "codigo_pedido": "PED-0078",
-        "fase": "estoque_fornecedor"
+        "fase": "estoque"
       },
       "entradas": [
         {
           "semana": 41,
           "quantidade": 1000,
-          "status": "PEDIDO",
+          "status": "RECEBIDO",
           "mes": "OUT/26",
           "codigo_pedido": "PED-0078",
-          "fase": "estoque_fornecedor"
+          "fase": "estoque"
         }
       ],
       "fcst_mensal": {
