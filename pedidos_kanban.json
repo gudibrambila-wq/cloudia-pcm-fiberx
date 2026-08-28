@@ -2410,5 +2410,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-08-28T13:25:25.936Z",
     "codigo_pedido": "PED-0187"
+  },
+  {
+    "codigo": 401200085,
+    "nome": "SWITCH TPLINK GIGABIT ES208G-IMPORT",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 40,
+    "semana": 35,
+    "mes": "AGO/26",
+    "data": "2026-08-28",
+    "origem": "Avulso",
+    "processo": "040.2026 NTSC",
+    "modal": null,
+    "valor_unitario": 138.19,
+    "moeda": "BRL",
+    "id": 1787928061824,
+    "fase": "pendente",
+    "pendente_desde": "2026-08-28T14:41:01.824Z",
+    "codigo_pedido": "PED-0188"
   }
 ]
