@@ -3,72 +3,216 @@
     "terceiro": {
       "pago": true,
       "data_efetiva": "2026-07-14"
+    },
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-04-06",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-05-18",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0056": {
     "terceiro": {
       "pago": true,
       "data_efetiva": "2026-07-14"
+    },
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-04-06",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-05-18",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0067": {
     "terceiro": {
       "pago": true,
       "data_efetiva": "2026-07-14"
+    },
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-04-06",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-05-18",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0153": {
     "primeiro": {
       "pago": true,
       "data_efetiva": "2026-07-16"
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-08-12",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-10-04",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0137": {
     "primeiro": {
       "pago": true,
       "data_efetiva": "2026-07-16"
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-08-12",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-10-04",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0138": {
     "primeiro": {
       "pago": true,
       "data_efetiva": "2026-07-16"
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-08-12",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-10-04",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0139": {
     "primeiro": {
       "pago": true,
       "data_efetiva": "2026-07-16"
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-08-12",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-10-04",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0140": {
     "primeiro": {
       "pago": true,
       "data_efetiva": "2026-07-16"
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-08-12",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-10-04",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0154": {
     "primeiro": {
       "pago": true,
       "data_efetiva": "2026-07-16"
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-08-12",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-10-04",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0155": {
     "primeiro": {
       "pago": true,
       "data_efetiva": "2026-07-16"
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-08-12",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-10-04",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0156": {
     "primeiro": {
       "pago": true,
       "data_efetiva": "2026-07-16"
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-08-12",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-10-04",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0157": {
     "primeiro": {
       "pago": true,
       "data_efetiva": "2026-07-16"
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-08-12",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-10-04",
+      "valor_efetivo": null,
+      "_auto": true
     }
   },
   "PED-0127": {
@@ -171,6 +315,380 @@
     "primeiro": {
       "pago": true,
       "data_efetiva": "2026-07-16"
+    }
+  },
+  "PED-0052": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-03-09",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-04-20",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-06-12",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0054": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-04-23",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-06-04",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-07-27",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0055": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-03-09",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-04-20",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-06-12",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0057": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-04-23",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-06-04",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-07-27",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0058": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-02-02",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-03-16",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-05-08",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0059": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-04-08",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-05-20",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-07-12",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0060": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-07-28",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-09-08",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0062": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-02-09",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-03-23",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-05-15",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0063": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-03-20",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-05-01",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-06-23",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0064": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-01-26",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-03-09",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-05-01",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0066": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-03-09",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-04-20",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-06-12",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0068": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-04-23",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-06-04",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-07-27",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0069": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-05-19",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-06-30",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0070": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-07-01",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-08-12",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-10-04",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0075": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-04-17",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-05-29",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "terceiro": {
+      "pago": true,
+      "data_efetiva": "2026-07-21",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0100": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-05-19",
+      "valor_efetivo": null,
+      "_auto": true
+    },
+    "segundo": {
+      "pago": true,
+      "data_efetiva": "2026-06-30",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0172": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-09-28",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0174": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-09-16",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0175": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-09-16",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0178": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-09-01",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0179": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-09-01",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0180": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-09-01",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0181": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-09-01",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0182": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-09-01",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0183": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-09-01",
+      "valor_efetivo": null,
+      "_auto": true
     }
   }
 }
