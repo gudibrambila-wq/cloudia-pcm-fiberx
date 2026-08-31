@@ -2566,5 +2566,24 @@
     "fase": "pago",
     "codigo_pedido": "PED-0195",
     "fase_desde": "2026-08-31T12:39:31.232Z"
+  },
+  {
+    "codigo": 401700004,
+    "nome": "ACCESS POINT LINHA OMADA AX3000 TPLINK  EAP650",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 250,
+    "semana": 39,
+    "mes": "SET/26",
+    "data": "2026-09-21",
+    "origem": "Avulso",
+    "processo": "044.2026 MEGABYTE",
+    "modal": null,
+    "valor_unitario": 456.39,
+    "moeda": "BRL",
+    "id": 1788180031493,
+    "fase": "pendente",
+    "pendente_desde": "2026-08-31T12:40:31.493Z",
+    "codigo_pedido": "PED-0196"
   }
 ]
