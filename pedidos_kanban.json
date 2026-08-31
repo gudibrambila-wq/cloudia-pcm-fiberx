@@ -2058,10 +2058,9 @@
     "valor_unitario": 45,
     "moeda": "USD",
     "id": 1784235255607,
-    "fase": "pago1",
+    "fase": "producao",
     "codigo_pedido": "PED-0169",
-    "fase_desde": "2026-08-13T20:51:40.418Z",
-    "pago_desde": "2026-08-13T20:51:40.418Z"
+    "fase_desde": "2026-08-31T16:58:58.854Z"
   },
   {
     "codigo": 401300036,
@@ -2584,6 +2583,7 @@
     "id": 1788180031493,
     "fase": "pendente",
     "pendente_desde": "2026-08-31T12:40:31.493Z",
-    "codigo_pedido": "PED-0196"
+    "codigo_pedido": "PED-0196",
+    "fase_desde": "2026-08-31T12:40:31.493Z"
   }
 ]
