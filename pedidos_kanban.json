@@ -2547,5 +2547,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-08-31T12:38:05.656Z",
     "codigo_pedido": "PED-0194"
+  },
+  {
+    "codigo": 401700029,
+    "nome": "ACCESS POINT OUTDOOR WIRELESS GIGABIT MU-MIMO AC1200",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 50,
+    "semana": 39,
+    "mes": "SET/26",
+    "data": "2026-09-21",
+    "origem": "Avulso",
+    "processo": "044.2026 VERDANT",
+    "modal": null,
+    "valor_unitario": 408.27,
+    "moeda": "BRL",
+    "id": 1788179950045,
+    "fase": "pendente",
+    "pendente_desde": "2026-08-31T12:39:10.045Z",
+    "codigo_pedido": "PED-0195"
   }
 ]
