@@ -2490,5 +2490,24 @@
     "fase": "pago",
     "codigo_pedido": "PED-0191",
     "fase_desde": "2026-08-31T12:33:38.928Z"
+  },
+  {
+    "codigo": 401700003,
+    "nome": "ACCESS POINT LINHA OMADA AX1800 TPLINK  EAP620HD",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 50,
+    "semana": 39,
+    "mes": "SET/26",
+    "data": "2026-09-21",
+    "origem": "Avulso",
+    "processo": "043.2026 VERDANT",
+    "modal": null,
+    "valor_unitario": 767.36,
+    "moeda": "BRL",
+    "id": 1788179729272,
+    "fase": "pendente",
+    "pendente_desde": "2026-08-31T12:35:29.272Z",
+    "codigo_pedido": "PED-0192"
   }
 ]
