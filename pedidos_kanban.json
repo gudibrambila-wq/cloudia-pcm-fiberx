@@ -2428,9 +2428,10 @@
     "valor_unitario": 138.19,
     "moeda": "BRL",
     "id": 1787928061824,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0188",
-    "fase_desde": "2026-08-28T14:41:05.420Z"
+    "fase_desde": "2026-08-31T17:12:46.003Z",
+    "arquivado_em": "2026-08-31T17:12:46.003Z"
   },
   {
     "codigo": 401700019,
