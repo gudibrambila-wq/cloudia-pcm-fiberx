@@ -2528,5 +2528,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-08-31T12:36:21.792Z",
     "codigo_pedido": "PED-0193"
+  },
+  {
+    "codigo": 401700028,
+    "nome": "ACCESS POINT WIRELESS GIGABIT MU-MIMO MONTAVEL EM TETO AC1350",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 50,
+    "semana": 39,
+    "mes": "SET/26",
+    "data": "2026-09-21",
+    "origem": "Avulso",
+    "processo": "044.2026 VERDANT",
+    "modal": null,
+    "valor_unitario": 326.76,
+    "moeda": "BRL",
+    "id": 1788179885656,
+    "fase": "pendente",
+    "pendente_desde": "2026-08-31T12:38:05.656Z",
+    "codigo_pedido": "PED-0194"
   }
 ]
