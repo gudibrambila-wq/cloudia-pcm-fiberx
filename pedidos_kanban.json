@@ -2352,7 +2352,8 @@
     "id": 1787923300993,
     "fase": "pendente",
     "pendente_desde": "2026-08-28T13:21:40.993Z",
-    "codigo_pedido": "PED-0184"
+    "codigo_pedido": "PED-0184",
+    "fase_desde": "2026-08-28T13:21:40.993Z"
   },
   {
     "codigo": 400700058,
@@ -2371,7 +2372,8 @@
     "id": 1787923408662,
     "fase": "pendente",
     "pendente_desde": "2026-08-28T13:23:28.662Z",
-    "codigo_pedido": "PED-0185"
+    "codigo_pedido": "PED-0185",
+    "fase_desde": "2026-08-28T13:23:28.662Z"
   },
   {
     "codigo": 400700059,
@@ -2390,7 +2392,8 @@
     "id": 1787923501476,
     "fase": "pendente",
     "pendente_desde": "2026-08-28T13:25:01.476Z",
-    "codigo_pedido": "PED-0186"
+    "codigo_pedido": "PED-0186",
+    "fase_desde": "2026-08-28T13:25:01.476Z"
   },
   {
     "codigo": 400700060,
@@ -2409,7 +2412,8 @@
     "id": 1787923525936,
     "fase": "pendente",
     "pendente_desde": "2026-08-28T13:25:25.936Z",
-    "codigo_pedido": "PED-0187"
+    "codigo_pedido": "PED-0187",
+    "fase_desde": "2026-08-28T13:25:25.936Z"
   },
   {
     "codigo": 401200085,
@@ -2429,5 +2433,24 @@
     "fase": "recebido",
     "codigo_pedido": "PED-0188",
     "fase_desde": "2026-08-28T14:41:05.420Z"
+  },
+  {
+    "codigo": 401700019,
+    "nome": "ACCESS POINT TPLINK  EAP653",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 16,
+    "semana": 39,
+    "mes": "SET/26",
+    "data": "2026-09-21",
+    "origem": "Avulso",
+    "processo": "042.2026 NTSC",
+    "modal": null,
+    "valor_unitario": 334.08,
+    "moeda": "BRL",
+    "id": 1788179418583,
+    "fase": "pendente",
+    "pendente_desde": "2026-08-31T12:30:18.583Z",
+    "codigo_pedido": "PED-0189"
   }
 ]
