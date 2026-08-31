@@ -2487,8 +2487,8 @@
     "valor_unitario": 261.37,
     "moeda": "BRL",
     "id": 1788179614860,
-    "fase": "pendente",
-    "pendente_desde": "2026-08-31T12:33:34.860Z",
-    "codigo_pedido": "PED-0191"
+    "fase": "pago",
+    "codigo_pedido": "PED-0191",
+    "fase_desde": "2026-08-31T12:33:38.928Z"
   }
 ]
