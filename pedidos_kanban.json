@@ -2471,5 +2471,24 @@
     "fase": "pago",
     "codigo_pedido": "PED-0190",
     "fase_desde": "2026-08-31T12:32:47.120Z"
+  },
+  {
+    "codigo": 401200030,
+    "nome": "SWITCH NAO GER. LINHA OMADA 16GE TPLINK  TLSG1016D LOCAL",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 8,
+    "semana": 39,
+    "mes": "SET/26",
+    "data": "2026-09-21",
+    "origem": "Avulso",
+    "processo": "042.2026 NTSC",
+    "modal": null,
+    "valor_unitario": 261.37,
+    "moeda": "BRL",
+    "id": 1788179614860,
+    "fase": "pendente",
+    "pendente_desde": "2026-08-31T12:33:34.860Z",
+    "codigo_pedido": "PED-0191"
   }
 ]
