@@ -2185,6 +2185,23 @@
     "pv_mensal": {},
     "pc_mensal": {}
   },
+  "400700059": {
+    "marca": "Velds",
+    "tipo": "Nacional",
+    "pv": 0,
+    "pc": 0,
+    "fcst_mensal": {
+      "JAN/27": 110,
+      "FEV/27": 200,
+      "MAR/27": 200,
+      "ABR/27": 250,
+      "MAI/27": 200,
+      "JUN/27": 200,
+      "JUL/27": 200
+    },
+    "pv_mensal": {},
+    "pc_mensal": {}
+  },
   "400800001": {
     "fcst_mensal": {
       "JAN/26": 500,
