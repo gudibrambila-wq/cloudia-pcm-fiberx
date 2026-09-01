@@ -2020,6 +2020,21 @@
     "pv_mensal": {},
     "pc_mensal": {}
   },
+  "400700036": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 0,
+    "pc": 0,
+    "fcst_mensal": {
+      "NOV/26": 40,
+      "DEZ/26": 250,
+      "JAN/27": 200,
+      "FEV/27": 200,
+      "MAR/27": 200
+    },
+    "pv_mensal": {},
+    "pc_mensal": {}
+  },
   "400700037": {
     "marca": "Velds",
     "tipo": "Importado",
