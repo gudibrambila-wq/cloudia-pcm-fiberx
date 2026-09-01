@@ -5098,18 +5098,29 @@ function renderSimResultado(origDs, simDs, startIdx, d) {
   if (simDs) badge.classList.remove('hidden'); else badge.classList.add('hidden');
   el.classList.remove('hidden');
 
-  function findRuptura(saldo, labels) {
+  // Ruptura: primeira semana onde o produto ficaria sem estoque para atender o
+  // forecast. Como o cascade forward tem Math.max(0,...), o saldo nao vai a
+  // negativo — para pra 0. Entao "ruptura" e' quando (saldo=0 && forecast>0):
+  // ha demanda planejada e nao tem estoque para cobri-la. Antes so' detectava
+  // saldo<0, que nunca acontecia — cobertura mostrava semanas inflacionadas.
+  // Douglas apontou 01/09/2026 no S3 (LPBA-S3).
+  function findRuptura(saldo, labels, forecast) {
     for (let i = 0; i < saldo.length; i++) {
-      if ((saldo[i] ?? 0) < 0) return labels[i].replace('\n', ' ');
+      const s  = saldo[i] ?? 0;
+      const fc = (forecast && forecast[i]) || 0;
+      if (s < 0) return labels[i].replace('\n', ' ');
+      if (s === 0 && fc > 0) return labels[i].replace('\n', ' ');
     }
     return null;
   }
 
   const idxAtualSim = origDs.labels.findIndex(lbl => labelToWeek(lbl) === SEMANA_ATUAL);
   const efStart = Math.max(startIdx, idxAtualSim >= 0 ? idxAtualSim : 0);
-  const origSaldoSlice = origDs.saldo.slice(efStart);
-  const simSaldoSlice  = simDs ? simDs.saldo.slice(efStart) : origSaldoSlice;
-  const labelsSlice    = origDs.labels.slice(efStart);
+  const origSaldoSlice    = origDs.saldo.slice(efStart);
+  const simSaldoSlice     = simDs ? simDs.saldo.slice(efStart) : origSaldoSlice;
+  const origForecastSlice = (origDs.forecast || []).slice(efStart);
+  const simForecastSlice  = simDs ? (simDs.forecast || []).slice(efStart) : origForecastSlice;
+  const labelsSlice       = origDs.labels.slice(efStart);
 
   // Horizonte de análise: TODO o projetado (até W73 normalmente), não só 2 meses.
   // Assim pedidos simulados distantes (ex: W64) também impactam o card de cobertura.
@@ -5122,8 +5133,8 @@ function renderSimResultado(origDs, simDs, startIdx, d) {
   const finalOrig = origSaldoAnalysis.length > 0 ? origSaldoAnalysis[origSaldoAnalysis.length - 1] : 0;
   const finalSim  = simSaldoAnalysis.length  > 0 ? simSaldoAnalysis[simSaldoAnalysis.length - 1]   : 0;
 
-  const origRup = findRuptura(origSaldoSlice, labelsSlice);
-  const simRup  = simDs ? findRuptura(simSaldoSlice, labelsSlice) : origRup;
+  const origRup = findRuptura(origSaldoSlice, labelsSlice, origForecastSlice);
+  const simRup  = simDs ? findRuptura(simSaldoSlice, labelsSlice, simForecastSlice) : origRup;
 
   const origRupWeek = origRup ? (labelToWeek(origRup) || null) : null;
   const simRupWeek  = simRup  ? (labelToWeek(simRup)  || null) : null;
