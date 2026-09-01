@@ -118,6 +118,24 @@
       "AGO/26": 200
     }
   },
+  "400700025": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 0,
+    "pc": 0,
+    "fcst_mensal": {
+      "OUT/26": 0,
+      "NOV/26": 20,
+      "DEZ/26": 230,
+      "JAN/27": 400,
+      "FEV/27": 400,
+      "MAR/27": 400,
+      "ABR/27": 750,
+      "MAI/27": 450
+    },
+    "pv_mensal": {},
+    "pc_mensal": {}
+  },
   "400700026": {
     "marca": "Velds",
     "tipo": "Importado",
@@ -184,6 +202,21 @@
       "MAR/27": 50,
       "ABR/27": 50,
       "MAI/27": 50
+    },
+    "pv_mensal": {},
+    "pc_mensal": {}
+  },
+  "400700043": {
+    "marca": "Velds",
+    "tipo": "Importado",
+    "pv": 0,
+    "pc": 0,
+    "fcst_mensal": {
+      "JAN/27": 90,
+      "FEV/27": 425,
+      "MAR/27": 600,
+      "ABR/27": 750,
+      "MAI/27": 600
     },
     "pv_mensal": {},
     "pc_mensal": {}

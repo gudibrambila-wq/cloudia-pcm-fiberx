@@ -165,14 +165,14 @@
     "marca": "Velds",
     "tipo": "Importado",
     "qtd": 2000,
-    "semana": 46,
+    "semana": 45,
     "mes": "NOV/26",
     "origem": "VELDS_PSI W20",
     "processo": "005.2026 VSC",
     "fase": "embarque",
     "_unique_key": "velds_w20_ROBO ASPIRADOR GENESIS_23_2000",
     "modal": "FCL",
-    "data": "2026-11-10",
+    "data": "2026-11-03",
     "codigo_pedido": "PED-0060",
     "fase_desde": "2026-08-13T20:55:48.294Z",
     "codigo": 400700001,
@@ -927,7 +927,7 @@
     "id": 1780332075262,
     "fase": "porto",
     "codigo_pedido": "PED-0100",
-    "fase_desde": "2026-08-27T18:24:22.242Z",
+    "fase_desde": "2026-09-01T12:53:10.000Z",
     "codigo": 400700014,
     "valor_unitario": 95,
     "moeda": "USD"
@@ -2038,10 +2038,9 @@
     "valor_unitario": 35.5,
     "moeda": "USD",
     "id": 1784235227196,
-    "fase": "pago1",
+    "fase": "producao",
     "codigo_pedido": "PED-0168",
-    "fase_desde": "2026-08-13T20:51:45.150Z",
-    "pago_desde": "2026-08-13T20:51:45.150Z"
+    "fase_desde": "2026-08-31T16:59:00.706Z"
   },
   {
     "codigo": 400700048,
@@ -2058,10 +2057,9 @@
     "valor_unitario": 45,
     "moeda": "USD",
     "id": 1784235255607,
-    "fase": "pago1",
+    "fase": "producao",
     "codigo_pedido": "PED-0169",
-    "fase_desde": "2026-08-13T20:51:40.418Z",
-    "pago_desde": "2026-08-13T20:51:40.418Z"
+    "fase_desde": "2026-08-31T16:58:58.854Z"
   },
   {
     "codigo": 401300036,
@@ -2118,8 +2116,8 @@
     "origem": "Avulso",
     "processo": "024.2026 VSC",
     "modal": "FCL",
-    "valor_unitario": null,
-    "moeda": null,
+    "valor_unitario": 86.29,
+    "moeda": "USD",
     "id": 1784820834861,
     "fase": "producao",
     "codigo_pedido": "PED-0172",
@@ -2361,9 +2359,9 @@
     "marca": "Velds",
     "tipo": "Importado",
     "qtd": 2000,
-    "semana": 55,
-    "mes": "JAN/27",
-    "data": "2027-01-15",
+    "semana": 60,
+    "mes": "FEV/27",
+    "data": "2027-02-16",
     "origem": "Avulso",
     "processo": "028.2026 VSC",
     "modal": "FCL",
@@ -2381,9 +2379,9 @@
     "marca": "Velds",
     "tipo": "Importado",
     "qtd": 1200,
-    "semana": 55,
-    "mes": "JAN/27",
-    "data": "2027-01-15",
+    "semana": 60,
+    "mes": "FEV/27",
+    "data": "2027-02-16",
     "origem": "Avulso",
     "processo": "028.2026 VSC",
     "modal": "FCL",
@@ -2401,9 +2399,9 @@
     "marca": "Velds",
     "tipo": "Importado",
     "qtd": 800,
-    "semana": 55,
-    "mes": "JAN/27",
-    "data": "2027-01-15",
+    "semana": 60,
+    "mes": "FEV/27",
+    "data": "2027-02-16",
     "origem": "Avulso",
     "processo": "028.2026 VSC",
     "modal": "FCL",
@@ -2430,9 +2428,10 @@
     "valor_unitario": 138.19,
     "moeda": "BRL",
     "id": 1787928061824,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0188",
-    "fase_desde": "2026-08-28T14:41:05.420Z"
+    "fase_desde": "2026-08-31T17:12:46.003Z",
+    "arquivado_em": "2026-08-31T17:12:46.003Z"
   },
   {
     "codigo": 401700019,
@@ -2584,6 +2583,7 @@
     "id": 1788180031493,
     "fase": "pendente",
     "pendente_desde": "2026-08-31T12:40:31.493Z",
-    "codigo_pedido": "PED-0196"
+    "codigo_pedido": "PED-0196",
+    "fase_desde": "2026-08-31T12:40:31.493Z"
   }
 ]
