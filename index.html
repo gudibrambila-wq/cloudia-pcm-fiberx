@@ -4643,7 +4643,7 @@ function renderPSI() {
     { label:'Realizado',          key:'realizado',bold:false, color:()=>'text-slate-800 font-semibold' },
     { label: simDs ? 'Sell In (Chegadas) ⬡' : 'Sell In (Chegadas)', key:'sellIn', bold:false, color:v=>v>0?'text-emerald-700 font-bold':'text-slate-500' },
     { label: simDs ? 'Saldo Final ⬡' : 'Saldo Final', key:'saldo', bold:true, color:v=>v<0?'text-red-700 font-bold':'text-emerald-700 font-semibold' },
-    { label:'WOS (semanas)',       key:'wos',      bold:false, color:v=>!v||v<=0?'text-red-600 font-bold':v<4?'text-amber-600 font-bold':'text-emerald-700 font-semibold' },
+    { label:'WOS (semanas)',       key:'wos',      bold:false, color:v=>!v||v<=0?'text-red-600 font-bold':v<4?'text-amber-600 font-bold':v>=12?'text-red-600 font-bold':'text-emerald-700 font-semibold' },
   ];
 
   // ── Thead de duas linhas: mês (colspan) + semana ──
