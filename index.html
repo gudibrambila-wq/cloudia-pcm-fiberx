@@ -6804,6 +6804,7 @@ const FLUXO_PARCELAS_META = {
 
 // Mapeamento fornecedor chinês → % das 3 parcelas
 // Base: modelo do diretor comercial + confirmacoes Douglas 10-13/07/2026.
+// Adicionados 02/09/2026: ZHIQING, HAIYU, HUYANG, TROLL (Douglas confirmou).
 // Numerario 45% uniforme (engloba impostos + despachante + armazenagem).
 const FLUXO_FORNECEDOR_PCT = {
   'LIVIROBO':      { primeiro: 0.20, segundo: 0.80, terceiro: 0.45 },
@@ -6813,18 +6814,23 @@ const FLUXO_FORNECEDOR_PCT = {
   'SHARETRONICS':  { primeiro: 0.30, segundo: 0.70, terceiro: 0.45 },
   'RITUS':         { primeiro: 0.30, segundo: 0.70, terceiro: 0.45 },
   'CARELINE':      { primeiro: 0.30, segundo: 0.70, terceiro: 0.45 },
+  'ZHIQING':       { primeiro: 0.30, segundo: 0.70, terceiro: 0.45 },
+  'HAIYU':         { primeiro: 0.30, segundo: 0.70, terceiro: 0.45 },
+  'HUYANG':        { primeiro: 0.20, segundo: 0.80, terceiro: 0.45 },
+  'TROLL':         { primeiro: 0.30, segundo: 0.70, terceiro: 0.45 },
 };
 
 // Mapeamento código do produto → fornecedor chinês
-// Só produtos em escopo Fase 1 (Importado Velds). V70/Blender/etc ficam fora.
+// Ampliado 02/09/2026 com todo o portfolio da planilha VELDS_PSI ROBOS_FLUXO PAG
+// (Douglas confirmou códigos). Apelidos comerciais anotados nos comentários.
 const FLUXO_CODIGO_FORNECEDOR = {
-  400600001: 'GOLDEN VISION',  // Alimentador Pet APBW
-  400700001: 'LIVIROBO',        // Ralwc (Genesis)
+  400600001: 'GOLDEN VISION',   // Alimentador Pet APBW (Alimentador Automático)
+  400700001: 'LIVIROBO',        // Ralwc / Genesis
   400700012: 'HOWGA',           // V50
   400700013: 'HOWGA',           // V50 PRO 110V
   400700014: 'HOWGA',           // V50 PRO 220V
   400700025: 'TAKDIR',          // V30 (fornecedor antes chamado WONJA, renomeado 16/07/2026)
-  400700026: 'RITUS',           // Liquidificador Active Move CINZA
+  400700026: 'RITUS',           // Liquidificador Active Move CINZA (o Excel chama "Blender Active Flow PRETO")
   400700027: 'RITUS',           // Liquidificador Active Move BRANCO
   400700028: 'RITUS',           // Liquidificador Active Move AZUL
   400700029: 'RITUS',           // Liquidificador Active Move ROSA
@@ -6833,14 +6839,25 @@ const FLUXO_CODIGO_FORNECEDOR = {
   400700032: 'RITUS',           // Tampa CINZA
   400700033: 'RITUS',           // Tampa AZUL
   400700034: 'RITUS',           // Tampa ROSA
-  400700035: 'CARELINE',        // Airfryer Função Vapor AOV-01 10,5L 110V
-  400700036: 'CARELINE',        // Airfryer AV-01 4L 110V
-  400700037: 'CARELINE',        // Airfryer Digital Duas Gavetas ADGH-01 11L 110V
-  400700038: 'CARELINE',        // Airfryer AV-01 4L 220V
-  400700039: 'CARELINE',        // Airfryer Digital Duas Gavetas ADGH-01 11L 220V
-  400700040: 'CARELINE',        // Airfryer Função Vapor AOV-01 10,5L 220V
+  400700035: 'CARELINE',        // Airfryer STEAM OVEN 110V (função vapor AOV-01 10,5L)
+  400700036: 'CARELINE',        // Airfryer CRYSTAL 110V (de vidro AV-01 4L)
+  400700037: 'CARELINE',        // Airfryer DUO 110V (duas gavetas ADGH-01 11L)
+  400700038: 'CARELINE',        // Airfryer CRYSTAL 220V (de vidro AV-01 4L)
+  400700039: 'CARELINE',        // Airfryer DUO 220V (duas gavetas ADGH-01 11L)
+  400700040: 'CARELINE',        // Airfryer STEAM OVEN 220V (função vapor AOV-01 10,5L)
   400700041: 'SHARETRONICS',    // V40 PRO 220V
   400700042: 'SHARETRONICS',    // V40 PRO 110V
+  400700043: 'SHARETRONICS',    // V40 (BIVOLT) — adicionado 02/09/2026
+  400700045: 'HAIYU',           // Panela de Pressão Midnight Gusta 220V (PEPD-4L)
+  400700046: 'HAIYU',           // Panela de Pressão Midnight Gusta 110V (PEPD-4L)
+  400700047: 'ZHIQING',         // Wet Mop V-Pure Hydrojet (Limpador de Piso Sem Fio LPBA-S3)
+  400700048: 'TROLL',           // Aspirador V-Pure S5
+  400700049: 'TROLL',           // Aspirador V-Pure S3
+  400700052: 'HUYANG',          // V70 220V ("V70 Ultra" no Excel)
+  400700053: 'HUYANG',          // V70 110V ("V70 Ultra" no Excel)
+  400700058: 'HUYANG',          // V60 (BIVOLT)
+  400700059: 'HUYANG',          // V60 PRO 110V
+  400700060: 'HUYANG',          // V60 PRO 220V
   // Fora do fluxo (sem compra recorrente em andamento — pedidos antigos ja chegaram):
   //   400300006: SENSOR INTELIGENTE DE FUMACA E GAS VDS SFGW
   //   401800003: ONU FASTT10 BRIDGE F10G10NW GN114Z
