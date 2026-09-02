@@ -684,5 +684,11 @@
       "valor_efetivo": null,
       "_auto": true
     }
+  },
+  "PED-0158": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-09-02"
+    }
   }
 }
