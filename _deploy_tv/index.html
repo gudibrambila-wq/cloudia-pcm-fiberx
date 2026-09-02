@@ -2103,10 +2103,10 @@
       </div>
 
       <!-- Filtros -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-3 mb-4 flex flex-wrap items-center gap-3">
-        <input id="fp-filtro-busca" type="text" placeholder="🔍 Buscar (PED, produto, processo…)"
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-3 mb-2 flex flex-wrap items-center gap-3">
+        <input id="fp-filtro-busca" type="text" placeholder="🔍 Buscar (PED, processo…)"
           oninput="renderFluxoPagamentos()"
-          class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-64">
+          class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-56">
         <select id="fp-filtro-fornecedor" onchange="renderFluxoPagamentos()"
           class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">Todos os fornecedores</option>
@@ -2128,6 +2128,15 @@
         <div class="text-xs text-slate-500">
           Sem cadastro de FOB: <span id="fp-warn-sem-fob" class="font-semibold text-amber-700">0</span> pedidos importados
         </div>
+      </div>
+
+      <!-- Lista horizontal de produtos (chips clicáveis) -->
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-3 mb-4">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Produtos em compra</span>
+          <span id="fp-chips-info" class="text-[10px] text-slate-400"></span>
+        </div>
+        <div id="fp-chips-produto" class="flex flex-wrap gap-1.5"></div>
       </div>
 
       <!-- ===== MODO ANUAL: grid de meses ===== -->
@@ -6984,6 +6993,8 @@ window.getStatusParcela = getStatusParcela;
 let _fpMesVisualizado = null;  // { year, month } — month 0-indexed
 // Modo de visão: 'anual' = grid de 24 cards de mês; 'mensal' = calendário detalhado
 let _fpModoVisao = 'anual';
+// Produto selecionado no filtro de chips (nome exato ou '' pra todos)
+let _fpFiltroProduto = '';
 
 function fpAtualizarPtax(v) {
   const novo = Number(v);
@@ -7095,16 +7106,17 @@ function _fpAplicarFiltros(parcelas) {
   const fP  = document.getElementById('fp-filtro-parcela')?.value || '';
   const fS  = document.getElementById('fp-filtro-status')?.value || '';
   const fB  = (document.getElementById('fp-filtro-busca')?.value || '').trim().toLowerCase();
+  const fProd = _fpFiltroProduto || '';
   return parcelas.filter(x => {
     if (fF && x.fornecedor !== fF) return false;
     if (fP && x.parcelaKey !== fP) return false;
     if (fS === 'pago' && !x.pago) return false;
     if (fS === 'pendente' && x.pago) return false;
+    if (fProd && x.nomeProduto !== fProd) return false;
     if (fB) {
-      // Busca livre em: PED, nome produto, fornecedor, processo
-      const alvo = `${x.codPedido||''} ${x.nomeProduto||''} ${x.fornecedor||''} ${x.processo||''}`.toLowerCase();
-      // Aceita busca parcial: "153" bate com "PED-0153"; "rosa" bate com nome; "ritus" com fornecedor.
-      // Também aceita PED sem prefixo: "0153" ou "153"
+      // Busca livre em: PED e processo (produto/fornecedor têm seus próprios filtros)
+      const alvo = `${x.codPedido||''} ${x.processo||''}`.toLowerCase();
+      // Aceita busca parcial: "153" bate com "PED-0153"; "IMP-042" com processo.
       if (!alvo.includes(fB)) return false;
     }
     return true;
@@ -7119,6 +7131,65 @@ function _fpPopularFiltroFornecedor(parcelas) {
   sel.innerHTML = '<option value="">Todos os fornecedores</option>' +
     fornecedores.map(f => `<option value="${f}"${f===atual?' selected':''}>${f}</option>`).join('');
 }
+
+// Renderiza os chips de produto. IMPORTANTE: usa TODAS as parcelas
+// (não filtradas) pra a lista de produtos ser estável — se o usuário filtrasse
+// por produto A e a lista sumisse dos outros, ele não conseguiria trocar.
+function _fpRenderChipsProduto(todasParcelas) {
+  const cont = document.getElementById('fp-chips-produto');
+  const info = document.getElementById('fp-chips-info');
+  if (!cont) return;
+
+  // Agrupa por nome de produto: quantas parcelas + total previsto
+  const porProd = new Map();
+  todasParcelas.forEach(x => {
+    const nome = x.nomeProduto || '(sem nome)';
+    if (!porProd.has(nome)) porProd.set(nome, { count: 0, total: 0, pendente: 0 });
+    const g = porProd.get(nome);
+    g.count += 1;
+    g.total += x.valor_brl;
+    if (!x.pago) g.pendente += x.valor_brl;
+  });
+
+  // Ordena por total previsto (maior → menor)
+  const produtos = [...porProd.entries()].sort((a, b) => b[1].total - a[1].total);
+
+  if (info) info.textContent = `${produtos.length} produto${produtos.length === 1 ? '' : 's'} · clique pra filtrar`;
+
+  const chipCls = (ativo) => ativo
+    ? 'bg-blue-600 text-white border-blue-700 shadow-sm'
+    : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-blue-50 hover:border-blue-300';
+
+  // Chip "Todos"
+  const chips = [];
+  chips.push(`
+    <button onclick="fpSelecionarProduto('')"
+      class="text-[11px] px-2.5 py-1 rounded-full border ${chipCls(!_fpFiltroProduto)} font-medium transition-colors">
+      Todos <span class="opacity-70 ml-0.5">(${todasParcelas.length})</span>
+    </button>
+  `);
+
+  produtos.forEach(([nome, g]) => {
+    const ativo = _fpFiltroProduto === nome;
+    const nomeCurto = nome.length > 42 ? nome.slice(0, 40) + '…' : nome;
+    const tooltip = `${nome}\n${g.count} parcela${g.count === 1 ? '' : 's'} · ${_fpFmtBRL(g.total)} previsto${g.pendente > 0 ? '\n' + _fpFmtBRL(g.pendente) + ' a pagar' : ''}`;
+    chips.push(`
+      <button onclick="fpSelecionarProduto(${JSON.stringify(nome).replace(/"/g,'&quot;')})"
+        title="${tooltip.replace(/"/g,'&quot;')}"
+        class="text-[11px] px-2.5 py-1 rounded-full border ${chipCls(ativo)} font-medium transition-colors">
+        ${nomeCurto} <span class="opacity-70 ml-0.5">(${g.count})</span>
+      </button>
+    `);
+  });
+
+  cont.innerHTML = chips.join('');
+}
+
+function fpSelecionarProduto(nome) {
+  _fpFiltroProduto = nome || '';
+  renderFluxoPagamentos();
+}
+window.fpSelecionarProduto = fpSelecionarProduto;
 
 function _fpAtualizaKPIs(parcelas) {
   const previsto = parcelas.reduce((s, x) => s + x.valor_brl, 0);
@@ -7689,6 +7760,7 @@ function renderFluxoPagamentos() {
 
   const todas = fpColetarParcelas();
   _fpPopularFiltroFornecedor(todas);
+  _fpRenderChipsProduto(todas);
   const filtradas = _fpAplicarFiltros(todas);
   _fpAtualizaKPIs(filtradas);
 
