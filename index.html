@@ -7738,11 +7738,19 @@ function _fpAjustarNumerarioPrompt(codPedido) {
   const x = parcelas.find(p => p.codPedido === codPedido && p.parcelaKey === 'terceiro');
   if (!x) return;
 
+  // Percentual real do 3º Numerário deste fornecedor (uniforme 45% hoje,
+  // mas puxa do FLUXO_FORNECEDOR_PCT pra ser robusto se mudar).
+  const pctTerceiro = (typeof FLUXO_FORNECEDOR_PCT === 'object'
+    && FLUXO_FORNECEDOR_PCT[x.fornecedor]
+    && FLUXO_FORNECEDOR_PCT[x.fornecedor].terceiro) || null;
+  const pctTxt = pctTerceiro != null
+    ? `${(pctTerceiro * 100).toFixed(0).replace('.', ',')}% do FOB`
+    : '% do FOB';
   const linhas = [
     `Ajustar valor previsto do 3º Numerário`,
     `Pedido: ${codPedido} — ${x.nomeProduto}`,
     ``,
-    `Valor atual: ${_fpFmtBRL(x.valor_brl)}${x.ajustado_manual ? ' (ajustado manualmente)' : ' (cálculo automático 10% FOB)'}`,
+    `Valor atual: ${_fpFmtBRL(x.valor_brl)}${x.ajustado_manual ? ' (ajustado manualmente)' : ` (cálculo automático ${pctTxt} × qtd × PTAX)`}`,
   ];
   if (x.ajustado_manual) {
     linhas.push(`Original calculado: ${_fpFmtBRL(x.valor_brl_original)}`);
