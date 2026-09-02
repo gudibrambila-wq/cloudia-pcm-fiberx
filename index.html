@@ -6654,6 +6654,63 @@ function setFasePedido(p, novaFase) {
   } else if (p.pago_desde) {
     delete p.pago_desde;
   }
+  // Sincronia automatica Kanban -> Fluxo de Pagamentos (Importados apenas):
+  // ao entrar em fase que implica ter pago X parcelas, marca-as se ainda estao
+  // pendentes. Complementa a sincronia reversa que ja existia (Fluxo -> Kanban).
+  // Douglas apontou 02/09/2026 que PED-0069/0100 em porto ficavam com 3a pendente.
+  if ((p.tipo || 'Nacional') === 'Importado' && p.codigo_pedido) {
+    _syncFluxoAoAvancarFase(p);
+  }
+}
+
+// Regra: quando o pedido esta em fase X, quais parcelas ja deveriam estar pagas?
+// Baseado no fluxo: pendente -> pago1 -> producao -> inspecao -> pago2 ->
+// embarque -> transito -> numerario -> porto -> recebido -> estoque
+const _FLUXO_PARCELAS_ESPERADAS = {
+  pendente:  [false, false, false],
+  pago1:     [false, false, false],
+  producao:  [true,  false, false],
+  inspecao:  [true,  false, false],
+  pago2:     [true,  false, false],
+  embarque:  [true,  true,  false],
+  transito:  [true,  true,  false],
+  numerario: [true,  true,  false],
+  porto:     [true,  true,  true],
+  recebido:  [true,  true,  true],
+  estoque:   [true,  true,  true],
+};
+function _syncFluxoAoAvancarFase(p) {
+  const esperado = _FLUXO_PARCELAS_ESPERADAS[(p.fase || '').toLowerCase()];
+  if (!esperado) return;
+  const keys = ['primeiro', 'segundo', 'terceiro'];
+  const DELTAS = { primeiro: -105, segundo: -63, terceiro: -10 };
+  const cp = p.codigo_pedido;
+  const st = PAGAMENTOS_STATUS[cp] || {};
+  let mudou = false;
+  keys.forEach((key, i) => {
+    if (!esperado[i]) return;                          // regra nao exige
+    if ((st[key] || {}).pago) return;                  // ja pago (nao toca)
+    // Calcula data prevista de vencimento (retroativa)
+    let dataPrev = null;
+    if (p.data) {
+      try {
+        const [y, m, d] = p.data.substring(0, 10).split('-').map(Number);
+        const dt = new Date(Date.UTC(y, m - 1, d));
+        dt.setUTCDate(dt.getUTCDate() + DELTAS[key]);
+        dataPrev = dt.toISOString().substring(0, 10);
+      } catch (e) {}
+    }
+    if (!dataPrev) {
+      const hoje = new Date();
+      dataPrev = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
+    }
+    st[key] = { pago: true, data_efetiva: dataPrev, valor_efetivo: null, _auto: true };
+    mudou = true;
+  });
+  if (mudou) {
+    PAGAMENTOS_STATUS[cp] = st;
+    if (typeof salvarPagamentosStatus === 'function') salvarPagamentosStatus();
+  }
 }
 
 // Dois fluxos de Kanban: Nacional (7 fases — inclui Backorder) e Importado (11 fases)
