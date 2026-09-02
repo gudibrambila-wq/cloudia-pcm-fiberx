@@ -63,12 +63,6 @@
       "data_efetiva": "2026-08-12",
       "valor_efetivo": null,
       "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-10-04",
-      "valor_efetivo": null,
-      "_auto": true
     }
   },
   "PED-0137": {
@@ -79,12 +73,6 @@
     "segundo": {
       "pago": true,
       "data_efetiva": "2026-08-12",
-      "valor_efetivo": null,
-      "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-10-04",
       "valor_efetivo": null,
       "_auto": true
     }
@@ -99,12 +87,6 @@
       "data_efetiva": "2026-08-12",
       "valor_efetivo": null,
       "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-10-04",
-      "valor_efetivo": null,
-      "_auto": true
     }
   },
   "PED-0139": {
@@ -115,12 +97,6 @@
     "segundo": {
       "pago": true,
       "data_efetiva": "2026-08-12",
-      "valor_efetivo": null,
-      "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-10-04",
       "valor_efetivo": null,
       "_auto": true
     }
@@ -135,12 +111,6 @@
       "data_efetiva": "2026-08-12",
       "valor_efetivo": null,
       "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-10-04",
-      "valor_efetivo": null,
-      "_auto": true
     }
   },
   "PED-0154": {
@@ -151,12 +121,6 @@
     "segundo": {
       "pago": true,
       "data_efetiva": "2026-08-12",
-      "valor_efetivo": null,
-      "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-10-04",
       "valor_efetivo": null,
       "_auto": true
     }
@@ -171,12 +135,6 @@
       "data_efetiva": "2026-08-12",
       "valor_efetivo": null,
       "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-10-04",
-      "valor_efetivo": null,
-      "_auto": true
     }
   },
   "PED-0156": {
@@ -189,12 +147,6 @@
       "data_efetiva": "2026-08-12",
       "valor_efetivo": null,
       "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-10-04",
-      "valor_efetivo": null,
-      "_auto": true
     }
   },
   "PED-0157": {
@@ -205,12 +157,6 @@
     "segundo": {
       "pago": true,
       "data_efetiva": "2026-08-12",
-      "valor_efetivo": null,
-      "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-10-04",
       "valor_efetivo": null,
       "_auto": true
     }
@@ -258,12 +204,6 @@
     }
   },
   "PED-0146": {
-    "primeiro": {
-      "pago": true,
-      "data_efetiva": "2026-07-16"
-    }
-  },
-  "PED-0158": {
     "primeiro": {
       "pago": true,
       "data_efetiva": "2026-07-16"
@@ -583,12 +523,6 @@
       "data_efetiva": "2026-08-12",
       "valor_efetivo": null,
       "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-10-04",
-      "valor_efetivo": null,
-      "_auto": true
     }
   },
   "PED-0075": {
@@ -703,20 +637,10 @@
       "_auto": true
     }
   },
-  "PED-0168": {
+  "PED-0158": {
     "primeiro": {
       "pago": true,
-      "data_efetiva": "2026-10-02",
-      "valor_efetivo": null,
-      "_auto": true
-    }
-  },
-  "PED-0169": {
-    "primeiro": {
-      "pago": true,
-      "data_efetiva": "2026-10-02",
-      "valor_efetivo": null,
-      "_auto": true
+      "data_efetiva": "2026-09-02"
     }
   }
 }
