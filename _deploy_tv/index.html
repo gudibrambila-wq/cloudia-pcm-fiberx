@@ -2103,10 +2103,30 @@
       </div>
 
       <!-- Filtros -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-3 mb-2 flex flex-wrap items-center gap-3">
+      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-3 mb-4 flex flex-wrap items-center gap-3">
         <input id="fp-filtro-busca" type="text" placeholder="🔍 Buscar (PED, processo…)"
           oninput="renderFluxoPagamentos()"
           class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 w-56">
+
+        <!-- Dropdown de produtos (multi-select) -->
+        <div class="relative">
+          <button id="fp-btn-produtos" type="button" onclick="fpToggleDropdownProdutos(event)"
+            class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500 flex items-center gap-2 min-w-[180px] justify-between">
+            <span id="fp-btn-produtos-txt" class="truncate">Todos os produtos</span>
+            <svg class="w-3 h-3 text-slate-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </button>
+          <div id="fp-dropdown-produtos" class="hidden absolute left-0 top-full z-40 mt-1 w-96 max-w-[calc(100vw-3rem)] bg-white border border-slate-200 rounded-lg shadow-lg">
+            <div class="p-2 border-b border-slate-100 flex items-center gap-2">
+              <input id="fp-dropdown-busca-prod" type="text" placeholder="Filtrar produtos…"
+                oninput="_fpRenderDropdownItens()"
+                class="flex-1 text-xs border border-slate-200 rounded px-2 py-1 focus:outline-none focus:ring-1 focus:ring-blue-500">
+              <button onclick="fpSelecionarTodosProdutos()" class="text-[10px] text-blue-600 hover:underline whitespace-nowrap">Selecionar todos</button>
+              <button onclick="fpLimparProdutos()" class="text-[10px] text-slate-500 hover:underline whitespace-nowrap">Limpar</button>
+            </div>
+            <div id="fp-dropdown-itens" class="max-h-80 overflow-y-auto py-1"></div>
+          </div>
+        </div>
+
         <select id="fp-filtro-fornecedor" onchange="renderFluxoPagamentos()"
           class="text-sm border border-slate-200 rounded-lg px-3 py-1.5 bg-white text-slate-700 focus:outline-none focus:ring-2 focus:ring-blue-500">
           <option value="">Todos os fornecedores</option>
@@ -2128,15 +2148,6 @@
         <div class="text-xs text-slate-500">
           Sem cadastro de FOB: <span id="fp-warn-sem-fob" class="font-semibold text-amber-700">0</span> pedidos importados
         </div>
-      </div>
-
-      <!-- Lista horizontal de produtos (chips clicáveis) -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-3 mb-4">
-        <div class="flex items-center gap-2 mb-2">
-          <span class="text-[10px] font-semibold text-slate-500 uppercase tracking-wide">Produtos em compra</span>
-          <span id="fp-chips-info" class="text-[10px] text-slate-400"></span>
-        </div>
-        <div id="fp-chips-produto" class="flex flex-wrap gap-1.5"></div>
       </div>
 
       <!-- ===== MODO ANUAL: grid de meses ===== -->
@@ -6993,8 +7004,10 @@ window.getStatusParcela = getStatusParcela;
 let _fpMesVisualizado = null;  // { year, month } — month 0-indexed
 // Modo de visão: 'anual' = grid de 24 cards de mês; 'mensal' = calendário detalhado
 let _fpModoVisao = 'anual';
-// Produto selecionado no filtro de chips (nome exato ou '' pra todos)
-let _fpFiltroProduto = '';
+// Produtos selecionados no dropdown (Set vazio = todos)
+let _fpFiltroProdutos = new Set();
+// Cache dos produtos disponíveis pra re-renderizar o dropdown sem recalcular
+let _fpProdutosDisponiveis = [];
 
 function fpAtualizarPtax(v) {
   const novo = Number(v);
@@ -7106,13 +7119,13 @@ function _fpAplicarFiltros(parcelas) {
   const fP  = document.getElementById('fp-filtro-parcela')?.value || '';
   const fS  = document.getElementById('fp-filtro-status')?.value || '';
   const fB  = (document.getElementById('fp-filtro-busca')?.value || '').trim().toLowerCase();
-  const fProd = _fpFiltroProduto || '';
+  const temFiltroProd = _fpFiltroProdutos.size > 0;
   return parcelas.filter(x => {
     if (fF && x.fornecedor !== fF) return false;
     if (fP && x.parcelaKey !== fP) return false;
     if (fS === 'pago' && !x.pago) return false;
     if (fS === 'pendente' && x.pago) return false;
-    if (fProd && x.nomeProduto !== fProd) return false;
+    if (temFiltroProd && !_fpFiltroProdutos.has(x.nomeProduto)) return false;
     if (fB) {
       // Busca livre em: PED e processo (produto/fornecedor têm seus próprios filtros)
       const alvo = `${x.codPedido||''} ${x.processo||''}`.toLowerCase();
@@ -7132,15 +7145,10 @@ function _fpPopularFiltroFornecedor(parcelas) {
     fornecedores.map(f => `<option value="${f}"${f===atual?' selected':''}>${f}</option>`).join('');
 }
 
-// Renderiza os chips de produto. IMPORTANTE: usa TODAS as parcelas
-// (não filtradas) pra a lista de produtos ser estável — se o usuário filtrasse
-// por produto A e a lista sumisse dos outros, ele não conseguiria trocar.
-function _fpRenderChipsProduto(todasParcelas) {
-  const cont = document.getElementById('fp-chips-produto');
-  const info = document.getElementById('fp-chips-info');
-  if (!cont) return;
-
-  // Agrupa por nome de produto: quantas parcelas + total previsto
+// Prepara a lista de produtos disponíveis (nome, count, total, pendente),
+// atualiza o texto do botão do dropdown, e re-renderiza os itens.
+// IMPORTANTE: usa TODAS as parcelas (não filtradas) pra a lista ser estável.
+function _fpAtualizarDropdownProdutos(todasParcelas) {
   const porProd = new Map();
   todasParcelas.forEach(x => {
     const nome = x.nomeProduto || '(sem nome)';
@@ -7152,44 +7160,115 @@ function _fpRenderChipsProduto(todasParcelas) {
   });
 
   // Ordena por total previsto (maior → menor)
-  const produtos = [...porProd.entries()].sort((a, b) => b[1].total - a[1].total);
+  _fpProdutosDisponiveis = [...porProd.entries()]
+    .sort((a, b) => b[1].total - a[1].total)
+    .map(([nome, g]) => ({ nome, ...g }));
 
-  if (info) info.textContent = `${produtos.length} produto${produtos.length === 1 ? '' : 's'} · clique pra filtrar`;
+  // Poda seleções que não existem mais
+  const nomes = new Set(_fpProdutosDisponiveis.map(p => p.nome));
+  for (const n of Array.from(_fpFiltroProdutos)) {
+    if (!nomes.has(n)) _fpFiltroProdutos.delete(n);
+  }
 
-  const chipCls = (ativo) => ativo
-    ? 'bg-blue-600 text-white border-blue-700 shadow-sm'
-    : 'bg-slate-50 text-slate-700 border-slate-200 hover:bg-blue-50 hover:border-blue-300';
+  // Atualiza texto do botão
+  const txt = document.getElementById('fp-btn-produtos-txt');
+  if (txt) {
+    if (_fpFiltroProdutos.size === 0) {
+      txt.textContent = 'Todos os produtos';
+      txt.classList.remove('text-blue-700', 'font-semibold');
+    } else if (_fpFiltroProdutos.size === 1) {
+      const [unico] = _fpFiltroProdutos;
+      txt.textContent = unico.length > 22 ? unico.slice(0, 20) + '…' : unico;
+      txt.classList.add('text-blue-700', 'font-semibold');
+    } else {
+      txt.textContent = `${_fpFiltroProdutos.size} produtos selecionados`;
+      txt.classList.add('text-blue-700', 'font-semibold');
+    }
+  }
 
-  // Chip "Todos"
-  const chips = [];
-  chips.push(`
-    <button onclick="fpSelecionarProduto('')"
-      class="text-[11px] px-2.5 py-1 rounded-full border ${chipCls(!_fpFiltroProduto)} font-medium transition-colors">
-      Todos <span class="opacity-70 ml-0.5">(${todasParcelas.length})</span>
-    </button>
-  `);
-
-  produtos.forEach(([nome, g]) => {
-    const ativo = _fpFiltroProduto === nome;
-    const nomeCurto = nome.length > 42 ? nome.slice(0, 40) + '…' : nome;
-    const tooltip = `${nome}\n${g.count} parcela${g.count === 1 ? '' : 's'} · ${_fpFmtBRL(g.total)} previsto${g.pendente > 0 ? '\n' + _fpFmtBRL(g.pendente) + ' a pagar' : ''}`;
-    chips.push(`
-      <button onclick="fpSelecionarProduto(${JSON.stringify(nome).replace(/"/g,'&quot;')})"
-        title="${tooltip.replace(/"/g,'&quot;')}"
-        class="text-[11px] px-2.5 py-1 rounded-full border ${chipCls(ativo)} font-medium transition-colors">
-        ${nomeCurto} <span class="opacity-70 ml-0.5">(${g.count})</span>
-      </button>
-    `);
-  });
-
-  cont.innerHTML = chips.join('');
+  _fpRenderDropdownItens();
 }
 
-function fpSelecionarProduto(nome) {
-  _fpFiltroProduto = nome || '';
+// Renderiza a lista de checkboxes dentro do dropdown, respeitando o filtro
+// de busca interno (input "Filtrar produtos…"). Chamado no toggle e a cada
+// digitação no input.
+function _fpRenderDropdownItens() {
+  const cont = document.getElementById('fp-dropdown-itens');
+  if (!cont) return;
+  const q = (document.getElementById('fp-dropdown-busca-prod')?.value || '').trim().toLowerCase();
+  const filtrados = q
+    ? _fpProdutosDisponiveis.filter(p => p.nome.toLowerCase().includes(q))
+    : _fpProdutosDisponiveis;
+
+  if (filtrados.length === 0) {
+    cont.innerHTML = '<div class="text-xs text-slate-400 text-center py-6">Nenhum produto encontrado</div>';
+    return;
+  }
+
+  cont.innerHTML = filtrados.map(p => {
+    const marcado = _fpFiltroProdutos.has(p.nome);
+    const chave = JSON.stringify(p.nome).replace(/"/g, '&quot;');
+    return `
+      <label class="flex items-center gap-2 px-3 py-1.5 hover:bg-slate-50 cursor-pointer transition-colors">
+        <input type="checkbox" ${marcado ? 'checked' : ''}
+          onchange="fpToggleProduto(${chave})"
+          class="w-4 h-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500 flex-shrink-0">
+        <span class="flex-1 min-w-0 text-xs text-slate-700 truncate" title="${(p.nome).replace(/"/g,'&quot;')}">${p.nome}</span>
+        <span class="text-[10px] text-slate-400 flex-shrink-0">${p.count}</span>
+      </label>
+    `;
+  }).join('');
+}
+window._fpRenderDropdownItens = _fpRenderDropdownItens;
+
+function fpToggleDropdownProdutos(ev) {
+  if (ev) ev.stopPropagation();
+  const dd = document.getElementById('fp-dropdown-produtos');
+  if (!dd) return;
+  dd.classList.toggle('hidden');
+  if (!dd.classList.contains('hidden')) {
+    // Ao abrir: foca no campo de busca interno e re-renderiza itens
+    _fpRenderDropdownItens();
+    const busca = document.getElementById('fp-dropdown-busca-prod');
+    if (busca) { busca.value = ''; setTimeout(() => busca.focus(), 0); }
+  }
+}
+window.fpToggleDropdownProdutos = fpToggleDropdownProdutos;
+
+function fpToggleProduto(nome) {
+  if (_fpFiltroProdutos.has(nome)) _fpFiltroProdutos.delete(nome);
+  else _fpFiltroProdutos.add(nome);
+  renderFluxoPagamentos();
+  // renderFluxoPagamentos vai chamar _fpAtualizarDropdownProdutos, que
+  // re-renderiza os itens; mantém o dropdown aberto.
+}
+window.fpToggleProduto = fpToggleProduto;
+
+function fpSelecionarTodosProdutos() {
+  // Marca só os produtos que estão visíveis com o filtro de busca atual
+  const q = (document.getElementById('fp-dropdown-busca-prod')?.value || '').trim().toLowerCase();
+  const alvo = q
+    ? _fpProdutosDisponiveis.filter(p => p.nome.toLowerCase().includes(q))
+    : _fpProdutosDisponiveis;
+  alvo.forEach(p => _fpFiltroProdutos.add(p.nome));
   renderFluxoPagamentos();
 }
-window.fpSelecionarProduto = fpSelecionarProduto;
+window.fpSelecionarTodosProdutos = fpSelecionarTodosProdutos;
+
+function fpLimparProdutos() {
+  _fpFiltroProdutos.clear();
+  renderFluxoPagamentos();
+}
+window.fpLimparProdutos = fpLimparProdutos;
+
+// Fecha o dropdown ao clicar fora dele
+document.addEventListener('click', (ev) => {
+  const dd = document.getElementById('fp-dropdown-produtos');
+  const btn = document.getElementById('fp-btn-produtos');
+  if (!dd || dd.classList.contains('hidden')) return;
+  if (dd.contains(ev.target) || (btn && btn.contains(ev.target))) return;
+  dd.classList.add('hidden');
+});
 
 function _fpAtualizaKPIs(parcelas) {
   const previsto = parcelas.reduce((s, x) => s + x.valor_brl, 0);
@@ -7760,7 +7839,7 @@ function renderFluxoPagamentos() {
 
   const todas = fpColetarParcelas();
   _fpPopularFiltroFornecedor(todas);
-  _fpRenderChipsProduto(todas);
+  _fpAtualizarDropdownProdutos(todas);
   const filtradas = _fpAplicarFiltros(todas);
   _fpAtualizaKPIs(filtradas);
 
