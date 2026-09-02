@@ -2136,7 +2136,7 @@
           <h3 class="text-sm font-semibold text-slate-800">Selecione um mês</h3>
           <p class="text-[11px] text-slate-500">Clique em um card pra ver o detalhe diário</p>
         </div>
-        <div id="fp-grid-anual" class="grid gap-3" style="grid-template-columns: repeat(6, minmax(0, 1fr));"></div>
+        <div id="fp-grid-anual" class="grid gap-3" style="grid-template-columns: repeat(4, minmax(0, 1fr));"></div>
       </div>
 
       <!-- ===== MODO MENSAL: calendário detalhado ===== -->
@@ -7199,33 +7199,59 @@ function _fpRenderGridAnual(parcelas) {
     const pagos    = items.filter(x => x.pago);
     const pago     = pagos.reduce((s, x) => s + (x.valor_efetivo != null ? x.valor_efetivo : x.valor_brl), 0);
     const pendente = previsto - pagos.reduce((s, x) => s + x.valor_brl, 0);
+    const nPagas   = pagos.length;
+    const nPend    = items.length - nPagas;
     const eCorrente = chave === mesCorrenteChave;
     const vazio = items.length === 0;
+    const tudoPago = !vazio && pendente === 0;
 
     // Cor do card
-    const borda = eCorrente ? 'ring-2 ring-blue-500 border-blue-300' : 'border-slate-200';
+    const borda = eCorrente
+      ? 'ring-2 ring-blue-500 border-blue-300'
+      : tudoPago ? 'border-emerald-200' : 'border-slate-200';
     const bg    = vazio ? 'bg-slate-50/60' : 'bg-white';
     const opacidade = vazio ? 'opacity-60' : '';
     const cursor = vazio ? 'cursor-default' : 'cursor-pointer hover:border-blue-400 hover:shadow-md';
     const clickAttr = vazio ? '' : `onclick="fpAbrirMes(${year}, ${month})"`;
 
-    const previstoTxt = vazio ? '—' : _fpFmtBRL(previsto);
-    const detalhe = vazio
-      ? '<div class="text-[9px] text-slate-400 mt-1">sem parcelas</div>'
-      : `<div class="text-[9px] text-slate-500 mt-1">${items.length} parc · <span class="text-emerald-700">${_fpFmtBRL(pago)}</span> pg</div>`;
+    // Header: label "PREVISTO" à esquerda + mês/ano à direita
+    const badgeHoje = eCorrente
+      ? '<span class="ml-1 text-[8px] px-1 py-0.5 rounded bg-blue-100 text-blue-700 font-bold">HOJE</span>'
+      : '';
+    const mesLabel = `<span class="${eCorrente ? 'text-blue-700' : 'text-slate-500'} font-semibold">${mesNomes[month]}/${String(year).slice(2)}</span>`;
+
+    if (vazio) {
+      return `
+        <div class="border ${borda} ${bg} ${opacidade} ${cursor} rounded-lg p-3 transition-all min-h-[110px] flex flex-col">
+          <div class="flex items-center justify-between mb-1">
+            <div class="text-[10px] text-slate-400 font-semibold uppercase tracking-wide">Previsto</div>
+            <div class="text-[10px] uppercase tracking-wide">${mesLabel}</div>
+          </div>
+          <div class="text-slate-300 text-lg font-bold flex-1 flex items-center justify-center">—</div>
+          <div class="text-[9px] text-slate-400 text-center">sem parcelas</div>
+        </div>
+      `;
+    }
 
     return `
-      <div class="border ${borda} ${bg} ${opacidade} ${cursor} rounded-lg p-3 transition-all" ${clickAttr}>
-        <div class="flex items-center justify-between mb-2">
-          <div class="text-[11px] font-semibold ${eCorrente ? 'text-blue-700' : 'text-slate-500'} uppercase tracking-wide">
-            ${mesNomes[month]}/${String(year).slice(2)}
-            ${eCorrente ? '<span class="ml-1 text-[8px] px-1 py-0.5 rounded bg-blue-100 text-blue-700">HOJE</span>' : ''}
+      <div class="border ${borda} ${bg} ${cursor} rounded-lg p-3 transition-all" ${clickAttr}>
+        <div class="flex items-start justify-between mb-1">
+          <div class="text-[10px] text-slate-500 font-semibold uppercase tracking-wide">Previsto · ${items.length} parc</div>
+          <div class="text-[10px] uppercase tracking-wide flex items-center">${mesLabel}${badgeHoje}</div>
+        </div>
+        <div class="text-lg font-bold ${tudoPago ? 'text-emerald-700' : 'text-slate-800'} leading-tight mb-2">
+          ${_fpFmtBRL(previsto)}
+        </div>
+        <div class="border-t border-slate-100 pt-1.5 space-y-0.5">
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="text-emerald-600 font-medium">✓ Pago${nPagas ? ` (${nPagas})` : ''}</span>
+            <span class="font-semibold text-emerald-700">${_fpFmtBRL(pago)}</span>
+          </div>
+          <div class="flex items-center justify-between text-[11px]">
+            <span class="${pendente > 0 ? 'text-amber-700' : 'text-slate-400'} font-medium">${pendente > 0 ? '⏳ A pagar' : '— A pagar'}${nPend > 0 ? ` (${nPend})` : ''}</span>
+            <span class="font-semibold ${pendente > 0 ? 'text-amber-800' : 'text-slate-400'}">${_fpFmtBRL(pendente)}</span>
           </div>
         </div>
-        <div class="text-sm font-bold ${vazio ? 'text-slate-400' : pendente > 0 ? 'text-slate-800' : 'text-emerald-700'}">
-          ${previstoTxt}
-        </div>
-        ${detalhe}
       </div>
     `;
   }).join('');
