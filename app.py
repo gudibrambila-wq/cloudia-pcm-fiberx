@@ -112,9 +112,10 @@ dados = (BASE / "dados.json").read_text(encoding="utf-8")
 def _read_or(p: Path, default: str) -> str:
     return p.read_text(encoding="utf-8") if p.exists() else default
 
-pedidos   = _read_or(BASE / "pedidos_kanban.json",     "[]")
-overrides = _read_or(BASE / "produto_overrides.json",  "{}")
-status    = _read_or(BASE / "produto_status.json",     "{}")
+pedidos    = _read_or(BASE / "pedidos_kanban.json",     "[]")
+overrides  = _read_or(BASE / "produto_overrides.json",  "{}")
+status     = _read_or(BASE / "produto_status.json",     "{}")
+pagamentos = _read_or(BASE / "pagamentos_status.json",  "{}")
 
 import json as _json
 # Email do usuario autenticado — usado pelo index.html pra decidir admin vs view-only.
@@ -166,6 +167,7 @@ window.__DADOS_INLINE__ = {dados};
 window.__PEDIDOS_INLINE__ = {pedidos};
 window.__OVERRIDES_INLINE__ = {overrides};
 window.__STATUS_INLINE__ = {status};
+window.__PAGAMENTOS_INLINE__ = {pagamentos};
 window.__USER_EMAIL__ = {_json.dumps(_user_email)};
 window.__URL_PARAMS__ = {_json.dumps(_url_params)};
 window.__GITHUB_TOKEN__ = {_json.dumps(_gh_token)};

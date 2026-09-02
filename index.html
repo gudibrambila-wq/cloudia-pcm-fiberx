@@ -6844,9 +6844,20 @@ const PAGAMENTOS_STATUS_KEY = 'cloudia_pagamentos_status_v1';
 let PAGAMENTOS_STATUS = {};
 
 function loadPagamentosStatus() {
+  // Prioriza dados vindos do servidor (window.__PAGAMENTOS_INLINE__ injetado
+  // pelo app.py) — se admin do Streamlit ja commitou algo, esse valor esta
+  // atualizado. Se nao tem inline (modo local sem servidor), cai no localStorage.
+  // Antes so lia do localStorage — reconciliacoes automaticas feitas server-side
+  // nao chegavam ao navegador (bug de 28/08 apontado em 02/09/2026).
   try {
-    const s = localStorage.getItem(PAGAMENTOS_STATUS_KEY);
-    PAGAMENTOS_STATUS = s ? JSON.parse(s) : {};
+    if (typeof window.__PAGAMENTOS_INLINE__ !== 'undefined' && window.__PAGAMENTOS_INLINE__) {
+      PAGAMENTOS_STATUS = window.__PAGAMENTOS_INLINE__ || {};
+      // Atualiza o cache local com a versao servidor
+      try { localStorage.setItem(PAGAMENTOS_STATUS_KEY, JSON.stringify(PAGAMENTOS_STATUS)); } catch(_) {}
+    } else {
+      const s = localStorage.getItem(PAGAMENTOS_STATUS_KEY);
+      PAGAMENTOS_STATUS = s ? JSON.parse(s) : {};
+    }
   } catch (e) { PAGAMENTOS_STATUS = {}; }
   window.PAGAMENTOS_STATUS = PAGAMENTOS_STATUS;
 }
