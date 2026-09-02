@@ -2130,23 +2130,37 @@
         </div>
       </div>
 
-      <!-- Calendário mensal -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 mb-4">
+      <!-- ===== MODO ANUAL: grid de meses ===== -->
+      <div id="fp-modo-anual" class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 mb-4">
         <div class="flex items-center justify-between mb-4">
-          <div class="flex items-center gap-3">
-            <button onclick="fpMudarMes(-1)" class="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600" title="Mês anterior">‹</button>
-            <h3 id="fp-cal-titulo" class="text-sm font-semibold text-slate-800 min-w-[140px] text-center">—</h3>
-            <button onclick="fpMudarMes(1)" class="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600" title="Mês seguinte">›</button>
-            <button onclick="fpIrHoje()" class="text-xs text-blue-600 hover:underline ml-2">Hoje</button>
-          </div>
+          <h3 class="text-sm font-semibold text-slate-800">Selecione um mês</h3>
+          <p class="text-[11px] text-slate-500">Clique em um card pra ver o detalhe diário</p>
         </div>
-        <div id="fp-calendario" class="grid grid-cols-7 gap-1"></div>
+        <div id="fp-grid-anual" class="grid gap-3" style="grid-template-columns: repeat(6, minmax(0, 1fr));"></div>
       </div>
 
-      <!-- Lista de dias com movimento -->
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-        <h3 id="fp-lista-titulo" class="text-sm font-semibold text-slate-800 mb-3">Próximos pagamentos</h3>
-        <div id="fp-lista-dias" class="space-y-2"></div>
+      <!-- ===== MODO MENSAL: calendário detalhado ===== -->
+      <div id="fp-modo-mensal" class="hidden">
+        <!-- Calendário mensal -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 mb-4">
+          <div class="flex items-center justify-between mb-4">
+            <div class="flex items-center gap-3">
+              <button onclick="fpVoltarAnual()" class="text-xs text-blue-600 hover:underline font-medium">← Todos os meses</button>
+              <span class="text-slate-300">|</span>
+              <button onclick="fpMudarMes(-1)" class="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600" title="Mês anterior">‹</button>
+              <h3 id="fp-cal-titulo" class="text-sm font-semibold text-slate-800 min-w-[140px] text-center">—</h3>
+              <button onclick="fpMudarMes(1)" class="w-8 h-8 rounded-lg border border-slate-200 hover:bg-slate-50 flex items-center justify-center text-slate-600" title="Mês seguinte">›</button>
+              <button onclick="fpIrHoje()" class="text-xs text-blue-600 hover:underline ml-2">Hoje</button>
+            </div>
+          </div>
+          <div id="fp-calendario" class="grid gap-1" style="grid-template-columns: repeat(7, minmax(0, 1fr)) minmax(0, 0.7fr);"></div>
+        </div>
+
+        <!-- Lista de dias com movimento -->
+        <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
+          <h3 id="fp-lista-titulo" class="text-sm font-semibold text-slate-800 mb-3">Próximos pagamentos</h3>
+          <div id="fp-lista-dias" class="space-y-2"></div>
+        </div>
       </div>
     </div>
 
@@ -6968,6 +6982,8 @@ window.getStatusParcela = getStatusParcela;
 // ----------------------------------------------------------------------------
 // Estado do calendário (mês visualizado). Default = mês da SEMANA_ATUAL.
 let _fpMesVisualizado = null;  // { year, month } — month 0-indexed
+// Modo de visão: 'anual' = grid de 24 cards de mês; 'mensal' = calendário detalhado
+let _fpModoVisao = 'anual';
 
 function fpAtualizarPtax(v) {
   const novo = Number(v);
@@ -6988,8 +7004,25 @@ function fpMudarMes(delta) {
 function fpIrHoje() {
   const now = new Date();
   _fpMesVisualizado = { year: now.getFullYear(), month: now.getMonth() };
+  _fpModoVisao = 'mensal';
   renderFluxoPagamentos();
 }
+
+function fpAbrirMes(year, month) {
+  _fpMesVisualizado = { year, month };
+  _fpModoVisao = 'mensal';
+  renderFluxoPagamentos();
+  // scroll pro topo pra ficar claro que a tela mudou
+  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(_) {}
+}
+window.fpAbrirMes = fpAbrirMes;
+
+function fpVoltarAnual() {
+  _fpModoVisao = 'anual';
+  renderFluxoPagamentos();
+  try { window.scrollTo({ top: 0, behavior: 'smooth' }); } catch(_) {}
+}
+window.fpVoltarAnual = fpVoltarAnual;
 
 function _fpFmtBRL(v) {
   return v.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL', maximumFractionDigits: 0 });
@@ -7130,6 +7163,76 @@ const _FP_PARCELA_BADGE = {
   terceiro: { txt: '3º', bg: 'bg-fuchsia-100', text: 'text-fuchsia-800' },
 };
 
+// Renderiza o grid anual (Nível 1): um card por mês com o Total Previsto.
+// Cobre todos os meses que têm parcelas, no range JAN/26 → DEZ/27.
+function _fpRenderGridAnual(parcelas) {
+  const cont = document.getElementById('fp-grid-anual');
+  if (!cont) return;
+  const mesNomes = ['JAN','FEV','MAR','ABR','MAI','JUN','JUL','AGO','SET','OUT','NOV','DEZ'];
+
+  // Range fixo pra manter layout previsível: JAN/26 → DEZ/27 (24 cards)
+  const meses = [];
+  for (let ano of [2026, 2027]) {
+    for (let m = 0; m < 12; m++) {
+      meses.push({ year: ano, month: m });
+    }
+  }
+
+  // Agrupa parcelas por (ano, mês)
+  const porMes = new Map();
+  parcelas.forEach(x => {
+    if (!x.data_iso) return;
+    const [y, m] = x.data_iso.split('-').map(Number);
+    const chave = `${y}-${m-1}`;
+    if (!porMes.has(chave)) porMes.set(chave, []);
+    porMes.get(chave).push(x);
+  });
+
+  // Mês corrente (pra destaque)
+  const hoje = new Date();
+  const mesCorrenteChave = `${hoje.getFullYear()}-${hoje.getMonth()}`;
+
+  const cards = meses.map(({ year, month }) => {
+    const chave = `${year}-${month}`;
+    const items = porMes.get(chave) || [];
+    const previsto = items.reduce((s, x) => s + x.valor_brl, 0);
+    const pagos    = items.filter(x => x.pago);
+    const pago     = pagos.reduce((s, x) => s + (x.valor_efetivo != null ? x.valor_efetivo : x.valor_brl), 0);
+    const pendente = previsto - pagos.reduce((s, x) => s + x.valor_brl, 0);
+    const eCorrente = chave === mesCorrenteChave;
+    const vazio = items.length === 0;
+
+    // Cor do card
+    const borda = eCorrente ? 'ring-2 ring-blue-500 border-blue-300' : 'border-slate-200';
+    const bg    = vazio ? 'bg-slate-50/60' : 'bg-white';
+    const opacidade = vazio ? 'opacity-60' : '';
+    const cursor = vazio ? 'cursor-default' : 'cursor-pointer hover:border-blue-400 hover:shadow-md';
+    const clickAttr = vazio ? '' : `onclick="fpAbrirMes(${year}, ${month})"`;
+
+    const previstoTxt = vazio ? '—' : _fpFmtBRL(previsto);
+    const detalhe = vazio
+      ? '<div class="text-[9px] text-slate-400 mt-1">sem parcelas</div>'
+      : `<div class="text-[9px] text-slate-500 mt-1">${items.length} parc · <span class="text-emerald-700">${_fpFmtBRL(pago)}</span> pg</div>`;
+
+    return `
+      <div class="border ${borda} ${bg} ${opacidade} ${cursor} rounded-lg p-3 transition-all" ${clickAttr}>
+        <div class="flex items-center justify-between mb-2">
+          <div class="text-[11px] font-semibold ${eCorrente ? 'text-blue-700' : 'text-slate-500'} uppercase tracking-wide">
+            ${mesNomes[month]}/${String(year).slice(2)}
+            ${eCorrente ? '<span class="ml-1 text-[8px] px-1 py-0.5 rounded bg-blue-100 text-blue-700">HOJE</span>' : ''}
+          </div>
+        </div>
+        <div class="text-sm font-bold ${vazio ? 'text-slate-400' : pendente > 0 ? 'text-slate-800' : 'text-emerald-700'}">
+          ${previstoTxt}
+        </div>
+        ${detalhe}
+      </div>
+    `;
+  }).join('');
+
+  cont.innerHTML = cards;
+}
+
 function _fpRenderCalendario(parcelas) {
   const cont = document.getElementById('fp-calendario');
   const tit  = document.getElementById('fp-cal-titulo');
@@ -7155,23 +7258,26 @@ function _fpRenderCalendario(parcelas) {
     porDia.get(d).push(x);
   });
 
-  // Cabeçalho dias da semana
-  const cabecalho = ['SEG','TER','QUA','QUI','SEX','SÁB','DOM'].map(l =>
-    `<div class="text-[10px] text-center text-slate-500 font-semibold py-1">${l}</div>`
-  ).join('');
+  // Cabeçalho dias da semana + coluna de total semanal
+  const cabecalho = [
+    ...['SEG','TER','QUA','QUI','SEX','SÁB','DOM'].map(l =>
+      `<div class="text-[10px] text-center text-slate-500 font-semibold py-1">${l}</div>`
+    ),
+    `<div class="text-[10px] text-center text-slate-500 font-semibold py-1 border-l border-slate-200">TOTAL SEMANA</div>`
+  ].join('');
 
-  // Células vazias antes do dia 1
-  const vaziosInicio = Array(offsetSeg).fill('<div class="min-h-[130px]"></div>').join('');
-
-  // Células dos dias
+  // Monta a grade linha por linha (semana por semana) — 7 dias + 1 célula de total
   const hoje = new Date();
   const hojeStr = `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
   const MAX_ITEMS_VISIVEIS = 4;
-  const dias = [];
-  for (let d = 1; d <= totalDias; d++) {
-    const iso = `${year}-${String(month+1).padStart(2,'0')}-${String(d).padStart(2,'0')}`;
+  const ordem = { primeiro: 1, segundo: 2, terceiro: 3 };
+
+  // Renderiza uma célula de dia (vazia se dia==null)
+  const renderCel = (dia) => {
+    if (dia == null) return '<div class="min-h-[130px]"></div>';
+    const iso = `${year}-${String(month+1).padStart(2,'0')}-${String(dia).padStart(2,'0')}`;
     const eHoje = iso === hojeStr;
-    const items = porDia.get(d) || [];
+    const items = porDia.get(dia) || [];
     const total = items.reduce((s, x) => s + x.valor_brl, 0);
     const temPendente = items.some(x => !x.pago);
     const soPago = items.length > 0 && !temPendente;
@@ -7183,8 +7289,6 @@ function _fpRenderCalendario(parcelas) {
     const borda = eHoje ? 'ring-2 ring-blue-500' : '';
     const numCor = eHoje ? 'text-blue-700 font-bold' : 'text-slate-600 font-semibold';
 
-    // Ordena items por parcela (1º → 2º → 3º) pra visual coerente
-    const ordem = { primeiro: 1, segundo: 2, terceiro: 3 };
     items.sort((a, b) => (ordem[a.parcelaKey] || 9) - (ordem[b.parcelaKey] || 9));
 
     const visiveis = items.slice(0, MAX_ITEMS_VISIVEIS);
@@ -7208,22 +7312,58 @@ function _fpRenderCalendario(parcelas) {
       ? `<div class="text-[9px] font-bold ${soPago?'text-emerald-700':'text-amber-800'} border-t border-slate-200/60 pt-0.5 mt-0.5 text-right">${_fpFmtBRL(total)}</div>`
       : '';
 
-    // Número do dia: clicável quando tem parcelas (abre modal com detalhes completos)
     const diaClick = items.length > 0
-      ? `<button class="text-[10px] ${numCor} px-0.5 text-left hover:underline hover:text-blue-700 cursor-pointer" onclick="_fpAbrirDia('${iso}')" title="Ver detalhes dos ${items.length} pagamento${items.length>1?'s':''} do dia">${d}</button>`
-      : `<div class="text-[10px] ${numCor} px-0.5">${d}</div>`;
+      ? `<button class="text-[10px] ${numCor} px-0.5 text-left hover:underline hover:text-blue-700 cursor-pointer" onclick="_fpAbrirDia('${iso}')" title="Ver detalhes dos ${items.length} pagamento${items.length>1?'s':''} do dia">${dia}</button>`
+      : `<div class="text-[10px] ${numCor} px-0.5">${dia}</div>`;
 
-    dias.push(
-      `<div class="border ${bgFundo} rounded p-1 min-h-[130px] flex flex-col gap-0.5 ${borda}">
-         ${diaClick}
-         ${miniCards}
-         ${maisTag}
-         ${totalTag}
-       </div>`
-    );
+    return `<div class="border ${bgFundo} rounded p-1 min-h-[130px] flex flex-col gap-0.5 ${borda}" data-fp-dia-total="${total}">
+       ${diaClick}
+       ${miniCards}
+       ${maisTag}
+       ${totalTag}
+     </div>`;
+  };
+
+  // Renderiza a célula de total da semana (8ª coluna)
+  const renderTotalSemana = (totalSemana, temMovimento) => {
+    if (!temMovimento) {
+      return `<div class="min-h-[130px] border border-slate-100 border-l-2 border-l-slate-200 bg-slate-50/30 rounded flex items-center justify-center text-[10px] text-slate-300">—</div>`;
+    }
+    return `<div class="min-h-[130px] border border-blue-100 border-l-2 border-l-blue-300 bg-blue-50/50 rounded p-2 flex flex-col justify-center items-center text-center">
+       <div class="text-[9px] text-blue-600 uppercase tracking-wide font-semibold mb-1">Semana</div>
+       <div class="text-[13px] font-bold text-blue-800 leading-tight">${_fpFmtBRL(totalSemana)}</div>
+     </div>`;
+  };
+
+  // Monta linhas (semanas). Cada linha = 7 células de dia + 1 de total.
+  const linhas = [];
+  let diaAtual = 1;
+  let posLinha = offsetSeg; // preenche as primeiras células vazias
+  while (diaAtual <= totalDias) {
+    const cells = [];
+    let totalSemana = 0;
+    let temMovimento = false;
+    for (let c = 0; c < 7; c++) {
+      if (c < posLinha && linhas.length === 0) {
+        cells.push(renderCel(null));
+      } else if (diaAtual > totalDias) {
+        cells.push(renderCel(null));
+      } else {
+        const items = porDia.get(diaAtual) || [];
+        if (items.length > 0) {
+          totalSemana += items.reduce((s, x) => s + x.valor_brl, 0);
+          temMovimento = true;
+        }
+        cells.push(renderCel(diaAtual));
+        diaAtual++;
+      }
+    }
+    cells.push(renderTotalSemana(totalSemana, temMovimento));
+    linhas.push(cells.join(''));
+    posLinha = 0;
   }
 
-  cont.innerHTML = cabecalho + vaziosInicio + dias.join('');
+  cont.innerHTML = cabecalho + linhas.join('');
 }
 
 function _fpRenderLista(parcelas) {
@@ -7525,8 +7665,20 @@ function renderFluxoPagamentos() {
   _fpPopularFiltroFornecedor(todas);
   const filtradas = _fpAplicarFiltros(todas);
   _fpAtualizaKPIs(filtradas);
-  _fpRenderCalendario(filtradas);
-  _fpRenderLista(filtradas);
+
+  // Alterna visibilidade entre modo anual (grid de meses) e mensal (calendário detalhado)
+  const modoAnual  = document.getElementById('fp-modo-anual');
+  const modoMensal = document.getElementById('fp-modo-mensal');
+  if (_fpModoVisao === 'anual') {
+    if (modoAnual)  modoAnual.classList.remove('hidden');
+    if (modoMensal) modoMensal.classList.add('hidden');
+    _fpRenderGridAnual(filtradas);
+  } else {
+    if (modoAnual)  modoAnual.classList.add('hidden');
+    if (modoMensal) modoMensal.classList.remove('hidden');
+    _fpRenderCalendario(filtradas);
+    _fpRenderLista(filtradas);
+  }
 }
 
 window.renderFluxoPagamentos = renderFluxoPagamentos;
