@@ -4297,6 +4297,10 @@ function renderPSI() {
     SIM_PRODUTO_KEY = key;
     resetarSim(false);
     initSimPanel(d);
+  } else {
+    // Mesmo produto: refaz apenas labels e origs pra pegar mudanças no
+    // fcst_mensal (autosync trouxe versão nova, edição pelo modal, etc.).
+    refreshSimOrigLabels(d);
   }
   const isReal  = d.source === 'real';
 
@@ -4996,8 +5000,11 @@ function removerPedidoRow(btn) {
   simularCenario();
 }
 
-function initSimPanel(d) {
-  // Determina os dois meses a simular: mês vigente e próximo
+// Atualiza os LABELS de mês e valores "orig: X" da Simulação de Cenário
+// a partir do produto atual. Não mexe em inputs preenchidos nem na lista
+// de pedidos — chamado a cada render pra manter os origs sincronizados
+// quando o d.fcstMensal muda (autosync ou edição pelo modal).
+function refreshSimOrigLabels(d) {
   const wtm = Object.entries(WEEK_TO_MONTH)
     .map(([w, m]) => ({ w: +w, m }))
     .sort((a, b) => a.w - b.w);
@@ -5007,23 +5014,30 @@ function initSimPanel(d) {
   const mes2 = idxAtualMes + 1 < wtm.length ? wtm[idxAtualMes + 1].m : 'JUN/26';
   const mes3 = idxAtualMes + 2 < wtm.length ? wtm[idxAtualMes + 2].m : 'JUL/26';
 
-  document.getElementById('sim-mes1-label').textContent = mes1;
-  document.getElementById('sim-mes2-label').textContent = mes2;
-  document.getElementById('sim-mes3-label').textContent = mes3;
+  const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
+  const setPh  = (id, v) => { const el = document.getElementById(id); if (el) el.placeholder = v; };
 
-  // Usa fcstMensal diretamente — evita duplicação de semanas-fronteira do buildProjection
+  setTxt('sim-mes1-label', mes1);
+  setTxt('sim-mes2-label', mes2);
+  setTxt('sim-mes3-label', mes3);
+
   const origFc1 = (d.fcstMensal || {})[mes1] || 0;
   const origFc2 = (d.fcstMensal || {})[mes2] || 0;
   const origFc3 = (d.fcstMensal || {})[mes3] || 0;
 
-  document.getElementById('sim-fc1-orig').textContent = '(orig: ' + origFc1.toLocaleString('pt-BR') + ')';
-  document.getElementById('sim-fc2-orig').textContent = '(orig: ' + origFc2.toLocaleString('pt-BR') + ')';
-  document.getElementById('sim-fc3-orig').textContent = '(orig: ' + origFc3.toLocaleString('pt-BR') + ')';
-  document.getElementById('sim-fc1').placeholder = origFc1.toLocaleString('pt-BR') + ' un/mês';
-  document.getElementById('sim-fc2').placeholder = origFc2.toLocaleString('pt-BR') + ' un/mês';
-  document.getElementById('sim-fc3').placeholder = origFc3.toLocaleString('pt-BR') + ' un/mês';
+  setTxt('sim-fc1-orig', '(orig: ' + origFc1.toLocaleString('pt-BR') + ')');
+  setTxt('sim-fc2-orig', '(orig: ' + origFc2.toLocaleString('pt-BR') + ')');
+  setTxt('sim-fc3-orig', '(orig: ' + origFc3.toLocaleString('pt-BR') + ')');
+  setPh('sim-fc1', origFc1.toLocaleString('pt-BR') + ' un/mês');
+  setPh('sim-fc2', origFc2.toLocaleString('pt-BR') + ' un/mês');
+  setPh('sim-fc3', origFc3.toLocaleString('pt-BR') + ' un/mês');
+}
 
-  // Inicializa lista de pedidos com uma linha vazia
+function initSimPanel(d) {
+  refreshSimOrigLabels(d);
+
+  // Inicializa lista de pedidos com uma linha vazia (só no init — não zera
+  // pedidos digitados a cada render)
   const list = document.getElementById('sim-pedidos-list');
   if (list) { list.innerHTML = ''; adicionarPedidoRow(); }
 }
