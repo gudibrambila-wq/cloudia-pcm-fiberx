@@ -6876,6 +6876,27 @@ function fluxoDataParcela(dataChegadaISO, deltaDias) {
   return `${yy}-${mm}-${dd}`;
 }
 
+// Ajusta uma data ISO pra QUARTA-FEIRA da mesma semana (convenção seg→dom).
+// Regra da empresa: pagamentos sempre saem em quarta. Douglas alinhou 02/09/2026.
+// - Segunda a sábado → move pra frente/trás pra chegar na quarta da semana.
+// - Domingo (último dia da semana seg-dom) → move -4 dias pra quarta anterior.
+// Retorna null se dataISO inválida.
+function fluxoAjustarParaQuarta(dataISO) {
+  if (!dataISO || typeof dataISO !== 'string') return dataISO;
+  const [y, m, d] = dataISO.split('-').map(Number);
+  if (!y || !m || !d) return dataISO;
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  const dw = dt.getUTCDay();          // 0=dom, 1=seg, ..., 6=sáb
+  const dwSem = dw === 0 ? 7 : dw;    // 1=seg, ..., 7=dom (semana começa na seg)
+  const offset = 3 - dwSem;           // dias até a quarta (dia 3 da semana seg-dom)
+  if (offset === 0) return dataISO;   // já é quarta
+  dt.setUTCDate(dt.getUTCDate() + offset);
+  const yy = dt.getUTCFullYear();
+  const mm = String(dt.getUTCMonth() + 1).padStart(2, '0');
+  const dd = String(dt.getUTCDate()).padStart(2, '0');
+  return `${yy}-${mm}-${dd}`;
+}
+
 // Calcula as 3 parcelas de um pedido Importado.
 // Retorna array de 3 objetos { key, nome, fase_kanban, pct, delta_dias, data_iso, valor_brl }
 // Retorna [] se pedido não é elegível (não-Importado, cancelado, sem data/valor/fornecedor).
@@ -6906,7 +6927,10 @@ function fluxoParcelasDoPedido(p, ptax = FLUXO_PTAX) {
     const meta = FLUXO_PARCELAS_META[key];
     const pct = pcts[key];
     const delta = FLUXO_DELTAS[key];
-    const dataISO = fluxoDataParcela(dataChegada, delta);
+    // Data calculada a partir da chegada e delta. Depois ajustada pra
+    // quarta-feira da mesma semana (empresa só paga em quarta).
+    const dataBase = fluxoDataParcela(dataChegada, delta);
+    const dataISO = fluxoAjustarParaQuarta(dataBase);
     const valorBRL = valorUnit * pct * p.qtd * cambio;
     return {
       key,
@@ -6915,6 +6939,7 @@ function fluxoParcelasDoPedido(p, ptax = FLUXO_PTAX) {
       pct,
       delta_dias: delta,
       data_iso: dataISO,
+      data_iso_base: dataBase,  // pra debug/tooltip caso precise
       valor_brl: Math.round(valorBRL * 100) / 100,
       fornecedor,
       moeda_origem: moeda,
