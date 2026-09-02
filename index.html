@@ -2145,9 +2145,6 @@
           <option value="pago">Pago</option>
         </select>
         <div class="flex-1"></div>
-        <div class="text-xs text-slate-500">
-          Sem cadastro de FOB: <span id="fp-warn-sem-fob" class="font-semibold text-amber-700">0</span> pedidos importados
-        </div>
       </div>
 
       <!-- ===== MODO ANUAL: grid de meses ===== -->
@@ -7398,15 +7395,6 @@ function _fpAtualizaKPIs(parcelas) {
   setTxt('fp-total-pago',     _fpFmtBRL(pago));
   setTxt('fp-total-pendente', _fpFmtBRL(pendente));
   setTxt('fp-total-parcelas', parcelas.length.toLocaleString('pt-BR'));
-
-  // Aviso de importados sem FOB
-  const semFob = (PEDIDOS || []).filter(p => {
-    if (p.cancelado) return false;
-    if ((p.tipo || 'Nacional') !== 'Importado') return false;
-    if (!p.codigo || !FLUXO_CODIGO_FORNECEDOR[p.codigo]) return false;
-    return !p.valor_unitario;
-  }).length;
-  setTxt('fp-warn-sem-fob', semFob);
 }
 
 function _fpNomeProdutoCurto(nome) {
