@@ -443,10 +443,6 @@
       "data_efetiva": "2026-09-08",
       "valor_efetivo": null,
       "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-09-02"
     }
   },
   "PED-0062": {
