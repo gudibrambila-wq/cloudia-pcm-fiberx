@@ -925,9 +925,9 @@
     "processo": "003.2026 VSC",
     "modal": "FCL",
     "id": 1780332075262,
-    "fase": "porto",
+    "fase": "recebido",
     "codigo_pedido": "PED-0100",
-    "fase_desde": "2026-09-01T12:53:10.000Z",
+    "fase_desde": "2026-09-02T14:16:36.272Z",
     "codigo": 400700014,
     "valor_unitario": 95,
     "moeda": "USD"
