@@ -2597,6 +2597,10 @@
     "id": 1788379432986,
     "fase": "pendente",
     "pendente_desde": "2026-09-02T20:03:52.986Z",
-    "codigo_pedido": "PED-0197"
+    "codigo_pedido": "PED-0197",
+    "cancelado": true,
+    "motivo_cancelamento": "TESTE",
+    "cancelado_em": "2026-09-02T20:04:17.964Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   }
 ]
