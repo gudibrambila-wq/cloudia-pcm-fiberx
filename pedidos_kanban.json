@@ -2585,5 +2585,18 @@
     "pendente_desde": "2026-08-31T12:40:31.493Z",
     "codigo_pedido": "PED-0196",
     "fase_desde": "2026-08-31T12:40:31.493Z"
+  },
+  {
+    "nome": "VELDS LIMPADOR DE PISO SEM FIO VDS LPBA-S3",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 500,
+    "semana": 58,
+    "mes": "FEV/27",
+    "origem": "Simulado",
+    "id": 1788379432986,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-02T20:03:52.986Z",
+    "codigo_pedido": "PED-0197"
   }
 ]
