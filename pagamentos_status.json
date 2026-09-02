@@ -563,10 +563,6 @@
       "data_efetiva": "2026-06-30",
       "valor_efetivo": null,
       "_auto": true
-    },
-    "terceiro": {
-      "pago": true,
-      "data_efetiva": "2026-09-02"
     }
   },
   "PED-0070": {
