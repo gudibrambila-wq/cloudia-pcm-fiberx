@@ -2368,10 +2368,9 @@
     "valor_unitario": 83,
     "moeda": "USD",
     "id": 1787923408662,
-    "fase": "pendente",
-    "pendente_desde": "2026-08-28T13:23:28.662Z",
+    "fase": "producao",
     "codigo_pedido": "PED-0185",
-    "fase_desde": "2026-08-28T13:23:28.662Z"
+    "fase_desde": "2026-09-03T11:49:55.414Z"
   },
   {
     "codigo": 400700059,
@@ -2601,6 +2600,7 @@
     "cancelado": true,
     "motivo_cancelamento": "TESTE",
     "cancelado_em": "2026-09-02T20:04:17.964Z",
-    "cancelado_por": "douglas.brambila@velds.com.br"
+    "cancelado_por": "douglas.brambila@velds.com.br",
+    "fase_desde": "2026-09-02T20:03:52.986Z"
   }
 ]
