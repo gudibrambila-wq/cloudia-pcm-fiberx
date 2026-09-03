@@ -5653,6 +5653,82 @@ function fecharModalEditarProduto() {
   _editandoEhPromocao = false;
 }
 
+// Move um produto do DADOS.catalogo pra DADOS.produtos com estrutura
+// PSI vazia (W1-W104), pra que ele apareça no PSI imediatamente após
+// receber forecast. Antes só aparecia depois do próximo Sincronizar PSI
+// (regen do dados.json), o que deixava o usuário na mão em reunião.
+function _promoverDoCatalogoLocal(codigo) {
+  if (!DADOS) return;
+  const codStr = String(codigo);
+  // Já está em produtos? Nada a fazer.
+  if ((DADOS.produtos || []).some(p => String(p.codigo) === codStr)) return;
+  const cat = (DADOS.catalogo || []).find(c => String(c.codigo) === codStr);
+  if (!cat) return;
+  // Estrutura mínima. Semanas W1-W104 (JAN/26 → DEZ/27, mesma janela do gerar_dados).
+  const N = 104;
+  const semanas = [];
+  for (let w = 1; w <= N; w++) semanas.push(w);
+  const zeros = () => new Array(N).fill(0);
+  const nulls = () => new Array(N).fill(null);
+  const novoProduto = {
+    codigo:         cat.codigo,
+    nome:           cat.nome,
+    marca:          cat.marca || 'Velds',
+    familia:        cat.familia || '',
+    tipo:           'Importado',   // default; override pode sobrescrever
+    pv:             cat.preco_medio || 0,
+    pc:             0,
+    saldo_atual:    cat.saldo_atual || 0,
+    fc_sem:         0,             // será recalculado quando fcst_mensal propagar
+    in_transit:     0,
+    prox_chegada:   null,
+    entradas:       [],
+    fcst_mensal:    {},            // aplicarOverridesEmDados vai preencher do override
+    venda_mensal:   {},
+    realizado_split:{},
+    psi: {
+      semanas:   semanas,
+      saldo:     zeros(),
+      forecast:  zeros(),
+      realizado: nulls(),
+      sell_in:   zeros(),
+    },
+  };
+  // Chegadas do Kanban vinculadas a esse código — reproduz o que o
+  // gerar_dados.py monta em `entradas`.
+  try {
+    (PEDIDOS || []).forEach(pd => {
+      if (String(pd.codigo) !== codStr) return;
+      if (pd.cancelado) return;
+      const fase = (pd.fase || '').toLowerCase();
+      if (fase === 'estoque') return;   // já chegou
+      const sem = Number(pd.semana);
+      if (!Number.isFinite(sem)) return;
+      novoProduto.entradas.push({ semana: sem, quantidade: Number(pd.qtd || 0) });
+    });
+    // Próxima chegada (a de menor semana ≥ SEMANA_ATUAL)
+    const futuras = novoProduto.entradas
+      .filter(e => e.semana >= SEMANA_ATUAL)
+      .sort((a, b) => a.semana - b.semana);
+    if (futuras.length) novoProduto.prox_chegada = { semana: futuras[0].semana, quantidade: futuras[0].quantidade };
+    // Preenche sell_in do psi a partir das entradas
+    novoProduto.entradas.forEach(e => {
+      const idx = semanas.indexOf(e.semana);
+      if (idx >= 0) novoProduto.psi.sell_in[idx] += e.quantidade;
+    });
+    novoProduto.in_transit = novoProduto.entradas.reduce((s, e) => s + e.quantidade, 0);
+  } catch(_) {}
+  // Saldo inicial na SEMANA_ATUAL = saldo_atual do estoque
+  const idxAtual = semanas.indexOf(SEMANA_ATUAL);
+  if (idxAtual >= 0) novoProduto.psi.saldo[idxAtual] = novoProduto.saldo_atual;
+
+  DADOS.produtos.push(novoProduto);
+  // Marca no catálogo pra ele sair da lista de "cadastrar forecast" imediatamente
+  cat._promovido_local = true;
+  console.log(`[promocao] ${codigo} promovido do catálogo → produtos (client-side)`);
+}
+window._promoverDoCatalogoLocal = _promoverDoCatalogoLocal;
+
 function salvarEditarProduto() {
   if (_editandoProdutoCodigo == null) return;
   const codigo = _editandoProdutoCodigo;
@@ -5698,6 +5774,14 @@ function salvarEditarProduto() {
 
   fecharModalEditarProduto();
 
+  // Se é promoção do catálogo, PROMOVE JÁ (client-side) pra não precisar
+  // esperar Sincronizar PSI. Douglas alinhou em 03/09/2026: cadastrar
+  // forecast e o produto tem que aparecer na hora no PSI (foi pra reunião
+  // e o produto ainda mostrava "sem forecast" mesmo tendo salvo).
+  if (_editandoEhPromocao) {
+    _promoverDoCatalogoLocal(codigo);
+  }
+
   // Re-aplica overrides no DADOS em memória e re-renderiza tudo
   aplicarOverridesEmDados();
   // Rebuild caches que dependem dos campos editados
@@ -5722,7 +5806,7 @@ function salvarEditarProduto() {
   if (cur === 'financeiro')   renderFinanceiro();
 
   if (_editandoEhPromocao) {
-    mostrarToast(`🚀 Produto promovido pra Curva A — vai aparecer na aba Produtos no próximo Sincronizar PSI`);
+    mostrarToast(`🚀 Produto promovido pra Curva A — já visível no PSI`);
     if (typeof renderCatalogo === 'function') renderCatalogo();
   } else {
     mostrarToast(`✓ Produto atualizado — alterações sobrevivem ao Sincronizar PSI`);
