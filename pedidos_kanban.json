@@ -2148,9 +2148,9 @@
     "marca": "Velds",
     "tipo": "Importado",
     "qtd": 500,
-    "semana": 53,
-    "mes": "JAN/27",
-    "data": "2026-12-30",
+    "semana": 49,
+    "mes": "DEZ/26",
+    "data": "2026-12-03",
     "origem": "Avulso",
     "processo": "026.2026 VSC",
     "modal": "FCL",
@@ -2612,7 +2612,8 @@
     "id": 1788441253830,
     "fase": "pendente",
     "pendente_desde": "2026-09-03T13:14:13.830Z",
-    "codigo_pedido": "PED-0198"
+    "codigo_pedido": "PED-0198",
+    "fase_desde": "2026-09-03T13:14:13.830Z"
   },
   {
     "nome": "VELDS LIMPADOR DE PISO SEM FIO VDS LPBA-S3",
@@ -2625,6 +2626,7 @@
     "id": 1788443014336,
     "fase": "pendente",
     "pendente_desde": "2026-09-03T13:43:34.336Z",
-    "codigo_pedido": "PED-0199"
+    "codigo_pedido": "PED-0199",
+    "fase_desde": "2026-09-03T13:43:34.336Z"
   }
 ]
