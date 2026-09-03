@@ -165,14 +165,14 @@
     "marca": "Velds",
     "tipo": "Importado",
     "qtd": 2000,
-    "semana": 45,
+    "semana": 44,
     "mes": "NOV/26",
     "origem": "VELDS_PSI W20",
     "processo": "005.2026 VSC",
     "fase": "embarque",
     "_unique_key": "velds_w20_ROBO ASPIRADOR GENESIS_23_2000",
     "modal": "FCL",
-    "data": "2026-11-03",
+    "data": "2026-10-29",
     "codigo_pedido": "PED-0060",
     "fase_desde": "2026-08-13T20:55:48.294Z",
     "codigo": 400700001,
@@ -2387,10 +2387,9 @@
     "valor_unitario": 101.5,
     "moeda": "USD",
     "id": 1787923501476,
-    "fase": "pendente",
-    "pendente_desde": "2026-08-28T13:25:01.476Z",
+    "fase": "producao",
     "codigo_pedido": "PED-0186",
-    "fase_desde": "2026-08-28T13:25:01.476Z"
+    "fase_desde": "2026-09-03T11:49:57.942Z"
   },
   {
     "codigo": 400700060,
@@ -2407,10 +2406,9 @@
     "valor_unitario": 101.5,
     "moeda": "USD",
     "id": 1787923525936,
-    "fase": "pendente",
-    "pendente_desde": "2026-08-28T13:25:25.936Z",
+    "fase": "producao",
     "codigo_pedido": "PED-0187",
-    "fase_desde": "2026-08-28T13:25:25.936Z"
+    "fase_desde": "2026-09-03T11:50:00.840Z"
   },
   {
     "codigo": 401200085,
