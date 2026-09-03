@@ -2978,6 +2978,11 @@ document.addEventListener('fullscreenchange', () => {
 function navigate(view, el) {
   document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
   document.getElementById('view-' + view).classList.add('active');
+  // Marca a view corrente no body — CSS do kiosk usa isso pra decidir o layout.
+  // Antes usávamos :has(#view-X.active), mas :has() não é suportado em
+  // navegadores antigos (o iframe do Streamlit às vezes vira sem suporte
+  // dependendo do host). Um data-attribute é 100% compatível.
+  try { document.body.dataset.view = view; } catch(_) {}
   document.querySelectorAll('.nav-item').forEach(n => {
     n.classList.remove('active','text-white');
     n.classList.add('text-white/50');
@@ -10993,24 +10998,32 @@ function _iniciarModoKiosk() {
   // Renomeia a aba do navegador pra identificar fácil entre várias abas abertas
   document.title = 'TV — Portal Supply';
 
-  const rotateSec  = Math.max(5,  parseInt(_getUrlParam('rotate'))  || 45);
+  const rotateSec  = Math.max(5,  parseInt(_getUrlParam('rotate'))  || 30);
   const refreshMin = Math.max(1,  parseInt(_getUrlParam('refresh')) || 10);
 
   // Marca body — usado em CSS pra esconder/mostrar coisas condicionalmente
   document.body.classList.add('modo-kiosk');
 
-  // [REVERTIDO 24/06] Barra de filtros volta a ser visível pra manter o botão
-  // "Tela cheia" acessível na TV. Quem incomoda visualmente é só Tela cheia mesmo;
-  // o resto fica como informação.
-
-  // CSS do kiosk: na timeline ativa, sidebar+header somem PRA TELA CHEIA mas
-  // aparecem ao passar o mouse na borda esquerda (slide-in). Tarja MODO VIEW
-  // também some nas timelines (fica feio no fundo verde do prado).
+  // CSS do kiosk. Usa body[data-view=...] (setado por navigate()) em vez de
+  // :has() pra ser compatível com navegadores mais antigos (o notebook da
+  // TV às vezes tem Chromium antigo). Douglas alinhou 03/09/2026 os fixes:
+  // (1) barra MODO VISUALIZAÇÃO some no kiosk, (2) sem faixa branca em cima,
+  // (3) main sem padding em qualquer view do kiosk.
   const styleK = document.createElement('style');
   styleK.textContent = `
-    /* Quando timeline ativa em modo kiosk: sidebar foge pra esquerda */
-    body.modo-kiosk:has(#view-timeline.active) #sidebar,
-    body.modo-kiosk:has(#view-timeline-nac.active) #sidebar {
+    /* ============ modo-kiosk GERAL (todas as views) ============ */
+    /* Zera padding do <main> — evita a "faixa branca" ao redor */
+    body.modo-kiosk main { padding: 0 !important; }
+    /* Barra "👁️ MODO VISUALIZAÇÃO — somente leitura": sempre oculta no kiosk */
+    body.modo-view.modo-kiosk::before { display: none !important; }
+    /* E zera a margem-top de 22px que existia pra dar espaço pra essa barra */
+    body.modo-view.modo-kiosk header,
+    body.modo-view.modo-kiosk #sidebar { margin-top: 0 !important; }
+
+    /* ============ modo-kiosk NAS TIMELINES (imersivo) ============ */
+    /* Sidebar foge pra esquerda; aparece só no hover / edge-trigger */
+    body.modo-kiosk[data-view="timeline"] #sidebar,
+    body.modo-kiosk[data-view="timeline-nac"] #sidebar {
       position: fixed !important;
       left: -240px;
       top: 0;
@@ -11018,59 +11031,35 @@ function _iniciarModoKiosk() {
       transition: left 0.25s ease;
       z-index: 1000;
     }
-    /* Hover na sidebar (ou no trigger esquerdo) → slide-in */
-    body.modo-kiosk:has(#view-timeline.active) #sidebar:hover,
-    body.modo-kiosk:has(#view-timeline-nac.active) #sidebar:hover,
-    body.modo-kiosk:has(#view-timeline.active) #kiosk-edge-trigger:hover ~ #sidebar,
-    body.modo-kiosk:has(#view-timeline-nac.active) #kiosk-edge-trigger:hover ~ #sidebar {
+    body.modo-kiosk[data-view="timeline"] #sidebar:hover,
+    body.modo-kiosk[data-view="timeline-nac"] #sidebar:hover,
+    body.modo-kiosk[data-view="timeline"] #kiosk-edge-trigger:hover ~ #sidebar,
+    body.modo-kiosk[data-view="timeline-nac"] #kiosk-edge-trigger:hover ~ #sidebar {
       left: 0;
     }
     /* Header escondido nas timelines */
-    body.modo-kiosk:has(#view-timeline.active) > div > header,
-    body.modo-kiosk:has(#view-timeline-nac.active) > div > header {
+    body.modo-kiosk[data-view="timeline"] > div > header,
+    body.modo-kiosk[data-view="timeline-nac"] > div > header {
       display: none !important;
     }
-    /* Timelines: 100vh menos a barra de filtros (~64px) que volta a aparecer */
-    body.modo-kiosk:has(#view-timeline.active) #tl-cena-wrap,
-    body.modo-kiosk:has(#view-timeline-nac.active) #tl-nac-wrap {
-      height: calc(100vh - 64px) !important;
-    }
-    /* Ganho de tela em modo kiosk (Douglas 08/07):
-       - Zera padding do <main> (era p-6 = 24px de cada lado)
-       - Remove border/rounded do wrap (bordas roubavam alguns px)
-       - Wrap ocupa 100vh cheio (sem descontar altura de header/filtro)
-     */
-    body.modo-kiosk main {
-      padding: 0 !important;
-    }
-    body.modo-kiosk:has(#view-timeline.active) #tl-cena-wrap,
-    body.modo-kiosk:has(#view-timeline-nac.active) #tl-nac-wrap {
+    /* Wrap ocupa 100vh cheio, sem border/rounded */
+    body.modo-kiosk[data-view="timeline"] #tl-cena-wrap,
+    body.modo-kiosk[data-view="timeline-nac"] #tl-nac-wrap {
       height: 100vh !important;
       border-radius: 0 !important;
       border: none !important;
       box-shadow: none !important;
     }
-    /* Tarja MODO VIEW escondida em timeline + kiosk (fica feio no fundo verde) */
-    body.modo-view.modo-kiosk:has(#view-timeline.active)::before,
-    body.modo-view.modo-kiosk:has(#view-timeline-nac.active)::before {
-      display: none !important;
-    }
-    body.modo-view.modo-kiosk:has(#view-timeline.active) header,
-    body.modo-view.modo-kiosk:has(#view-timeline-nac.active) header,
-    body.modo-view.modo-kiosk:has(#view-timeline.active) #sidebar,
-    body.modo-view.modo-kiosk:has(#view-timeline-nac.active) #sidebar {
-      margin-top: 0 !important;
-    }
-    /* Trigger fininho na borda esquerda (so visivel quando hover) */
+    /* Trigger fininho na borda esquerda (só visível quando timeline ativa) */
     #kiosk-edge-trigger {
       position: fixed; left: 0; top: 0; width: 12px; height: 100vh;
       z-index: 999; background: transparent; cursor: pointer;
+      display: none;
     }
-    body.modo-kiosk:has(#view-timeline.active) #kiosk-edge-trigger,
-    body.modo-kiosk:has(#view-timeline-nac.active) #kiosk-edge-trigger {
+    body.modo-kiosk[data-view="timeline"] #kiosk-edge-trigger,
+    body.modo-kiosk[data-view="timeline-nac"] #kiosk-edge-trigger {
       display: block;
     }
-    #kiosk-edge-trigger { display: none; }
   `;
   document.head.appendChild(styleK);
 
