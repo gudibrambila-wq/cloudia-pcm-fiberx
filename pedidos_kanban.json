@@ -2600,5 +2600,18 @@
     "cancelado_em": "2026-09-02T20:04:17.964Z",
     "cancelado_por": "douglas.brambila@velds.com.br",
     "fase_desde": "2026-09-02T20:03:52.986Z"
+  },
+  {
+    "nome": "ROBÔ ASPIRADOR INTELIGENTE VELDS  V40 PRO (110V)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 1000,
+    "semana": 52,
+    "mes": "DEZ/26",
+    "origem": "Simulado",
+    "id": 1788441253830,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-03T13:14:13.830Z",
+    "codigo_pedido": "PED-0198"
   }
 ]
