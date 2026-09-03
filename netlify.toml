@@ -1,0 +1,24 @@
+# Netlify continuous deployment do CloudIA PCM (TV read-only).
+#
+# Cada push no repo dispara um build que copia os arquivos atualizados
+# (index.html + JSONs de estado) pra pasta _deploy_tv/, que é servida
+# publicamente sem login (site: statuesque-ganache-aa442a).
+#
+# Fluxo:
+#  1. Admin salva algo no Streamlit → autosync commita no repo.
+#  2. GitHub notifica o Netlify → Netlify roda o `command` abaixo.
+#  3. Netlify publica o conteúdo de _deploy_tv/ (index.html + 5 JSONs).
+#  4. TV vê o estado novo em ~30 s, sem intervenção humana.
+#
+# Douglas alinhou 03/09/2026: sem mais deploys manuais via CLI.
+
+[build]
+  # Pasta que vai virar o site público
+  publish = "_deploy_tv"
+  # Copia os arquivos-fonte da raiz do repo pra a pasta publicada.
+  # Sem isso, a TV serve o snapshot antigo que ficou congelado em _deploy_tv.
+  command = "cp index.html dados.json pedidos_kanban.json produto_overrides.json produto_status.json pagamentos_status.json _deploy_tv/"
+
+# Sem processamento de HTML/CSS/JS — o index.html já vem pronto.
+[build.processing]
+  skip_processing = true
