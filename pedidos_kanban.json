@@ -2544,9 +2544,9 @@
     "valor_unitario": 326.76,
     "moeda": "BRL",
     "id": 1788179885656,
-    "fase": "pago",
+    "fase": "backorder",
     "codigo_pedido": "PED-0194",
-    "fase_desde": "2026-08-31T12:39:28.488Z"
+    "fase_desde": "2026-09-03T20:48:50.546Z"
   },
   {
     "codigo": 401700029,
