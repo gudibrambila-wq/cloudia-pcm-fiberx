@@ -2641,5 +2641,18 @@
     "fase": "pendente",
     "pendente_desde": "2026-09-03T14:12:26.688Z",
     "codigo_pedido": "PED-0200"
+  },
+  {
+    "nome": "ROBO ASPIRADOR INTELIGENTE VELDS V70 (220V)",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 400,
+    "semana": 55,
+    "mes": "JAN/27",
+    "origem": "Simulado",
+    "id": 1788444769377,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-03T14:12:49.377Z",
+    "codigo_pedido": "PED-0201"
   }
 ]
