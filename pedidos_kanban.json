@@ -2465,9 +2465,10 @@
     "valor_unitario": 106.9,
     "moeda": "BRL",
     "id": 1788179560012,
-    "fase": "pago",
+    "fase": "estoque",
     "codigo_pedido": "PED-0190",
-    "fase_desde": "2026-08-31T12:32:47.120Z"
+    "fase_desde": "2026-09-03T20:48:06.978Z",
+    "arquivado_em": "2026-09-03T20:48:06.978Z"
   },
   {
     "codigo": 401200030,
