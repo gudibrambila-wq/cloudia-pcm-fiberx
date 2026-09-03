@@ -2445,9 +2445,10 @@
     "valor_unitario": 334.08,
     "moeda": "BRL",
     "id": 1788179418583,
-    "fase": "pago",
+    "fase": "estoque",
     "codigo_pedido": "PED-0189",
-    "fase_desde": "2026-08-31T12:31:46.420Z"
+    "fase_desde": "2026-09-03T20:47:41.166Z",
+    "arquivado_em": "2026-09-03T20:47:41.166Z"
   },
   {
     "codigo": 401700026,
@@ -2640,7 +2641,8 @@
     "id": 1788444746688,
     "fase": "pendente",
     "pendente_desde": "2026-09-03T14:12:26.688Z",
-    "codigo_pedido": "PED-0200"
+    "codigo_pedido": "PED-0200",
+    "fase_desde": "2026-09-03T14:12:26.688Z"
   },
   {
     "nome": "ROBO ASPIRADOR INTELIGENTE VELDS V70 (220V)",
@@ -2653,6 +2655,7 @@
     "id": 1788444769377,
     "fase": "pendente",
     "pendente_desde": "2026-09-03T14:12:49.377Z",
-    "codigo_pedido": "PED-0201"
+    "codigo_pedido": "PED-0201",
+    "fase_desde": "2026-09-03T14:12:49.377Z"
   }
 ]
