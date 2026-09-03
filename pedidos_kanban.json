@@ -2505,9 +2505,10 @@
     "valor_unitario": 767.36,
     "moeda": "BRL",
     "id": 1788179729272,
-    "fase": "pago",
+    "fase": "estoque",
     "codigo_pedido": "PED-0192",
-    "fase_desde": "2026-08-31T12:39:21.889Z"
+    "fase_desde": "2026-09-03T20:48:39.894Z",
+    "arquivado_em": "2026-09-03T20:48:39.894Z"
   },
   {
     "codigo": 401200086,
