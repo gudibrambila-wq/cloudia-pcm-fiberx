@@ -2676,9 +2676,9 @@
     "valor_unitario": 529.66,
     "moeda": "BRL",
     "id": 1788545352025,
-    "fase": "pendente",
-    "pendente_desde": "2026-09-04T18:09:12.025Z",
-    "codigo_pedido": "PED-0202"
+    "fase": "backorder",
+    "codigo_pedido": "PED-0202",
+    "fase_desde": "2026-09-04T18:16:00.773Z"
   },
   {
     "codigo": 401300036,
