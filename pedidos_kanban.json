@@ -2752,5 +2752,23 @@
     "fase": "pendente",
     "pendente_desde": "2026-09-04T18:13:30.132Z",
     "codigo_pedido": "PED-0206"
+  },
+  {
+    "codigo": 401200072,
+    "nome": "Switch Gerenciável Gigabit L2 de 24 Portas - SG3428X",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 54,
+    "semana": 40,
+    "mes": "OUT/26",
+    "data": "2026-09-28",
+    "origem": "Avulso",
+    "modal": null,
+    "valor_unitario": 1142.97,
+    "moeda": "BRL",
+    "id": 1788545636142,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-04T18:13:56.142Z",
+    "codigo_pedido": "PED-0207"
   }
 ]
