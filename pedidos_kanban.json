@@ -2868,9 +2868,9 @@
     "valor_unitario": null,
     "moeda": null,
     "id": 1788547848266,
-    "fase": "pendente",
-    "pendente_desde": "2026-09-04T18:50:48.266Z",
-    "codigo_pedido": "PED-0212"
+    "fase": "estoque_fornecedor",
+    "codigo_pedido": "PED-0212",
+    "fase_desde": "2026-09-04T18:52:10.906Z"
   },
   {
     "codigo": 401200087,
