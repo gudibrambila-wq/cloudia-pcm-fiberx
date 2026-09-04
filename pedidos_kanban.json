@@ -2890,5 +2890,24 @@
     "fase": "backorder",
     "codigo_pedido": "PED-0213",
     "fase_desde": "2026-09-04T18:51:50.750Z"
+  },
+  {
+    "codigo": 401200088,
+    "nome": "Switch Gerenciável L2+ de 10 Portas com 8 Portas de 2.5 Gbps PoE+ e 2 Slots SFP+ de 10Gbps",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 1,
+    "semana": 40,
+    "mes": "OUT/26",
+    "data": "2026-09-28",
+    "origem": "Avulso",
+    "processo": "047.2026 NTSC",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1788548329457,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-04T18:58:49.457Z",
+    "codigo_pedido": "PED-0214"
   }
 ]
