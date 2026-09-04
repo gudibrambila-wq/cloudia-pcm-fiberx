@@ -2660,5 +2660,24 @@
     "pendente_desde": "2026-09-03T14:12:49.377Z",
     "codigo_pedido": "PED-0201",
     "fase_desde": "2026-09-03T14:12:49.377Z"
+  },
+  {
+    "codigo": 401200075,
+    "nome": "Switch Gerenciável Gigabit L2+ de 8 portas - SG3210",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 56,
+    "semana": 40,
+    "mes": "OUT/26",
+    "data": "2026-09-28",
+    "origem": "Avulso",
+    "processo": "045.2026 NTSC",
+    "modal": null,
+    "valor_unitario": 529.66,
+    "moeda": "BRL",
+    "id": 1788545352025,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-04T18:09:12.025Z",
+    "codigo_pedido": "PED-0202"
   }
 ]
