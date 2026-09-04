@@ -2811,7 +2811,8 @@
     "id": 1788546399295,
     "fase": "pendente",
     "pendente_desde": "2026-09-04T18:26:39.295Z",
-    "codigo_pedido": "PED-0209"
+    "codigo_pedido": "PED-0209",
+    "fase_desde": "2026-09-04T18:26:39.295Z"
   },
   {
     "codigo": 401200030,
@@ -2830,6 +2831,26 @@
     "id": 1788546421585,
     "fase": "pendente",
     "pendente_desde": "2026-09-04T18:27:01.585Z",
-    "codigo_pedido": "PED-0210"
+    "codigo_pedido": "PED-0210",
+    "fase_desde": "2026-09-04T18:27:01.585Z"
+  },
+  {
+    "codigo": 401700031,
+    "nome": "ACCESS POINT WI-FI 7 MONTAGEM TETO BE5000 EAP723",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 64,
+    "semana": 40,
+    "mes": "OUT/26",
+    "data": "2026-09-28",
+    "origem": "Avulso",
+    "processo": "045.2026 NTSC",
+    "modal": null,
+    "valor_unitario": 585.66,
+    "moeda": "BRL",
+    "id": 1788547794382,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-04T18:49:54.382Z",
+    "codigo_pedido": "PED-0211"
   }
 ]
