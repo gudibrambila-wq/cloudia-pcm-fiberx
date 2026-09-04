@@ -2734,5 +2734,23 @@
     "fase": "pendente",
     "pendente_desde": "2026-09-04T18:12:17.856Z",
     "codigo_pedido": "PED-0205"
+  },
+  {
+    "codigo": 401200086,
+    "nome": "SWITCH DE MESA FAST ETHERNET 5 PORTAS COM 4 PORTAS POE",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 60,
+    "semana": 40,
+    "mes": "OUT/26",
+    "data": "2026-09-28",
+    "origem": "Avulso",
+    "modal": null,
+    "valor_unitario": 161.94,
+    "moeda": "BRL",
+    "id": 1788545610132,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-04T18:13:30.132Z",
+    "codigo_pedido": "PED-0206"
   }
 ]
