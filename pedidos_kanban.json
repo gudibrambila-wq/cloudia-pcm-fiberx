@@ -2793,5 +2793,24 @@
     "fase": "backorder",
     "codigo_pedido": "PED-0208",
     "fase_desde": "2026-09-04T18:16:26.993Z"
+  },
+  {
+    "codigo": 401200069,
+    "nome": "Switch Gerenciável Gigabit L2+ de 24 portas  - SG3428 Local",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 54,
+    "semana": 40,
+    "mes": "OUT/26",
+    "data": "2026-09-28",
+    "origem": "Avulso",
+    "processo": "047.2026 NTSC",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1788546399295,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-04T18:26:39.295Z",
+    "codigo_pedido": "PED-0209"
   }
 ]
