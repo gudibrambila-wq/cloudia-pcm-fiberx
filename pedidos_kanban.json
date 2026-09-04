@@ -2849,8 +2849,46 @@
     "valor_unitario": 585.66,
     "moeda": "BRL",
     "id": 1788547794382,
+    "fase": "backorder",
+    "codigo_pedido": "PED-0211",
+    "fase_desde": "2026-09-04T18:50:01.523Z"
+  },
+  {
+    "codigo": 401700032,
+    "nome": "ACCESS POINT WI-FI 7 TRIBAND MONTAGEM EM TETO BE11000 EAP772",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 54,
+    "semana": 40,
+    "mes": "OUT/26",
+    "data": "2026-09-28",
+    "origem": "Avulso",
+    "processo": "045.2026 NTSC",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1788547848266,
     "fase": "pendente",
-    "pendente_desde": "2026-09-04T18:49:54.382Z",
-    "codigo_pedido": "PED-0211"
+    "pendente_desde": "2026-09-04T18:50:48.266Z",
+    "codigo_pedido": "PED-0212"
+  },
+  {
+    "codigo": 401200087,
+    "nome": "SWITCH EASY MANAGED OMADA 5 PORT GIGA 4 PORT POE ES205GP",
+    "marca": "-",
+    "tipo": "Nacional",
+    "qtd": 60,
+    "semana": 40,
+    "mes": "OUT/26",
+    "data": "2026-09-28",
+    "origem": "Avulso",
+    "processo": "045.2026 NTSC",
+    "modal": null,
+    "valor_unitario": 207.54,
+    "moeda": "BRL",
+    "id": 1788547893286,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-04T18:51:33.286Z",
+    "codigo_pedido": "PED-0213"
   }
 ]
