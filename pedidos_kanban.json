@@ -925,12 +925,13 @@
     "processo": "003.2026 VSC",
     "modal": "FCL",
     "id": 1780332075262,
-    "fase": "recebido",
+    "fase": "estoque",
     "codigo_pedido": "PED-0100",
-    "fase_desde": "2026-09-02T14:16:36.272Z",
+    "fase_desde": "2026-09-08T17:46:58.610Z",
     "codigo": 400700014,
     "valor_unitario": 95,
-    "moeda": "USD"
+    "moeda": "USD",
+    "arquivado_em": "2026-09-08T17:46:58.610Z"
   },
   {
     "nome": "ROBÔ ASPIRADOR INTELIGENTE VELDS - V50 PRO (110V)",
