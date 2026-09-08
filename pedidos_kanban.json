@@ -2348,10 +2348,10 @@
     "valor_unitario": 70,
     "moeda": "USD",
     "id": 1787923300993,
-    "fase": "pendente",
-    "pendente_desde": "2026-08-28T13:21:40.993Z",
+    "fase": "pago1",
     "codigo_pedido": "PED-0184",
-    "fase_desde": "2026-08-28T13:21:40.993Z"
+    "fase_desde": "2026-09-08T17:40:55.994Z",
+    "pago_desde": "2026-09-08T17:40:55.994Z"
   },
   {
     "codigo": 400700058,
