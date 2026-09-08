@@ -7121,11 +7121,39 @@ function marcarParcelaPaga(codPedido, parcelaKey, dataEfetiva, valorEfetivo) {
   if (!PAGAMENTOS_STATUS[codPedido]) PAGAMENTOS_STATUS[codPedido] = {};
   const hoje = new Date();
   const dataISO = dataEfetiva || `${hoje.getFullYear()}-${String(hoje.getMonth()+1).padStart(2,'0')}-${String(hoje.getDate()).padStart(2,'0')}`;
-  PAGAMENTOS_STATUS[codPedido][parcelaKey] = {
+
+  // Preserva campos manuais (valor_previsto_manual etc.) que ja estao gravados
+  const stAtual = PAGAMENTOS_STATUS[codPedido][parcelaKey] || {};
+
+  // Congela o valor_efetivo no momento do pagamento. Se PTAX mudar depois,
+  // este valor NÃO altera — reflete o desembolso real. Douglas alinhou
+  // 08/09/2026: sem congelar, alterar PTAX mudava o histórico do pago,
+  // quebrando o fluxo de caixa e a conciliação contábil.
+  let vEfetivo = valorEfetivo;
+  if (vEfetivo == null) {
+    try {
+      const p = (typeof PEDIDOS !== 'undefined' ? PEDIDOS : []).find(x => x.codigo_pedido === codPedido);
+      if (p && typeof fluxoParcelasDoPedido === 'function') {
+        const parcelas = fluxoParcelasDoPedido(p, FLUXO_PTAX);
+        const par = parcelas.find(x => x.key === parcelaKey);
+        if (par) {
+          // Se tem valor manual do 3º Numerário salvo, prioriza ele; senão o calculado
+          const vpm = stAtual.valor_previsto_manual;
+          vEfetivo = (parcelaKey === 'terceiro' && vpm != null) ? Number(vpm) : par.valor_brl;
+        }
+      }
+    } catch (_) { /* fallback: sem valor congelado */ }
+  }
+
+  const novo = {
+    ...stAtual,   // preserva valor_previsto_manual/por/em, se existirem
     pago: true,
     data_efetiva: dataISO,
-    ...(valorEfetivo != null ? { valor_efetivo: valorEfetivo } : {}),
+    ...(vEfetivo != null ? { valor_efetivo: vEfetivo } : {}),
   };
+  // Remove flag _auto se estava (marcação manual sobrescreve reconciliação)
+  delete novo._auto;
+  PAGAMENTOS_STATUS[codPedido][parcelaKey] = novo;
   salvarPagamentosStatus();
 }
 
@@ -7489,10 +7517,14 @@ document.addEventListener('click', (ev) => {
 });
 
 function _fpAtualizaKPIs(parcelas) {
-  const previsto = parcelas.reduce((s, x) => s + x.valor_brl, 0);
-  const pagos = parcelas.filter(x => x.pago);
-  const pago = pagos.reduce((s, x) => s + (x.valor_efetivo != null ? x.valor_efetivo : x.valor_brl), 0);
-  const pendente = previsto - pagos.reduce((s, x) => s + x.valor_brl, 0);
+  // Pagas: usa valor congelado (valor_efetivo). Fallback pra valor_brl atual
+  // se por algum motivo não foi congelado (marcações antigas).
+  // Pendentes: valor calculado com PTAX atual (essas ainda vão sair do caixa).
+  const pagas = parcelas.filter(x => x.pago);
+  const pendentes = parcelas.filter(x => !x.pago);
+  const pago = pagas.reduce((s, x) => s + (x.valor_efetivo != null ? x.valor_efetivo : x.valor_brl), 0);
+  const pendente = pendentes.reduce((s, x) => s + x.valor_brl, 0);
+  const previsto = pago + pendente;  // desembolso total (histórico + estimativa)
   const setTxt = (id, v) => { const el = document.getElementById(id); if (el) el.textContent = v; };
   setTxt('fp-total-previsto', _fpFmtBRL(previsto));
   setTxt('fp-total-pago',     _fpFmtBRL(pago));
@@ -7554,10 +7586,12 @@ function _fpRenderGridAnual(parcelas) {
   const cards = meses.map(({ year, month }) => {
     const chave = `${year}-${month}`;
     const items = porMes.get(chave) || [];
-    const previsto = items.reduce((s, x) => s + x.valor_brl, 0);
+    // Mesma regra do _fpAtualizaKPIs: pagas usam valor congelado, pendentes usam PTAX atual
     const pagos    = items.filter(x => x.pago);
+    const pendentes = items.filter(x => !x.pago);
     const pago     = pagos.reduce((s, x) => s + (x.valor_efetivo != null ? x.valor_efetivo : x.valor_brl), 0);
-    const pendente = previsto - pagos.reduce((s, x) => s + x.valor_brl, 0);
+    const pendente = pendentes.reduce((s, x) => s + x.valor_brl, 0);
+    const previsto = pago + pendente;
     const nPagas   = pagos.length;
     const nPend    = items.length - nPagas;
     const eCorrente = chave === mesCorrenteChave;
