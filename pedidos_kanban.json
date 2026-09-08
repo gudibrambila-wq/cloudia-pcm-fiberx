@@ -349,15 +349,16 @@
     "mes": "SET/26",
     "origem": "VELDS_PSI W20",
     "processo": "003+004.2026VSC",
-    "fase": "recebido",
+    "fase": "estoque",
     "_unique_key": "velds_w20_ROBO ASPIRADOR V50_25_1500",
     "modal": "FCL",
     "codigo_pedido": "PED-0069",
-    "fase_desde": "2026-09-02T14:16:38.069Z",
+    "fase_desde": "2026-09-08T17:47:00.633Z",
     "data": "2026-09-01",
     "codigo": 400700012,
     "valor_unitario": 65,
-    "moeda": "USD"
+    "moeda": "USD",
+    "arquivado_em": "2026-09-08T17:47:00.633Z"
   },
   {
     "nome": "ALIMENTADOR PET  VDS APBW",
