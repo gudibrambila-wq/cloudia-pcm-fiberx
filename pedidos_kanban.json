@@ -2620,7 +2620,8 @@
     "pendente_desde": "2026-09-03T13:14:13.830Z",
     "codigo_pedido": "PED-0198",
     "fase_desde": "2026-09-03T13:14:13.830Z",
-    "modal": "FCL"
+    "modal": "FCL",
+    "processo": "029.2026 VSC"
   },
   {
     "nome": "VELDS LIMPADOR DE PISO SEM FIO VDS LPBA-S3",
