@@ -2909,5 +2909,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-09-04T18:58:49.457Z",
     "codigo_pedido": "PED-0214"
+  },
+  {
+    "codigo": 401700033,
+    "nome": "PONTO DE ACESSO Wi-Fi 7 BE5000",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 6,
+    "semana": 40,
+    "mes": "OUT/26",
+    "data": "2026-09-28",
+    "origem": "Avulso",
+    "processo": "046.2026 JARDIM",
+    "modal": null,
+    "valor_unitario": 1210.57,
+    "moeda": "BRL",
+    "id": 1788888185652,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-08T17:23:05.652Z",
+    "codigo_pedido": "PED-0215"
   }
 ]
