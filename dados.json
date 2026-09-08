@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-08T17:28:20",
+  "gerado_em": "2026-09-08T17:41:05",
   "semana_atual": 37,
   "semana_estoque": 37,
   "week_to_month": {
@@ -44037,7 +44037,7 @@
         "status": "PEDIDO",
         "mes": "DEZ/26",
         "codigo_pedido": "PED-0184",
-        "fase": "pendente"
+        "fase": "pago1"
       },
       "entradas": [
         {
@@ -44046,7 +44046,7 @@
           "status": "PEDIDO",
           "mes": "DEZ/26",
           "codigo_pedido": "PED-0184",
-          "fase": "pendente"
+          "fase": "pago1"
         }
       ],
       "fcst_mensal": {
