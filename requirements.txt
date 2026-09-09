@@ -1,3 +1,5 @@
+# Rebuild forçado 09/09/2026 17:20 — container Streamlit Cloud servia index.html
+# antigo mesmo após app.py commit. Alterar requirements.txt força reinstall completo.
 streamlit>=1.30.0
 requests>=2.31.0
 PyJWT>=2.8.0
