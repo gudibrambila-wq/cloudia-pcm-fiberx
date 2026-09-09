@@ -650,5 +650,37 @@
       "valor_efetivo": null,
       "_auto": true
     }
+  },
+  "PED-0168": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-08-17",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0169": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-08-17",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0186": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-11-03",
+      "valor_efetivo": null,
+      "_auto": true
+    }
+  },
+  "PED-0187": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-11-03",
+      "valor_efetivo": null,
+      "_auto": true
+    }
   }
 }
