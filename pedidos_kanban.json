@@ -3050,5 +3050,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-09-09T14:20:31.130Z",
     "codigo_pedido": "PED-0220"
+  },
+  {
+    "codigo": 401200092,
+    "nome": "OMADA HARDWARE CLOUD CONTROLLER OC200-IMPORT",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 40,
+    "semana": 37,
+    "mes": "SET/26",
+    "data": "2026-09-07",
+    "origem": "Avulso",
+    "processo": "049.2026 MOVTTEL",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1788963664946,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-09T14:21:04.946Z",
+    "codigo_pedido": "PED-0221"
   }
 ]
