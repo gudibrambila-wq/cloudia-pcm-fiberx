@@ -2993,5 +2993,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-09-09T14:17:50.449Z",
     "codigo_pedido": "PED-0217"
+  },
+  {
+    "codigo": 401700034,
+    "nome": "ACCESS POINT TPLINK  EAP653-LOCAL",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 382,
+    "semana": 40,
+    "mes": "OUT/26",
+    "data": "2026-09-29",
+    "origem": "Avulso",
+    "processo": "049.2026 MOVTTEL",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1788963543705,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-09T14:19:03.705Z",
+    "codigo_pedido": "PED-0218"
   }
 ]
