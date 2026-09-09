@@ -2676,7 +2676,8 @@
     "fase": "pendente",
     "pendente_desde": "2026-09-03T14:12:49.377Z",
     "codigo_pedido": "PED-0201",
-    "fase_desde": "2026-09-03T14:12:49.377Z"
+    "fase_desde": "2026-09-03T14:12:49.377Z",
+    "modal": "FCL"
   },
   {
     "codigo": 401200075,
