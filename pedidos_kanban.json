@@ -3031,5 +3031,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-09-09T14:19:49.942Z",
     "codigo_pedido": "PED-0219"
+  },
+  {
+    "codigo": 401200058,
+    "nome": "SWITCH 8 PORTAS POE+ - ES210GMP-IMPORT",
+    "marca": "OMADA - TP-LINK",
+    "tipo": "Nacional",
+    "qtd": 64,
+    "semana": 37,
+    "mes": "SET/26",
+    "data": "2026-09-07",
+    "origem": "Avulso",
+    "processo": "049.2026 MOVTTEL",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1788963631130,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-09T14:20:31.130Z",
+    "codigo_pedido": "PED-0220"
   }
 ]
