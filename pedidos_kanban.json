@@ -2743,9 +2743,10 @@
     "valor_unitario": 900.23,
     "moeda": "BRL",
     "id": 1788545537856,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0205",
-    "fase_desde": "2026-09-04T18:16:17.153Z"
+    "fase_desde": "2026-09-09T13:36:22.456Z",
+    "arquivado_em": "2026-09-09T13:36:22.456Z"
   },
   {
     "codigo": 401200086,
