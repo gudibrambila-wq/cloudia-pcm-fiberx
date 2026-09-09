@@ -4518,6 +4518,44 @@ function renderPSI() {
     wos:       wosCascade,
   };
 
+  // ── Produto NOVO: primeira chegada e cache de dias efetivos por mês
+  // Se produto novo, o forecast do mês da 1ª chegada é distribuído SÓ nas
+  // semanas ≥ chegada. Semanas antes: forecast = 0.
+  const _isProdutoNovoTbl = typeof PRODUTOS_NOVOS !== 'undefined' && PRODUTOS_NOVOS.has(Number(d.codigo));
+  let _primeiraSemChegadaTbl = null;
+  if (_isProdutoNovoTbl) {
+    const _si = d.sellIn || [];
+    const _sem = d.semanas || [];
+    for (let _i = 0; _i < _sem.length; _i++) {
+      if ((_si[_i] || 0) > 0) { _primeiraSemChegadaTbl = _sem[_i]; break; }
+    }
+  }
+  // Cache de diasEfetivos por mês (evita recomputar em cada célula)
+  const _diasEfPorMes = {};
+  function _fcstSemAjustado(mes, weekNum, dSem, diasNoMes) {
+    const total = (d.fcstMensal || {})[mes] || 0;
+    if (!_isProdutoNovoTbl || _primeiraSemChegadaTbl == null) {
+      return diasNoMes > 0 ? Math.round(total / diasNoMes * dSem) : 0;
+    }
+    if (weekNum < _primeiraSemChegadaTbl) return 0;
+    if (!(mes in _diasEfPorMes)) {
+      try {
+        const rng = getMonthWeekRange(mes);
+        const { ini, fim } = _mesRangeDate(mes);
+        let de = 0;
+        if (rng) {
+          for (let w = rng.start; w <= rng.end; w++) {
+            if (w < _primeiraSemChegadaTbl) continue;
+            de += _diasSemanaNoMes(w, ini, fim);
+          }
+        }
+        _diasEfPorMes[mes] = de;
+      } catch (e) { _diasEfPorMes[mes] = 0; }
+    }
+    const diasEf = _diasEfPorMes[mes];
+    return diasEf > 0 ? Math.round(total / diasEf * dSem) : 0;
+  }
+
   const rowDefs = [
     { label:'Estoque Inicial',    key:'estoque',  bold:true,  color:(v)=>v<0?'text-red-700 font-bold':'text-emerald-700 font-semibold' },
     { label: simDs ? 'Forecast Sell Out ⬡' : 'Forecast Sell Out', key:'forecast', bold:false, color:()=> simDs ? 'text-orange-600 font-semibold' : 'text-blue-700 font-semibold' },
@@ -4635,8 +4673,8 @@ function renderPSI() {
               const dD = _mesDiasNoMes(mesDono);
               const dSemE = _diasSemanaNoMes(col.weekNum, rEarlier.ini, rEarlier.fim);
               const dSemD = _diasSemanaNoMes(col.weekNum, rDono.ini,    rDono.fim);
-              fcParteEarlier = dE > 0 ? Math.round((d.fcstMensal[mesEarlier] || 0) / dE * dSemE) : 0;
-              fcParteDono    = dD > 0 ? Math.round((d.fcstMensal[mesDono]    || 0) / dD * dSemD) : 0;
+              fcParteEarlier = _fcstSemAjustado(mesEarlier, col.weekNum, dSemE, dE);
+              fcParteDono    = _fcstSemAjustado(mesDono,    col.weekNum, dSemD, dD);
             } catch (e) {}
           }
           siEarlier = earlierAttribQty;
@@ -4675,13 +4713,15 @@ function renderPSI() {
           const key = `${col.weekNum}_${col.mes}`;
           v = d.realizadoSplit[key] || 0;
         } else if (row.key === 'forecast' && col.mes && d.fcstMensal && d.fcstMensal[col.mes] != null) {
-          // Semana cheia (não-fronteira): forecast da coluna = proporção do mês (que é o total, pois só há 1 mês)
+          // Semana cheia (não-fronteira): forecast da coluna = proporção do mês.
+          // Pra produto novo, respeita a semana da primeira chegada (semanas
+          // antes da chegada ficam em 0; semanas do mês da chegada dividem o
+          // total só entre as semanas ≥ chegada). Ver _fcstSemAjustado.
           try {
             const { ini, fim } = _mesRangeDate(col.mes);
             const diasNoMes = _mesDiasNoMes(col.mes);
             const dSem = _diasSemanaNoMes(col.weekNum, ini, fim);
-            v = diasNoMes > 0 ? (d.fcstMensal[col.mes] / diasNoMes) * dSem : 0;
-            v = Math.round(v);
+            v = _fcstSemAjustado(col.mes, col.weekNum, dSem, diasNoMes);
           } catch (e) {
             v = (tblData[row.key]||[])[col.dataIdx];
           }
@@ -6803,9 +6843,6 @@ const FLUXO_CODIGO_FORNECEDOR = {
   //   400300006: SENSOR INTELIGENTE DE FUMACA E GAS VDS SFGW
   //   401800003: ONU FASTT10 BRIDGE F10G10NW GN114Z
 };
-
-// [MARKER v2026-09-09-17:30] Se você vê essa linha no console, código NOVO carregado.
-console.log('%c[CloudIA] PRODUTOS_NOVOS ativo — build 2026-09-09 17:30', 'color:#10b981;font-weight:bold');
 
 // PRODUTOS_NOVOS — códigos que ainda não têm histórico de venda no BR (primeira
 // entrada é a que está em importação agora). Pra esses, o forecast do mês da
