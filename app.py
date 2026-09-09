@@ -1,5 +1,6 @@
 """
 CloudIA PCM — wrapper Streamlit pra hospedar o dashboard HTML/JS no Streamlit Cloud.
+Reboot forçado 09/09/2026 16:20 — Streamlit Cloud CDN estava servindo HTML antigo.
 
 Versão online (read-only) do CloudIA: injeta o `dados.json` inline no `index.html`
 da V3 e renderiza num componente Streamlit em tela cheia. Edições continuam
