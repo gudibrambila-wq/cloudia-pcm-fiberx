@@ -2567,9 +2567,10 @@
     "valor_unitario": 408.27,
     "moeda": "BRL",
     "id": 1788179950045,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0195",
-    "fase_desde": "2026-09-03T20:48:52.138Z"
+    "fase_desde": "2026-09-09T13:36:03.404Z",
+    "arquivado_em": "2026-09-09T13:36:03.404Z"
   },
   {
     "codigo": 401700004,
