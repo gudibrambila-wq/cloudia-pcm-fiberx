@@ -2080,7 +2080,11 @@
     "id": 1784727098639,
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0170",
-    "fase_desde": "2026-07-22T13:31:52.802Z"
+    "fase_desde": "2026-07-22T13:31:52.802Z",
+    "cancelado": true,
+    "motivo_cancelamento": "ja tinha muito estoque e foi decidido cancelar",
+    "cancelado_em": "2026-09-09T13:42:33.164Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "codigo": 401500023,
@@ -2137,8 +2141,8 @@
     "origem": "Avulso",
     "processo": "037.2026 NTSC",
     "modal": null,
-    "valor_unitario": null,
-    "moeda": null,
+    "valor_unitario": 208,
+    "moeda": "BRL",
     "id": 1784898099508,
     "fase": "estoque_fornecedor",
     "codigo_pedido": "PED-0173",
@@ -2187,19 +2191,19 @@
     "nome": "FONTE ONT ZYXEL WI-FI 6 AX3000 PX3321-T1",
     "marca": "Zyxel",
     "tipo": "Nacional",
-    "qtd": 500,
-    "semana": 41,
+    "qtd": 600,
+    "semana": 42,
     "mes": "OUT/26",
-    "data": "2026-10-07",
+    "data": "2026-10-16",
     "origem": "Avulso",
     "processo": "041.2026NTSC",
     "modal": null,
     "valor_unitario": 28,
     "moeda": "BRL",
     "id": 1786653342475,
-    "fase": "estoque_fornecedor",
+    "fase": "faturado",
     "codigo_pedido": "PED-0176",
-    "fase_desde": "2026-08-13T20:35:52.937Z"
+    "fase_desde": "2026-09-09T13:39:20.199Z"
   },
   {
     "codigo": 401300035,
@@ -2527,9 +2531,10 @@
     "valor_unitario": 161.94,
     "moeda": "BRL",
     "id": 1788179781792,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0193",
-    "fase_desde": "2026-09-03T20:48:45.986Z"
+    "fase_desde": "2026-09-09T13:35:58.036Z",
+    "arquivado_em": "2026-09-09T13:35:58.036Z"
   },
   {
     "codigo": 401700028,
@@ -2546,9 +2551,10 @@
     "valor_unitario": 326.76,
     "moeda": "BRL",
     "id": 1788179885656,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0194",
-    "fase_desde": "2026-09-03T20:48:50.546Z"
+    "fase_desde": "2026-09-09T13:36:00.598Z",
+    "arquivado_em": "2026-09-09T13:36:00.598Z"
   },
   {
     "codigo": 401700029,
@@ -2565,9 +2571,10 @@
     "valor_unitario": 408.27,
     "moeda": "BRL",
     "id": 1788179950045,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0195",
-    "fase_desde": "2026-09-03T20:48:52.138Z"
+    "fase_desde": "2026-09-09T13:36:03.404Z",
+    "arquivado_em": "2026-09-09T13:36:03.404Z"
   },
   {
     "codigo": 401700004,
@@ -2587,7 +2594,11 @@
     "fase": "pendente",
     "pendente_desde": "2026-08-31T12:40:31.493Z",
     "codigo_pedido": "PED-0196",
-    "fase_desde": "2026-08-31T12:40:31.493Z"
+    "fase_desde": "2026-08-31T12:40:31.493Z",
+    "cancelado": true,
+    "motivo_cancelamento": "não aceitamos o novo valor de compra que a tp link passou",
+    "cancelado_em": "2026-09-09T13:38:00.576Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "nome": "VELDS LIMPADOR DE PISO SEM FIO VDS LPBA-S3",
@@ -2680,9 +2691,10 @@
     "valor_unitario": 529.66,
     "moeda": "BRL",
     "id": 1788545352025,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0202",
-    "fase_desde": "2026-09-04T18:16:00.773Z"
+    "fase_desde": "2026-09-09T13:36:09.343Z",
+    "arquivado_em": "2026-09-09T13:36:09.343Z"
   },
   {
     "codigo": 401300036,
@@ -2699,9 +2711,10 @@
     "valor_unitario": 284.75,
     "moeda": "BRL",
     "id": 1788545490433,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0203",
-    "fase_desde": "2026-09-04T18:16:03.229Z"
+    "fase_desde": "2026-09-09T13:36:14.074Z",
+    "arquivado_em": "2026-09-09T13:36:14.074Z"
   },
   {
     "codigo": 401300035,
@@ -2718,9 +2731,10 @@
     "valor_unitario": 447.77,
     "moeda": "BRL",
     "id": 1788545523736,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0204",
-    "fase_desde": "2026-09-04T18:16:14.120Z"
+    "fase_desde": "2026-09-09T13:36:18.656Z",
+    "arquivado_em": "2026-09-09T13:36:18.656Z"
   },
   {
     "codigo": 401200069,
@@ -2737,9 +2751,10 @@
     "valor_unitario": 900.23,
     "moeda": "BRL",
     "id": 1788545537856,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0205",
-    "fase_desde": "2026-09-04T18:16:17.153Z"
+    "fase_desde": "2026-09-09T13:36:22.456Z",
+    "arquivado_em": "2026-09-09T13:36:22.456Z"
   },
   {
     "codigo": 401200086,
@@ -2756,9 +2771,10 @@
     "valor_unitario": 161.94,
     "moeda": "BRL",
     "id": 1788545610132,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0206",
-    "fase_desde": "2026-09-04T18:16:20.235Z"
+    "fase_desde": "2026-09-09T13:36:28.764Z",
+    "arquivado_em": "2026-09-09T13:36:28.764Z"
   },
   {
     "codigo": 401200072,
@@ -2775,9 +2791,10 @@
     "valor_unitario": 1142.97,
     "moeda": "BRL",
     "id": 1788545636142,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0207",
-    "fase_desde": "2026-09-04T18:16:23.561Z"
+    "fase_desde": "2026-09-09T13:37:15.759Z",
+    "arquivado_em": "2026-09-09T13:37:15.759Z"
   },
   {
     "codigo": 401200030,
@@ -2794,9 +2811,10 @@
     "valor_unitario": 309.61,
     "moeda": "BRL",
     "id": 1788545667035,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0208",
-    "fase_desde": "2026-09-04T18:16:26.993Z"
+    "fase_desde": "2026-09-09T13:37:18.152Z",
+    "arquivado_em": "2026-09-09T13:37:18.152Z"
   },
   {
     "codigo": 401200069,
@@ -2853,9 +2871,10 @@
     "valor_unitario": 585.66,
     "moeda": "BRL",
     "id": 1788547794382,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0211",
-    "fase_desde": "2026-09-04T18:50:01.523Z"
+    "fase_desde": "2026-09-09T13:37:20.416Z",
+    "arquivado_em": "2026-09-09T13:37:20.416Z"
   },
   {
     "codigo": 401700032,
@@ -2869,12 +2888,12 @@
     "origem": "Avulso",
     "processo": "045.2026 TNT",
     "modal": null,
-    "valor_unitario": null,
-    "moeda": null,
+    "valor_unitario": 1053.92,
+    "moeda": "BRL",
     "id": 1788547848266,
-    "fase": "estoque_fornecedor",
+    "fase": "backorder",
     "codigo_pedido": "PED-0212",
-    "fase_desde": "2026-09-04T18:52:10.906Z"
+    "fase_desde": "2026-09-09T13:37:24.635Z"
   },
   {
     "codigo": 401200087,
@@ -2891,9 +2910,10 @@
     "valor_unitario": 207.54,
     "moeda": "BRL",
     "id": 1788547893286,
-    "fase": "backorder",
+    "fase": "estoque",
     "codigo_pedido": "PED-0213",
-    "fase_desde": "2026-09-04T18:51:50.750Z"
+    "fase_desde": "2026-09-09T13:37:22.708Z",
+    "arquivado_em": "2026-09-09T13:37:22.708Z"
   },
   {
     "codigo": 401200088,
@@ -2912,7 +2932,8 @@
     "id": 1788548329457,
     "fase": "pendente",
     "pendente_desde": "2026-09-04T18:58:49.457Z",
-    "codigo_pedido": "PED-0214"
+    "codigo_pedido": "PED-0214",
+    "fase_desde": "2026-09-04T18:58:49.457Z"
   },
   {
     "codigo": 401700033,
@@ -2931,7 +2952,8 @@
     "id": 1788888185652,
     "fase": "pendente",
     "pendente_desde": "2026-09-08T17:23:05.652Z",
-    "codigo_pedido": "PED-0215"
+    "codigo_pedido": "PED-0215",
+    "fase_desde": "2026-09-08T17:23:05.652Z"
   },
   {
     "codigo": 400700041,
@@ -2950,6 +2972,7 @@
     "id": 1788889377741,
     "fase": "pendente",
     "pendente_desde": "2026-09-08T17:42:57.741Z",
-    "codigo_pedido": "PED-0216"
+    "codigo_pedido": "PED-0216",
+    "fase_desde": "2026-09-08T17:42:57.741Z"
   }
 ]
