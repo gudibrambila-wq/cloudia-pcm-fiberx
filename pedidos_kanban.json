@@ -2590,7 +2590,11 @@
     "fase": "pendente",
     "pendente_desde": "2026-08-31T12:40:31.493Z",
     "codigo_pedido": "PED-0196",
-    "fase_desde": "2026-08-31T12:40:31.493Z"
+    "fase_desde": "2026-08-31T12:40:31.493Z",
+    "cancelado": true,
+    "motivo_cancelamento": "não aceitamos o novo valor de compra que a tp link passou",
+    "cancelado_em": "2026-09-09T13:38:00.576Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "nome": "VELDS LIMPADOR DE PISO SEM FIO VDS LPBA-S3",
