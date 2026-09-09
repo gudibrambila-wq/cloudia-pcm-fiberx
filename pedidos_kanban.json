@@ -3012,5 +3012,24 @@
     "fase": "pendente",
     "pendente_desde": "2026-09-09T14:19:03.705Z",
     "codigo_pedido": "PED-0218"
+  },
+  {
+    "codigo": 401300035,
+    "nome": "ROTEADOR VPN LINHA OMADA GIGABIT TPLINK  ER7206-IMPORT",
+    "marca": "TP-Link",
+    "tipo": "Nacional",
+    "qtd": 40,
+    "semana": 40,
+    "mes": "OUT/26",
+    "data": "2026-09-29",
+    "origem": "Avulso",
+    "processo": "049.2026 MOVTTEL",
+    "modal": null,
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1788963589942,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-09T14:19:49.942Z",
+    "codigo_pedido": "PED-0219"
   }
 ]
