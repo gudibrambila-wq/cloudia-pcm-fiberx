@@ -6804,6 +6804,26 @@ const FLUXO_CODIGO_FORNECEDOR = {
   //   401800003: ONU FASTT10 BRIDGE F10G10NW GN114Z
 };
 
+// PRODUTOS_NOVOS — códigos que ainda não têm histórico de venda no BR (primeira
+// entrada é a que está em importação agora). Pra esses, o forecast do mês da
+// primeira chegada é distribuído SÓ nas semanas ≥ semana da chegada (o produto
+// não existia antes, então dividir o mês inteiro dá ruptura falsa).
+// Douglas confirmou a lista em 09/09/2026. Produtos NÃO listados (Alimentador,
+// RALWC, V50/V50 PRO) usam distribuição padrão (mês inteiro).
+const PRODUTOS_NOVOS = new Set([
+  400700025,                                              // V30
+  400700041, 400700042, 400700043,                        // V40 PRO 220V/110V + V40 BIVOLT
+  400700026, 400700027, 400700028, 400700029,             // Liquidificador Active Flow (4 cores)
+  400700030,                                              // Copo acrílico Active Flow
+  400700031, 400700032, 400700033, 400700034,             // Tampas Active Flow (4 cores)
+  400700035, 400700036, 400700037, 400700038, 400700039, 400700040, // Airfryer CARELINE (DUO/CRYSTAL/STEAM OVEN)
+  400700045, 400700046,                                   // Panela Pressão Gusta 220V/110V
+  400700047,                                              // Wet Mop V-Pure Hydrojet (LPBA-S3)
+  400700048, 400700049,                                   // Aspirador V-Pure S5/S3
+  400700052, 400700053,                                   // V70 220V/110V
+  400700058, 400700059, 400700060,                        // V60 / V60 PRO 110V/220V
+]);
+
 // Descobre o fornecedor chinês de um pedido.
 // Prioridade: p.codigo (fonte da verdade). Fallback: lookup por nome (mesmo padrão
 // do tooltip do Kanban) — protege contra pedidos que perderam código por bug de
@@ -9160,6 +9180,26 @@ function propagarFcstMensalParaPSI(p, fcstOverride) {
   const semanas  = p.psi.semanas;
   const forecast = p.psi.forecast;
 
+  // Produto NOVO — descobre a semana da primeira chegada.
+  // Regra: quando produto novo chega no meio de um mês, o forecast desse mês
+  // não deve ser dividido em semanas antes da chegada (o produto não existia).
+  const isProdutoNovo = typeof PRODUTOS_NOVOS !== 'undefined' && PRODUTOS_NOVOS.has(Number(p.codigo));
+  let primeiraSemChegada = null;
+  if (isProdutoNovo) {
+    // Prioridade: 1) sell_in do psi, 2) p.entradas, 3) p.prox_chegada
+    const sellIn = p.psi.sell_in || [];
+    for (let i = 0; i < semanas.length; i++) {
+      if ((sellIn[i] || 0) > 0) { primeiraSemChegada = semanas[i]; break; }
+    }
+    if (primeiraSemChegada == null && Array.isArray(p.entradas) && p.entradas.length > 0) {
+      primeiraSemChegada = Math.min(...p.entradas.map(e => Number(e.semana) || Infinity));
+      if (!isFinite(primeiraSemChegada)) primeiraSemChegada = null;
+    }
+    if (primeiraSemChegada == null && p.prox_chegada) {
+      primeiraSemChegada = Number(p.prox_chegada.semana) || null;
+    }
+  }
+
   // Pré-calcula ranges dos meses no fcst
   const ranges = {};
   Object.entries(fcstOverride).forEach(([mes, totalRaw]) => {
@@ -9182,15 +9222,36 @@ function propagarFcstMensalParaPSI(p, fcstOverride) {
   // Zera antes de somar contribuições
   tocadas.forEach(i => { forecast[i] = 0; });
 
-  // Soma contribuições proporcionais de cada mês
+  // Soma contribuições proporcionais de cada mês.
+  // Pra produto novo com primeira chegada conhecida: pra cada mês, se algumas
+  // das semanas-do-mês são ANTES da chegada, redistribui o total só nas semanas
+  // ≥ chegada (recalcula dias efetivos). Se o mês inteiro é antes da chegada,
+  // não contribui nada (forecast fica 0 nessas semanas). Se todas as semanas
+  // do mês são ≥ chegada, distribui normal.
   Object.values(ranges).forEach(({ ini, fim, dias, total }) => {
     if (dias <= 0 || total < 0) return;
-    const valPorDia = dias > 0 ? total / dias : 0;
-    tocadas.forEach(i => {
-      const w = semanas[i];
-      const dSem = _diasSemanaNoMes(w, ini, fim);
-      if (dSem > 0) forecast[i] += valPorDia * dSem;
-    });
+    if (isProdutoNovo && primeiraSemChegada != null) {
+      // Filtra semanas do mês que estão ≥ chegada
+      let diasEfetivos = 0;
+      const contribuicoes = [];
+      tocadas.forEach(i => {
+        const w = semanas[i];
+        if (w < primeiraSemChegada) return; // pré-chegada — pula
+        const dSem = _diasSemanaNoMes(w, ini, fim);
+        if (dSem > 0) { diasEfetivos += dSem; contribuicoes.push([i, dSem]); }
+      });
+      if (diasEfetivos <= 0) return; // mês inteiro antes da chegada
+      const valPorDiaEfetivo = total / diasEfetivos;
+      contribuicoes.forEach(([i, dSem]) => { forecast[i] += valPorDiaEfetivo * dSem; });
+    } else {
+      // Comportamento padrão (produto existente): distribui proporcional a TODAS as semanas do mês
+      const valPorDia = dias > 0 ? total / dias : 0;
+      tocadas.forEach(i => {
+        const w = semanas[i];
+        const dSem = _diasSemanaNoMes(w, ini, fim);
+        if (dSem > 0) forecast[i] += valPorDia * dSem;
+      });
+    }
   });
 
   // Arredonda pra inteiro
