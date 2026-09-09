@@ -2197,9 +2197,9 @@
     "valor_unitario": 28,
     "moeda": "BRL",
     "id": 1786653342475,
-    "fase": "backorder",
+    "fase": "faturado",
     "codigo_pedido": "PED-0176",
-    "fase_desde": "2026-09-09T13:39:18.091Z"
+    "fase_desde": "2026-09-09T13:39:20.199Z"
   },
   {
     "codigo": 401300035,
