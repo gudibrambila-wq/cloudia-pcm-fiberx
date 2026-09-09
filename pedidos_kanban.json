@@ -2660,7 +2660,8 @@
     "fase": "pendente",
     "pendente_desde": "2026-09-03T14:12:26.688Z",
     "codigo_pedido": "PED-0200",
-    "fase_desde": "2026-09-03T14:12:26.688Z"
+    "fase_desde": "2026-09-03T14:12:26.688Z",
+    "processo": "030.2026 VSC"
   },
   {
     "nome": "ROBO ASPIRADOR INTELIGENTE VELDS V70 (220V)",
@@ -2992,7 +2993,8 @@
     "id": 1788963470449,
     "fase": "pendente",
     "pendente_desde": "2026-09-09T14:17:50.449Z",
-    "codigo_pedido": "PED-0217"
+    "codigo_pedido": "PED-0217",
+    "fase_desde": "2026-09-09T14:17:50.449Z"
   },
   {
     "codigo": 401700034,
@@ -3011,7 +3013,8 @@
     "id": 1788963543705,
     "fase": "pendente",
     "pendente_desde": "2026-09-09T14:19:03.705Z",
-    "codigo_pedido": "PED-0218"
+    "codigo_pedido": "PED-0218",
+    "fase_desde": "2026-09-09T14:19:03.705Z"
   },
   {
     "codigo": 401300035,
@@ -3030,7 +3033,8 @@
     "id": 1788963589942,
     "fase": "pendente",
     "pendente_desde": "2026-09-09T14:19:49.942Z",
-    "codigo_pedido": "PED-0219"
+    "codigo_pedido": "PED-0219",
+    "fase_desde": "2026-09-09T14:19:49.942Z"
   },
   {
     "codigo": 401200058,
@@ -3049,7 +3053,8 @@
     "id": 1788963631130,
     "fase": "pendente",
     "pendente_desde": "2026-09-09T14:20:31.130Z",
-    "codigo_pedido": "PED-0220"
+    "codigo_pedido": "PED-0220",
+    "fase_desde": "2026-09-09T14:20:31.130Z"
   },
   {
     "codigo": 401200092,
@@ -3068,6 +3073,7 @@
     "id": 1788963664946,
     "fase": "pendente",
     "pendente_desde": "2026-09-09T14:21:04.946Z",
-    "codigo_pedido": "PED-0221"
+    "codigo_pedido": "PED-0221",
+    "fase_desde": "2026-09-09T14:21:04.946Z"
   }
 ]
