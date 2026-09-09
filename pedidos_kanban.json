@@ -2912,7 +2912,8 @@
     "id": 1788548329457,
     "fase": "pendente",
     "pendente_desde": "2026-09-04T18:58:49.457Z",
-    "codigo_pedido": "PED-0214"
+    "codigo_pedido": "PED-0214",
+    "fase_desde": "2026-09-04T18:58:49.457Z"
   },
   {
     "codigo": 401700033,
@@ -2931,7 +2932,8 @@
     "id": 1788888185652,
     "fase": "pendente",
     "pendente_desde": "2026-09-08T17:23:05.652Z",
-    "codigo_pedido": "PED-0215"
+    "codigo_pedido": "PED-0215",
+    "fase_desde": "2026-09-08T17:23:05.652Z"
   },
   {
     "codigo": 400700041,
@@ -2950,6 +2952,7 @@
     "id": 1788889377741,
     "fase": "pendente",
     "pendente_desde": "2026-09-08T17:42:57.741Z",
-    "codigo_pedido": "PED-0216"
+    "codigo_pedido": "PED-0216",
+    "fase_desde": "2026-09-08T17:42:57.741Z"
   }
 ]
