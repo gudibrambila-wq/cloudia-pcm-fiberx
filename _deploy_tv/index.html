@@ -413,27 +413,8 @@
         </div>
       </div>
 
-      <div class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 mb-4" id="psi-chart-card">
-        <div class="flex items-center justify-between mb-4">
-          <h3 class="text-sm font-semibold text-slate-800">Curva PSI — Saldo de Estoque + Chegadas</h3>
-          <button id="psi-chart-toggle" type="button" onclick="togglePsiChart()"
-                  class="flex items-center gap-1.5 text-xs text-slate-600 hover:text-slate-900 hover:bg-slate-100 px-2.5 py-1 rounded-md border border-slate-200 transition">
-            <svg id="psi-chart-toggle-icon" class="w-3.5 h-3.5 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
-            </svg>
-            <span id="psi-chart-toggle-label">Recolher</span>
-          </button>
-        </div>
-        <div id="psi-chart-body">
-          <div style="overflow-x:auto; overflow-y:hidden; cursor:grab; user-select:none;" id="psi-scroll-wrap">
-            <div id="psi-chart-inner" style="position:relative; min-width:600px;">
-              <canvas id="chart-psi"></canvas>
-            </div>
-          </div>
-          <!-- Legenda fixa abaixo da barra de scroll -->
-          <div id="psi-legend" class="flex flex-wrap gap-x-5 gap-y-2 mt-3 px-1 text-xs text-slate-600"></div>
-        </div>
-      </div>
+      <!-- Removido 09/09/2026: gráfico "Curva PSI — Saldo de Estoque + Chegadas"
+           Douglas não usava, ocupava espaço. A tabela abaixo já mostra os mesmos números. -->
 
       <div id="psi-tabela-card" class="bg-white rounded-xl border border-slate-200 shadow-sm p-5 overflow-x-auto">
         <h3 class="text-sm font-semibold text-slate-800 mb-4">Tabela PSI Mensal</h3>
@@ -3870,7 +3851,7 @@ function renderDashboardKpis() {
 }
 
 // ===== CHARTS =====
-let chartForecast, chartMix, chartPSI;
+let chartForecast, chartMix;  // chartPSI removido 09/09/2026 (gráfico Curva PSI descontinuado)
 
 // Plugin Chart.js que desenha texto grande no centro de um doughnut (usado no gauge "Atingido %")
 const centerTextPlugin = {
@@ -4179,34 +4160,8 @@ function buildProjection(d, targetWeek) {
   return { labels, saldo, forecast, sellIn, realizado, wos, actualLen };
 }
 
-// ── Toggle do gráfico Curva PSI (recolher/expandir) ───────────────────────────
-const PSI_CHART_HIDDEN_KEY = 'psi-chart-hidden';
-
-function aplicarEstadoGraficoPSI(hidden) {
-  const body  = document.getElementById('psi-chart-body');
-  const icon  = document.getElementById('psi-chart-toggle-icon');
-  const label = document.getElementById('psi-chart-toggle-label');
-  if (!body || !icon || !label) return;
-  body.style.display = hidden ? 'none' : '';
-  icon.style.transform = hidden ? 'rotate(-90deg)' : 'rotate(0)';
-  label.textContent = hidden ? 'Expandir' : 'Recolher';
-}
-
-function togglePsiChart() {
-  const atualHidden = localStorage.getItem(PSI_CHART_HIDDEN_KEY) === '1';
-  const novoHidden  = !atualHidden;
-  localStorage.setItem(PSI_CHART_HIDDEN_KEY, novoHidden ? '1' : '0');
-  aplicarEstadoGraficoPSI(novoHidden);
-  // Se expandindo, redesenha o gráfico (Chart.js perde dimensões em display:none)
-  if (!novoHidden && typeof renderPSI === 'function' && document.getElementById('psi-produto')?.value) {
-    renderPSI();
-  }
-}
-
-// Restaura estado salvo assim que o DOM carregar
-document.addEventListener('DOMContentLoaded', () => {
-  aplicarEstadoGraficoPSI(localStorage.getItem(PSI_CHART_HIDDEN_KEY) === '1');
-});
+// [Removido 09/09/2026] Toggle e render do gráfico Curva PSI foram removidos —
+// Douglas não usava, a tabela PSI abaixo já cobre a mesma informação.
 
 // Renderiza versão simplificada da aba PSI pra produtos do Catálogo (não-PSI).
 // Esconde gráfico/tabela e mostra: KPIs com saldo + vendas históricas + aviso "sem forecast".
@@ -4507,129 +4462,15 @@ function renderPSI() {
     arrSubEl.textContent = 'nenhuma no Kanban';
   }
 
-  // ── dimensões do canvas ──
-  const numPts = ds.labels.length;
-  const colW   = 110;
-  const chartW = Math.max(700, numPts * colW + 80);
-  const chartH = 500;
-
-  const canvas = document.getElementById('chart-psi');
-  canvas.width  = chartW;
-  canvas.height = chartH;
-  canvas.style.width  = chartW + 'px';
-  canvas.style.height = chartH + 'px';
-  document.getElementById('psi-chart-inner').style.width = chartW + 'px';
-
   const aLen = ds.actualLen; // ponto de corte: real → projetado
 
   // Simulação
   const simDs = calcSimData(d);
   if (simDs) injectKanbanIntoDs(simDs);
 
-  // Divide saldo em real (sólido) e projetado (tracejado) compartilhando o ponto de junção
-  const saldoReal = ds.saldo.map((v, i) => i <= aLen - 1 ? v : null);
-  const saldoProj = ds.saldo.map((v, i) => i >= aLen - 1 ? v : null);
-  const saldoSim  = simDs ? simDs.saldo.map((v, i) => i >= aLen - 1 ? v : null) : null;
-
-  const ctx = canvas.getContext('2d');
-  if(chartPSI) chartPSI.destroy();
-  chartPSI = new Chart(ctx, {
-    type:'line',
-    data:{
-      labels: ds.labels,
-      datasets:[
-        {
-          label:'Saldo Real',
-          data: saldoReal,
-          borderColor:'#3b82f6',
-          backgroundColor: c => {
-            const g = c.chart.ctx.createLinearGradient(0,0,0,chartH);
-            g.addColorStop(0,'rgba(59,130,246,0.18)');
-            g.addColorStop(1,'rgba(59,130,246,0)');
-            return g;
-          },
-          fill:true, tension:0.35, pointRadius:5, pointHoverRadius:7,
-          spanGaps:false,
-        },
-        {
-          label:'Projeção',
-          data: saldoProj,
-          borderColor:'rgba(59,130,246,0.45)',
-          borderDash:[8,5],
-          backgroundColor:'rgba(59,130,246,0.04)',
-          fill:true, tension:0.35, pointRadius:3, pointHoverRadius:6,
-          spanGaps:false,
-        },
-        ...(saldoSim ? [{
-          label:'Saldo Simulado',
-          data: saldoSim,
-          borderColor:'#f97316',
-          borderWidth: 2.5,
-          backgroundColor:'rgba(249,115,22,0.07)',
-          fill:true, tension:0.35, pointRadius:3, pointHoverRadius:6,
-          spanGaps:false,
-        }] : []),
-        {
-          label:'Forecast Sell Out',
-          data: ds.forecast,
-          borderColor:'rgba(245,158,11,0.5)', borderDash:[4,4], borderWidth:1.5,
-          backgroundColor:'transparent', tension:0.35, pointRadius:2,
-        },
-        {
-          label:'Sell In (Chegadas)',
-          data: ds.sellIn, type:'bar',
-          backgroundColor: ds.sellIn.map((v,i) => i < aLen ? 'rgba(16,185,129,0.7)' : 'rgba(16,185,129,0.35)'),
-          borderRadius:5,
-        },
-        ...(simDs && SIM_STATE.poQty > 0 ? [{
-          label:'Pedido Simulado',
-          data: simDs.sellIn.map((v, i) => v > ds.sellIn[i] ? v : null), type:'bar',
-          backgroundColor:'rgba(249,115,22,0.6)',
-          borderRadius:5,
-        }] : []),
-      ]
-    },
-    options:{
-      responsive:false,
-      maintainAspectRatio:false,
-      interaction:{ mode:'index', intersect:false },
-      plugins:{
-        legend:{ display: false },
-        tooltip:{
-          callbacks:{
-            label: c => ` ${c.dataset.label}: ${(c.parsed.y??0).toLocaleString('pt-BR',{maximumFractionDigits:1})}`,
-            afterTitle: (items) => {
-              const i = items[0].dataIndex;
-              return i >= aLen ? '(projeção)' : '(real)';
-            }
-          }
-        },
-        annotation: undefined,
-      },
-      scales:{
-        x:{ grid:{display:false}, ticks:{font:{size:10}, maxRotation:0} },
-        y:{ grid:{color:'#f8fafc'}, ticks:{font:{size:10}, callback:v=>v.toLocaleString('pt-BR')} },
-      }
-    }
-  });
-
-  // ── Legenda fixa abaixo do scroll ──
-  const legendItems = [
-    { color:'#3b82f6', solid:true,  label:'Saldo Real' },
-    { color:'rgba(59,130,246,0.5)', solid:false, label:'Projeção' },
-    ...(simDs ? [{ color:'#f97316', solid:true, label:'Saldo Simulado' }] : []),
-    { color:'rgba(245,158,11,0.7)', solid:false, label:'Forecast Sell Out' },
-    { color:'rgba(16,185,129,0.7)', bar:true,    label:'Sell In' },
-    ...(simDs && SIM_STATE.poQty > 0 ? [{ color:'rgba(249,115,22,0.7)', bar:true, label:'Pedido Simulado' }] : []),
-  ];
-  document.getElementById('psi-legend').innerHTML = legendItems.map(it => {
-    const shape = it.bar
-      ? `<span style="display:inline-block;width:12px;height:12px;background:${it.color};border-radius:2px;vertical-align:middle;"></span>`
-      : `<span style="display:inline-block;width:24px;height:3px;background:${it.color};${it.solid?'':'border-top:2px dashed '+it.color+';background:transparent;'}vertical-align:middle;border-radius:2px;"></span>`;
-    return `<span class="flex items-center gap-1.5">${shape}<span>${it.label}</span></span>`;
-  }).join('');
-
-  // drag listeners ficam no initScrollDrag (chamado uma vez no DOMContentLoaded)
+  // [Removido 09/09/2026] Bloco de desenho do gráfico Curva PSI (Chart.js).
+  // A tabela abaixo já mostra os mesmos números que o gráfico mostrava
+  // (saldo, forecast, sell in, projeção).
 
   // ── tabela: usa dados simulados quando ativo, senão originais ──
   const curIdx = isReal ? (aLen - 1) : 4;
@@ -8463,9 +8304,14 @@ function resetarSim(rerender = true) {
   if (rerender) renderPSI();
 }
 
-// ===== DRAG-TO-SCROLL (init uma vez) =====
+// [Removido 09/09/2026] initScrollDrag era do gráfico Curva PSI (scroll horizontal
+// pra arrastar). Substituído por no-op pra não quebrar a chamada do DOMContentLoaded.
 function initScrollDrag() {
+  // no-op — gráfico removido
+  return;
+  // Código original abaixo (inalcançável — mantido comentado pra referência)
   const wrap = document.getElementById('psi-scroll-wrap');
+  if (!wrap) return;
   let isDown = false, startX = 0, startScrollLeft = 0;
 
   wrap.addEventListener('mousedown', e => {
