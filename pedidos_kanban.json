@@ -2883,9 +2883,9 @@
     "valor_unitario": null,
     "moeda": null,
     "id": 1788547848266,
-    "fase": "pago",
+    "fase": "backorder",
     "codigo_pedido": "PED-0212",
-    "fase_desde": "2026-09-09T13:36:55.693Z"
+    "fase_desde": "2026-09-09T13:37:24.635Z"
   },
   {
     "codigo": 401200087,
