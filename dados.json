@@ -1,5 +1,5 @@
 {
-  "gerado_em": "2026-09-10T14:54:19",
+  "gerado_em": "2026-09-10T16:40:59",
   "semana_atual": 37,
   "semana_estoque": 37,
   "week_to_month": {
@@ -15955,7 +15955,7 @@
       "fc_sem": 140,
       "in_transit": 724,
       "prox_chegada": {
-        "semana": 42,
+        "semana": 43,
         "quantidade": 724,
         "status": "EM_TRANSITO",
         "mes": "OUT/26",
@@ -15964,7 +15964,7 @@
       },
       "entradas": [
         {
-          "semana": 42,
+          "semana": 43,
           "quantidade": 724,
           "status": "EM_TRANSITO",
           "mes": "OUT/26",
@@ -16303,8 +16303,8 @@
           0,
           0,
           0,
-          724,
           0,
+          724,
           0,
           0,
           0,
@@ -16515,7 +16515,7 @@
           1879,
           1691,
           1501,
-          2035,
+          1311,
           1845,
           1649,
           1416,
