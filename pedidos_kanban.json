@@ -3078,5 +3078,24 @@
     "pendente_desde": "2026-09-09T14:21:04.946Z",
     "codigo_pedido": "PED-0221",
     "fase_desde": "2026-09-09T14:21:04.946Z"
+  },
+  {
+    "codigo": 400700012,
+    "nome": "ROBÔ ASPIRADOR INTELIGENTE VELDS - V50",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 10,
+    "semana": 55,
+    "mes": "JAN/27",
+    "data": "2027-01-15",
+    "origem": "Avulso",
+    "processo": "TESTE",
+    "modal": "FCL",
+    "valor_unitario": 1000,
+    "moeda": "USD",
+    "id": 1789042308560,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-10T12:11:48.560Z",
+    "codigo_pedido": "PED-0222"
   }
 ]
