@@ -1472,7 +1472,7 @@
     "data": "2026-10-14",
     "origem": "Avulso",
     "processo": "017.2026 VSC",
-    "modal": null,
+    "modal": "FCL",
     "valor_unitario": 15.64,
     "moeda": "USD",
     "id": 1782906676718,
@@ -3096,6 +3096,7 @@
     "id": 1789042308560,
     "fase": "pendente",
     "pendente_desde": "2026-09-10T12:11:48.560Z",
-    "codigo_pedido": "PED-0222"
+    "codigo_pedido": "PED-0222",
+    "fase_desde": "2026-09-10T12:11:48.560Z"
   }
 ]
