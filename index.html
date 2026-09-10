@@ -7089,12 +7089,13 @@ function desmarcarParcelaPaga(codPedido, parcelaKey) {
   salvarPagamentosStatus();
 }
 
-// Ajusta o valor previsto manual de uma parcela (só 3º Numerário).
-// Motivo: quando o comprador emite o valor real do numerário, ele varia
-// da previsão (FOB × 10% × PTAX). Este campo sobrescreve valor_brl.
-// Guarda quem/quando editou pra log de auditoria.
+// Ajusta o valor previsto manual de uma parcela (1º/2º/3º).
+// Motivo original (3º Numerário): quando o comprador emite o valor real, varia
+// da previsão FOB × 45% × PTAX. Estendido em 10/09/2026 pra 1º e 2º cobrirem
+// exceções raras (renegociação, correção pontual). Este campo sobrescreve
+// valor_brl. Guarda quem/quando editou pra log de auditoria.
 function ajustarValorPrevistoParcela(codPedido, parcelaKey, valorNovo) {
-  if (!codPedido || parcelaKey !== 'terceiro') return;
+  if (!codPedido || !['primeiro','segundo','terceiro'].includes(parcelaKey)) return;
   const v = Number(valorNovo);
   if (!isFinite(v) || v < 0) return;
   if (!PAGAMENTOS_STATUS[codPedido]) PAGAMENTOS_STATUS[codPedido] = {};
@@ -7112,7 +7113,7 @@ function ajustarValorPrevistoParcela(codPedido, parcelaKey, valorNovo) {
 
 // Remove o ajuste manual, voltando ao cálculo automático.
 function limparValorPrevistoParcela(codPedido, parcelaKey) {
-  if (!codPedido || parcelaKey !== 'terceiro') return;
+  if (!codPedido || !['primeiro','segundo','terceiro'].includes(parcelaKey)) return;
   const st = PAGAMENTOS_STATUS[codPedido]?.[parcelaKey];
   if (!st) return;
   const novo = { ...st };
@@ -7283,9 +7284,9 @@ function fpColetarParcelas() {
     const parcelas = fluxoParcelasDoPedido(p, FLUXO_PTAX);
     parcelas.forEach(par => {
       const st = getStatusParcela(p.codigo_pedido, par.key);
-      // Ajuste manual de VALOR (só 3º Numerário) — sobrescreve valor_brl.
-      // valor_brl_original preserva o valor calculado pra tooltip/reset.
-      const vManual = (par.key === 'terceiro' && st.valor_previsto_manual != null)
+      // Ajuste manual de VALOR (1º/2º/3º — todas desde 10/09/2026) —
+      // sobrescreve valor_brl. valor_brl_original preserva o calculado.
+      const vManual = st.valor_previsto_manual != null
         ? Number(st.valor_previsto_manual)
         : null;
       const valorFinal = vManual != null ? vManual : par.valor_brl;
@@ -7824,15 +7825,14 @@ function _fpRenderLista(parcelas) {
         <div class="divide-y divide-slate-100">
           ${items.map(x => {
             const xAtrasado = !x.pago && diasAtraso > 0;
-            const podeAjustar = x.parcelaKey === 'terceiro';
             const tooltipAjuste = x.ajustado_manual
               ? `Valor ajustado manualmente. Original: ${_fpFmtBRL(x.valor_brl_original)}${x.manual_por ? '\nAjustado por ' + x.manual_por : ''}${x.manual_em ? '\nem ' + new Date(x.manual_em).toLocaleString('pt-BR') : ''}\n\nClique pra alterar ou restaurar.`
-              : 'Ajustar valor previsto (comprador emitiu valor diferente)';
-            const btnAjustar = podeAjustar
-              ? `<button onclick="_fpAjustarNumerarioPrompt('${x.codPedido}')"
+              : (x.parcelaKey === 'terceiro'
+                  ? 'Ajustar valor previsto (comprador emitiu valor diferente)'
+                  : `Ajustar valor manualmente — só pra exceções (fora da regra do fornecedor ${x.fornecedor})`);
+            const btnAjustar = `<button onclick="_fpAjustarValorPrompt('${x.codPedido}','${x.parcelaKey}')"
                     class="text-[11px] ${x.ajustado_manual ? 'text-amber-600' : 'text-slate-300'} hover:text-blue-600 ml-1 leading-none"
-                    title="${tooltipAjuste.replace(/"/g,'&quot;')}">✎</button>`
-              : '';
+                    title="${tooltipAjuste.replace(/"/g,'&quot;')}">✎</button>`;
             const badgeAjustado = x.ajustado_manual
               ? `<span class="text-[8px] font-bold px-1 py-0.5 rounded bg-amber-100 text-amber-800 uppercase tracking-wide ml-1" title="${tooltipAjuste.replace(/"/g,'&quot;')}">ajustado</span>`
               : '';
@@ -7870,31 +7870,40 @@ function _fpRenderLista(parcelas) {
   cont.innerHTML = linhas.join('');
 }
 
-// Abre um prompt pra ajustar/limpar o valor previsto do 3º Numerário.
-// Usa window.prompt pra simplicidade — se o UX incomodar, evolui pra modal.
-function _fpAjustarNumerarioPrompt(codPedido) {
+// Abre um prompt pra ajustar/limpar o valor previsto de qualquer parcela.
+// 3º Numerário é uso normal (valor real varia da previsão de 45%).
+// 1º/2º é EXCEÇÃO (as % 20/80 ou 30/70 são fixas do fornecedor) — mostra
+// aviso extra pra Douglas não usar por engano. Alinhado 10/09/2026.
+function _fpAjustarValorPrompt(codPedido, parcelaKey) {
   if (document.body.classList.contains('modo-view')) {
     if (typeof mostrarToast === 'function') mostrarToast('⚠ Modo somente-leitura — sem permissão pra ajustar valor');
     return;
   }
+  if (!['primeiro','segundo','terceiro'].includes(parcelaKey)) return;
   const parcelas = fpColetarParcelas();
-  const x = parcelas.find(p => p.codPedido === codPedido && p.parcelaKey === 'terceiro');
+  const x = parcelas.find(p => p.codPedido === codPedido && p.parcelaKey === parcelaKey);
   if (!x) return;
 
-  // Percentual real do 3º Numerário deste fornecedor (uniforme 45% hoje,
-  // mas puxa do FLUXO_FORNECEDOR_PCT pra ser robusto se mudar).
-  const pctTerceiro = (typeof FLUXO_FORNECEDOR_PCT === 'object'
+  const nomeParcela = { primeiro:'1º Sinal (Início Produção)', segundo:'2º Pré-Embarque', terceiro:'3º Numerário' }[parcelaKey];
+  const pctFornec = (typeof FLUXO_FORNECEDOR_PCT === 'object'
     && FLUXO_FORNECEDOR_PCT[x.fornecedor]
-    && FLUXO_FORNECEDOR_PCT[x.fornecedor].terceiro) || null;
-  const pctTxt = pctTerceiro != null
-    ? `${(pctTerceiro * 100).toFixed(0).replace('.', ',')}% do FOB`
+    && FLUXO_FORNECEDOR_PCT[x.fornecedor][parcelaKey]) || null;
+  const pctTxt = pctFornec != null
+    ? `${(pctFornec * 100).toFixed(0).replace('.', ',')}% do FOB`
     : '% do FOB';
-  const linhas = [
-    `Ajustar valor previsto do 3º Numerário`,
-    `Pedido: ${codPedido} — ${x.nomeProduto}`,
-    ``,
-    `Valor atual: ${_fpFmtBRL(x.valor_brl)}${x.ajustado_manual ? ' (ajustado manualmente)' : ` (cálculo automático ${pctTxt} × qtd × PTAX)`}`,
-  ];
+  const linhas = [];
+  // Aviso extra pra 1º e 2º — não é o uso padrão
+  if (parcelaKey !== 'terceiro') {
+    linhas.push(`⚠ ATENÇÃO — ajuste manual da ${nomeParcela.split(' ')[0]} parcela NÃO é o padrão.`);
+    linhas.push(`A regra do fornecedor ${x.fornecedor} é ${pctTxt}.`);
+    linhas.push(`Valor calculado esperado: ${_fpFmtBRL(x.valor_brl_original)}.`);
+    linhas.push(`Só use pra exceções (renegociação, correção pontual).`);
+    linhas.push(``);
+  }
+  linhas.push(`Ajustar valor previsto do ${nomeParcela}`);
+  linhas.push(`Pedido: ${codPedido} — ${x.nomeProduto}`);
+  linhas.push(``);
+  linhas.push(`Valor atual: ${_fpFmtBRL(x.valor_brl)}${x.ajustado_manual ? ' (ajustado manualmente)' : ` (cálculo automático ${pctTxt} × qtd × PTAX)`}`);
   if (x.ajustado_manual) {
     linhas.push(`Original calculado: ${_fpFmtBRL(x.valor_brl_original)}`);
     if (x.manual_em) {
@@ -7918,7 +7927,7 @@ function _fpAjustarNumerarioPrompt(codPedido) {
   const s = resp.trim().replace(/R\$\s*/i, '').replace(/\./g, '').replace(',', '.');
   if (s === '') {
     if (x.ajustado_manual) {
-      limparValorPrevistoParcela(codPedido, 'terceiro');
+      limparValorPrevistoParcela(codPedido, parcelaKey);
       if (typeof mostrarToast === 'function') mostrarToast('Cálculo automático restaurado');
     }
   } else {
@@ -7927,14 +7936,21 @@ function _fpAjustarNumerarioPrompt(codPedido) {
       alert('Valor inválido — digite apenas números (ex: 45230,50)');
       return;
     }
-    ajustarValorPrevistoParcela(codPedido, 'terceiro', v);
-    if (typeof mostrarToast === 'function') mostrarToast(`3º Numerário ajustado pra ${_fpFmtBRL(v)}`);
+    ajustarValorPrevistoParcela(codPedido, parcelaKey, v);
+    if (typeof mostrarToast === 'function') mostrarToast(`${nomeParcela.split(' ')[0]} ajustado pra ${_fpFmtBRL(v)}`);
   }
   renderFluxoPagamentos();
   const modal = document.getElementById('modal-fp-dia');
   if (modal && !modal.classList.contains('hidden') && _FP_DIA_ATIVO) {
     _fpAbrirDia(_FP_DIA_ATIVO);
   }
+}
+window._fpAjustarValorPrompt = _fpAjustarValorPrompt;
+
+// Compat: função antiga chamada em várias partes do HTML — mantida como wrapper
+// pra não quebrar. Novo código deve chamar _fpAjustarValorPrompt(cod, key) direto.
+function _fpAjustarNumerarioPrompt(codPedido) {
+  return _fpAjustarValorPrompt(codPedido, 'terceiro');
 }
 window._fpAjustarNumerarioPrompt = _fpAjustarNumerarioPrompt;
 
@@ -8168,16 +8184,15 @@ function _fpAbrirDia(dataISO) {
         ? `<button onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',false)" class="text-xs px-3 py-1.5 rounded-lg border border-emerald-300 text-emerald-700 bg-white hover:bg-emerald-50 font-medium">✓ Pago em ${_fpFmtDia(x.data_efetiva || x.data_iso)} · desmarcar</button>`
         : `<button onclick="_fpTogglePago('${x.codPedido}','${x.parcelaKey}',true)" class="text-xs px-3 py-1.5 rounded-lg ${xAtrasado?'bg-red-600 hover:bg-red-700':'bg-emerald-600 hover:bg-emerald-700'} text-white font-medium">${xAtrasado?'⚠ ':''}Marcar como pago</button>`;
 
-      // Botão de ajustar valor previsto — só pro 3º Numerário
-      const podeAjustar = x.parcelaKey === 'terceiro';
+      // Botão de ajustar valor previsto — todas as parcelas (1º/2º = exceção; 3º = uso normal)
       const tooltipAjuste = x.ajustado_manual
         ? `Ajustado manualmente. Original: ${_fpFmtBRL(x.valor_brl_original)}${x.manual_por ? '\nPor ' + x.manual_por : ''}${x.manual_em ? '\nem ' + new Date(x.manual_em).toLocaleString('pt-BR') : ''}\n\nClique pra alterar ou restaurar.`
-        : 'Ajustar valor previsto (comprador emitiu valor real)';
-      const btnAjustar = podeAjustar
-        ? `<button onclick="_fpAjustarNumerarioPrompt('${x.codPedido}')"
+        : (x.parcelaKey === 'terceiro'
+            ? 'Ajustar valor previsto (comprador emitiu valor real)'
+            : `Ajustar valor manualmente — só pra exceções (fora da regra do fornecedor ${x.fornecedor})`);
+      const btnAjustar = `<button onclick="_fpAjustarValorPrompt('${x.codPedido}','${x.parcelaKey}')"
               class="text-[11px] ${x.ajustado_manual ? 'text-amber-600' : 'text-slate-400'} hover:text-blue-600 leading-none"
-              title="${tooltipAjuste.replace(/"/g,'&quot;')}">✎</button>`
-        : '';
+              title="${tooltipAjuste.replace(/"/g,'&quot;')}">✎</button>`;
       const badgeAjustado = x.ajustado_manual
         ? `<span class="text-[9px] font-bold px-1.5 py-0.5 rounded bg-amber-100 text-amber-800 uppercase tracking-wide ml-2" title="${tooltipAjuste.replace(/"/g,'&quot;')}">ajustado</span>`
         : '';
