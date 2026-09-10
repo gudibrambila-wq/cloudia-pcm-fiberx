@@ -692,5 +692,12 @@
       "data_prevista_manual_por": "douglas.brambila@velds.com.br",
       "data_prevista_manual_em": "2026-09-10T12:38:23.690Z"
     }
+  },
+  "PED-0184": {
+    "primeiro": {
+      "pago": true,
+      "data_efetiva": "2026-09-10",
+      "valor_efetivo": 142660.98
+    }
   }
 }
