@@ -2354,10 +2354,10 @@
     "valor_unitario": 70,
     "moeda": "USD",
     "id": 1787923300993,
-    "fase": "producao",
+    "fase": "pago1",
     "codigo_pedido": "PED-0184",
-    "fase_desde": "2026-09-10T12:06:46.896Z",
-    "pago_desde": "2026-09-08T17:40:55.994Z"
+    "fase_desde": "2026-09-10T12:10:10.900Z",
+    "pago_desde": "2026-09-10T12:10:10.900Z"
   },
   {
     "codigo": 400700058,
