@@ -682,5 +682,12 @@
       "valor_efetivo": null,
       "_auto": true
     }
+  },
+  "PED-0222": {
+    "terceiro": {
+      "valor_previsto_manual": 25,
+      "valor_previsto_manual_por": "douglas.brambila@velds.com.br",
+      "valor_previsto_manual_em": "2026-09-10T12:38:06.663Z"
+    }
   }
 }
