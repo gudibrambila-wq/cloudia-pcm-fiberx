@@ -3098,5 +3098,23 @@
     "pendente_desde": "2026-09-10T12:11:48.560Z",
     "codigo_pedido": "PED-0222",
     "fase_desde": "2026-09-10T12:11:48.560Z"
+  },
+  {
+    "codigo": 400700069,
+    "nome": "COPO TÉRMICO LIQUIDIFICADOR VELDS ACTIVE FLOW VDS LPAM-02-A/B/C/R",
+    "marca": "Velds",
+    "tipo": "Importado",
+    "qtd": 2000,
+    "semana": 52,
+    "mes": "DEZ/26",
+    "data": "2026-12-25",
+    "origem": "Avulso",
+    "modal": "FCL",
+    "valor_unitario": null,
+    "moeda": null,
+    "id": 1789129492911,
+    "fase": "pendente",
+    "pendente_desde": "2026-09-11T12:24:52.911Z",
+    "codigo_pedido": "PED-0223"
   }
 ]
