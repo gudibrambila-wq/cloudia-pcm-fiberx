@@ -3097,7 +3097,11 @@
     "fase": "pendente",
     "pendente_desde": "2026-09-10T12:11:48.560Z",
     "codigo_pedido": "PED-0222",
-    "fase_desde": "2026-09-10T12:11:48.560Z"
+    "fase_desde": "2026-09-10T12:11:48.560Z",
+    "cancelado": true,
+    "motivo_cancelamento": "teste",
+    "cancelado_em": "2026-09-11T19:41:44.555Z",
+    "cancelado_por": "douglas.brambila@velds.com.br"
   },
   {
     "codigo": 400700069,
@@ -3115,6 +3119,7 @@
     "id": 1789129492911,
     "fase": "pendente",
     "pendente_desde": "2026-09-11T12:24:52.911Z",
-    "codigo_pedido": "PED-0223"
+    "codigo_pedido": "PED-0223",
+    "fase_desde": "2026-09-11T12:24:52.911Z"
   }
 ]
